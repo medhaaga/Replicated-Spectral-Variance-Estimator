@@ -2,40 +2,28 @@ set.seed(1)
 
 library(fields)
 library(scatterplot3d)
-library(mvtnorm)
 library(cubature)
 library(graphics)
 library(pracma)
-library(reticulate)
 library(Rcpp)
 library(RcppArmadillo)
 library(fftwtools)
 library(mcmcse)
 library(stats)
-sourceCpp("C:/Users/DELL/Documents/GitHub/Replicated-Spectral-Variance-Estimator/lag.cpp")
-source_python("C:/Users/DELL/Documents/GitHub/Replicated-Spectral-Variance-Estimator/num_integration.py")  #comment it not using a python environment
+sourceCpp("lag.cpp")
+source_python("num_integration.py")  #comment it not using a python environment
 scipy <- import("scipy")
 
 ###############################################
 #####Visualization of distribution############
 ###############################################
 
-x = seq(-2, 18, length= 500)
-y = x
-A <- 10
-C <- 7
-f = function(x, y) { 
-  r = exp(-.5*(A*(x*y)^2 + x*x + y*y -2*C*x - 2*C*y))
-  return(r)
-  }
-z = outer(x, y, f)
-z[is.na(z)] = 1
-
+load(file = "perspective.Rdata")
 #Perspective plot
 persp(x,y,z,col="lightblue",main="Perspective Plot")
 
 #Contour plot
-pdf(file = "C:/Users/DELL/Documents/GitHub/Replicated-Spectral-Variance-Estimator/contour_plot.pdf")
+pdf(file = "contour_plot.pdf")
 contour(x,y,z,main="Contour Plot")
 filled.contour(x,y,z,color=terrain.colors,main="Contour Plot",)
 dev.off()
