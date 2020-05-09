@@ -125,6 +125,8 @@ max <- 1e5
 for (t in 1:7)
 {
   print(paste("Sampling for A, B, C, = ", params[t,1], params[t,2], params[t,3], "respectively", sep = " "))
+  print("Carrying out 1000 repititions for each value of nsim in check.pts")
   create.output(params[t,1], params[t,2], params[t,3], m, check.pts, freq, c.prob)
+  print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
   convergence(min, max, params[t,1], params[t,2], params[t,3])
 }

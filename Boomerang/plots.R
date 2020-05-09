@@ -124,6 +124,9 @@ for (t in 1:7){
     lines(density(det.rsv), col="blue")
     legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=1.2)
     dev.off()
+    
+    print(paste("Coverage probabilities for nsim =  ", nsim, ", A = ", A, ", B = ", B, ", C = ", C, " are: "))
+    print(paste("ASV : ", mean(asv.coverage), "RSV: ", mean(rsv.coverage)))
   }
 }
 
