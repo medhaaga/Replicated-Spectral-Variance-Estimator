@@ -20,7 +20,6 @@ create.output <- function(A,B,C,m,check.pts,freq,c.prob){
   for (i in 1:length(check.pts)){
     
     nsim <- check.pts[i]
-    print(paste("Simulationg for nsim = ", nsim))
     
     asv.samp <- array(0, dim = c(2,2,freq))
     rsv.samp <- array(0, dim = c(2,2,freq))
@@ -28,7 +27,7 @@ create.output <- function(A,B,C,m,check.pts,freq,c.prob){
     rsv.coverage <- rep(0,freq)
     
     for (j in 1:freq){
-      print(paste("Percentage completion: ", round(j/10, 2)))
+      if(j %% (freq/10) == 0) print(paste("Percentage completion: ", round(j/freq*100, 2), "for nsim = ", nsim))
       chain <- array(0,dim = c(nsim,2,m))
       sve <- array(0, dim = c(2,2,m))
       rsve <- array(0, dim = c(2,2,m))
@@ -57,7 +56,7 @@ create.output <- function(A,B,C,m,check.pts,freq,c.prob){
       if (chi.sq.asv <= critical) {asv.coverage[j]=1}
       if (chi.sq.rsv <= critical) {rsv.coverage[j]=1}
     }
-    save(asv.samp,rsv.samp,asv.coverage,rsv.coverage, file = paste(paste("out",nsim,A,B,C, sep = "_"),".Rdata", sep = ""))
+    save(asv.samp,rsv.samp,asv.coverage,rsv.coverage, file = paste(paste("Out/out",nsim,A,B,C, sep = "_"),".Rdata", sep = ""))
   }
   
 }
@@ -102,9 +101,9 @@ convergence <- function(min, max, A, B, C){
     
     asv.samp[,,j] <- apply(sve, c(1,2), mean)
     rsv.samp[,,j] <- apply(rsve, c(1,2), mean)
-    print(paste("Percentage completion: ", round(100*j/l, 2)))
+    if(j %% l/10 == 0) print(paste("Percentage completion: ", round(100*j/l, 2)))
   }
-  save(asv.samp,rsv.samp, file = paste(paste("conv_data", min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
+  save(asv.samp,rsv.samp, file = paste(paste("Out/conv_data", min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
   
 }
 
@@ -115,18 +114,19 @@ params <- matrix(c(1,2,7,1,8,9,1,9,9,2,6,7,2,8,7,2,9,7,2,10,8), nrow = 7, ncol=3
 m = 2
 #sims for plotting densities and calculating coverage
 
-check.pts <- c(1e3, 5e3, 1e4, 5e4, 7e4, 1e5)
-freq <- 1e3
+check.pts <- c(1e3, 2e3, 5e3, 1e4, 2e4)
+freq <- 1e3  #100 for now, will change later
 c.prob <- .95
-min <- 1e3
-max <- 1e5
+min <- 5e2
+max <- 1e4
 
+t <- 6 ## choosing (2,9,7)
 # for creating .Rdata files for each set of parameter values
-for (t in 1:7)
-{
-  print(paste("Sampling for A, B, C, = ", params[t,1], params[t,2], params[t,3], "respectively", sep = " "))
+# for (t in 1:7)
+# {
+  # print(paste("Sampling for A, B, C, = ", params[t,1], params[t,2], params[t,3], "respectively", sep = " "))
   print("Carrying out 1000 repititions for each value of nsim in check.pts")
   create.output(params[t,1], params[t,2], params[t,3], m, check.pts, freq, c.prob)
   print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
   convergence(min, max, params[t,1], params[t,2], params[t,3])
-}
+# }
