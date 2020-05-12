@@ -7,126 +7,111 @@ library(mcmcse)
 source("functions.R")
 sourceCpp("lag.cpp")
 
-############################################################
-##creates freq=1000 replications of ASV and RSV for each value of nsim from check.pts
-############################################################
 
-create.output <- function(A,B,C,m,check.pts,freq,c.prob){
-  
-  start <- matrix(c(2*C,1,1,2*C), 2, 2)  #only depends on C
-  critical <- qchisq(c.prob, df=2)
-  T.mean <- true.mean(A,B,C)
-  
-  for (i in 1:length(check.pts)){
-    
-    nsim <- check.pts[i]
-    
-    asv.samp <- array(0, dim = c(2,2,freq))
-    rsv.samp <- array(0, dim = c(2,2,freq))
-    asv.coverage <- rep(0,freq)
-    rsv.coverage <- rep(0,freq)
-    
-    for (j in 1:freq){
-      if(j %% (freq/10) == 0) print(paste("Percentage completion: ", round(j/freq*100, 2), "for nsim = ", nsim))
-      chain <- array(0,dim = c(nsim,2,m))
-      sve <- array(0, dim = c(2,2,m))
-      rsve <- array(0, dim = c(2,2,m))
-      b <- rep(0,m)
-      
-      for (k in 1:m){
-        chain[,,k] <- markov.chain(A,B,C,nsim,start[k,])
-        b[k] <- batchSize(chain[,,k], method = "bartlett")
-      }
-      
-      b.avg <- mean(b)
-      global.mean <- apply(chain,2,mean)
-      
-      for (k in 1:m){
-        chain.cen.loc <- scale(chain[,,k], scale = FALSE)  ## X_st - bar(X)_s
-        sve[,,k] <- mSVEfft(A = chain.cen.loc, b = b.avg)
-        chain.cen <- scale(chain[,,k], center = global.mean, scale =FALSE)
-        rsve[,,k] <- mSVEfft(A = chain.cen, b = b.avg)
-      }
-      
-      asv.samp[,,j] <- apply(sve, c(1,2), mean)
-      rsv.samp[,,j] <- apply(rsve, c(1,2), mean)
-      
-      chi.sq.asv <- t2.stat(global.mean,T.mean,asv.samp[,,j],nsim*m)
-      chi.sq.rsv <- t2.stat(global.mean,T.mean,rsv.samp[,,j],nsim*m)
-      if (chi.sq.asv <= critical) {asv.coverage[j]=1}
-      if (chi.sq.rsv <= critical) {rsv.coverage[j]=1}
+######### Function calculates CCF with demean available
+ccf2 <- function (x, y, lag.max = NULL, type = c("correlation", "covariance"), 
+    plot = TRUE, demean = TRUE, na.action = na.fail, ...) 
+{
+    type <- match.arg(type)
+    if (is.matrix(x) || is.matrix(y)) 
+        stop("univariate time series only")
+    X <- ts.intersect(as.ts(x), as.ts(y))
+    colnames(X) <- c(deparse(substitute(x))[1L], deparse(substitute(y))[1L])
+    acf.out <- acf(X, lag.max = lag.max, plot = FALSE, type = type, 
+        na.action = na.action, demean = FALSE)
+    lag <- c(rev(acf.out$lag[-1, 2, 1]), acf.out$lag[, 1, 2])
+    y <- c(rev(acf.out$acf[-1, 2, 1]), acf.out$acf[, 1, 2])
+    acf.out$acf <- array(y, dim = c(length(y), 1L, 1L))
+    acf.out$lag <- array(lag, dim = c(length(y), 1L, 1L))
+    acf.out$snames <- paste(acf.out$snames, collapse = " & ")
+    if (plot) {
+        plot(acf.out, ...)
+        return(invisible(acf.out))
     }
-    save(asv.samp,rsv.samp,asv.coverage,rsv.coverage, file = paste(paste("Out/out",nsim,A,B,C, sep = "_"),".Rdata", sep = ""))
-  }
-  
+    else return(acf.out)
 }
+#########
 
-##################################################
-#function for storing convergence plots data
-##################################################
-convergence <- function(min, max, A, B, C){
+A <- 2
+B <- 9
+C <- 7
 
-  start <- matrix(c(2*C,1,1,2*C), 2, 2)
-  master.chain <- array(0,dim = c(max,2,m))
-  
-  for (k in 1:m){
-    master.chain[,,k] <- markov.chain(A,B,C,max,start[k,])
-  }
-  conv.pts <- seq(min, max,500)
-  
-  l <- length(conv.pts)
-  asv.samp <- array(0, dim = c(2,2,l))
-  rsv.samp <- array(0, dim = c(2,2,l))
-  
-  for (j in 1:l){
-    nsim = conv.pts[j]
-    chain <- master.chain[1:nsim,,]
-    sve <- array(0, dim = c(2,2,m))
-    rsve <- array(0, dim = c(2,2,m))
-    b <- rep(0,m)
-    
-    for (k in 1:m){
-      b[k] <- batchSize(chain[,,k], method = "bartlett")
-    }
-    
-    b.avg <- mean(b)
-    global.mean <- apply(chain,2,mean)
-    
-    for (k in 1:m){
-      chain.cen.loc <- scale(chain[,,k], scale = FALSE)  ## X_st - bar(X)_s
-      sve[,,k] <- mSVEfft(A = chain.cen.loc, b = b.avg)
-      chain.cen <- scale(chain[,,k], center = global.mean, scale =FALSE)
-      rsve[,,k] <- mSVEfft(A = chain.cen, b = b.avg)
-    }
-    
-    asv.samp[,,j] <- apply(sve, c(1,2), mean)
-    rsv.samp[,,j] <- apply(rsve, c(1,2), mean)
-    if(j %% l/10 == 0) print(paste("Percentage completion: ", round(100*j/l, 2)))
-  }
-  save(asv.samp,rsv.samp, file = paste(paste("Out/conv_data", min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
-  
-}
+samples <- perspective(A, B, C, 1000)
+# pdf(file = "contour_plot.pdf")
+contour(samples$x, samples$y, samples$z, main="Contour Plot", nlevels = 20)
+# filled.contour(samples$x,samples$y,samples$z, color=terrain.colors, main="Contour Plot",)
+# dev.off()
+
+start <- matrix(c(C,1,1,C), 2, 2)
+
+nsim <- 5e2
+chain1 <- markov.chain(A, B, C, nsim, start[1,])
+chain2 <- markov.chain(A, B, C, nsim, start[2,])
+
+par(mfrow = c(1,1))
+plot(chain1, xlim = range(c(chain1[,1], chain2[,1])), ylim = range(c(chain1[,2], chain2[,2])) )
+points(chain2, col = "red")
 
 
-######################################################################
-#10*3 matrix for A,B,C parameters. Each row corresponds to a different suitable parameterization
-params <- matrix(c(1,2,7,1,8,9,1,9,9,2,6,7,2,8,7,2,9,7,2,10,8), nrow = 7, ncol=3, byrow = TRUE)
-m = 2
-#sims for plotting densities and calculating coverage
+c1.cen.loc <- scale(chain1, scale = FALSE)  ## X_st - bar(X)_s
+c2.cen.loc <- scale(chain2, scale = FALSE)
 
-check.pts <- c(1e3, 2e3, 5e3, 1e4, 2e4)
-freq <- 1e3  #100 for now, will change later
-c.prob <- .95
-min <- 5e2
-max <- 1e4
+global.mean <- colMeans(rbind(chain1, chain2))
 
-t <- 6 ## choosing (2,9,7)
-# for creating .Rdata files for each set of parameter values
-# for (t in 1:7)
-# {
-  # print(paste("Sampling for A, B, C, = ", params[t,1], params[t,2], params[t,3], "respectively", sep = " "))
-  print("Carrying out 1000 repititions for each value of nsim in check.pts")
-  create.output(params[t,1], params[t,2], params[t,3], m, check.pts, freq, c.prob)
-  print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
-  convergence(min, max, params[t,1], params[t,2], params[t,3])
-# }
+c1.cen <- scale(chain1, center = global.mean, scale =FALSE)
+c2.cen <- scale(chain2, center = global.mean, scale =FALSE)
+c1.var <- t(c1.cen) %*% (c1.cen)/(nsim)
+
+par(mfrow = c(2, 3))
+acf(c1.cen.loc[,1], demean = FALSE, lag.max = 150, ci = 0) #Old ACFS -- look too good to be true
+acf(c1.cen.loc[,2], demean = FALSE, lag.max = 150, ci = 0)
+ccf(c1.cen.loc[,1], c1.cen.loc[,2], lag.max = 150, ci = 0)
+
+
+foo1 <- acf(c1.cen[,1], demean = FALSE, lag.max = 150, plot = FALSE, type = "covariance") # New Acfs better
+foo2 <- acf(c1.cen[,2], demean = FALSE, lag.max = 150, plot = FALSE, type = "covariance")
+foo3 <- ccf2(c1.cen[,1], c1.cen[,2], demean = FALSE, lag.max = 150, plot = FALSE, type = "covariance")
+foo1$acf <- foo1$acf/c1.var[1,1]
+foo2$acf <- foo2$acf/c1.var[2,2]
+foo3$acf <- foo3$acf/sqrt(com.var[1,1] *com.var[2,2])
+plot(foo1, ylim = c(0,1))
+plot(foo2, ylim = c(0,1))
+plot(foo3, ylim = c(-1, 0))
+
+
+
+
+nsim <- 1e4
+chain1 <- markov.chain(A, B, C, nsim, start[1,])
+chain2 <- markov.chain(A, B, C, nsim, start[2,])
+
+par(mfrow = c(1,1))
+plot(chain1, xlim = range(c(chain1[,1], chain2[,1])), ylim = range(c(chain1[,2], chain2[,2])) )
+points(chain2, col = "red")
+
+c1.cen.loc <- scale(chain1, scale = FALSE)  ## X_st - bar(X)_s
+c2.cen.loc <- scale(chain2, scale = FALSE)
+
+global.mean <- colMeans(rbind(chain1, chain2))
+
+c1.cen <- scale(chain1, center = global.mean, scale =FALSE)
+c2.cen <- scale(chain2, center = global.mean, scale =FALSE)
+c1.var <- t(c1.cen) %*% (c1.cen)/(nsim)
+
+
+
+par(mfrow = c(2, 3))
+acf(c1.cen.loc[,1], demean = FALSE, lag.max = 150, ci = 0) #Old ACFS look similar to new acfs now
+acf(c1.cen.loc[,2], demean = FALSE, lag.max = 150, ci = 0)
+ccf(c1.cen.loc[,1], c1.cen.loc[,2], lag.max = 150, ci = 0)
+
+
+foo1 <- acf(c1.cen[,1], demean = FALSE, lag.max = 150, plot = FALSE, type = "covariance") # New Acfs
+foo2 <- acf(c1.cen[,2], demean = FALSE, lag.max = 150, plot = FALSE, type = "covariance")
+foo3 <- ccf2(c1.cen[,1], c1.cen[,2], demean = FALSE, lag.max = 150, plot = FALSE, type = "covariance")
+foo1$acf <- foo1$acf/c1.var[1,1]
+foo2$acf <- foo2$acf/c1.var[2,2]
+foo3$acf <- foo3$acf/sqrt(com.var[1,1] *com.var[2,2])
+plot(foo1, ylim = c(0,1), ylab = "ACF")
+plot(foo2, ylim = c(0,1), ylab = "ACF")
+plot(foo3, ylim = c(-1, 0), ylab = "ACF")
