@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1589725002014.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "BDB8CB14",
+    "lastKnownWriteTime" : 1589725506,
+    "last_content_update" : 1589725506985,
+    "path" : "~/rep.acf.ccf/man/combined_ccf.Rd",
+    "project_path" : "man/combined_ccf.Rd",
+    "properties" : {
+        "cursorPosition" : "12,51",
+        "scrollLine" : "0",
+        "tempName" : "Untitled3"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_doc"
+}
