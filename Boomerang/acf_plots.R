@@ -1,10 +1,10 @@
-set.seed(2)
+set.seed(100)
 source("functions.R")
 library(rep.acf.ccf)
 
 
 m <- 5
-nsim <- 10000
+nsim <- 500
 A <- 2
 B <- 9
 C <- 7
