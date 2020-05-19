@@ -55,3 +55,13 @@ mSVEfft <- function (A, b, method = "bartlett")
 t2.stat <- function(x,mean,sigma,n){
   return(n*t(mean - x) %*% solve(sigma) %*% (mean - x))
 }
+
+confidence_interval <- function(vector, interval) {
+
+  vec_sd <- sd(vector)
+  n <- length(vector)
+  vec_mean <- mean(vector)
+  error <- qt((interval + 1)/2, df = n - 1) * vec_sd / sqrt(n)
+  result <- c("mean" = vec_mean, "lower" = vec_mean - error, "upper" = vec_mean + error)
+  return(result)
+}
