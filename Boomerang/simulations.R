@@ -88,7 +88,7 @@ convergence <- function(min, max, A, B, C, m, rep=100){
     }
   }
 
-  conv.pts <- seq(min, max,100)
+  conv.pts <- seq(min, max,500)
   l <- length(conv.pts)
   asv.samp <- array(0, dim = c(2,2,l))
   rsv.samp <- array(0, dim = c(2,2,l))
@@ -146,15 +146,15 @@ convergence <- function(min, max, A, B, C, m, rep=100){
 
 ######################################################################
 
-A <- 2
-B <- 9
-C <- 7
-m = 2
+A <- 1
+B <- 3
+C <- 8
+m = 5
 
 #sims for plotting densities and calculating coverage
 
-check.pts <- c(1e3, 2e3, 5e3, 1e4, 2e4)
-freq <- 1e3  #100 for now, will change later
+check.pts <- c(5e3, 1e4, 5e4, 1e5)
+freq <- 1e2  #100 for now, will change later
 rep <- 10
 c.prob <- .95
 min <- 5e2

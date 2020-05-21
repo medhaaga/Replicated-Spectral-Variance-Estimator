@@ -32,24 +32,24 @@ ccf2 <- function (x, y, lag.max = NULL, type = c("correlation", "covariance"),
 }
 #########
 
-A <- 2
-B <- 9
-C <- 7
+A <- 1
+B <- 3
+C <- 8
 
 samples <- perspective(A, B, C, 1000)
 # pdf(file = "contour_plot.pdf")
-contour(samples$x, samples$y, samples$z, main="Contour Plot", nlevels = 20)
+contour(samples$x, samples$y, samples$z, main="Contour Plot", nlevels = 20, asp = 1)
 # filled.contour(samples$x,samples$y,samples$z, color=terrain.colors, main="Contour Plot",)
 # dev.off()
 
 start <- matrix(c(C,1,1,C), 2, 2)
 
-nsim <- 5e2
+nsim <- 1e3
 chain1 <- markov.chain(A, B, C, nsim, start[1,])
 chain2 <- markov.chain(A, B, C, nsim, start[2,])
 
 par(mfrow = c(1,1))
-plot(chain1, xlim = range(c(chain1[,1], chain2[,1])), ylim = range(c(chain1[,2], chain2[,2])) )
+plot(chain1, xlim = range(c(chain1[,1], chain2[,1])), ylim = range(c(chain1[,2], chain2[,2])), asp = 1)
 points(chain2, col = "red")
 
 

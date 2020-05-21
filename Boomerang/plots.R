@@ -18,9 +18,9 @@ source("functions.R")
 ###############################################
 # Uncomment to visualize through contour plots
 #Contour plot
-A <- 2
-B <- 9
-C <- 7
+A <- 1
+B <- 3
+C <- 8
 samples <- perspective(A, B, C, 500)
 pdf(file = paste("Out/", A, B, C, "/3d_density_plot.pdf", sep = "_"), height = 4)
 par(mfrow = c(1,2))
@@ -32,18 +32,18 @@ dev.off()
 ###############################################
 
 m = 5
-check.pts <- c(1e3, 2e3, 5e3, 1e4, 2e4)
+check.pts <- c(1e3, 2e3, 5e3, 1e4, 2e4, 5e4, 1e5)
 
 r <- length(check.pts)
-freq <- 1e3
+freq <- 1e2
 c.prob <- .95
 min <- 5e2
 max <- 5e4
-conv.pts <- seq(min, max, 100)
+conv.pts <- seq(min, 5e4, 500)
 
-  A <- 2
-  B <- 9
-  C <- 7
+  # A <- 1
+  # B <- 10
+  # C <- 10
   start <- matrix(0, nrow = m, ncol = 2)  #only depends on C
 
   for(i in 1:floor(m/2)){
@@ -87,13 +87,13 @@ conv.pts <- seq(min, max, 100)
   load(file = paste(paste("Out/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
 
   par(mfrow = c(1,2))
-  mean.asv <- rep(0, 96)
-  mean.rsv <- rep(0, 96)
+  mean.asv <- rep(0, length(conv.pts))
+  mean.rsv <- rep(0, length(conv.pts))
   #lower.asv <- rep(0, length(conv.pts))
   #lower.rsv <- rep(0, length(conv.pts))
   #upper.asv <- rep(0, length(conv.pts))
   #upper.rsv <- rep(0, length(conv.pts))
-  for (i in 1:96){
+  for (i in 1:length(conv.pts)){
     asv <- confidence_interval(ess.asv.samp[[i]], .9)
     rsv <- confidence_interval(ess.rsv.samp[[i]], .9)
     mean.asv[i] <- asv[1]
@@ -103,12 +103,12 @@ conv.pts <- seq(min, max, 100)
     #upper.asv[i] <- asv[3]
     #upper.rsv[i] <- rsv[3]
   }
-  plot(conv.pts[1:96], mean.asv, type = "l", col = "red", main = "Two parallel chains", xlab = "Simulation size", ylab = "ESS/mn")
-  lines(conv.pts[1:96], mean.rsv, type = "l", col = "blue")
+  plot(conv.pts, mean.asv, type = "l", col = "red", main = "Two parallel chains", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(c(mean.asv, mean.rsv)))
+  lines(conv.pts, mean.rsv, type = "l", col = "blue")
   legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=1.2)
   m = 5
   load(file = paste(paste("Out/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
-  for (i in 1:96){
+  for (i in 1:length(conv.pts)){
      asv <- confidence_interval(ess.asv.samp[[i]], .9)
      rsv <- confidence_interval(ess.rsv.samp[[i]], .9)
      mean.asv[i] <- asv[1]
@@ -118,8 +118,8 @@ conv.pts <- seq(min, max, 100)
      #upper.asv[i] <- asv[3]
      #upper.rsv[i] <- rsv[3]
    }
-  plot(conv.pts[1:96], mean.asv, col = "red", type = "l", main = "Five parallel chains", xlab = "Simulation size", ylab = "ESS/mn")
-  lines(conv.pts[1:96], mean.rsv, col = "blue")
+  plot(conv.pts, mean.asv, col = "red", type = "l", main = "Five parallel chains", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(c(mean.asv, mean.rsv)))
+  lines(conv.pts, mean.rsv, col = "blue")
   legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=1.2)
   dev.off()
 
@@ -127,6 +127,7 @@ conv.pts <- seq(min, max, 100)
   ## 2.) Density plots for Sigma11, Sigma22 and determinant.
   ##     Loop over check points for different values of nsim
 
+m <- 5
   for (j in 1:r){
 
     #### 2a.) Scatter plot of m Markov chains
