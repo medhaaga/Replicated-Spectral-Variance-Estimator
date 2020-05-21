@@ -149,7 +149,31 @@ convergence <- function(min, max, A, B, C, m, rep=100){
 A <- 1
 B <- 3
 C <- 8
-m = 5
+m <- 2
+
+#sims for plotting densities and calculating coverage
+
+check.pts <- c(5e3, 1e4, 5e4, 1e5)
+freq <- 1e3  #100 for now, will change later
+rep <- 10
+c.prob <- .95
+min <- 5e2
+max <- 5e4
+conv.pts <- seq(min, max, 100)
+
+print("Carrying out 1000 repititions for each value of nsim in check.pts")
+create.output(A, B, C, m, check.pts, freq, c.prob)
+
+print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
+convergence(min, max, A, B, C, m, rep)
+
+
+
+
+A <- 1
+B <- 3
+C <- 8
+m <- 5
 
 #sims for plotting densities and calculating coverage
 
@@ -166,4 +190,7 @@ create.output(A, B, C, m, check.pts, freq, c.prob)
 
 print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
 convergence(min, max, A, B, C, m, rep)
+
+
+
 
