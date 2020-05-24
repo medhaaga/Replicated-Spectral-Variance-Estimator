@@ -410,6 +410,7 @@ C <- 8
 
 m = 2
 check.pts <- c(1e3, 5e3, 1e4, 2e4, 5e4, 1e5)
+
 freq <- 1e3  #100 for now, will change later
 rep <- 10
 c.prob <- .95
@@ -449,8 +450,6 @@ A <- 1
 B <- 10
 C <- 7
 
-#sims for plotting densities and calculating coverage
-
 ###################
 ##m=2
 ###################
@@ -489,4 +488,7 @@ create.output2(A, B, C, m, check.pts, freq, c.prob)
 
 print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
 convergence2(min, max, A, B, C, m, rep)
+
+
+
 
