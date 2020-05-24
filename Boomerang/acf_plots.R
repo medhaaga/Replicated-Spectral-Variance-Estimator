@@ -1,4 +1,4 @@
-set.seed(100)
+set.seed(1)
 source("functions.R")
 library(rep.acf.ccf)
 
@@ -24,8 +24,8 @@ for (i in 1:m){
 }
 global.mean <- global.mean/m
 
-acf.list <- combined_acf(mc.chain.list, center = global.mean, chain = 1, component = c(1,2), lag.max = 150, type = "correlation")
-ccf.list <- combined_ccf(mc.chain.list, center = global.mean, chain = 1, component = c(1,2), lag.max = 150, type = "correlation")
+acf.list <- combined_acf(mc.chain.list, chain = 1, component = c(1,2), lag.max = 150, type = "covariance")
+ccf.list <- combined_ccf(mc.chain.list, chain = 1, component = c(1,2), lag.max = 150, type = "covariance")
 
 pdf(file = paste(paste("Out/", A, B, C, "/acf, n=", sep = "_"), nsim, ".pdf", sep = ""), title = paste("Locally vs. globally centered ACF plot, nsim = ", nsim))
 par(mfrow = c(3,2))
