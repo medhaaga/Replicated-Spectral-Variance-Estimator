@@ -16,13 +16,19 @@ markov.chain <- function(phi, omega, nsim, start){
   return(chain)
 }
 
-true.sigma <- function(phi, omega){
+target.sigma <- function(phi, omega){
   p <- ncol(phi)
   omega.vec <- omega
   dim(omega.vec) <- c(dim(omega.vec)[1]*dim(omega.vec)[2], 1)
   sigma.vec <- solve(diag(p*p) - kronecker(phi, phi)) %*% omega.vec
   sigma <- matrix(sigma.vec, p, p)
   return(sigma)
+}
+
+true.sigma <- function(phi, var){
+  p <- ncol(phi)
+  sigma <- solve(diag(p) - phi) %*% var + var %*% solve(diag(p) - t(phi)) - var
+  return (sigma)
 }
 
 ##FFT function for calculating RSVe on a centered matrix A
