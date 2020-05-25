@@ -1,4 +1,4 @@
-set.seed(100)
+set.seed(10)
 library(Rcpp)
 library(RcppArmadillo)
 library(fftwtools)
