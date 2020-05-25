@@ -261,49 +261,53 @@ dev.off()
 #############################################################
 ## 4.) ESS
 
-#pdf(file = paste("Out/", A, B, C, "/run_plot_ess_2_5.pdf", sep = "_"), height = 4)
-pdf(file = paste("Out/tukey/", A, B, C, "/run_plot_ess_2_5.pdf", sep = "_"), height = 4)
+pdf(file = paste("Out/", A, B, C, "/run_plot_ess_2_5.pdf", sep = "_"), height = 4)
+# pdf(file = paste("Out/tukey/", A, B, C, "/run_plot_ess_2_5.pdf", sep = "_"), height = 4)
 
 m<-2
-#load(file = paste(paste("Out/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
-load(file = paste(paste("Out/tukey/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
+load(file = paste(paste("Out/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
+# load(file = paste(paste("Out/tukey/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
 
-par(mfrow = c(1,2))
+par(mfrow = c(1,1))
 mean.asv <- rep(0, length(conv.pts))
 mean.rsv <- rep(0, length(conv.pts))
-#lower.asv <- rep(0, length(conv.pts))
-#lower.rsv <- rep(0, length(conv.pts))
-#upper.asv <- rep(0, length(conv.pts))
-#upper.rsv <- rep(0, length(conv.pts))
+lower.asv <- rep(0, length(conv.pts))
+lower.rsv <- rep(0, length(conv.pts))
+upper.asv <- rep(0, length(conv.pts))
+upper.rsv <- rep(0, length(conv.pts))
 for (i in 1:length(conv.pts)){
   asv <- confidence_interval(ess.asv.samp[[i]], .9)
   rsv <- confidence_interval(ess.rsv.samp[[i]], .9)
   mean.asv[i] <- asv[1]
   mean.rsv[i] <- rsv[1]
-  #lower.asv[i] <- asv[2]
-  #lower.rsv[i] <- rsv[2]
-  #upper.asv[i] <- asv[3]
-  #upper.rsv[i] <- rsv[3]
+  lower.asv[i] <- asv[2]
+  lower.rsv[i] <- rsv[2]
+  upper.asv[i] <- asv[3]
+  upper.rsv[i] <- rsv[3]
 }
 plot(conv.pts, mean.asv, type = "l", col = "red", main = "Two parallel chains", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(c(mean.asv, mean.rsv)))
 lines(conv.pts, mean.rsv, type = "l", col = "blue")
+segments(x0 = conv.pts, y0 = lower.asv, y1 = upper.asv, col = "red")
+segments(x0 = conv.pts, y0 = lower.rsv, y1 = upper.rsv, col = "blue")
 legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=1.2)
 
 m = 5
-#load(file = paste(paste("Out/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
-load(file = paste(paste("Out/tukey/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
+load(file = paste(paste("Out/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
+# load(file = paste(paste("Out/tukey/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
 for (i in 1:length(conv.pts)){
   asv <- confidence_interval(ess.asv.samp[[i]], .9)
   rsv <- confidence_interval(ess.rsv.samp[[i]], .9)
   mean.asv[i] <- asv[1]
   mean.rsv[i] <- rsv[1]
-  #lower.asv[i] <- asv[2]
-  #lower.rsv[i] <- rsv[2]
-  #upper.asv[i] <- asv[3]
-  #upper.rsv[i] <- rsv[3]
+  lower.asv[i] <- asv[2]
+  lower.rsv[i] <- rsv[2]
+  upper.asv[i] <- asv[3]
+  upper.rsv[i] <- rsv[3]
 }
 plot(conv.pts, mean.asv, col = "red", type = "l", main = "Five parallel chains", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(c(mean.asv, mean.rsv)))
 lines(conv.pts, mean.rsv, col = "blue")
+segments(x0 = conv.pts, y0 = lower.asv, y1 = upper.asv, col = "red")
+segments(x0 = conv.pts, y0 = lower.rsv, y1 = upper.rsv, col = "blue")
 legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=1.2)
 dev.off()
 
