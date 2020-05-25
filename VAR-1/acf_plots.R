@@ -1,4 +1,4 @@
-set.seed(4)
+set.seed(10)
 source("functions.R")
 library(rep.acf.ccf)
 
@@ -37,8 +37,8 @@ for (i in 1:lag.max){
 start <- matrix(0, nrow = m, ncol = p)  #only depends on C
 
 for(i in 1:floor(m/2)){
-  start[i,] <- 1*i*sqrt(diag(sigma))
-  start[m-i+1,] <- -1*i*sqrt(diag(sigma))
+  start[i,] <- .5*i*sqrt(diag(sigma))
+  start[m-i+1,] <- -.5*i*sqrt(diag(sigma))
 }
 
 mc.chain.list <- list()
