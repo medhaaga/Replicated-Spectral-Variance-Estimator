@@ -35,13 +35,13 @@ truth <- true.sigma(phi, var = target)
 
 lag.max <- 150
 true.det <- det(truth)
-check.pts <- c(5e2, 1e3, 5e3, 1e4)
+check.pts <- c(1e3, 5e3, 1e4, 5e4, 1e5)
 freq <- 1e3
-rep <- 100
+rep <- 50
 c.prob <- .95
 min <- 5e2
-max <- 5e4
-conv.pts <- seq(min, max, 100)
+max <- 1e5
+conv.pts <- seq(min, max, 500)
 r <- length(check.pts)
 start <- matrix(0, nrow = m, ncol = p)  #only depends on C
 
@@ -111,10 +111,10 @@ for (i in 1:length(conv.pts)){
 }
 
 pdf(file = paste(paste("Out/bartlett/run_plot_ess", m, sep = "_"), ".pdf", sep = ""))
-plot(conv.pts[1:296], mean.asv[1:296], type = "l", main = "Running plot for ESS/mn", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(c(mean.asv, mean.rsv)))
-segments(x0 = conv.pts[1:296], y0 = lower.asv[1:296], x1 = conv.pts[1:296], y1 = upper.asv[1:296])
-lines(conv.pts[1:296], mean.rsv[1:296], type = "l", col = "blue")
-segments(x0 = conv.pts[1:296], y0 = lower.rsv[1:296], x1 = conv.pts[1:296], y1 = upper.rsv[1:296], col = "blue")
+plot(conv.pts, mean.asv, type = "l", main = "Running plot for ESS/mn", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(c(mean.asv, mean.rsv)))
+segments(x0 = conv.pts, y0 = lower.asv, x1 = conv.pts, y1 = upper.asv)
+lines(conv.pts, mean.rsv, type = "l", col = "blue")
+segments(x0 = conv.pts, y0 = lower.rsv, x1 = conv.pts, y1 = upper.rsv, col = "blue")
 
 
 abline(h = (det(target)/det(truth))^(1/p), col = "red")

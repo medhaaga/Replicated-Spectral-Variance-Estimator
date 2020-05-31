@@ -23,6 +23,15 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
   }
 
   critical <- qchisq(c.prob, df=2)
+  master.chain.rep <- list()
+  for (i in 1:freq){
+    print(paste("Sampling percentage completion: ", i*100/freq))
+    chains <- array(0, dim = c(max(check.pts), p, m))
+    for (j in 1:m){
+      chains[,,j] <- markov.chain(phi, omega, max(check.pts), start[j,])
+    }
+    master.chain.rep[[i]] <- chains
+  }
 
   for (i in 1:length(check.pts)){
 
@@ -35,13 +44,12 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
 
     for (j in 1:freq){
       if(j %% (freq/10) == 0) print(paste("Percentage completion: ", round(j/freq*100, 2), "for nsim = ", nsim))
-      chain <- array(0,dim = c(nsim,p,m))
+      chain <- master.chain.rep[[j]][1:nsim,,]
       sve <- array(0, dim = c(p,p,m))
       rsve <- array(0, dim = c(p,p,m))
       b <- rep(0,m)
 
       for (k in 1:m){
-        chain[,,k] <- markov.chain(phi, omega, nsim, start[k,])
         b[k] <- batchSize(chain[,,k], method = "bartlett")
       }
 
@@ -168,8 +176,7 @@ phi <- dummy %*% phi %*% t(dummy)
 
 #sims for plotting densities and calculating coverage
 
-#check.pts <- c(5e2, 1e3, 5e3, 1e4, 5e4, 1e5)
-check.pts <- c(5e4, 1e5)
+check.pts <- c(1e3, 5e3, 1e4, 5e4, 1e5)
 freq <- 1e3
 rep <- 50
 c.prob <- .95
