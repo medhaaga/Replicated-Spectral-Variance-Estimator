@@ -7,26 +7,26 @@
 library("MCMCpack")
 load("mida.rda")
 
-n <- 1e5
+n <- 1e6
 m <- 1e3
 
 mida_means <- matrix(0, nrow = m, ncol = 7)
 for(i in 1:m)
 {
 	print(i)
-	out <- MCMCpoissonChange(mida~ 1, m=6, c0=13, d0=1,  
-		marginal.likelihood=c("Chib95"), mcmc = n, burnin = 0, seed = i)
+	system.time(out <- MCMCpoissonChange(mida~ 1, m=6, c0=13, d0=1,  
+		marginal.likelihood= "none", mcmc = n, burnin = 0, seed = i) )
 	mida_means[i, ] <- colMeans(out)
 }
 
-save(mida_means, file = "true_mida_1e5_1e3")
+save(mida_means, file = "true_mida_1e6_1e3")
 
 
 # out1 <- MCMCpoissonChange(mida~ 1, m=6, c0=13, d0=1,  
-# 		marginal.likelihood=c("Chib95"), mcmc = 1e4, burnin = 0, verbose = 1e6, seed = round(1e3*runif(1)))
+# 		marginal.likelihood="none", mcmc = 1e4, burnin = 0, verbose = 1e6, seed = round(1e3*runif(1)))
 
 # out2 <- MCMCpoissonChange(mida~ 1, m=6, c0=13, d0=1,  
-#   marginal.likelihood=c("Chib95"), mcmc = 1e4, burnin = 0, seed = round(1e3*runif(1)), verbose = 1e4)
+#   marginal.likelihood="none", mcmc = 1e4, burnin = 0, seed = round(1e3*runif(1)), verbose = 1e4)
 
 # par(mfrow = c(2,7))
 # for(i in 1:7)

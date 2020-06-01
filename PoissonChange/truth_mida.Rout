@@ -35,15 +35,15 @@ Loading required package: MASS
 ##
 > load("mida.rda")
 > 
-> n <- 1e5
+> n <- 1e6
 > m <- 1e3
 > 
 > mida_means <- matrix(0, nrow = m, ncol = 7)
 > for(i in 1:m)
 + {
 + 	print(i)
-+ 	out <- MCMCpoissonChange(mida~ 1, m=6, c0=13, d0=1,  
-+ 		marginal.likelihood=c("Chib95"), mcmc = n, burnin = 0, seed = i)
++ 	system.time(out <- MCMCpoissonChange(mida~ 1, m=6, c0=13, d0=1,  
++ 		marginal.likelihood= "none", mcmc = n, burnin = 0, seed = i) )
 + 	mida_means[i, ] <- colMeans(out)
 + }
 [1] 1
