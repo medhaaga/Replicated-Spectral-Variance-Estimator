@@ -1,0 +1,82 @@
+
+R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> 
+> 
+> ###################################################
+> ### chunk number 7: mida1
+> ###################################################
+> 
+> library("MCMCpack")
+Loading required package: coda
+Loading required package: MASS
+##
+## Markov Chain Monte Carlo Package (MCMCpack)
+## Copyright (C) 2003-2020 Andrew D. Martin, Kevin M. Quinn, and Jong Hee Park
+##
+## Support provided by the U.S. National Science Foundation
+## (Grants SES-0350646 and SES-0350613)
+##
+> load("mida.rda")
+> 
+> n <- 1e6
+> m <- 1e3
+> 
+> mida_means <- matrix(0, nrow = m, ncol = 7)
+> for(i in 1:m)
++ {
++ 	print(i)
++ 	out <- MCMCpoissonChange(mida~ 1, m=6, c0=13, d0=1,  
++ 		marginal.likelihood=c("Chib95"), mcmc = n, burnin = 0, verbose = 5e5, seed = i)
++ 	mida_means[i, ] <- colMeans(out)
++ }
+[1] 1
+
+
+ MCMCpoissonChange iteration 1 of 1000000
+ The number of observations in state 1 is    1.00000
+ The number of observations in state 2 is    3.00000
+ The number of observations in state 3 is    4.00000
+ The number of observations in state 4 is    7.00000
+ The number of observations in state 5 is   21.00000
+ The number of observations in state 6 is   19.00000
+ The number of observations in state 7 is  125.00000
+ lambda in state 1 is    6.81573
+ lambda in state 2 is    6.17822
+ lambda in state 3 is    4.16756
+ lambda in state 4 is    2.81237
+ lambda in state 5 is    3.48808
+ lambda in state 6 is    4.72829
+ lambda in state 7 is   17.00764
+
+ MCMCpoissonChange iteration 500001 of 1000000
+ The number of observations in state 1 is   33.00000
+ The number of observations in state 2 is   56.00000
+ The number of observations in state 3 is   11.00000
+ The number of observations in state 4 is   17.00000
+ The number of observations in state 5 is    3.00000
+ The number of observations in state 6 is   11.00000
+ The number of observations in state 7 is   49.00000
+ lambda in state 1 is    2.89630
+ lambda in state 2 is    5.28752
+ lambda in state 3 is   16.26206
+ lambda in state 4 is    7.11505
+ lambda in state 5 is   30.42128
+ lambda in state 6 is   11.46366
+ lambda in state 7 is   28.84843
