@@ -23,16 +23,15 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
   }
 
   critical <- qchisq(c.prob, df=2)
-  # Too much memory involved to make and store all chains
-  # master.chain.rep <- list()
-  # for (i in 1:freq){
-  #   print(paste("Sampling percentage completion: ", i*100/freq))
-  #   chains <- array(0, dim = c(max(check.pts), p, m))
-  #   for (j in 1:m){
-  #     chains[,,j] <- markov.chain(phi, omega, max(check.pts), start[j,])
-  #   }
-  #   master.chain.rep[[i]] <- chains
-  # }
+  master.chain.rep <- list()
+  for (i in 1:freq){
+    print(paste("Sampling percentage completion: ", i*100/freq))
+    chains <- array(0, dim = c(max(check.pts), p, m))
+    for (j in 1:m){
+      chains[,,j] <- markov.chain(phi, omega, max(check.pts), start[j,])
+    }
+    master.chain.rep[[i]] <- chains
+  }
 
   for (i in 1:length(check.pts)){
 
@@ -44,14 +43,8 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
     rsv.coverage <- rep(0,freq)
 
     for (j in 1:freq){
-      
-      print(paste("Percentage completion: ", round(j/freq*100, 2), "for nsim = ", nsim))
-      chains <- array(0, dim = c(nsim, p, m))
-      for (k in 1:m){
-        chains[,,k] <- markov.chain(phi, omega, nsim, start[k,])
-      }      
-      
-      chain <- chains[1:nsim,,]
+      if(j %% (freq/10) == 0) print(paste("Percentage completion: ", round(j/freq*100, 2), "for nsim = ", nsim))
+      chain <- master.chain.rep[[j]][1:nsim,,]
       sve <- array(0, dim = c(p,p,m))
       rsve <- array(0, dim = c(p,p,m))
       b <- rep(0,m)
@@ -194,6 +187,6 @@ conv.pts <- seq(min, max, 500)
 print("Carrying out 1000 repititions for each value of nsim in check.pts")
 create.output(phi, omega, m, check.pts, freq, c.prob)
 
-# print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
-# convergence(min, max, phi, omega, m, rep)
+print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
+convergence(min, max, phi, omega, m, rep)
 
