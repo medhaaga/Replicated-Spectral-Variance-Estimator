@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: main.aux
+The style file: apalike.bst
+Database file #1: sample.bib
+Warning--there's a number but no series in priestley1981spectral
+Warning--empty publisher in priestley1981spectral
+You've used 22 entries,
+            1935 wiz_defined-function locations,
+            615 strings with 6985 characters,
+and the built_in function-call counts, 8644 in all, are:
+= -- 880
+> -- 274
+< -- 22
++ -- 96
+- -- 86
+* -- 711
+:= -- 1463
+add.period$ -- 66
+call.type$ -- 22
+change.case$ -- 144
+chr.to.int$ -- 22
+cite$ -- 24
+duplicate$ -- 337
+empty$ -- 639
+format.name$ -- 126
+if$ -- 1713
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 27
+newline$ -- 113
+num.names$ -- 66
+pop$ -- 117
+preamble$ -- 1
+purify$ -- 149
+quote$ -- 0
+skip$ -- 276
+stack$ -- 0
+substring$ -- 722
+swap$ -- 53
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 122
+warning$ -- 2
+while$ -- 81
+width$ -- 0
+write$ -- 284
+(There were 2 warnings)
