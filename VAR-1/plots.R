@@ -162,8 +162,8 @@ for (j in 1:r){
 ## 3.) Density plots for determinant of ASV and RSV
 
 pdf(file = paste(paste("Out/bartlett/densities",m, sep = "_"), ".pdf", sep = ""))
-par(mfrow = c(ceiling(r/2) - 1,2))
-for (j in 2:r){
+par(mfrow = c(ceil(r/2),2))
+for (j in 1:r){
 
   #Comparitative density plots of ASV and RSV
   nsim <- check.pts[j]
