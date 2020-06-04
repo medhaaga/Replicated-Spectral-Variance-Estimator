@@ -58,24 +58,29 @@ points(mc.chain.list[[4]], col = 4)
 points(mc.chain.list[[5]], col = 5)
 dev.off()
 
-acf.list <- combined_acf(mc.chain.list, chain = 2, component = seq(1,p), lag.max = 150, type = "correlation")
-ccf.list <- combined_ccf(mc.chain.list, chain = 2, component = c(1,2), lag.max = 150, type = "correlation")
+acf.list <- combined_acf(mc.chain.list, chain = 2, component = seq(1,p), lag.max = lag.max, type = "correlation")
+ccf.list <- combined_ccf(mc.chain.list, chain = 2, component = c(1,2), lag.max = lag.max, type = "correlation")
 
-pdf(file = paste("Out/acf, n = ", nsim, ".pdf", sep = ""), title = paste("Locally vs. globally centered ACF plot, nsim = ", nsim), height = 4)
-par(mfrow = c(2,2))
+# avg.acf <- (acf.list[[1]][[2]]$acf + acf.list[[2]][[2]]$acf)/2
+# com.acf <- acf.list
+# com.acf[[1]][[1]]$acf <- avg.acf
+pdf(file = paste("Out/acf,n=", nsim, ".pdf", sep = ""), width = 8, height = 4)
+par(mfrow = c(1,2))
 
-plot(acf.list[[1]][[1]], main = paste("ACF for component - 1"), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[1]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[1]]$acf), max(true.acf[1,1,]))))
+plot(acf.list[[1]][[1]], main = expression(paste("Old ACF for chain 1")), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[1]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[1]]$acf), max(true.acf[1,1,]))))
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
-plot(acf.list[[1]][[2]], main = paste("R-ACF for component - 1"), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[2]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[2]]$acf), max(true.acf[1,1,]))))
+plot(acf.list[[1]][[2]], main = expression(paste("New ACF for chain 1")), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[2]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[2]]$acf), max(true.acf[1,1,]))))
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
-plot(acf.list[[2]][[1]], main = paste("ACF for component - 2"), xlim = range(0, lag.max),ylim =  c(0,1))#c(min(min(acf.list[[2]][[1]]$acf), min(true.acf[2,2,])), max(max(acf.list[[2]][[1]]$acf), max(true.acf[2,2,]))))
-lines(seq(-lag.max, lag.max), true.acf[2,2,]/true.acf[2,2,lag.max + 1], col = "red")
-plot(acf.list[[2]][[2]], main = paste("R-ACF for component - 2"), xlim = range(0, lag.max), ylim =  c(0,1)) #c(min(min(acf.list[[2]][[2]]$acf), min(true.acf[2,2,])), max(max(acf.list[[2]][[2]]$acf), max(true.acf[2,2,]))))
-lines(seq(-lag.max, lag.max), true.acf[2,2,]/true.acf[2,2,lag.max + 1], col = "red")
+# plot(com.acf[[1]][[1]], main = paste("R-ACF for component - 1"), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[2]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[2]]$acf), max(true.acf[1,1,]))))
+# lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
+# plot(acf.list[[2]][[1]], main = paste("ACF for component - 2"), xlim = range(0, lag.max),ylim =  c(0,1))#c(min(min(acf.list[[2]][[1]]$acf), min(true.acf[2,2,])), max(max(acf.list[[2]][[1]]$acf), max(true.acf[2,2,]))))
+# lines(seq(-lag.max, lag.max), true.acf[2,2,]/true.acf[2,2,lag.max + 1], col = "red")
+# plot(acf.list[[2]][[2]], main = paste("R-ACF for component - 2"), xlim = range(0, lag.max), ylim =  c(0,1)) #c(min(min(acf.list[[2]][[2]]$acf), min(true.acf[2,2,])), max(max(acf.list[[2]][[2]]$acf), max(true.acf[2,2,]))))
+# lines(seq(-lag.max, lag.max), true.acf[2,2,]/true.acf[2,2,lag.max + 1], col = "red")
 dev.off()
 
 
-pdf(file = paste("Out/ccf, n = ", nsim, ".pdf", sep = ""), title = paste("Locally vs. globally centered CCF plot, nsim = ", nsim), height = 3)
+pdf(file = paste("Out/ccf,n=", nsim, ".pdf", sep = ""), title = paste("Locally vs. globally centered CCF plot, nsim = ", nsim), height = 3)
 par(mfrow = c(1,2))
 plot(ccf.list[[1]], main = "CCF between 1 and 2", xlim = c(-lag.max, lag.max), ylim = range(ccf.list[[1]]$acf))
 lines(seq(-lag.max, lag.max), true.acf[2,1,]/true.acf[2,1,lag.max+1], col = "red")
@@ -85,7 +90,7 @@ lines(seq(-lag.max, lag.max), true.acf[2,1,]/true.acf[2,1,lag.max+1], col = "red
 dev.off()
 
 ###################################
-nsim <- 5e4
+nsim <- 1e4
 ###################################
 
 mc.chain.list <- list()
@@ -110,20 +115,22 @@ dev.off()
 acf.list <- combined_acf(mc.chain.list, chain = 1, component = seq(1,p), lag.max = 150, type = "correlation")
 ccf.list <- combined_ccf(mc.chain.list, chain = 1, component = c(1,2), lag.max = 150, type = "correlation")
 
-pdf(file = paste("Out/acf, n = ", nsim, ".pdf", sep = ""), title = paste("Locally vs. globally centered ACF plot, nsim = ", nsim), height = 4)
-par(mfrow = c(2,2))
+pdf(file = paste("Out/acf,n=", nsim, ".pdf", sep = ""), width = 8, height = 4)
+par(mfrow = c(1,2))
 
-plot(acf.list[[1]][[1]], main = paste("ACF for component - 1"), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[1]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[1]]$acf), max(true.acf[1,1,]))))
+plot(acf.list[[1]][[1]], main = expression(paste("Old ACF for chain 1")), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[1]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[1]]$acf), max(true.acf[1,1,]))))
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
-plot(acf.list[[1]][[2]], main = paste("R-ACF for component - 1"), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[2]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[2]]$acf), max(true.acf[1,1,]))))
+plot(acf.list[[1]][[2]], main = expression(paste("New ACF for chain 1")), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[2]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[2]]$acf), max(true.acf[1,1,]))))
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
-plot(acf.list[[2]][[1]], main = paste("ACF for component - 2"), xlim = range(0, lag.max),ylim =  c(0,1))#c(min(min(acf.list[[2]][[1]]$acf), min(true.acf[2,2,])), max(max(acf.list[[2]][[1]]$acf), max(true.acf[2,2,]))))
-lines(seq(-lag.max, lag.max), true.acf[2,2,]/true.acf[2,2,lag.max + 1], col = "red")
-plot(acf.list[[2]][[2]], main = paste("R-ACF for component - 2"), xlim = range(0, lag.max), ylim =  c(0,1)) #c(min(min(acf.list[[2]][[2]]$acf), min(true.acf[2,2,])), max(max(acf.list[[2]][[2]]$acf), max(true.acf[2,2,]))))
-lines(seq(-lag.max, lag.max), true.acf[2,2,]/true.acf[2,2,lag.max + 1], col = "red")
+# plot(com.acf[[1]][[1]], main = paste("R-ACF for component - 1"), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[2]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[2]]$acf), max(true.acf[1,1,]))))
+# lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
+# plot(acf.list[[2]][[1]], main = paste("ACF for component - 2"), xlim = range(0, lag.max),ylim =  c(0,1))#c(min(min(acf.list[[2]][[1]]$acf), min(true.acf[2,2,])), max(max(acf.list[[2]][[1]]$acf), max(true.acf[2,2,]))))
+# lines(seq(-lag.max, lag.max), true.acf[2,2,]/true.acf[2,2,lag.max + 1], col = "red")
+# plot(acf.list[[2]][[2]], main = paste("R-ACF for component - 2"), xlim = range(0, lag.max), ylim =  c(0,1)) #c(min(min(acf.list[[2]][[2]]$acf), min(true.acf[2,2,])), max(max(acf.list[[2]][[2]]$acf), max(true.acf[2,2,]))))
+# lines(seq(-lag.max, lag.max), true.acf[2,2,]/true.acf[2,2,lag.max + 1], col = "red")
 dev.off()
 
-pdf(file = paste("Out/ccf, n = ", nsim, ".pdf", sep = ""), title = paste("Locally vs. globally centered CCF plot, nsim = ", nsim), height = 3)
+pdf(file = paste("Out/ccf,n=", nsim, ".pdf", sep = ""), title = paste("Locally vs. globally centered CCF plot, nsim = ", nsim), height = 3)
 par(mfrow = c(1,2))
 plot(ccf.list[[1]], main = "CCF between 1 and 2", xlim = c(-lag.max, lag.max), ylim = range(ccf.list[[1]]$acf))
 lines(seq(-lag.max, lag.max), true.acf[2,1,]/true.acf[2,1,lag.max+1], col = "red")

@@ -55,11 +55,9 @@ for(i in 1:floor(m/2)){
     start[m-i+1,] <- c(C*(2^(2-i)), 0)
 }
 
-#load(file = paste(paste("Out/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
-load(file = paste(paste("Out/tukey/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
+load(file = paste(paste("Out/", A, B, C, "/conv_data", m, min, max, A, B, C, sep = "_"), ".Rdata", sep = ""))
 
-#pdf(file = paste(paste("Out/", A, B, C, "/run_plots", m, sep = "_"), ".pdf", sep = ""), height = 3)
-pdf(file = paste(paste("Out/tukey/", A, B, C, "/run_plots", m, sep = "_"), ".pdf", sep = ""), height = 3)
+pdf(file = paste(paste("Out/", A, B, C, "/run_plots", m, sep = "_"), ".pdf", sep = ""), height = 3)
 
 par(mfrow = c(1,3))
   
@@ -90,8 +88,7 @@ dev.off()
 
 ## 2.) Scatter and trace plots
 
-#pdf(file = paste(paste("Out/", A, B, C, "/scatter_plot", m, sep = "_"), ".pdf", sep = ""), height = 5)
-pdf(file = paste(paste("Out/tukey/", A, B, C, "/scatter_plot", m, sep = "_"), ".pdf", sep = ""), height = 5)
+pdf(file = paste(paste("Out/", A, B, C, "/scatter_plot", m, sep = "_"), ".pdf", sep = ""), height = 5)
 
 par(mfrow = c(2,3))
 
@@ -103,7 +100,7 @@ for (j in 1:r){
     chain[,,p] <- markov.chain(A, B, C, nsim, start[p,])
   }
 
-  plot(chain[,1,1], chain[,2,1], col = 2, xlim = c(-2,2*C), ylim = c(-2,2*C), main = paste("Scatter plot of m = ", m,  "Markov chains, n = ", nsim, ", A = ", A, ", B = ", B, ", C = ", C), xlab = "X", ylab = "Y")
+  plot(chain[,1,1], chain[,2,1], col = 2, xlim = c(-1,11), ylim = c(-1,11), main = paste("Scatter plot of m = ", m,  "Markov chains, n = ", nsim, ", A = ", A, ", B = ", B, ", C = ", C), xlab = "X", ylab = "Y")
   for (p in 2:m){
     points(chain[,1,p], chain[,2,p], col = p+1)
   }
@@ -112,8 +109,8 @@ dev.off()
 
 for (j in 1:r){
   nsim = check.pts[j]
-  #pdf(file = paste(paste("Out/", A, B, C, "/trace", m, nsim, sep = "_"), ".pdf", sep = ""), height = 5)
-  pdf(file = paste(paste("Out/tukey/", A, B, C, "/trace", m, nsim, sep = "_"), ".pdf", sep = ""), height = 5)
+  pdf(file = paste(paste("Out/", A, B, C, "/trace", m, nsim, sep = "_"), ".pdf", sep = ""), height = 5)
+
   par(mfrow = c(m,2))
   for(p in 1:m){
     plot.ts(chain[,1,p], main = paste("x component of chain -", p))
@@ -199,8 +196,7 @@ dev.off()
 
 ## 2.) Scatter and trace plots
 
-#pdf(file = paste(paste("Out/", A, B, C, "/scatter_plot", m, sep = "_"), ".pdf", sep = ""), height = 5)
-pdf(file = paste(paste("Out/tukey/", A, B, C, "/scatter_plot", m, sep = "_"), ".pdf", sep = ""), height = 5)
+pdf(file = paste(paste("Out/", A, B, C, "/scatter_plot", m, sep = "_"), ".pdf", sep = ""), height = 5)
 
 par(mfrow = c(2,3))
 
@@ -221,8 +217,7 @@ dev.off()
 
 for (j in 1:r){
   nsim = check.pts[j]
-  #pdf(file = paste(paste("Out/", A, B, C, "/trace", m, nsim, sep = "_"), ".pdf", sep = ""))
-  pdf(file = paste(paste("Out/tukey/", A, B, C, "/trace", m, nsim, sep = "_"), ".pdf", sep = ""))
+  pdf(file = paste(paste("Out/", A, B, C, "/trace", m, nsim, sep = "_"), ".pdf", sep = ""))
   par(mfrow = c(m,2))
   for(p in 1:m){
     plot.ts(chain[,1,p], main = paste("x component of chain -", p))
@@ -234,8 +229,7 @@ for (j in 1:r){
 ## 3.) Determinant density plots for ASV and RSV
 
 m = 5
-#pdf(file = paste(paste("Out/", A, B, C, "/densities",m, sep = "_"), ".pdf", sep = ""), height = 5)
-pdf(file = paste(paste("Out/tukey/", A, B, C, "/densities",m, sep = "_"), ".pdf", sep = ""), height = 5)
+pdf(file = paste(paste("Out/", A, B, C, "/densities",m, sep = "_"), ".pdf", sep = ""), height = 5)
 
 par(mfrow = c(2,3))
 for (j in 1:r){
