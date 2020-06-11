@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  4 JUN 2020 17:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  11 JUN 2020 18:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -8,8 +8,8 @@ LaTeX2e <2015/01/01>
 Babel <3.9l> and hyphenation patterns for 79 languages loaded.
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/size12.clo
-File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@section=\count80
@@ -237,18 +237,18 @@ Excluding comment 'comment')
  (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -269,12 +269,12 @@ LaTeX Font Info:    ... okay on input line 59.
 * \topmargin=0.0pt
 * \headheight=0.0pt
 * \headsep=0.0pt
-* \topskip=12.0pt
+* \topskip=11.0pt
 * \footskip=30.0pt
-* \marginparwidth=44.0pt
+* \marginparwidth=59.0pt
 * \marginparsep=10.0pt
 * \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
@@ -343,205 +343,194 @@ e
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 61.
+LaTeX Font Info:    Try loading font information for U+msa on input line 65.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 61.
+LaTeX Font Info:    Try loading font information for U+msb on input line 65.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
-
-<plots/acf,n=500.pdf, id=25, 578.16pt x 289.08pt>
+{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
+<plots/acf,n=500.pdf, id=22, 578.16pt x 289.08pt>
 File: plots/acf,n=500.pdf Graphic file (type pdf)
  <use plots/acf,n=500.pdf>
-Package pdftex.def Info: plots/acf,n=500.pdf used on input line 110.
+Package pdftex.def Info: plots/acf,n=500.pdf used on input line 114.
 (pdftex.def)             Requested size: 375.80544pt x 187.89977pt.
 
-<plots/acf,n=10000.pdf, id=26, 578.16pt x 289.08pt>
+<plots/acf,n=10000.pdf, id=23, 578.16pt x 289.08pt>
 File: plots/acf,n=10000.pdf Graphic file (type pdf)
 
 <use plots/acf,n=10000.pdf>
-Package pdftex.def Info: plots/acf,n=10000.pdf used on input line 116.
+Package pdftex.def Info: plots/acf,n=10000.pdf used on input line 120.
 (pdftex.def)             Requested size: 375.80544pt x 187.89977pt.
- [4] [5 <./plots/acf,n=500.pdf> <./plots/acf,n=10000.pdf>] [6] [7] [8]
-Underfull \hbox (badness 10000) in paragraph at lines 250--251
+ [3] [4 <./plots/acf,n=500.pdf> <./plots/acf,n=10000.pdf>] [5] [6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 254--255
 
  []
 
-[9] [10] [11] [12]
-Missing character: There is no Ã in font cmr12!
-Missing character: There is no ¸ in font cmr12!
- [13] <scatter_plot_500.pdf, id=73, 505.89pt x 505.89pt>
+[8] [9] [10] [11]
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no ¸ in font cmr10!
+ <scatter_plot_500.pdf, id=65, 505.89pt x 505.89pt>
 File: scatter_plot_500.pdf Graphic file (type pdf)
 
 <use scatter_plot_500.pdf>
-Package pdftex.def Info: scatter_plot_500.pdf used on input line 414.
+Package pdftex.def Info: scatter_plot_500.pdf used on input line 418.
 (pdftex.def)             Requested size: 187.89914pt x 187.90196pt.
 
-<scatter_plot_50000.pdf, id=74, 505.89pt x 505.89pt>
+<scatter_plot_50000.pdf, id=66, 505.89pt x 505.89pt>
 File: scatter_plot_50000.pdf Graphic file (type pdf)
 
 <use scatter_plot_50000.pdf>
-Package pdftex.def Info: scatter_plot_50000.pdf used on input line 420.
+Package pdftex.def Info: scatter_plot_50000.pdf used on input line 424.
 (pdftex.def)             Requested size: 187.89914pt x 187.90196pt.
- <plots/var-ess.pdf, id=75, 505.89pt x 505.89pt>
-File: plots/var-ess.pdf Graphic file (type pdf)
 
-<use plots/var-ess.pdf>
-Package pdftex.def Info: plots/var-ess.pdf used on input line 430.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<plots/var-ess.pdf, id=67, 505.89pt x 505.89pt>
+File: plots/var-ess.pdf Graphic file (type pdf)
+ <use plots/var-ess.pdf>
+Package pdftex.def Info: plots/var-ess.pdf used on input line 434.
 (pdftex.def)             Requested size: 234.8775pt x 234.88132pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[14 <./scatter_plot_500.pdf> <./scatter_plot_50000.pdf>]
-<plots/boom-pers_1_3_8.pdf, id=91, 505.89pt x 505.89pt>
+[12] <plots/boom-pers_1_3_8.pdf, id=72, 505.89pt x 505.89pt>
 File: plots/boom-pers_1_3_8.pdf Graphic file (type pdf)
 
 <use plots/boom-pers_1_3_8.pdf>
-Package pdftex.def Info: plots/boom-pers_1_3_8.pdf used on input line 457.
+Package pdftex.def Info: plots/boom-pers_1_3_8.pdf used on input line 461.
 (pdftex.def)             Requested size: 187.89914pt x 187.90196pt.
 
-<plots/boom-pers_1_10_7.pdf, id=92, 505.89pt x 505.89pt>
+<plots/boom-pers_1_10_7.pdf, id=73, 505.89pt x 505.89pt>
 File: plots/boom-pers_1_10_7.pdf Graphic file (type pdf)
 
 <use plots/boom-pers_1_10_7.pdf>
-Package pdftex.def Info: plots/boom-pers_1_10_7.pdf used on input line 463.
+Package pdftex.def Info: plots/boom-pers_1_10_7.pdf used on input line 467.
 (pdftex.def)             Requested size: 187.89914pt x 187.90196pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<plots/scatter_n1000.pdf, id=93, 361.35pt x 361.35pt>
+<plots/scatter_n1000.pdf, id=74, 361.35pt x 361.35pt>
 File: plots/scatter_n1000.pdf Graphic file (type pdf)
 
 <use plots/scatter_n1000.pdf>
-Package pdftex.def Info: plots/scatter_n1000.pdf used on input line 475.
+Package pdftex.def Info: plots/scatter_n1000.pdf used on input line 479.
 (pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
 
-<plots/scatter_n50000.pdf, id=94, 361.35pt x 361.35pt>
+<plots/scatter_n50000.pdf, id=75, 361.35pt x 361.35pt>
 File: plots/scatter_n50000.pdf Graphic file (type pdf)
 
 <use plots/scatter_n50000.pdf>
-Package pdftex.def Info: plots/scatter_n50000.pdf used on input line 481.
+Package pdftex.def Info: plots/scatter_n50000.pdf used on input line 485.
 (pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<plots/boom-acf,n=1000.pdf, id=95, 578.16pt x 289.08pt>
+<plots/boom-acf,n=1000.pdf, id=76, 578.16pt x 289.08pt>
 File: plots/boom-acf,n=1000.pdf Graphic file (type pdf)
 
 <use plots/boom-acf,n=1000.pdf>
-Package pdftex.def Info: plots/boom-acf,n=1000.pdf used on input line 495.
+Package pdftex.def Info: plots/boom-acf,n=1000.pdf used on input line 499.
 (pdftex.def)             Requested size: 328.82707pt x 164.4112pt.
 
-<plots/boom-acf,n=50000.pdf, id=96, 578.16pt x 289.08pt>
+<plots/boom-acf,n=50000.pdf, id=77, 578.16pt x 289.08pt>
 File: plots/boom-acf,n=50000.pdf Graphic file (type pdf)
 
 <use plots/boom-acf,n=50000.pdf>
-Package pdftex.def Info: plots/boom-acf,n=50000.pdf used on input line 501.
+Package pdftex.def Info: plots/boom-acf,n=50000.pdf used on input line 505.
 (pdftex.def)             Requested size: 328.82707pt x 164.4112pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[15 <./plots/var-ess.pdf>] <plots/boom-ess.pdf, id=106, 505.89pt x 289.08pt>
+[13 <./scatter_plot_500.pdf> <./scatter_plot_50000.pdf>]
+<plots/boom-ess.pdf, id=94, 505.89pt x 289.08pt>
 File: plots/boom-ess.pdf Graphic file (type pdf)
-
-<use plots/boom-ess.pdf>
-Package pdftex.def Info: plots/boom-ess.pdf used on input line 534.
+ <use plots/boom-ess.pdf>
+Package pdftex.def Info: plots/boom-ess.pdf used on input line 538.
 (pdftex.def)             Requested size: 328.82707pt x 187.90417pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[16 <./plots/boom-pers_1_3_8.pdf> <./plots/boom-pers_1_10_7.pdf>]
-<plots/boom-ess_1_10_7.pdf, id=120, 505.89pt x 289.08pt>
+[14 <./plots/var-ess.pdf>]
+<plots/boom-ess_1_10_7.pdf, id=104, 505.89pt x 289.08pt>
 File: plots/boom-ess_1_10_7.pdf Graphic file (type pdf)
 
 <use plots/boom-ess_1_10_7.pdf>
-Package pdftex.def Info: plots/boom-ess_1_10_7.pdf used on input line 543.
+Package pdftex.def Info: plots/boom-ess_1_10_7.pdf used on input line 547.
 (pdftex.def)             Requested size: 328.82707pt x 187.90417pt.
- [17 <./plots/scatter_n1000.pdf> <./plots/scatter_n50000.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 594--595
+ [15 <./plots/boom-pers_1_3_8.pdf> <./plots/boom-pers_1_10_7.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 598--599
 
  []
 
-[18 <./plots/boom-acf,n=1000.pdf> <./plots/boom-acf,n=50000.pdf>] [19 <./plots/
-boom-ess.pdf>] [20 <./plots/boom-ess_1_10_7.pdf>]
-Overfull \hbox (3.55757pt too wide) in paragraph at lines 645--645
+[16 <./plots/scatter_n1000.pdf> <./plots/scatter_n50000.pdf>] [17 <./plots/boom
+-acf,n=1000.pdf> <./plots/boom-acf,n=50000.pdf>]
+Overfull \hbox (9.37782pt too wide) in paragraph at lines 687--687
 [] 
  []
 
+[18 <./plots/boom-ess.pdf>] [19 <./plots/boom-ess_1_10_7.pdf>] [20]
 
-Overfull \hbox (4.72731pt too wide) in paragraph at lines 667--667
+LaTeX Warning: Reference `lemma:bias2' on page 21 undefined on input line 730.
+
+[21] [22]
+Overfull \hbox (11.52263pt too wide) in paragraph at lines 816--816
 [] 
  []
 
-[21]
-Overfull \hbox (42.94923pt too wide) in paragraph at lines 695--695
+[23]
+Overfull \hbox (0.85567pt too wide) in paragraph at lines 859--859
 [] 
  []
 
-[22] [23]
-Overfull \hbox (28.87462pt too wide) in paragraph at lines 738--738
-[] 
- []
+[24] [25] [26] [27] [28] [29] [30] (./main.bbl [31]
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no ¸ in font cmr10!
+) [32] (./main.aux)
 
-[24] [25]
-Overfull \hbox (42.49445pt too wide) in paragraph at lines 796--796
-[] 
- []
+LaTeX Warning: There were undefined references.
 
-[26]
-Overfull \hbox (11.20468pt too wide) in paragraph at lines 832--832
-[] 
- []
-
-[27] [28] [29] [30] [31] [32]
-Overfull \hbox (8.23003pt too wide) in paragraph at lines 1007--1007
-[] 
- []
-
-[33] (./main.bbl [34]
-Missing character: There is no Ã in font cmr12!
-Missing character: There is no ¸ in font cmr12!
-) [35] (./main.aux) ) 
+ ) 
 Here is how much of TeX's memory you used:
- 5296 strings out of 493089
- 76319 string characters out of 6134842
- 163713 words of memory out of 5000000
- 8681 multiletter control sequences out of 15000+600000
- 15476 words of font info for 59 fonts, out of 8000000 for 9000
+ 5299 strings out of 493089
+ 76312 string characters out of 6134842
+ 165758 words of memory out of 5000000
+ 8682 multiletter control sequences out of 15000+600000
+ 14575 words of font info for 56 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,18n,38p,1333b,552s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2015/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmbx10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmbx12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmex10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmmi10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmmi12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmmi6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmmi8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmr10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
-7.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.p
-fb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb>
-</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
-/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></u
-sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></us
-r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr
-/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (35 pages, 3706023 bytes).
+ 38i,18n,38p,1333b,554s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
+/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
+usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></us
+r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/
+local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/lo
+cal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loca
+l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/
+texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/tex
+live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texliv
+e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
+015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/20
+15/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2015/t
+exmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (32 pages, 3707773 bytes).
 PDF statistics:
- 270 PDF objects out of 1000 (max. 8388607)
- 188 compressed objects within 2 object streams
+ 261 PDF objects out of 1000 (max. 8388607)
+ 182 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  66 words of extra memory for PDF output out of 10000 (max. 10000000)
 

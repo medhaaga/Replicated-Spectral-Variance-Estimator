@@ -1,0 +1,16 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Replicated Autocovariance Function}{}% 2
+\BOOKMARK [1][-]{section.3}{Variance Estimators for multiple Markov chains}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Average Spectral Variance }{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Replicated Spectral Variance }{section.3}% 5
+\BOOKMARK [1][-]{section.4}{Effective sample size}{}% 6
+\BOOKMARK [1][-]{section.5}{Examples}{}% 7
+\BOOKMARK [2][-]{subsection.5.1}{Vector Autoregressive Process}{section.5}% 8
+\BOOKMARK [2][-]{subsection.5.2}{Boomerang Distribution}{section.5}% 9
+\BOOKMARK [1][-]{section.6}{Discussion}{}% 10
+\BOOKMARK [1][-]{appendix.A}{Preliminaries}{}% 11
+\BOOKMARK [1][-]{appendix.B}{Proof of Theorems}{}% 12
+\BOOKMARK [2][-]{subsection.B.1}{Bias of autocovariance}{appendix.B}% 13
+\BOOKMARK [2][-]{subsection.B.2}{Strong consistency argument}{appendix.B}% 14
+\BOOKMARK [2][-]{subsection.B.3}{RSV Bias}{appendix.B}% 15
+\BOOKMARK [2][-]{subsection.B.4}{Variance Calculation}{appendix.B}% 16
