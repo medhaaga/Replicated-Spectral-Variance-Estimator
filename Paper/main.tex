@@ -265,18 +265,6 @@ The RSV estimator centers the data around the global mean. We are interested in 
 \end{ass}
 
 
-We are going to consider a class of pseudo spectral variance estimator denoted by $\tilde{\Sigma}$ which uses data centered around the unobserved actual mean $\mu$. Such pseudo covariance estimator and autocovariance estimator for the $j^{th}$ chain is denoted by $\tilde{\Sigma}_s$ and $\tilde{\Gamma}_s$ respectively.
-
-\begin{align*}
-    \tilde{\Sigma}_s &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\tilde{\Gamma}_s(k)\\
-    \tilde{\Gamma}_s(k) &= \dfrac{1}{n}\sum_{t=1}^{n-|k|}(X_{st}-\mu)(X_{s(t+k)}-\mu)^T
-\end{align*}
-
-The average pseudo spectral variance estimator (APSVE) is given by
-
-\[
-\tilde{\Sigma} = \dfrac{1}{m}\sum\limits_{s=1}^{m}\tilde{\Sigma}_s
-\]
 
 
 \begin{theorem}
@@ -533,7 +521,7 @@ We also run five parallel Markov chains with well-separated starting points. In 
 
 A good estimate of ESS is crucial to determine when to stop the simulations. We can see in Figure \ref{fig:run_ess} that for the first few thousand samples, ASVE gives misleadingly higher $\hat{ESS}/mn$ than RSVE. This can cause us to stop the sampling before the sample space has been explored by the chains. The inferences derived from this chain would then be severely non-informative.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width = .7\textwidth]{plots/boom-ess.pdf}
     \caption{Running plot for $\hat{ESS}/mn$ using ASV and RSV calculated for two chains (left) and five chains (right). The parameters for target distribution are $A == 1, \; B = 3, \; C = 8.$}
@@ -542,7 +530,7 @@ A good estimate of ESS is crucial to determine when to stop the simulations. We 
 
 To examine the performance of RSV for a nicely mixing Markov chain, we use the parametrization of $A = 1, \; B = 10, \; C=7$. This is also a bimodal distribution, however, the two modes interact well with each other (Figure \ref{subfig:boom-pers_1_10_7}). In Figure \ref{fig:boom-ess_1_10_7}, we observe that both RSV and ASV give almost the same estimates for ESS. Similar is the case with coverage probabilities in Table \ref{table:boom-coverage_1_10_7} for a $95\%$ confidence region.
  
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width = .7\textwidth]{plots/boom-ess_1_10_7.pdf}
     \caption{Running plot for $\hat{ESS}/mn$ using ASV and RSV calculated for two chains (left) and five chains (right). The parameters of target distribution are $A = 1, \; B = 10, \; C = 7$}
@@ -595,7 +583,7 @@ To examine the performance of RSV for a nicely mixing Markov chain, we use the p
 
 
 \begin{lemma} \label{lemma:consis_1}
-  Let the strong invariance principle hold. If $\dfrac{\psi(n)}{n} \to 0$ as $n \to \infty$, then $\| \bar{\bar{X}} - \mu\|_{\infty}, \|\bar{X}_s - \mu\|_{\infty} \xrightarrow[]{a.s.} 0$ as $n \to \infty$ for all $s \in \{1,..., m\}$\\
+  If Assumption~\ref{ass:sip} holds, then $\| \bar{\bar{X}} - \mu\|_{\infty}, \|\bar{X}_s - \mu\|_{\infty} \xrightarrow[]{a.s.} 0$ as $n \to \infty$ for all $s \in \{1,..., m\}$\\
   \end{lemma}
 
 \begin{proof}
@@ -712,12 +700,19 @@ Using \eqref{eq:priestly}, \eqref{eq:acf_2}, \eqref{eq:acf_3}, and \eqref{eq:acf
 \end{align*}
 {\color{red} DV: Instead of the ``2'', should it be something that has $\Gamma(h) + \Gamma(h)^T$?}
 
-Using the results of \cite{song1995optimal} given in \eqref{eq:song} to expand $\Var(\bar{X}_1)$,
-\[
-\mathbb{E}\left[\hat{\Gamma}_{RAC}(k)\right] = \left(1- \dfrac{|k|}{n}\right)\left(\Gamma(k) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2}\right)  + \dfrac{2(m-1)}{m}\dfrac{\abs{k}}{n^2} \left(\Sigma - \sum_{h=0}^{n-1}\Gamma(h)\right) + o(n^{-2})\,.
-\]
+% Using the results of \cite{song1995optimal} given in \eqref{eq:song} to expand $\Var(\bar{X}_1)$,
+% \[
+% \mathbb{E}\left[\hat{\Gamma}_{RAC}(k)\right] = \left(1- \dfrac{|k|}{n}\right)\left(\Gamma(k) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2}\right)  + \dfrac{2(m-1)}{m}\dfrac{\abs{k}}{n^2} \left(\Sigma - \sum_{h=0}^{n-1}\Gamma(h)\right) + o(n^{-2})\,.
+% \]
 %
-We observe that this expectation result is very similar to equation \ref{eq:priestly} from \cite{priestley1981spectral} for the asymptotically unbiased estimator of autocovariance except for an additional positive bias term. This helps in countering the inherent negative bias in $\hat{\Gamma}(k)$ and give more informative estimates of autocovariance.  Although, bias term for a fixed $k$ is $o(1)$, it increases with $k$. We have explicitly written the end effect term arising from using the estimator $\bar{\bar{X}}$ for $\mu$. These are small order terms that vanish as $n \to \infty$.
+% We observe that this expectation result is very similar to equation \ref{eq:priestly} from \cite{priestley1981spectral} for the asymptotically unbiased estimator of autocovariance except for an additional positive bias term. This helps in countering the inherent negative bias in $\hat{\Gamma}(k)$ and give more informative estimates of autocovariance.  Although, bias term for a fixed $k$ is $o(1)$, it increases with $k$. We have explicitly written the end effect term arising from using the estimator $\bar{\bar{X}}$ for $\mu$. These are small order terms that vanish as $n \to \infty$.
+
+For a diagonal element of $\Gamma$,
+\begin{align*}
+& \E \left[ \hat{\Gamma}_{RAC,s}^{ii}\right]\\
+& = \mathbb{E}\left[\hat{\Gamma}_{s}^{ii}(k)\right] - {\color{red}\dfrac{2|k|}{n}\dfrac{m-1}{mn}\left(\sum_{h=0}^{n-1}\Gamma^{ii}(h) - n \Var(\bar{X}_1)^{ii}\right)} + \left(1- \dfrac{|k|}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)^{ii}\,.
+\end{align*}
+In the presence of positive correlation, the leftover term is positive. 
 \end{proof}
 
 \begin{proof}[Proof of corollary \ref{cor:lag0_expectation}]
@@ -725,13 +720,14 @@ We observe that this expectation result is very similar to equation \ref{eq:prie
 \begin{align*}
     \hat{\Gamma}_{RAC}(0) &= \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Gamma}_{RAC,s}(0) = \dfrac{1}{mn}\sum_{s=1}^{m}\sum_{t=1}^{n}  \left(X_{st} - \bar{\bar{X}}\right)  \left(X_{st} - \bar{\bar{X}}\right)^T\\
     &= \left[\dfrac{1}{mn}\sum_{s=1}^{m}\sum_{t=1}^{n} \left(X_{st} - \bar{X}_s \right)  \left(X_{st} - \bar{X}_s \right)^T\right] + \left[\dfrac{1}{m}\sum_{s=1}^{m} \left(\bar{X}_s - \bar{\bar{X}} \right) \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right]\\
-    &= \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Gamma}_s(k)  + \dfrac{1}{m}\sum_{s=1}^{m} \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\,.
+    &= \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Gamma}_s(0)  + \dfrac{1}{m}\sum_{s=1}^{m} \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\,.
 \end{align*}
-Using \eqref{eq:priestly}, Lemma~\ref{lemma:bias2}, and \eqref{eq:song} the expectation of $\hat{\Gamma}_{RAC}(0)$ can be written as 
+Using \eqref{eq:priestly} and \eqref{eq:acf_4} the expectation of $\hat{\Gamma}_{RAC}(0)$ can be written as 
 %
 \begin{align*}
-    \mathbb{E} \left[\hat{\Gamma}_{RAC}(0) \right] &= \left(\Gamma(k) - \Var(\bar{X}_1)\right) + \left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1) = \Gamma(k) - \dfrac{1}{m}\Var(\bar{X}_1)\\
-    &= \Gamma(0) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2} + o(n^{-2})
+    \mathbb{E} \left[\hat{\Gamma}_{RAC}(0) \right] &= \E\left[\hat{\Gamma}_1(0) \right] + \left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1) \\
+    & = \Gamma(k) - \dfrac{1}{m}\Var(\bar{X}_1)\,.
+    % &= \Gamma(0) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2} + o(n^{-2})
 \end{align*}
 
 \end{proof}
@@ -739,16 +735,35 @@ Using \eqref{eq:priestly}, Lemma~\ref{lemma:bias2}, and \eqref{eq:song} the expe
 
 \subsection{Strong consistency argument} \label{appendix:strong_consis}
 
-\begin{lemma} \label{lemma:rsv_breakdown}
-    The RSV estimator can be written as the sum of average pseudo SVE and two terms given by:
-    \[
-    \hat{\Sigma}_{RSV}^{ij} = \tilde{\Sigma}^{ij} + M_1 + M_2\,,
-    \]
-    where 
+
+We are going to consider a class of pseudo spectral variance estimator denoted by $\tilde{\Sigma}$ which uses data centered around the unobserved actual mean $\mu$. Such pseudo covariance estimator and autocovariance estimator for the $j^{th}$ chain is denoted by $\tilde{\Sigma}_s$ and $\tilde{\Gamma}_s$ respectively.
+
+\begin{align*}
+    \tilde{\Gamma}_s(k) &= \dfrac{1}{n}\sum_{t=1}^{n-|k|}(X_{st}-\mu)(X_{s(t+k)}-\mu)^T \\ 
+    \tilde{\Sigma}_s &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\tilde{\Gamma}_s(k) \,.
+\end{align*}
+%
+The average pseudo spectral variance estimator (APSVE) is given by
+\[
+\tilde{\Sigma} = \dfrac{1}{m}\sum\limits_{s=1}^{m}\tilde{\Sigma}_s
+\]
+
+Further, let
 \begin{align*}
   M_1 & = \dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{\sum\limits_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum\limits_{t=1}^{n-|k|}\dfrac{1}{n}\left[ \left(X_{st}-\mu \right)_i   \left(\mu-\bar{\bar{X}} \right)_j +    \left(\mu-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)}-\mu \right)_j \right]\right\}\,, \\ 
   %
-M_2 &= \left(\mu-\bar{\bar{X}} \right)_i   \left(\mu-\bar{\bar{X}} \right)_j\sum\limits_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{n}\right)\,.
+M_2 &= \left(\mu-\bar{\bar{X}} \right)_i   \left(\mu-\bar{\bar{X}} \right)_j\sum\limits_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\,.
+\end{align*}
+\begin{lemma} \label{lemma:rsv_breakdown}
+For the RSV estimator $\hat{\Sigma}_{RSV}^{ij} = \tilde{\Sigma}^{ij} + M_1 + M_2$ and 
+\[
+|M_1 + M_2| \leq D^2 g_1(n) + D g_2(n) + g_3(n)\,
+\]
+where
+\begin{align*}
+    g_1(n) &= (4+C_1)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2} \to 0\\
+    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4+C_1)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
+    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C_1)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0\,.
 \end{align*}
 \end{lemma}
 
@@ -760,93 +775,18 @@ The proof follows from standard algebraic calculations and is presented here for
 &= \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|} \left[  \left\{\left(X_{st}-\mu \right)_i + \left(\mu-\bar{\bar{X}} \right)_i \right \}  \left\{ \left(X_{s(t+k)}-\mu \right)_j + \left(\mu-\bar{\bar{X}} \right)_j \right \} \right]\\
 &= \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left[ \left(X_{st}-\mu \right)_i  \left(X_{s(t+k)}-\mu \right)_j+  \left(X_{st} - \mu \right)_i    \left(\mu - \bar{\bar{X}} \right)_j \right. \\  
 & \quad + \left. \left(\mu-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)}-\mu \right)_j + \left(\mu-\bar{\bar{X}} \right)_i  \left(\mu-\bar{\bar{X}}  \right)_j  \right]\\
-& = \tilde{\Sigma}^{ij} + \left[(\mu-\bar{\bar{X}})_i(\mu-\bar{\bar{X}})_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{n}\right)\right] \\ 
+& = \tilde{\Sigma}^{ij} + \left[(\mu-\bar{\bar{X}})_i(\mu-\bar{\bar{X}})_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right] \\ 
 & \quad  + \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-|k|}  \left[\dfrac{1}{n} \left(X_{st} - \mu \right)_i \left(\mu - \bar{\bar{X}} \right)_j + \dfrac{1}{n} \left(\mu-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)}-\mu \right)_j \right] \\ 
 & = \tilde{\Sigma}^{ij} + M_1 + M_2\,.
 \end{align*}
-%
-% Therefore we get the following two terms:\\\\
-% Term (1): $\dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{\sum\limits_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum\limits_{t=1}^{n-|k|}\left[\dfrac{1}{n}\left((X_{st}-\mu)_i(\mu-\bar{\bar{X}})_j\right)+ \dfrac{1}{n}\left((\mu-\bar{\bar{X}})_i(X_{s(t+k)}-\mu)_j\right) \right]\right\}$\\
-% Term (2): $(\mu-\bar{\bar{X}})_i(\mu-\bar{\bar{X}})_j\sum\limits_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{n}\right)$\\
-% \\\\
-\end{proof}
 
-
-\begin{lemma} \label{lemma:pseudo_consis}
-If the Assumption \ref{ass:sip}, \ref{ass:sve_consis} hold and $n^{-1}{b_n \log \log n}\to 0$, then $\tilde{\Sigma}^{ij} \xrightarrow{a.s.} \Sigma^{ij} \textrm{ as } n \to \infty$
-\end{lemma}
-
-\begin{proof}
-We have,
+Consequently
+\[
+\left|\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij}  \right| = |M_1 + M_2| \leq |M_1| + |M_2|\,.
+\]
+Consider,
 \begin{align*}
-    &\tilde{\Sigma}^{ij} \\
-    & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(X_{st} - \mu \right)_i  \left(X_{s(t+|k|)} - \mu \right)_j\\
-    & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(X_{st} \pm \bar{X}_s - \mu \right)_i  \left(X_{s(t+|k|)} \pm \bar{X}_s - \mu \right)_j\\
-    & = \hat{\Sigma}_{SV}^{ij} + \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i   \left(\bar{X}_s - \mu \right)_j + \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right]\\
-    & \quad + \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{X}_s - \mu \right)_i  \left(\bar{X}_s - \mu \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\\
-    & = \hat{\Sigma}_{SV}^{ij} + N_1 + N_2 \,,
-\end{align*}
-where
-\begin{align*}
-N_1 & = \dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t=1}^{n-|k|}  \left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j + \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right]\\
-N_2 & = \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{X}_s - \mu \right)_i  \left(\bar{X}_s - \mu \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\,.
-\end{align*}
-% Let Term (1*) be $\dfrac{1}{m}\sum\limits_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum\limits_{t=1}^{n-|k|}\left[(X_{st} - \bar{X}_s)_i(\bar{X}_s - \mu)_j + (\bar{X}_s - \mu)_i(X_{s(t+k)} - \bar{X}_s)_j\right]$
-% Let Term (2*) be $\dfrac{1}{m}\sum\limits_{s=1}^{m}(\bar{X}_s - \mu)_i(\bar{X}_s - \mu)_j\sum\limits_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right)$
-% \\\\
-We will prove that $N_1, N_2\xrightarrow{a.s.} 0 \textrm{ as } n \to \infty$. From \cite{vats:fleg:jon:2018}, we have that $\hat{\Sigma}_{SV} \to 0$ with probability 1 as $n \to \infty$ for multivariate case. Assuming that all the assumptions made there hold true for our case, we will prove that $\tilde{\Sigma} \to 0$ with probability 1 as $n \to \infty$. 
-
-Firstly, we prove that  $N_1 \xrightarrow{a.s.} 0$ as $n \to \infty$. We will prove this for the first part of $N_1$. It will hold true equivalently for the second part as well. The first part of the $N_1$ is,
-
-
-\begin{align*}
-    & \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j \right]\\
-    & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{  \left(\bar{X}_s - \mu \right)_j}{n} \left[\sum\limits_{t=1}^{|k|} \left(\bar{X}_s - X_{st} \right)_i\right]\\
-    & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} w\left(\dfrac{k}{b_n}\right) \dfrac{\left(\bar{X}_s - \mu \right)_j}{n} \left[\sum_{t=1}^{|k|} \left(\mu - X_{st} \right)_i + \abs{k} \left(\bar{X}_s - \mu \right)_i\right]\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{\|\bar{X}_s - \mu\|_{\infty}}{n} \left\|\sum_{t=1}^{|k|} \left(\mu - X_{st} \right) + \abs{k} \left(\bar{X}_s - \mu \right)\right\|_{\infty}\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{\|\bar{X}_s - \mu\|_{\infty}}{n} \left(\left\|\sum_{t=1}^{|k|}  \left(X_{st} - \mu \right)\right\|_{\infty} + \abs{k}\|\bar{X}_s - \mu\|_{\infty} \right)\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\dfrac{\|\bar{X}_s - \mu\|_{\infty}}{n}\left\|\sum_{t=1}^{|k|} \left(\bar{X}_s - \mu\right) \right\| + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n} \left \|\bar{X}_s - \mu \right \|_{\infty}^2\,.
-\end{align*}
-
-Using SIP on the summation of k terms,
-\begin{align*}
-    & \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j \right]\\
-   &  < \dfrac{1}{m}\sum\limits_{s=1}^{m}\|\bar{X}_s - \mu\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{X}_s - \mu\|_{\infty}^2\\
-   &  < \dfrac{(2b_n-1)}{m}\sum\limits_{s=1}^{m}\|\bar{X}_s - \mu\|_{\infty}\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{X}_s - \mu\|_{\infty}^2
-\end{align*}
-
-Using Lemma~\ref{lemma:consis_1}, the above term can be upper bounded by,
-
-\begin{equation} \label{eq:PASVE_term-1}
-  \left(2b_n - 1 + \dfrac{b_n^2}{n} + \dfrac{b_n}{n}\right)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2  
-\end{equation}
-\\
-Using the bound on $\psi(n)$ given by \cite{stra:1964}, (\ref{eq:PASVE_term-1}) becomes $\mathcal{O}\left(b_n \log \log n/n\right)$ which converges to 0 as $n \to \infty$.
-\\
-Similar to the above proof, second part of $N_1$ can also be written as a summation of $k$ terms and the proof follows exactly as the first part. Now we prove that $N_2 \xrightarrow{a.s.} 0 \textrm{ as } n \to \infty$.
-
-\begin{align*}
-    &\dfrac{1}{m} \sum_{s=1}^{m} \left(\bar{X}_s - \mu \right)_i \left(\bar{X}_s - \mu \right)_j\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right)\\
-    & < \dfrac{1}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2 \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
-    & = \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2\, \dfrac{1}{b_n} \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
-    & \leq \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2 \int_{-\infty}^{\infty} \abs{w(x)}dx\,.
-\end{align*}
-Recall that the lag window is such that $\int_{-\infty}^{\infty} \abs{w(x)}dx = C$ for some constant C. Using Lemma~\ref{lemma:consis_1}, $N_2$ can be upper bounded by
-%
-\begin{equation} \label{eq:PASVE_term-2}
-    Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2 
-\end{equation}
-%
-\eqref{eq:PASVE_term-2} is also $\mathcal{O}\left(n^{-1}{b_n \log \log n}\right)$, and hence converges to 0 as $n \to \infty$.
-\end{proof}
-
-
-
-
-\begin{proof}[Proof of theorem \ref{th:consistency}]
-We first show that $M_1\xrightarrow{a.s} 0$ as $n \to \infty$ with the help of SIP and prior assumptions.
-\begin{align*}
-& M_1 \\ 
+& |M_1| \\ 
    & = \left|\dfrac{1}{m}\sum _{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-|k|} \dfrac{1}{n}\left[ \left(X_{st} - \mu \right)_i  \left(\mu-\bar{\bar{X}} \right)_j + \left(\mu-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)} - \mu \right)_j\right]\right\}\right| \\
    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}{\left|\sum\limits_{t=1}^{n-|k|} \left(X_{st} - \mu \right)_i  \left(\mu - \bar{\bar{X}} \right)_j\right|} + \dfrac{1}{n}{\left|\sum_{t=1}^{n-|k|} \left(\mu-\bar{\bar{X}} \right)_i\left(X_{s(t+k)} - \mu \right)_j\right|} \right]\right\}\\
     & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}\left|\sum_{t=1}^{n-|k|}(X_{st}- \mu)_i\right|\left|(\mu-\bar{\bar{X}})_j\right|+ \dfrac{1}{n}\left|(\mu-\bar{\bar{X}})_i\right|\left|\sum_{t=1}^{n-|k|}(X_{j(t+k)}-\mu)_j\right|\right]\right\}\\
@@ -858,9 +798,9 @@ We first show that $M_1\xrightarrow{a.s} 0$ as $n \to \infty$ with the help of S
     & \; \;+ 2(2b_n - 1)\|\bar{\bar{X}} - \mu\|_{\infty}\|\bar{X}_1 - \mu\|_{\infty} 
 \end{align*}
 \\
-Using SIP on summation of $k$ terms, we obtain the following upper bound for $M_1$
+Using SIP on summation of $k$ terms, we obtain the following upper bound for $|M_1|$
 \begin{align*}
-M_1
+|M_1|
     & < 2\|(\bar{\bar{X}} - \mu)\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] \\
     & \quad + 2(2b_n - 1)\|\bar{\bar{X}} - \mu\|_{\infty}\|\bar{X}_1 - \mu\|_{\infty} \\
     &\leq 2(2b_n - 1)\|(\bar{\bar{X}} - \mu)\|_{\infty} \left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]\\
@@ -875,10 +815,10 @@ We use Lemma~\ref{lemma:consis_1} to upper bound the above term as
 Using the bound on $\psi(n)$ given by \cite{stra:1964}, equation (\ref{eq:strong_consis_term-1}) becomes $\mathcal{O}\left(b_n \log \log n/n\right)$ which converges to 0 as $n \to \infty$. Now we will show that $M_2 \xrightarrow{a.s.} 0$ as $n\to \infty$
 
 \begin{align*}
-   M_2 & = \left|\dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{ \left(\mu - \bar{\bar{X}} \right)_i  \left(\mu - \bar{\bar{X}} \right)_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{n}\right)\right\}\right|\\
-    & \leq\|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{n}\right)\right]\\
-    &< \|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{n}\right)\right|\right]\\
-    &= b_n\|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\dfrac{1}{b_n}\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{n}\right)\right|\right]\\
+   |M_2| & = \left|\dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{ \left(\mu - \bar{\bar{X}} \right)_i  \left(\mu - \bar{\bar{X}} \right)_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right\}\right|\\
+    & \leq\|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right]\\
+    &< \|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
+    &= b_n\|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\dfrac{1}{b_n}\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
     & \leq b_n\|\bar{\bar{X}} - \mu\|_{\infty}^2 \int_{-\infty}^{\infty}|w(x)|dx \\
     & \leq Cb_n\|\bar{\bar{X}} - \mu \|^2
 \end{align*}
@@ -889,15 +829,96 @@ Using Lemma~\ref{lemma:consis_1} to upper bound the above term as
      Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2
 \end{equation}
 %
-Equation~\eqref{eq:strong_consis_term-2} has the same order as equation \eqref{eq:strong_consis_term-1}, i.e. $\mathcal{O}\left(b_n \log \log n/n\right) \to 0 \textrm{ as } n \to \infty$.
-We have already shown that $M_1$ and $M_2$ converge to 0 almost surely $\implies \hat{\Sigma}_{RSV} \xrightarrow{a.s.} \tilde{\Sigma}$ as $n \to \infty$. Now we can find the functions $g_1(n), g_2(n) \textrm{ and, } g_3(n)$ by adding \eqref{eq:strong_consis_term-1} and \eqref{eq:strong_consis_term-2}. After some simple algebra, we obtain the following results:
+% Equation~\eqref{eq:strong_consis_term-2} has the same order as equation \eqref{eq:strong_consis_term-1}, i.e. $\mathcal{O}\left(b_n \log \log n/n\right) \to 0 \textrm{ as } n \to \infty$.
+% We have already shown that $M_1$ and $M_2$ converge to 0 almost surely $\implies \hat{\Sigma}_{RSV} \xrightarrow{a.s.} \tilde{\Sigma}$ as $n \to \infty$. Now we can find the functions $g_1(n), g_2(n) \textrm{ and, } g_3(n)$ by adding \eqref{eq:strong_consis_term-1} and \eqref{eq:strong_consis_term-2}. After some simple algebra, we obtain the following results:
 %
+{\color{red} Complete the algebra here}
 \begin{align*}
     g_1(n) &= (4+C_1)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2} \to 0\\
     g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4+C_1)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
-    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C_1)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0
+    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C_1)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0\,.
 \end{align*}
 \end{proof}
+% \begin{lemma} \label{lemma:pseudo_consis}
+% If the Assumption \ref{ass:sip}, \ref{ass:sve_consis} hold and $n^{-1}{b_n \log \log n}\to 0$, then $\tilde{\Sigma}^{ij} \xrightarrow{a.s.} \Sigma^{ij} \textrm{ as } n \to \infty$
+% \end{lemma}
+%
+\begin{proof}[Proof of theorem \ref{th:consistency}]
+We have the following decomposition,
+\begin{align*}
+    &\tilde{\Sigma}^{ij} \\
+    & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(X_{st} - \mu \right)_i  \left(X_{s(t + k)} - \mu \right)_j\\
+    & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(X_{st} \pm \bar{X}_s - \mu \right)_i  \left(X_{s(t + k)} \pm \bar{X}_s - \mu \right)_j\\
+    & = \hat{\Sigma}_{SV}^{ij} + \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i   \left(\bar{X}_s - \mu \right)_j + \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right]\\
+    & \quad + \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{X}_s - \mu \right)_i  \left(\bar{X}_s - \mu \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\\
+    & = \hat{\Sigma}_{SV}^{ij} + N_1 + N_2 \,,
+\end{align*}
+where
+\begin{align*}
+N_1 & = \dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t=1}^{n-|k|}  \left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j + \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right]\\
+N_2 & = \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{X}_s - \mu \right)_i  \left(\bar{X}_s - \mu \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\,.
+\end{align*}
+%
+Using the above and  Lemma~\ref{lemma:rsv_breakdown}, 
+\begin{align*}
+\left|\hat{\Sigma}_{RSV}^{ij} - \Sigma^{ij} \right| & = \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} + N_1 + N_2 + M_1 + M_2 \right| \\
+& \leq \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} \right| +  \left| N_1 \right| +  \left|N_2 \right| + \left| M_1 + M_2 \right|
+\end{align*}
+%
+By Assumption~\ref{ass:sve_consis}, the first term goes to with probability 1 and by Lemma~\ref{lemma:rsv_breakdown}, the third term goes to 0 with probability 1 as $n \to \infty$. What is left to show is that $|N_1| \to 0$ and $|N_2| \to 0$ with probability 1
+%
+\begin{align*}
+|N_1| & = \left|\dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t=1}^{n-|k|}  \left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j + \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right] \right|\\
+& \leq \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j \right] \right| \\ 
+& \quad + \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right] \right|
+\end{align*}
+%
+Both terms are similar and we will show that the first term goes to 0. The proof for the second term is similar. Consider
+\begin{align*}
+    & \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j \right] \right| \\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right)  \right|\dfrac{  \left| \left(\bar{X}_s - \mu \right)_j \right| }{n} \left[ \left|  \sum_{t=1}^{|k|} \left(\bar{X}_s - X_{st} \right)_i  \right| \right]\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left| w\left(\dfrac{k}{b_n}\right) \right| \dfrac{ \left|  \left(\bar{X}_s - \mu \right)_j \right| }{n} \left[ \left|\sum_{t=1}^{|k|} \left(\mu - X_{st} \right)_i \right| + \abs{k} \left|\left(\bar{X}_s - \mu \right)_i \right|\right]\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{X}_s - \mu\|_{\infty}}{n} \left\|\sum_{t=1}^{|k|} \left(\mu - X_{st} \right) + \abs{k} \left(\bar{X}_s - \mu \right)\right\|_{\infty}\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{X}_s - \mu\|_{\infty}}{n} \left(\left\|\sum_{t=1}^{|k|}  \left(X_{st} - \mu \right)\right\|_{\infty} + \abs{k}\|\bar{X}_s - \mu\|_{\infty} \right)\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\dfrac{\|\bar{X}_s - \mu\|_{\infty}}{n} \left\|\sum_{t=1}^{|k|} \left(X_{st} - \mu\right) \right\| + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n} \left \|\bar{X}_s - \mu \right \|_{\infty}^2\,.
+\end{align*}
+
+Using SIP on the summation of k terms,
+\begin{align*}
+    & \left|\dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j \right] \right|\\
+   &  < \dfrac{1}{m}\sum\limits_{s=1}^{m}\|\bar{X}_s - \mu\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{X}_s - \mu\|_{\infty}^2\\
+   &  < \dfrac{(2b_n-1)}{m}\sum\limits_{s=1}^{m}\|\bar{X}_s - \mu\|_{\infty}\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{X}_s - \mu\|_{\infty}^2
+\end{align*}
+
+Using Lemma~\ref{lemma:consis_1}, the above term can be upper bounded by,
+
+\begin{equation} \label{eq:PASVE_term-1}
+  \left(2b_n - 1 + \dfrac{b_n^2}{n} - \dfrac{b_n}{n}\right)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2\,.  
+\end{equation}
+%
+Using the bound on $\psi(n)$ given by \cite{stra:1964}, (\ref{eq:PASVE_term-1}) becomes $\mathcal{O}\left(b_n \log \log n/n\right)$ which converges to 0 as $n \to \infty$.
+
+Similar to the above proof, second part of $N_1$ can also be written as a summation of $k$ terms and the proof follows exactly as the first part. Now we prove that $N_2 \xrightarrow{a.s.} 0 \textrm{ as } n \to \infty$. {\color{red} Remove the following proof maybe because repetitive}
+%
+\begin{align*}
+    |N_2|&= \left|\dfrac{1}{m} \sum_{s=1}^{m} \left(\bar{X}_s - \mu \right)_i \left(\bar{X}_s - \mu \right)_j\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right|\\
+    & < \dfrac{1}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2 \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
+    & = \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2\, \dfrac{1}{b_n} \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
+    & \leq \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2 \int_{-\infty}^{\infty} \abs{w(x)}dx\,.
+\end{align*}
+Recall that the lag window is such that $\int_{-\infty}^{\infty} \abs{w(x)}dx = C$ for some constant C. Using Lemma~\ref{lemma:consis_1}, $N_2$ can be upper bounded by
+%
+\begin{equation} \label{eq:PASVE_term-2}
+    Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2 
+\end{equation}
+%
+\eqref{eq:PASVE_term-2} is also $\mathcal{O}\left({b_n \log \log n}/n\right)$, and hence converges to 0 as $n \to \infty$.
+\end{proof}
+
+
+
+
+
 
 
 
