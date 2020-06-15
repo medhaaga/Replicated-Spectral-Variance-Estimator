@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex main"] 1591878945 "main.aux" "main.bbl" "main" 1591879790
+["bibtex main"] 1591965157 "main.aux" "main.bbl" "main" 1591965222
   "/usr/local/texlive/2015/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "main.aux" 1591879789 8964 52d7c95035446e9505032bddf1accc19 ""
+  "main.aux" 1591965221 8832 53d312d5bbd4f3d07a00511a1dd29928 ""
   "main.bcf" 0 -1 0 ""
   "sample.bib" 1591853799 8619 63d2d361be321a38d86156a42fe8f622 ""
   (generated)
   "main.bbl"
   "main.blg"
-["pdflatex"] 1591879789 "main.tex" "main.pdf" "main" 1591879790
+["pdflatex"] 1591965221 "main.tex" "main.pdf" "main" 1591965222
   "./plots/acf,n=10000.pdf" 1591853799 9997 ff87893d35be8d972378a3fce76a7a7b ""
   "./plots/acf,n=500.pdf" 1591853799 10080 9a508fa87ab905cce86d2acaf8b68b9e ""
   "./plots/boom-acf,n=1000.pdf" 1591853799 6509 7b54fbc6e957334a5d9b888cfe28d5de ""
@@ -116,9 +116,9 @@
   "/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1432479641 1764542 91654ba72bdb667e84ea24f076ae16d8 ""
   "/usr/local/texlive/2015/texmf-var/web2c/pdftex/pdflatex.fmt" 1432479681 3849859 39a7d258195bde2394e244961601fbc5 ""
   "/usr/local/texlive/2015/texmf.cnf" 1432479636 577 0d611272082f3cdb8e80e09a3c69cf07 ""
-  "main.aux" 1591879789 8964 52d7c95035446e9505032bddf1accc19 ""
-  "main.bbl" 1591878945 4724 e032fc28d21e107439b8e5a872664735 "bibtex main"
-  "main.tex" 1591879789 77317 5eb4b19528d6756ee54da142d9f596d9 ""
+  "main.aux" 1591965221 8832 53d312d5bbd4f3d07a00511a1dd29928 ""
+  "main.bbl" 1591965157 4724 e032fc28d21e107439b8e5a872664735 "bibtex main"
+  "main.tex" 1591965221 78412 d43ce1a1ea2e652ca22e0c0e3a603536 ""
   "plots/acf,n=10000.pdf" 1591853799 9997 ff87893d35be8d972378a3fce76a7a7b ""
   "plots/acf,n=500.pdf" 1591853799 10080 9a508fa87ab905cce86d2acaf8b68b9e ""
   "plots/boom-acf,n=1000.pdf" 1591853799 6509 7b54fbc6e957334a5d9b888cfe28d5de ""
@@ -133,7 +133,7 @@
   "scatter_plot_500.pdf" 1591853799 19821 1f607c100763c26fa97d585daf13fd9f ""
   "scatter_plot_50000.pdf" 1591853799 1489797 812597c3825dcb6492f5c7afce90d8c8 ""
   (generated)
-  "main.aux"
   "main.out"
   "main.log"
   "main.pdf"
+  "main.aux"
