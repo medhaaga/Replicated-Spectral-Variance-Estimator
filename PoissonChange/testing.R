@@ -2,11 +2,9 @@
 library("MCMCpack")
 load("mida.rda")
 
-out1 <- MCMCpoissonChange(mida~ 1, m=6, c0=13, d0=1,  
-		marginal.likelihood="none", mcmc = 1e4, burnin = 0, thin = 1, seed = round(1e3*runif(1)))
+out1 <- MCMCpoissonChange(mida~ 1, m=6, c0=13, d0=1, marginal.likelihood="none", mcmc = 1e5, burnin = 0, thin = 1, seed = round(1e3*runif(1)))
 
-out2 <- MCMCpoissonChange(mida~ 1, m=6, c0=13, d0=1,  
-  marginal.likelihood="none", mcmc = 1e4, burnin = 0, seed = round(1e3*runif(1)))
+out2 <- MCMCpoissonChange(mida~ 1, m=6, c0=13, d0=1, marginal.likelihood="none", mcmc = 1e5, burnin = 0, seed = round(1e3*runif(1)))
 
 par(mfrow = c(2,7))
 for(i in 1:7)
