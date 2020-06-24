@@ -150,12 +150,6 @@ INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmti8.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmti7.tfm
-INPUT scatter_plot_500.pdf
-INPUT ./scatter_plot_500.pdf
-INPUT ./scatter_plot_500.pdf
-INPUT scatter_plot_50000.pdf
-INPUT ./scatter_plot_50000.pdf
-INPUT ./scatter_plot_50000.pdf
 INPUT plots/var-ess.pdf
 INPUT ./plots/var-ess.pdf
 INPUT ./plots/var-ess.pdf

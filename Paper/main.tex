@@ -103,7 +103,7 @@ Markov chains are serially correlated and therefore $\Var_F(X)$ is non-informati
 
 The most common practice would be to combine the SVE from $m$ chains by averaging over them. We call this technique average spectral variance (ASV) estimator. We will address the issue of slowly mixing Markov chains and show that RSV performs better than ASV. Whereas on one side RSV gives better estimates than ASV for a poor Markov chain, it is as good as ASV for a good Markov chain. We will exemplify this property of RSV for a bi-modal target distribution in subsection \ref{ex:boomerang}. This appeals intuitively because for a fast mixing Markov chain, all the chains will give almost same estimates for mean. 
 
-In the next section we introduce the new sample autocovariance estimator and calculate its bias for finite samples. We observe that the bias term for R-ACF is similar to the bias of empirical ACF except for a few small order end-effect terms that vanish as $n \to \infty$. In section \ref{sec:variance_est}, we introduce three estimators for $\Sigma$ and study the properties of RSV estimator through proof of strong consistency, bias, and variance calculations. We will elaborate on the estimator for ESS using RSV in section \ref{sec:ess}. Section \ref{sec:examples} gives a simulation study on three different examples for the proposed estimators. There are only a handful of stochastic processes where the true autocovariance and $\Sigma$ are known. To compare the estimators when the truth is known, we use a slowly mixing vector autoregressive process of order 1 (VAR(1)). We succesfully show in section \ref{ex:var} that our estimators yield better results as compared to the classical sample ACF and SVE. A more promising advantage of our estimators is observed when the target distribution is multi-modal. For this purpose we use a bivariate bi-modal probability distribution introduced by \cite{gelman1991note} in section \ref{ex:boomerang}. All the important proofs are given in the Appendix. 
+In the next section we introduce the new sample autocovariance estimator and calculate its bias for finite samples. We observe that the bias term for R-ACF is similar to the bias of empirical ACF except for a few small order end-effect terms that vanish as $n \to \infty$. In section \ref{sec:variance_est}, we introduce three estimators for $\Sigma$ and study the properties of RSV estimator through proof of strong consistency, bias, and variance calculations. We will elaborate on the estimator for ESS using RSV in section \ref{sec:ess}. Section \ref{sec:examples} gives a simulation study on three different examples for the proposed estimators. There are only a handful of stochastic processes where the true autocovariance and $\Sigma$ are known. To compare the estimators when the truth is known, we use a slowly mixing vector autoregressive process of order 1 (VAR(1)). We successfully show in section \ref{ex:var} that our estimators yield better results as compared to the classical sample ACF and SVE. A more promising advantage of our estimators is observed when the target distribution is multi-modal. For this purpose we use a bivariate bi-modal probability distribution introduced by \cite{gelman1991note} in section \ref{ex:boomerang}. All the important proofs are given in the Appendix. 
 
 
 \begin{example}[Motivating example]
@@ -399,23 +399,23 @@ The Markov chain is geometrically ergodic when the spectral norm of $\Phi$ is le
 
 Let $\phi_{max}$ be the largest absolute eigenvalue of $\Phi$ such that $\abs{\phi_{max}} < 1$. The larger it is, the slower the Markov chain mixes. For our case, we require a slowly mixing VAR(1) process. We consider a bivariate example with $\phi_{max} = 0.9999$. We run five parallel Markov chains with their starting points evenly distributed about the center of invariant distribution. Figure \ref{subfig:var-sp_500} shows that for the first 500 samples, the chains have not explored the sample space well unlike Figure \ref{subfig:var-sp_50000} with $5\cdot 10^4$ samples.  
 
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}[h]{0.4\textwidth}
-         \centering
-         \includegraphics[width=\textwidth]{scatter_plot_500.pdf}
-         \caption{$n = 500$}
-         \label{subfig:var-sp_500}
-     \end{subfigure}
-     \begin{subfigure}[h]{0.4\textwidth}
-         \centering
-         \includegraphics[width=\textwidth]{scatter_plot_50000.pdf}
-         \caption{$n = 5 \times 10^4$}
-         \label{subfig:var-sp_50000}
-     \end{subfigure}
-    \caption{Scatter plot of five Markov chains for different sample sizes.}
-    \label{fig:var-sp}
-\end{figure}
+% \begin{figure}[h]
+%     \centering
+%     \begin{subfigure}[h]{0.4\textwidth}
+%          \centering
+%          \includegraphics[width=\textwidth]{plots/scatter_plot_500.pdf}
+%          \caption{$n = 500$}
+%          \label{subfig:var-sp_500}
+%      \end{subfigure}
+%      \begin{subfigure}[h]{0.4\textwidth}
+%          \centering
+%          \includegraphics[width=\textwidth]{plots/scatter_plot_50000.pdf}
+%          \caption{$n = 5 \times 10^4$}
+%          \label{subfig:var-sp_50000}
+%      \end{subfigure}
+%     \caption{Scatter plot of five Markov chains for different sample sizes.}
+%     \label{fig:var-sp}
+% \end{figure}
 
 \begin{figure}[h]
     \centering
@@ -582,28 +582,28 @@ To examine the performance of RSV for a nicely mixing Markov chain, we use the p
 \end{lemma}
 
 
-\begin{lemma} \label{lemma:consis_1}
-  If Assumption~\ref{ass:sip} holds, then $\| \bar{\bar{X}} - \mu\|_{\infty}, \|\bar{X}_s - \mu\|_{\infty} \xrightarrow[]{a.s.} 0$ as $n \to \infty$ for all $s \in \{1,..., m\}$\\
-  \end{lemma}
+% \begin{lemma} \label{lemma:consis_1}
+%   If Assumption~\ref{ass:sip} holds, then $\| \bar{\bar{X}} - \mu\|_{\infty}, \|\bar{X}_s - \mu\|_{\infty} \xrightarrow[]{a.s.} 0$ as $n \to \infty$ for all $s \in \{1,..., m\}$\\
+%   \end{lemma}
 
-\begin{proof}
-Let $\|.\|$ denote the Euclidean norm. Assumption \ref{ass:sip} allows us to upper bound $\|\bar{X}_s - \mu\|_{\infty}$ using SIP. Following that, we show that the upper bound term converges to 0 as $n \to \infty$ using lemma \ref{lemma: brownian}.
- \begin{align*}
-    \|\bar{X}_s - \mu\|_{\infty} & \leq \|\bar{X}_s - \mu\| \\
-    &= \dfrac{1}{n}\left\|\sum_{t=1}^{n}X_{st} - n\mu\right\| = \dfrac{1}{n}  \left \|\sum_{t=1}^{n}X_{st} - n\mu \pm L B(n) \right\|\\
-    & \leq \dfrac{1}{n}\left\|\sum_{t=1}^{n}X_{st} - \mu - L B(n)\right\| + \dfrac{\left\|L B(n)\right\|}{n}\\
-    &< \dfrac{D\psi(n)}{n} + \dfrac{\|L B(n)\|}{n}\\
-    &< \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| \left(\sum\limits_{i=1}^{p}|B^{(i)}(k)|^2\right)^{1/2}\\
-    & \leq \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}\\
-    & \xrightarrow[]{a.s.} 0\;\; as \;\; n\to \infty
- \end{align*}
-%
-Similarly one can easily show that $\|\bar{\bar{X}} - \mu\|_{\infty} \to 0$ as $n \to \infty$ using the same upper-bound as:
-% 
-\begin{align*}
-    \|\bar{\bar{X}} - \mu\|_{\infty} & \leq \|\bar{\bar{X}} - \mu\| = \dfrac{1}{m}\left \|\sum_{j=1}^{m}(\bar{X}_j- \mu) \right\| \leq \dfrac{1}{m}\sum_{j=1}^{m}\|\bar{X}_j - \mu\| \xrightarrow{a.s.} 0 \, \textrm{as } n \to \infty 
-\end{align*}
-\end{proof}
+% \begin{proof}
+% Let $\|.\|$ denote the Euclidean norm. Assumption \ref{ass:sip} allows us to upper bound $\|\bar{X}_s - \mu\|_{\infty}$ using SIP. Following that, we show that the upper bound term converges to 0 as $n \to \infty$ using lemma \ref{lemma: brownian}.
+%  \begin{align*}
+%     \|\bar{X}_s - \mu\|_{\infty} & \leq \|\bar{X}_s - \mu\| \\
+%     &= \dfrac{1}{n}\left\|\sum_{t=1}^{n}X_{st} - n\mu\right\| = \dfrac{1}{n}  \left \|\sum_{t=1}^{n}X_{st} - n\mu \pm L B(n) \right\|\\
+%     & \leq \dfrac{1}{n}\left\|\sum_{t=1}^{n}X_{st} - \mu - L B(n)\right\| + \dfrac{\left\|L B(n)\right\|}{n}\\
+%     &< \dfrac{D\psi(n)}{n} + \dfrac{\|L B(n)\|}{n}\\
+%     &< \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| \left(\sum\limits_{i=1}^{p}|B^{(i)}(k)|^2\right)^{1/2}\\
+%     & \leq \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}\\
+%     & \xrightarrow[]{a.s.} 0\;\; as \;\; n\to \infty
+%  \end{align*}
+% %
+% Similarly one can easily show that $\|\bar{\bar{X}} - \mu\|_{\infty} \to 0$ as $n \to \infty$ using the same upper-bound as:
+% % 
+% \begin{align*}
+%     \|\bar{\bar{X}} - \mu\|_{\infty} & \leq \|\bar{\bar{X}} - \mu\| = \dfrac{1}{m}\left \|\sum_{j=1}^{m}(\bar{X}_j- \mu) \right\| \leq \dfrac{1}{m}\sum_{j=1}^{m}\|\bar{X}_j - \mu\| \xrightarrow{a.s.} 0 \, \textrm{as } n \to \infty 
+% \end{align*}
+% \end{proof}
 
 
 \section{Proof of Theorems} \label{appendix:A}
@@ -678,7 +678,7 @@ Similarly,
 %    
 \begin{align}
 \label{eq:acf_3}
-    \mathbb{E} \left[ A_{11}^T \right] &= \mathbb{E}\left[ A_{11}\right]^T = \dfrac{m-1}{mn}\left(\sum_{k=0}^{n-1}\Gamma(k) - n\text{Var}\left[\bar{X}_1 \right] \right)^T\,.
+    \mathbb{E} \left[ A_{11}^T \right] &= \mathbb{E}\left[ A_{11}\right]^T = \dfrac{m-1}{mn}\left(\sum_{k=0}^{n-1}\Gamma(k)^T - n\text{Var}\left[\bar{X}_1 \right] \right)\,.
     % &= \dfrac{m-1}{mn}\left(\sum_{k=0}^{n-1}\Gamma(k) - \Sigma \right)\\
 \end{align}
 
@@ -694,25 +694,31 @@ Further,
 %
 Using \eqref{eq:priestly}, \eqref{eq:acf_2}, \eqref{eq:acf_3}, and \eqref{eq:acf_4} in \eqref{eq:acf_breakdown},
 \begin{align*}
-& \E \left[\hat{\Gamma}_{RAC,s}(k) \right] \\
-&= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - \dfrac{1}{n} \left(\sum\limits_{t=1}^{|k|}\mathbb{E}[A_{1t}^T] + \sum\limits_{t=n-|k|+1}^{n}\mathbb{E}[A_{1t}]\right) + \left(1- \dfrac{|k|}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
-    &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - {\color{red}\dfrac{2|k|}{n}\dfrac{m-1}{mn}\left(\sum_{h=0}^{n-1}\Gamma(h) - n \Var(\bar{X}_1)\right)} + \left(1- \dfrac{|k|}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\,.
+    & \E \left[\hat{\Gamma}_{RAC,s}(k) \right] \\
+    &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - \dfrac{1}{n} \left(\sum\limits_{t=1}^{|k|}\mathbb{E}[A_{1t}^T] + \sum\limits_{t=n-|k|+1}^{n}\mathbb{E}[A_{1t}]\right) + \left(1- \dfrac{|k|}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
+    &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - {\color{red}\dfrac{|k|}{n}\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h) + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T - 2 \Var(\bar{X}_1)\right)} + \left(1- \dfrac{|k|}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
+    &= \left(1- \dfrac{|k|}{n}\right)\Gamma(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\overline{X}_1)}{m}\,.
 \end{align*}
-{\color{red} DV: Instead of the ``2'', should it be something that has $\Gamma(h) + \Gamma(h)^T$?}
-
-% Using the results of \cite{song1995optimal} given in \eqref{eq:song} to expand $\Var(\bar{X}_1)$,
-% \[
-% \mathbb{E}\left[\hat{\Gamma}_{RAC}(k)\right] = \left(1- \dfrac{|k|}{n}\right)\left(\Gamma(k) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2}\right)  + \dfrac{2(m-1)}{m}\dfrac{\abs{k}}{n^2} \left(\Sigma - \sum_{h=0}^{n-1}\Gamma(h)\right) + o(n^{-2})\,.
-% \]
 %
+ We can use the results of \cite{song1995optimal} given in \eqref{eq:song} to expand $\Var(\bar{X}_1)$. Expectation of $\hat{\Gamma}_{RAC,s}(k)$ can then broken down as following,
+ \begin{equation} \label{eq:rac_expec_breakdown}
+     \mathbb{E}\left[\hat{\Gamma}_{RAC}(k)\right] = \left(1- \dfrac{|k|}{n}\right)\Gamma(k) + O_1 + O_2\,.
+ \end{equation}
+%
+where,
+\begin{align*}
+    O_1 &= -\dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right)\right] \, ,\\
+    O_2 &= -\dfrac{1}{m}\left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right) + o(n^{-2})
+\end{align*}
+%
+We observe that both $O_1 \textrm{ and } O_2$ are small order terms that converge to 0 as $n \to \infty$. Here, $O_1 = (-\abs{k}/n)\mathcal{O}(1/n) \textrm{ and } O_2 = \mathcal{O}(1/n)$. For a diagonal element of $\Gamma$,
 % We observe that this expectation result is very similar to equation \ref{eq:priestly} from \cite{priestley1981spectral} for the asymptotically unbiased estimator of autocovariance except for an additional positive bias term. This helps in countering the inherent negative bias in $\hat{\Gamma}(k)$ and give more informative estimates of autocovariance.  Although, bias term for a fixed $k$ is $o(1)$, it increases with $k$. We have explicitly written the end effect term arising from using the estimator $\bar{\bar{X}}$ for $\mu$. These are small order terms that vanish as $n \to \infty$.
-
-For a diagonal element of $\Gamma$,
+%
 \begin{align*}
 & \E \left[ \hat{\Gamma}_{RAC,s}^{ii}\right]\\
-& = \mathbb{E}\left[\hat{\Gamma}_{s}^{ii}(k)\right] - {\color{red}\dfrac{2|k|}{n}\dfrac{m-1}{mn}\left(\sum_{h=0}^{n-1}\Gamma^{ii}(h) - n \Var(\bar{X}_1)^{ii}\right)} + \left(1- \dfrac{|k|}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)^{ii}\,.
+& = \mathbb{E}\left[\hat{\Gamma}^{ii}_{s}(k)\right] - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma^{ii}(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma^{ii}(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\overline{X}_1)^{ii}\right] - \dfrac{\Var(\overline{X}_1)^{ii}}{m}\,.
 \end{align*}
-In the presence of positive correlation, the leftover term is positive. 
+In the presence of positive correlation, the leftover term is positive.
 \end{proof}
 
 \begin{proof}[Proof of corollary \ref{cor:lag0_expectation}]
@@ -784,7 +790,34 @@ Consequently
 \[
 \left|\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij}  \right| = |M_1 + M_2| \leq |M_1| + |M_2|\,.
 \]
-Consider,
+%
+We first present a result which will be useful to use later. For any Markov chain $s$, 
+\begin{align*}
+  \|\bar{X}_s - \mu\|_{\infty} & \leq \|\bar{X}_s - \mu\| = \dfrac{1}{mn}\left\|\sum_{t=1}^{n}X_{st} - n\mu\right\| \\
+  &= \dfrac{1}{n}  \left \|\sum_{t=1}^{n}X_{st} - n\mu \pm L B(n) \right\|\\
+  & \leq \dfrac{1}{n}\left\|\sum_{t=1}^{n}X_{st} - n \mu - L B(n)\right\| + \dfrac{\left\|L B(n)\right\|}{n}\\
+  &< \dfrac{D\psi(n)}{n} + \dfrac{\|L B(n)\|}{n}\\
+  &< \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| \left(\sum\limits_{i=1}^{p}|B^{(i)}(k)|^2\right)^{1/2}\\
+  & \leq \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}\,. \numberthis \label{eq:xbars_bound}
+  % & \xrightarrow[]{a.s.} 0\;\; as \;\; n\to \infty 
+\end{align*}
+ %
+ Similarly,
+ \begin{equation}
+\label{eq:xbarbar_bound}
+   \| \bar{\bar{X}} - \mu\|_{\infty} \leq \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}\,.
+\end{equation}
+%  \begin{align*}
+%   \| \bar{\bar{X}} - \mu\|_{\infty} & \leq \|\bar{\bar{X}} - \mu\| = \dfrac{1}{n}\left\|\sum_{s=1}^{m} \left(\sum_{t=1}^{n}X_{st} - n\mu \right)\right\| \\
+%   &\leq \dfrac{1}{m}\sum_{s=1}^{m}\dfrac{1}{n}  \left \| \sum_{t=1}^{n}X_{st} - n\mu \pm L B(n) \right\|\\
+%   & \leq \dfrac{1}{m} \sum_{s=1}^{m} \dfrac{1}{n}\left\| \sum_{t=1}^{n}X_{st} - n \mu - L B(n)\right\| + \dfrac{\left\|L B(n)\right\|}{n}\\
+%   &< \dfrac{D\psi(n)}{n} + \dfrac{\|L B(n)\|}{n}\\
+%   &< \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| \left(\sum\limits_{i=1}^{p}|B^{(i)}(k)|^2\right)^{1/2}\\
+%   & \leq \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}\,. \numberthis \label{eq:xbarbar_bound}
+%   % & \xrightarrow[]{a.s.} 0\;\; as \;\; n\to \infty 
+% \end{align*}
+%
+Now consider,
 \begin{align*}
 & |M_1| \\ 
    & = \left|\dfrac{1}{m}\sum _{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-|k|} \dfrac{1}{n}\left[ \left(X_{st} - \mu \right)_i  \left(\mu-\bar{\bar{X}} \right)_j + \left(\mu-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)} - \mu \right)_j\right]\right\}\right| \\
@@ -795,49 +828,61 @@ Consider,
     & \quad \times \sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t=n-|k|+1}^{n}(X_{st} - \mu) - n(\bar{X}_s - \mu) \right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t=1}^{|k|}(X_{st} - \mu) - n(\bar{X}_s - \mu)\right\|_{\infty} \right]\\
     &\leq \dfrac{\|(\bar{\bar{X}} - \mu)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t=n-|k|+1}^{n}(X_{st} - \mu)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t=1}^{|k|}(X_{st} - \mu)\right\|_{\infty} + 2\|\bar{X}_s - \mu\|_{\infty} \right]\\
     & \leq \dfrac{\|(\bar{\bar{X}} - \mu)\|_{\infty}}{m} \sum\limits_{s=1}^{m}\sum_{k=-b_n + 1}^{b_n-1}   \dfrac{1}{n}\left[\left\|\sum_{t=n-|k|+1}^{n}(X_{st} - \mu)\right\|_{\infty} + \left\|\sum_{t=1}^{|k|}(X_{st} - \mu)\right\|_{\infty} \right]\\
-    & \; \;+ 2(2b_n - 1)\|\bar{\bar{X}} - \mu\|_{\infty}\|\bar{X}_1 - \mu\|_{\infty} 
+    & \; \;+ 2(2b_n - 1)\|\bar{\bar{X}} - \mu\|_{\infty}\|\bar{X}_1 - \mu\|_{\infty}\,.
 \end{align*}
-\\
+%
 Using SIP on summation of $k$ terms, we obtain the following upper bound for $|M_1|$
 \begin{align*}
 |M_1|
     & < 2\|(\bar{\bar{X}} - \mu)\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] \\
     & \quad + 2(2b_n - 1)\|\bar{\bar{X}} - \mu\|_{\infty}\|\bar{X}_1 - \mu\|_{\infty} \\
     &\leq 2(2b_n - 1)\|(\bar{\bar{X}} - \mu)\|_{\infty} \left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]\\
-    & \quad  + 2(2b_n - 1)\|\bar{\bar{X}} - \mu\|_{\infty}\|\bar{X}_1 - \mu\|_{\infty}\,.
+    & \quad  + 2(2b_n - 1)\|\bar{\bar{X}} - \mu\|_{\infty}\|\bar{X}_1 - \mu\|_{\infty}\\
+    & \leq 4(2b_n - 1)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2  \quad \text{(by \eqref{eq:xbars_bound} and \eqref{eq:xbarbar_bound})}\,. \numberthis \label{eq:strong_consis_term-1}
 \end{align*}
 %
-We use Lemma~\ref{lemma:consis_1} to upper bound the above term as
-\begin{equation} \label{eq:strong_consis_term-1}
-    4(2b_n - 1)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2
-\end{equation}
-\\
-Using the bound on $\psi(n)$ given by \cite{stra:1964}, equation (\ref{eq:strong_consis_term-1}) becomes $\mathcal{O}\left(b_n \log \log n/n\right)$ which converges to 0 as $n \to \infty$. Now we will show that $M_2 \xrightarrow{a.s.} 0$ as $n\to \infty$
-
+ %
+% We use Lemma~\ref{lemma:consis_1} to upper bound the above term as
+% \begin{equation} \label{eq:strong_consis_term-1}
+%     4(2b_n - 1)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2
+% \end{equation}
+%
+% Using the bound on $\psi(n)$ given by \cite{stra:1964}, equation (\ref{eq:strong_consis_term-1}) becomes $\mathcal{O}\left(b_n \log \log n/n\right)$ which converges to 0 as $n \to \infty$. Now we will show that $M_2 \xrightarrow{a.s.} 0$ as $n\to \infty$
+For $M_2$,
 \begin{align*}
    |M_2| & = \left|\dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{ \left(\mu - \bar{\bar{X}} \right)_i  \left(\mu - \bar{\bar{X}} \right)_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right\}\right|\\
     & \leq\|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right]\\
     &< \|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
     &= b_n\|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\dfrac{1}{b_n}\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
     & \leq b_n\|\bar{\bar{X}} - \mu\|_{\infty}^2 \int_{-\infty}^{\infty}|w(x)|dx \\
-    & \leq Cb_n\|\bar{\bar{X}} - \mu \|^2
+    % & \leq Cb_n\|\bar{\bar{X}} - \mu \|^2 \\ 
+    & \leq Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2 \quad \text{ (by \eqref{eq:xbarbar_bound})} \numberthis \label{eq:strong_consis_term-2} \,.
 \end{align*}
-
-Using Lemma~\ref{lemma:consis_1} to upper bound the above term as 
-
-\begin{equation} \label{eq:strong_consis_term-2}
-     Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2
-\end{equation}
+%
+% Using Lemma~\ref{lemma:consis_1} to upper bound the above term as 
+%
+% \begin{equation} \label{eq:strong_consis_term-2}
+%      Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2
+% \end{equation}
 %
 % Equation~\eqref{eq:strong_consis_term-2} has the same order as equation \eqref{eq:strong_consis_term-1}, i.e. $\mathcal{O}\left(b_n \log \log n/n\right) \to 0 \textrm{ as } n \to \infty$.
 % We have already shown that $M_1$ and $M_2$ converge to 0 almost surely $\implies \hat{\Sigma}_{RSV} \xrightarrow{a.s.} \tilde{\Sigma}$ as $n \to \infty$. Now we can find the functions $g_1(n), g_2(n) \textrm{ and, } g_3(n)$ by adding \eqref{eq:strong_consis_term-1} and \eqref{eq:strong_consis_term-2}. After some simple algebra, we obtain the following results:
 %
-{\color{red} Complete the algebra here}
+Using \eqref{eq:strong_consis_term-1} and \eqref{eq:strong_consis_term-2},
 \begin{align*}
-    g_1(n) &= (4+C_1)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2} \to 0\\
-    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4+C_1)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
-    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C_1)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0\,.
+  &|M_1 + M_2|\\
+  & \leq |M_1| + |M_2|\\
+  & \leq 4(2b_n - 1)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2 + Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2\\
+  & = D^2g_1(n) + D g_2(n) + g_3(n)\,
 \end{align*}
+where
+\begin{align*}
+    g_1(n) &= (8 + C)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2}\\
+    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(8 + C)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right]\\
+    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(8 + C)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right]\,.
+\end{align*}
+Under our assumptions, $b_n\log \log n /n \to 0$ and $\psi(n) = o(\sqrt{n \log \log n})$. Consequently, $b_n \psi^2(n)/n^2 \to 0$, $\psi^2(n)/n^2 \to 0$, ${b_n\psi(n)\sqrt{n\log \log n}/n^2} \to 0$, and $\psi(n) \sqrt{n \log \log n}/n^2 \to 0$. Thus, $g_1(n), g_2(n)$ and $g_3(n) \to 0$ as $n \to \infty$. 
+
 \end{proof}
 % \begin{lemma} \label{lemma:pseudo_consis}
 % If the Assumption \ref{ass:sip}, \ref{ass:sve_consis} hold and $n^{-1}{b_n \log \log n}\to 0$, then $\tilde{\Sigma}^{ij} \xrightarrow{a.s.} \Sigma^{ij} \textrm{ as } n \to \infty$
@@ -862,7 +907,7 @@ N_2 & = \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{X}_s - \mu \right)_i  \le
 Using the above and  Lemma~\ref{lemma:rsv_breakdown}, 
 \begin{align*}
 \left|\hat{\Sigma}_{RSV}^{ij} - \Sigma^{ij} \right| & = \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} + N_1 + N_2 + M_1 + M_2 \right| \\
-& \leq \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} \right| +  \left| N_1 \right| +  \left|N_2 \right| + \left| M_1 + M_2 \right|
+& \leq \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} \right| +  \left| N_1 \right| +  \left|N_2 \right| + \left| M_1 + M_2 \right| \numberthis \label{eq:RSV_full_decomp}
 \end{align*}
 %
 By Assumption~\ref{ass:sve_consis}, the first term goes to with probability 1 and by Lemma~\ref{lemma:rsv_breakdown}, the third term goes to 0 with probability 1 as $n \to \infty$. What is left to show is that $|N_1| \to 0$ and $|N_2| \to 0$ with probability 1
@@ -887,32 +932,30 @@ Using SIP on the summation of k terms,
 \begin{align*}
     & \left|\dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j \right] \right|\\
    &  < \dfrac{1}{m}\sum\limits_{s=1}^{m}\|\bar{X}_s - \mu\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{X}_s - \mu\|_{\infty}^2\\
-   &  < \dfrac{(2b_n-1)}{m}\sum\limits_{s=1}^{m}\|\bar{X}_s - \mu\|_{\infty}\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{X}_s - \mu\|_{\infty}^2
+   &  < \dfrac{(2b_n-1)}{m}\sum\limits_{s=1}^{m}\|\bar{X}_s - \mu\|_{\infty}\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{X}_s - \mu\|_{\infty}^2 \\
+   &  \leq   \left(2b_n - 1 + \dfrac{b_n^2}{n} - \dfrac{b_n}{n}\right)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2 \quad \text{(by \eqref{eq:xbars_bound})} \\
+   & \to 0\,.
 \end{align*}
-
-Using Lemma~\ref{lemma:consis_1}, the above term can be upper bounded by,
-
-\begin{equation} \label{eq:PASVE_term-1}
-  \left(2b_n - 1 + \dfrac{b_n^2}{n} - \dfrac{b_n}{n}\right)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2\,.  
-\end{equation}
 %
-Using the bound on $\psi(n)$ given by \cite{stra:1964}, (\ref{eq:PASVE_term-1}) becomes $\mathcal{O}\left(b_n \log \log n/n\right)$ which converges to 0 as $n \to \infty$.
-
-Similar to the above proof, second part of $N_1$ can also be written as a summation of $k$ terms and the proof follows exactly as the first part. Now we prove that $N_2 \xrightarrow{a.s.} 0 \textrm{ as } n \to \infty$. {\color{red} Remove the following proof maybe because repetitive}
+% Using Lemma~\ref{lemma:consis_1}, the above term can be upper bounded by,
+% 
+% \begin{equation} \label{eq:PASVE_term-1}
+%   \left(2b_n - 1 + \dfrac{b_n^2}{n} - \dfrac{b_n}{n}\right)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2\,.  
+% \end{equation}
 %
+% Using the bound on $\psi(n)$ given by \cite{stra:1964}, (\ref{eq:PASVE_term-1}) becomes $\mathcal{O}\left(b_n \log \log n/n\right)$ which converges to 0 as $n \to \infty$.
+%
+Similar to the above proof, second part of $N_1$ can also be written as a summation of $k$ terms and the proof follows exactly as the first part. Now we prove that $N_2 \xrightarrow{a.s.} 0 \textrm{ as } n \to \infty$. 
+%
+Following the steps in \eqref{eq:strong_consis_term-2}, we get
 \begin{align*}
-    |N_2|&= \left|\dfrac{1}{m} \sum_{s=1}^{m} \left(\bar{X}_s - \mu \right)_i \left(\bar{X}_s - \mu \right)_j\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right|\\
-    & < \dfrac{1}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2 \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
-    & = \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2\, \dfrac{1}{b_n} \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
-    & \leq \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2 \int_{-\infty}^{\infty} \abs{w(x)}dx\,.
+    |N_2| & \leq Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2  \to 0\,.
+    % \left|\dfrac{1}{m} \sum_{s=1}^{m} \left(\bar{X}_s - \mu \right)_i \left(\bar{X}_s - \mu \right)_j\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right|\\
+    % & < \dfrac{1}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2 \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
+    % & = \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2\, \dfrac{1}{b_n} \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
+    % & \leq \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2 \int_{-\infty}^{\infty} \abs{w(x)}dx\,.
 \end{align*}
-Recall that the lag window is such that $\int_{-\infty}^{\infty} \abs{w(x)}dx = C$ for some constant C. Using Lemma~\ref{lemma:consis_1}, $N_2$ can be upper bounded by
-%
-\begin{equation} \label{eq:PASVE_term-2}
-    Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2 
-\end{equation}
-%
-\eqref{eq:PASVE_term-2} is also $\mathcal{O}\left({b_n \log \log n}/n\right)$, and hence converges to 0 as $n \to \infty$.
+Thus, in \eqref{eq:RSV_full_decomp}, each of the terms goes to 0 with probability 1, and $\hat{\Sigma}_{RSV}^{ij} \to \Sigma^{ij}$ with probability 1 as $n \to \infty$. 
 \end{proof}
 
 
@@ -926,87 +969,101 @@ Recall that the lag window is such that $\int_{-\infty}^{\infty} \abs{w(x)}dx = 
 \subsection{RSV Bias}
 
 \begin{proof}[Proof of theorem \ref{th:rsv_bias}]
-The convoluted end effect terms in theorem \ref{th:RAC_expec} are all essentially $\mathcal{O}(1/n)$. We are interested in finding the asymptotic bias here. Therefore we can write the expection of replicated autocovariance as 
-\begin{equation} \label{eq:rac_bias2}
-\mathbb{E} \left[\hat{\Gamma}_{RAC}(k) \right] = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + \left(1 - \dfrac{\abs{k}}{n}\right)\mathcal{O}\left(\dfrac{1}{n}\right) + \mathcal{O}\left(\dfrac{1}{n}\right)    \,.
-\end{equation}
-
-Since $w\left(\dfrac{k}{b_n}\right) = 0$ for $|k| > b_n$. 
-The last term in \eqref{eq:rac_bias2} is stated separately because it does not depend on $k$. 
+The convoluted end effect terms in theorem \ref{th:RAC_expec} are all essentially $\mathcal{O}(1/n)$. We are interested in finding the asymptotic bias here. Therefore we can write the expectation of replicated autocovariance in form of equation \ref{eq:rac_expec_breakdown} as,
+\begin{align*}
+&\mathbb{E} \left[\hat{\Gamma}_{RAC}(k) \right]\\
+&  = \left(1- \dfrac{|k|}{n}\right)\Gamma(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\overline{X}_1)}{m} \\
+& = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2  \numberthis \label{eq:rac_bias2}  \,.
+\end{align*}
+%
+% \begin{equation} \label{eq:rac_bias2}
+% \mathbb{E} \left[\hat{\Gamma}_{RAC}(k) \right] = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2    \,.
+% \end{equation}
+%
+where both $O_1 \textrm{ and } O_2$ are the small order terms. By our assumptions, $\sum_{h=-\infty}^{\infty}\Gamma(h) < \infty$, so $O_1 = o(1/n) \text{ and } O_2 = o(1/n)$.  Consider the RSV estimator,
 \begin{align*}
     &\mathbb{E} \left[\hat{\Sigma}_{RSV} - \Sigma \right]\\
-    &= \sum_{k=-b_n+1}^{b_n-1} w\left(\dfrac{|k|}{b_n}\right)\mathbb{E} \left[\hat{\Gamma}_{RAC}(k) \right] - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
-    &= \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{|k|}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\left[\left(\Gamma(k) + \mathcal{O}\left(\dfrac{1}{n}\right)\right) + \mathcal{O}\left(\dfrac{1}{n}\right)\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
-    &= \sum_{k=-b_n+1}^{b_n-1} w\left(\dfrac{|k|}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k)  - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
-    & \quad + \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{|k|}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\mathcal{O}\left(\dfrac{1}{n}\right) + \mathcal{O}\left(\dfrac{1}{n}\right)\right] \\ 
-    & = O_1 + O_2\,,
+    &= \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Gamma}_{RAC}(k) \right] - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
+    &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\Gamma(k) +O_1 + O_2\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
+    &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k)\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)\left(O_1 + O_2\right)\right] \\ 
+    & = P_1 + o \left( \dfrac{1}{n} \right)\,
 \end{align*}
 %
 where 
 \begin{align*}
-O_1 & = \sum\limits_{k=-n+1}^{n-1}\left\{w\left(\dfrac{|k|}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k) \right\} - \sum\limits_{k=-\infty}^{\infty}\Gamma(k) \\ 
-O_2 &= \sum\limits_{k=-n+1}^{n-1}\left\{w\left(\dfrac{|k|}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\mathcal{O}\left(\dfrac{1}{n}\right) + \mathcal{O}\left(\dfrac{1}{n}\right)\right] \right\}\,.
+P_1 & = \sum\limits_{k=-n+1}^{n-1}\left[w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k) \right] - \sum\limits_{k=-\infty}^{\infty}\Gamma(k)\,.
+% P_2 &= \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k }{b_n}\right)\left(O_1 + O_2\right)\right]\,.
 \end{align*}
-
-\begin{enumerate}
-\item We first solve for term $O_1$ by breaking it into three parts as in \cite{hannan2009multiple}.
-\[
--\sum_{|k|\geq n}\Gamma(k) + \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Gamma(k)- \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{n}\right)\right)\Gamma(k)
-\]
 %
-We deal with the three subterms of term \textbf{A} individually,
-\begin{enumerate}
-    \item 
-    \begin{align*}
-        \left\|{-\sum_{|k|\geq n}\Gamma(k)}\right\| &\leq   \abs{\dfrac{k}{n}}^q\sum_{|k|\geq n}\|\Gamma(k)\| = \dfrac{1}{b_n^q}\abs{\dfrac{b_n}{n}}^q\underbrace{\sum_{|k|\geq n}|k|^q\|\Gamma(k)\|}_{<\infty} = o\left(\dfrac{1}{b_n^q}\right)
-    \end{align*}
-    
-    \item
+We first solve for term $P_1$ by breaking it into three parts as in \cite{hannan2009multiple}. Note that notation $A = o(z)$ for matrix $A$  implies $A^{ij} = o(z)$ for each element of the matrix $A$. Consider,
+\begin{equation}
+\label{eq:P1_decomp}
+P_1 = -\sum_{|k|\geq n}\Gamma(k)  -  \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Gamma(k)- \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{n}\right)\right)\Gamma(k)\,.  
+\end{equation}
+%
+We deal with the three subterms of term $P_1$ individually. First,
+%    
 \begin{align*}
-   \left\| \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Gamma(k)\right\| &\leq \dfrac{c}{n}\sum_{k = -n+1}^{n-1}|k|\|\Gamma(k)\| 
+ {-\sum_{|k|\geq n}\Gamma(k)} &\leq  \sum_{|k|\geq n} \abs{\dfrac{k}{n}}^q   \Gamma(k) = \dfrac{1}{b_n^q}\abs{\dfrac{b_n}{n}}^q \sum_{|k|\geq n}|k|^q  \Gamma(k) = o\left(\dfrac{1}{b_n^q}\right)\,, \numberthis \label{eq:P1_first}
 \end{align*}
- 
-For $q \geq 1$, we have, $\sum_{k=-n+1}^{n-1}|k|^q\|\Gamma(k)\| < \infty$
-   \begin{align*}
-       \dfrac{c}{n}\sum_{k = -n+1}^{n-1}|k|\|\Gamma(k)\| &\leq \dfrac{c}{n}\sum_{k = -n+1}^{n-1}|k|^q\|\Gamma(k)\| = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n}c\sum_{k = -n+1}^{n-1}|k|^q\|\Gamma(k)\| = o\left(\dfrac{1}{b_n^q}\right) 
-   \end{align*}
-          
-For $q <1$:
-   \begin{align*}
-       c\sum_{k =-n+1}^{n-1}\dfrac{|k|}{n}\|\Gamma(k)\| &\leq c\sum_{k =-n+1}^{n-1}\abs{\dfrac{k}{n}}^q\|\Gamma(k)\| = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n}c\sum_{k =-n+1}^{n-1}|k|^q\|\Gamma(k)\| = o\left(\dfrac{1}{b_n^q}\right) 
-   \end{align*}
-
-  \item Next,
-     \[
-     \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{b_n}\right)\right)\Gamma(k) = -\dfrac{1}{b_n^q}\sum_{k = -n+1}^{n-1}  \left(\dfrac{|k|}{b_n}\right)^{-q} {\left(1-w\left(\dfrac{|k|}{b_n}\right)\right)}|k|^q \Gamma(k)\,.
-     \]
-%     
-     The condition 
-     \[
-     \lim_{\abs{x}\to 0}\dfrac{1 - w(x)}{\abs{x}^q} = k_q < \infty
-     \]
-     implies that $\abs{k/b_n}^{-q}(1-w(k/b_n))$ converges boundedly to $k_q$ for each $k$; where $k_q$ is specific to the lag-window used. Taking the limiting value, we have
-     \[
-     \lim_{n \to \infty}\sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{b_n}\right)\right)\Gamma(k) = -\dfrac{k_q \Phi^{(q)}}{b_n^q}
-     \]
-\end{enumerate}
-
- \item Solving for $O_2$. We will find an upper bound and prove that it is $\mathcal{O}\left(n^{-1}\right)$:
- \begin{align*}
-     & \sum_{k=-n+1}^{n-1}\left\{w\left(\dfrac{|k|}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\mathcal{O}\left(\dfrac{1}{n}\right) + \mathcal{O}\left(\dfrac{1}{n}\right) \right] \right\} \\
-     &\leq \sum_{k=-n+1}^{n-1}w\left(\dfrac{|k|}{b_n}\right)\mathcal{O}\left(\dfrac{1}{n}\right)\\
-     &= \mathcal{O}\left(\dfrac{1}{n}\right) \sum_{k=-n+1}^{n-1}w\left(\dfrac{|k|}{b_n}\right) \\
-     % &= \mathcal{O}\left(\dfrac{1}{n}\right) 2\pi W_n \\
-     &= \mathcal{O}\left(\dfrac{1}{n}\right) = o\left(\dfrac{1}{b_n^q}\right) \,.
- \end{align*}
- \end{enumerate}  
 %
- We have shown that all, but one, terms are $o(1/b_n^q)$. Therefore, the limiting value of $b_n^q\mathbb{E}[\hat{\Sigma}_{RAC} - \Sigma]$ is proved to be same as that of $b_n^q\mathbb{E}[\tilde{\Sigma} - \Sigma]$ in \cite{hannan2009multiple} with some extra $o(1)$ terms. This is quite intuitive as we are using a strongly consistent estimator $\bar{\bar{X}}$ for $\mu$ in our replicated autovariance estimator. Similar to theorem \ref{th:RAC_expec}, the effect of estimating $\mu$ contributes only $o(1)$ terms. 
+since $\sum_{|k|\geq n}|k|^q \Gamma(k)  < \infty$. Next,
+%
+\begin{align*}
+ \sum_{k = -n+1}^{n-1}w\left(\dfrac{k}{n}\right)\dfrac{|k|}{n}\Gamma(k)   &\leq \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Gamma(k)  \,.
+\end{align*}
+For $q\geq 1$,
+\begin{align*}
+\dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Gamma(k) &\leq \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|^q  \Gamma(k) = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n} C\sum_{k = -n+1}^{n-1}|k|^q  \Gamma(k)  = o\left(\dfrac{1}{b_n^q}\right)\,.
+\end{align*}
+          
+For $q <1$,
+\begin{align*}
+   \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Gamma(k)  &\leq C\sum_{k =-n+1}^{n-1}\abs{\dfrac{k}{n}}^q  \Gamma(k)  = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n^q} C \sum_{k =-n+1}^{n-1}|k|^q \Gamma(k)  = o\left(\dfrac{1}{b_n^q}\right) \, .
+\end{align*}
+So,
+\begin{equation}
+\label{eq:P1_second}
+ \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Gamma(k) = o \left(\dfrac{1}{b_n^q} \right)
+\end{equation}
+Lastly, by our assumptions, for $x \to 0$
+\[
+\dfrac{1 - w(x)}{\abs{x}^q} = k_q + o(1)\,.
+\]
+For $x = k/b_n$, $\abs{k/b_n}^{-q}(1-w(k/b_n))$ converges boundedly to $k_q$ for each $k$.
+ % where $k_q$ is specific to the lag-window used. Taking the limiting value, we have
+     % \[
+     % \lim_{n \to \infty}\sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{b_n}\right)\right)\Gamma(k) = -\dfrac{k_q \Phi^{(q)}}{b_n^q}
+     % \]
+So,
+\begin{align*}
+     \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{k}{b_n}\right)\right)\Gamma(k) &= -\dfrac{1}{b_n^q}\sum_{k = -n+1}^{n-1}  \left(\dfrac{|k|}{b_n}\right)^{-q} {\left(1-w\left(\dfrac{|k|}{b_n}\right)\right)}|k|^q \Gamma(k) \\
+     & = -\dfrac{1}{b_n^q}\sum_{k = -n+1}^{n-1}   \left[k_q + o(1) \right]|k|^q \Gamma(k) \\
+     & = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right) \numberthis \label{eq:P1_third}\,.
+\end{align*}
+%
+ % Finally, we will solve for $P_2$. Note that $O_2$ is independent of $k$. We will write $O_1$ as $(\abs{k}/n)\mathcal{O}(1/n)$ and $O_2$ as $\mathcal{O}(1/n)$. We will find an upper bound and prove that it is $\mathcal{O}\left(n^{-1}\right)$:
+ % \begin{align*}
+ %     &  \sum_{k=-n+1}^{n-1}w\left(\dfrac{|k|}{b_n}\right)\left[ O_1 + O_2 \right]  \\
+ %     & \leq \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{|k|}{b_n}\right)O_1} + \abs{O_2}\sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{|k|}{b_n}\right)} \\
+ %     &= \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-n+1}^{n-1}\dfrac{\abs{k}}{n}\abs{w\left(\dfrac{|k|}{b_n}\right)} + \mathcal{O}\left(\dfrac{1}{n}\right)\\
+ %     % &= \mathcal{O}\left(\dfrac{1}{n}\right) 2\pi W_n \\
+ %     &= \mathcal{O}\left(\dfrac{1}{n}\right) = o\left(\dfrac{1}{b_n^q}\right) \,.
+ % \end{align*}
+  %
+%
+Using \eqref{eq:P1_first}, \eqref{eq:P1_second}, and \eqref{eq:P1_third} in \eqref{eq:P1_decomp}, we get
+\[
+\mathbb{E} \left[\hat{\Sigma}_{RSV} - \Sigma \right] = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right)\,,
+\]
+which completes the result.
+%
+ % We have shown that all, but one, terms are $o(1/b_n^q)$. Therefore, the limiting value of $b_n^q\mathbb{E}[\hat{\Sigma}_{RAC} - \Sigma]$ is proved to be same as that of $b_n^q\mathbb{E}[\tilde{\Sigma} - \Sigma]$ in \cite{hannan2009multiple} with some extra $o(1)$ terms. This is quite intuitive as we are using a strongly consistent estimator $\bar{\bar{X}}$ for $\mu$ in our replicated autovariance estimator. Similar to theorem \ref{th:RAC_expec}, the effect of estimating $\mu$ contributes only $o(1)$ terms. 
 \end{proof}
 \subsection{Variance Calculation}
 \label{appendix:variance}
-\textbf{Theorem } \ref{th:rsv_variance}
-\begin{proof}
+ 
+\begin{proof}[Proof of Theorem~\ref{th:rsv_variance}]
  Due to the strong consistency proof from theorem \ref{th:consistency}, as $n \to \infty$,
 \begin{equation}
 \label{eq:rsv_asv_consis}
@@ -1018,7 +1075,7 @@ Further, we have defined $g_1(n), g_2(n), g_3(n)$ such that as $n \to \infty$,
     g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4+C_1)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
     g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C_1)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0
 \end{align*}
-
+%
 We have shown from the proof of strong consistency that,
 \begin{align*}
  &\left| \hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right|\\

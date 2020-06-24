@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  12 JUN 2020 18:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  24 JUN 2020 18:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -375,55 +375,44 @@ Underfull \hbox (badness 10000) in paragraph at lines 254--255
 [8] [9] [10] [11]
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no ¸ in font cmr10!
- <scatter_plot_500.pdf, id=65, 505.89pt x 505.89pt>
-File: scatter_plot_500.pdf Graphic file (type pdf)
 
-<use scatter_plot_500.pdf>
-Package pdftex.def Info: scatter_plot_500.pdf used on input line 406.
-(pdftex.def)             Requested size: 187.89914pt x 187.90196pt.
 
-<scatter_plot_50000.pdf, id=66, 505.89pt x 505.89pt>
-File: scatter_plot_50000.pdf Graphic file (type pdf)
+LaTeX Warning: Reference `subfig:var-sp_500' on page 12 undefined on input line
+ 400.
 
-<use scatter_plot_50000.pdf>
-Package pdftex.def Info: scatter_plot_50000.pdf used on input line 412.
-(pdftex.def)             Requested size: 187.89914pt x 187.90196pt.
- <plots/var-ess.pdf, id=67, 505.89pt x 505.89pt>
+
+LaTeX Warning: Reference `subfig:var-sp_50000' on page 12 undefined on input li
+ne 400.
+
+<plots/var-ess.pdf, id=65, 505.89pt x 505.89pt>
 File: plots/var-ess.pdf Graphic file (type pdf)
-
-<use plots/var-ess.pdf>
+ <use plots/var-ess.pdf>
 Package pdftex.def Info: plots/var-ess.pdf used on input line 422.
 (pdftex.def)             Requested size: 234.8775pt x 234.88132pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[12 <./scatter_plot_500.pdf> <./scatter_plot_50000.pdf>]
-<plots/boom-pers_1_3_8.pdf, id=84, 505.89pt x 505.89pt>
+[12 <./plots/var-ess.pdf>]
+<plots/boom-pers_1_3_8.pdf, id=76, 505.89pt x 505.89pt>
 File: plots/boom-pers_1_3_8.pdf Graphic file (type pdf)
 
 <use plots/boom-pers_1_3_8.pdf>
 Package pdftex.def Info: plots/boom-pers_1_3_8.pdf used on input line 449.
 (pdftex.def)             Requested size: 187.89914pt x 187.90196pt.
 
-<plots/boom-pers_1_10_7.pdf, id=85, 505.89pt x 505.89pt>
+<plots/boom-pers_1_10_7.pdf, id=77, 505.89pt x 505.89pt>
 File: plots/boom-pers_1_10_7.pdf Graphic file (type pdf)
 
 <use plots/boom-pers_1_10_7.pdf>
 Package pdftex.def Info: plots/boom-pers_1_10_7.pdf used on input line 455.
 (pdftex.def)             Requested size: 187.89914pt x 187.90196pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<plots/scatter_n1000.pdf, id=86, 361.35pt x 361.35pt>
+<plots/scatter_n1000.pdf, id=78, 361.35pt x 361.35pt>
 File: plots/scatter_n1000.pdf Graphic file (type pdf)
 
 <use plots/scatter_n1000.pdf>
 Package pdftex.def Info: plots/scatter_n1000.pdf used on input line 467.
 (pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
 
-<plots/scatter_n50000.pdf, id=87, 361.35pt x 361.35pt>
+<plots/scatter_n50000.pdf, id=79, 361.35pt x 361.35pt>
 File: plots/scatter_n50000.pdf Graphic file (type pdf)
 
 <use plots/scatter_n50000.pdf>
@@ -433,14 +422,15 @@ Package pdftex.def Info: plots/scatter_n50000.pdf used on input line 473.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<plots/boom-acf,n=1000.pdf, id=88, 578.16pt x 289.08pt>
+[13 <./plots/boom-pers_1_3_8.pdf> <./plots/boom-pers_1_10_7.pdf>]
+<plots/boom-acf,n=1000.pdf, id=94, 578.16pt x 289.08pt>
 File: plots/boom-acf,n=1000.pdf Graphic file (type pdf)
 
 <use plots/boom-acf,n=1000.pdf>
 Package pdftex.def Info: plots/boom-acf,n=1000.pdf used on input line 487.
 (pdftex.def)             Requested size: 328.82707pt x 164.4112pt.
 
-<plots/boom-acf,n=50000.pdf, id=89, 578.16pt x 289.08pt>
+<plots/boom-acf,n=50000.pdf, id=95, 578.16pt x 289.08pt>
 File: plots/boom-acf,n=50000.pdf Graphic file (type pdf)
 
 <use plots/boom-acf,n=50000.pdf>
@@ -450,73 +440,106 @@ Package pdftex.def Info: plots/boom-acf,n=50000.pdf used on input line 493.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[13 <./plots/var-ess.pdf>] <plots/boom-ess.pdf, id=100, 505.89pt x 289.08pt>
+<plots/boom-ess.pdf, id=96, 505.89pt x 289.08pt>
 File: plots/boom-ess.pdf Graphic file (type pdf)
-
-<use plots/boom-ess.pdf>
+ <use plots/boom-ess.pdf>
 Package pdftex.def Info: plots/boom-ess.pdf used on input line 526.
 (pdftex.def)             Requested size: 328.82707pt x 187.90417pt.
- [14 <./plots/boom-pers_1_3_8.pdf> <./plots/boom-pers_1_10_7.pdf>] <plots/boom-
-ess_1_10_7.pdf, id=114, 505.89pt x 289.08pt>
+
+[14 <./plots/scatter_n1000.pdf> <./plots/scatter_n50000.pdf>]
+<plots/boom-ess_1_10_7.pdf, id=112, 505.89pt x 289.08pt>
 File: plots/boom-ess_1_10_7.pdf Graphic file (type pdf)
 
 <use plots/boom-ess_1_10_7.pdf>
 Package pdftex.def Info: plots/boom-ess_1_10_7.pdf used on input line 535.
 (pdftex.def)             Requested size: 328.82707pt x 187.90417pt.
- [15 <./plots/scatter_n1000.pdf> <./plots/scatter_n50000.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 586--587
 
- []
 
-[16 <./plots/boom-acf,n=1000.pdf> <./plots/boom-acf,n=50000.pdf>] [17 <./plots/
-boom-ess.pdf> <./plots/boom-ess_1_10_7.pdf>] [18]
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[15 <./plots/boom-acf,n=1000.pdf> <./plots/boom-acf,n=50000.pdf>] [16 <./plots/
+boom-ess.pdf> <./plots/boom-ess_1_10_7.pdf>]
 Overfull \hbox (9.37782pt too wide) in paragraph at lines 675--675
 [] 
  []
 
+[17]
+Overfull \hbox (19.69678pt too wide) in paragraph at lines 701--701
+[] 
+ []
+
+[18]
+Overfull \hbox (13.48308pt too wide) in paragraph at lines 720--720
+[] 
+ []
+
 [19] [20] [21]
-Overfull \hbox (0.85567pt too wide) in paragraph at lines 799--799
+Overfull \hbox (0.85567pt too wide) in paragraph at lines 832--832
 [] 
  []
 
-[22] [23] [24] [25]
-Overfull \hbox (11.52263pt too wide) in paragraph at lines 891--891
+[22]
+Overfull \hbox (14.93965pt too wide) in paragraph at lines 877--877
 [] 
  []
 
-[26] [27] [28] [29] [30] (./main.bbl [31]
+[23]
+Overfull \hbox (4.68176pt too wide) in paragraph at lines 883--885
+\OT1/cmr/m/n/10.95 Under our as-sump-tions, $\OML/cmm/m/it/10.95 b[] [] [] n=n 
+\OMS/cmsy/m/n/10.95 ! \OT1/cmr/m/n/10.95 0$ and $\OML/cmm/m/it/10.95  \OT1/cmr/
+m/n/10.95 (\OML/cmm/m/it/10.95 n\OT1/cmr/m/n/10.95 ) = \OML/cmm/m/it/10.95 o\OT
+1/cmr/m/n/10.95 ([])$. Con-se-quently, $\OML/cmm/m/it/10.95 b[] []\OT1/cmr/m/n/
+10.95 (\OML/cmm/m/it/10.95 n\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 =n[] \OMS/c
+msy/m/n/10.95 !
+ []
+
+[24]
+Overfull \hbox (11.52263pt too wide) in paragraph at lines 938--938
+[] 
+ []
+
+[25]
+Overfull \hbox (8.18376pt too wide) in paragraph at lines 977--977
+[] 
+ []
+
+[26] [27] [28] [29] (./main.bbl [30]
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no ¸ in font cmr10!
-) [32] (./main.aux) ) 
+ [31]) [32] (./main.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 5297 strings out of 493089
- 76278 string characters out of 6134842
- 164747 words of memory out of 5000000
- 8680 multiletter control sequences out of 15000+600000
+ 5289 strings out of 493089
+ 76052 string characters out of 6134842
+ 165765 words of memory out of 5000000
+ 8674 multiletter control sequences out of 15000+600000
  14575 words of font info for 56 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,18n,38p,1333b,554s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2015/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmbx10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmbx12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmex10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmmi10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmmi6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmmi8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmr10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
-17.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.
-pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb
-></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></
-usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></u
-sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr
-/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/
-local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/l
-ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (32 pages, 3707381 bytes).
+ 38i,17n,38p,1334b,554s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
+/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
+usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></us
+r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/
+local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/lo
+cal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loca
+l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/
+texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/tex
+live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texliv
+e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
+015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/20
+15/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2015/t
+exmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (32 pages, 2197485 bytes).
 PDF statistics:
- 261 PDF objects out of 1000 (max. 8388607)
- 182 compressed objects within 2 object streams
+ 247 PDF objects out of 1000 (max. 8388607)
+ 172 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 66 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 
