@@ -1,19 +1,23 @@
+set.seed(100)
 library(timedelay)
 library(rep.acf.ccf)
 source("functions.R")
-data(simple)
+data <- read.csv("q0957usno.csv", header = TRUE)
 
 
-lcA <- simple[, 1 : 3]
-lcB <- simple[, c(1, 4, 5)]
-m <- 5
-delta.start <- c(10, 30, 50, 70, 90)
+lcA <- data[, 1 : 3]
+lcB <- data[, c(1, 4, 5)]
+m <- 4
+delta.start <- c(300, 500, 700, 900)
 micro <- 0
 mc.chain.list <- list()
 
 for (i in 1:m){
-  mc.chain.list[[i]] <- markov.chain(1e5, delta.start[i], lcA, lcB, micro)$samples
+  a <- markov.chain(lcA, lcB, 1e5+1, delta.start[i], delta.jump = 1, micro = 0, ram = TRUE, burn = 0)
+  mc.chain.list[[i]] <- a$samples
+  print(a$delta.accept.rate)
 }
+
 
 ########################################
 ncrop <- 5e2
@@ -25,7 +29,7 @@ for (i in 1:m){
 }
 
 acf <- combined_acf(x, chain = 1, component = 1, lag.max  = 100, type = "correlation")
-pdf(file = paste("Out/acf_n", ncrop, "_component - 1", ".pdf", sep = ""), height = 3)
+pdf(file = paste("Out/acf_ram_n", ncrop, "_component - 1", ".pdf", sep = ""), height = 3)
 par(mfrow = c(1,2))
 plot(acf[[1]][[1]], main = expression("Locally centered ACF"))
 plot(acf[[1]][[2]], main = expression("Globally centered ACF"))
@@ -41,7 +45,7 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 acf <- combined_acf(x, chain = 1, component = 1, lag.max  = 100, type = "correlation")
-pdf(file = paste("Out/acf_n", ncrop, "_component - 1", ".pdf", sep = ""), height = 3)
+pdf(file = paste("Out/acf_ram_n", ncrop, "_component - 1", ".pdf", sep = ""), height = 3)
 par(mfrow = c(1,2))
 plot(acf[[1]][[1]], main = expression("Locally centered ACF"))
 plot(acf[[1]][[2]], main = expression("Globally centered ACF"))
@@ -56,7 +60,7 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 acf <- combined_acf(x, chain = 1, component = 1, lag.max  = 100, type = "correlation")
-pdf(file = paste("Out/acf_n", ncrop, "_component - 1", ".pdf", sep = ""), height = 3)
+pdf(file = paste("Out/acf_ram_n", ncrop, "_component - 1", ".pdf", sep = ""), height = 3)
 par(mfrow = c(1,2))
 plot(acf[[1]][[1]], main = expression("Locally centered ACF"))
 plot(acf[[1]][[2]], main = expression("Globally centered ACF"))
@@ -71,55 +75,73 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop-1,]
 }
 acf <- combined_acf(x, chain = 1, component = 1, lag.max  = 100, type = "correlation")
-pdf(file = paste("Out/acf_n", ncrop, "_component - 1", ".pdf", sep = ""), height = 3)
+pdf(file = paste("Out/acf_ram_n", ncrop, "_component - 1", ".pdf", sep = ""), height = 3)
+par(mfrow = c(1,2))
+plot(acf[[1]][[1]], main = expression("Locally centered ACF"))
+plot(acf[[1]][[2]], main = expression("Globally centered ACF"))
+dev.off()
+
+########################################
+ncrop <- 5e4
+########################################
+
+x <- list()
+for (i in 1:m){
+  x[[i]] <- mc.chain.list[[i]][1:ncrop-1,]
+}
+acf <- combined_acf(x, chain = 1, component = 1, lag.max  = 100, type = "correlation")
+pdf(file = paste("Out/acf_ram_n", ncrop, "_component - 1", ".pdf", sep = ""), height = 3)
+par(mfrow = c(1,2))
+plot(acf[[1]][[1]], main = expression("Locally centered ACF"))
+plot(acf[[1]][[2]], main = expression("Globally centered ACF"))
+dev.off()
+
+
+########################################
+ncrop <- 1e5
+########################################
+
+x <- list()
+for (i in 1:m){
+  x[[i]] <- mc.chain.list[[i]][1:ncrop-1,]
+}
+acf <- combined_acf(x, chain = 1, component = 1, lag.max  = 100, type = "correlation")
+pdf(file = paste("Out/acf_ram_n", ncrop, "_component - 1", ".pdf", sep = ""), height = 3)
 par(mfrow = c(1,2))
 plot(acf[[1]][[1]], main = expression("Locally centered ACF"))
 plot(acf[[1]][[2]], main = expression("Globally centered ACF"))
 dev.off()
 
 ####################################################
+par(mfrow = c(4,2))
+for (i in 1:m){
+  pdf(file = paste("Out/density_ram_", i, ".pdf", sep = ""), height = 3)
+  
+  plot(density(mc.chain.list[[i]][1:5e2,1]), xlab = "Time Delay", ylab = "Density", main = "nsim = 500")
+  plot(density(mc.chain.list[[i]][1:1e5,1]), xlab = "Time Delay", ylab = "Density", main = "nsim = 100000")
+  dev.off()
+}
 
-pdf(file = "Out/density _5e2_1e4.pdf")
-par(mfrow = c(5,2))
-plot(density(mc.chain.list[[1]][1:5e2,1]))
-plot(density(mc.chain.list[[1]][1:99999,1]))
 
-plot(density(mc.chain.list[[2]][1:5e2,1]))
-plot(density(mc.chain.list[[2]][1:99999,1]))
+par(mfrow = c(4,2))
+for (i in 1:m){
+  pdf(file = paste("Out/trace__ram_", i, ".pdf", sep = ""), height = 3)
+  
+  plot.ts(mc.chain.list[[i]][1:5e2,1], ylab = "Time Delay", main = "nsim = 500")
+  plot.ts(mc.chain.list[[i]][1:1e5,1], ylab = "Time Delay", main = "nsim = 100000")
+  dev.off()
+}
 
-plot(density(mc.chain.list[[3]][1:5e2,1]))
-plot(density(mc.chain.list[[3]][1:99999,1]))
+################################################
+#### Testing kit
+################################################
 
-plot(density(mc.chain.list[[4]][1:5e2,1]))
-plot(density(mc.chain.list[[4]][1:99999,1]))
-
-plot(density(mc.chain.list[[5]][1:5e2,1]))
-plot(density(mc.chain.list[[5]][1:99999,1]))
-
-dev.off()
-
-pdf(file = "Out/trace _5e2_1e4.pdf")
-par(mfrow = c(5,2))
-plot.ts(mc.chain.list[[1]][1:5e2,1])
-plot.ts(mc.chain.list[[1]][1:9999,1])
-
-plot.ts(mc.chain.list[[2]][1:5e2,1])
-plot.ts(mc.chain.list[[2]][1:9999,1])
-
-plot.ts(mc.chain.list[[3]][1:5e2,1])
-plot.ts(mc.chain.list[[3]][1:9999,1])
-
-plot.ts(mc.chain.list[[4]][1:5e2,1])
-plot.ts(mc.chain.list[[4]][1:9999,1])
-
-plot.ts(mc.chain.list[[5]][1:5e2,1])
-plot.ts(mc.chain.list[[5]][1:9999,1])
-
-dev.off()
-
-a <- markov.chain(1e6, 30, lcA, lcB, 0)
+a <- markov.chain(1e5, 400, lcA, lcB, 0, delta.jump = 100, ram = FALSE)
+b <- markov.chain(1e5, 400, lcA, lcB, 0, delta.jump = 100, ram = TRUE)
 a <- a$samples
-pdf(file = "Out/true_density_plot_n=1e6.pdf")
-par(mfrow = c(1,1))
-plot(density(a[,1]))
-dev.off
+b <- b$samples
+plot(density(a[1:1e3,1]))
+plot(density(b[1:1e3,1]))
+plot.ts(a[,1])
+plot.ts(b[,1])
+

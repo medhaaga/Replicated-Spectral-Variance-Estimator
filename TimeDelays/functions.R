@@ -1,19 +1,21 @@
 library(timedelay)
 
-markov.chain <- function(nsim, delta.start, lcA, lcB, micro){
+markov.chain <- function( lcA, lcB, nsim, delta.start, delta.jump = 100, micro = 0, ram, burn = 0){
+  
+  rag <- max(lcA[, 1]) - min(lcA[, 1])
+  uniform <- c(-rag, rag)
 
   chain <- bayesian(data.lcA = lcA, data.lcB = lcB,
-                           data.flux = FALSE, theta.ini = c(0, 0.01, 200),
-                           delta.ini = delta.start, delta.uniform.range = c(0, 100),
-                           delta.proposal.scale = 1,
+                           data.flux = FALSE, theta.ini = c(mean(lcA[,2]), 0.01, 200),
+                           delta.ini = delta.start, delta.uniform.range = uniform,
+                           delta.proposal.scale = delta.jump,
                            tau.proposal.scale = 3,
                            tau.prior.shape = 1, tau.prior.scale = 1,
                            sigma.prior.shape = 1, sigma.prior.scale = 2 / 10^7,
-                           asis = TRUE, micro = micro,
-                           sample.size = nsim, warmingup.size = 0, adaptive.delta = FALSE,
-                           adaptive.tau = FALSE)
-  samples <- cbind(chain$delta, chain$beta, chain$X, chain$mu,
-                        chain$sigma, chain$tau)
+                           asis = FALSE, micro = micro,
+                           sample.size = nsim, warmingup.size = burn, adaptive.delta = FALSE,
+                           adaptive.tau = FALSE, multimodality = ram)
+  samples <- cbind(chain$delta)
   chain <- list("samples" = samples, "delta.accept.rate" = chain$delta.accept.rate,
                        "tau.accept.rate" = chain$tau.accept.rate)
   return(chain)

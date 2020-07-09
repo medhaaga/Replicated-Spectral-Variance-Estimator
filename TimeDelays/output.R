@@ -18,8 +18,8 @@ load("dataset")
 ### Data and model parameters
 lcA <- data[, 1 : 3]
 lcB <- data[, c(1, 4, 5)]
-m <- 5
-delta.start <- c(10, 30, 50, 70, 90)
+m <- 4
+delta.start <- c(300, 500, 700, 900)
 micro <- 0
 
 ###############################################
@@ -38,7 +38,7 @@ conv.pts <- seq(min, max, step)
 
 load(file = paste(paste("Out/conv_data", min, max, sep = "_"), ".Rdata", sep = ""))
 
-pdf(file = paste(paste("Out/run_plots_components", sep = "_"), ".pdf", sep = ""))
+pdf(file = paste(paste("Out/run_plots_time_delay", sep = "_"), ".pdf", sep = ""))
 plot(conv.pts,asv.samp[1,1,], type = "l", col = "red", main = "Variance of time delay", xlab = "Simulation size", ylab = "Variance", ylim = range(rsv.samp[1,1,], asv.samp[1,1,]))
 lines(conv.pts, rsv.samp[1,1,], col="blue")
 legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=.75)
@@ -51,8 +51,8 @@ det.rsv <- rep(0,length(conv.pts))
 det.asv <- rep(0,length(conv.pts))
 
 for (i in 1:length(conv.pts)){
-  det.rsv[i] <- log(det(rsv.samp[,,i]))
-  det.asv[i] <- log(det(asv.samp[,,i]))
+  det.rsv[i] <- (det(rsv.samp[,,i]))
+  det.asv[i] <- (det(asv.samp[,,i]))
 }
 
 plot(conv.pts,det.asv, type = "l", col="red", main = paste("Determinant"), xlab = "Simulation size", ylab = "Determinant", ylim = range(det.rsv))
@@ -67,24 +67,24 @@ pdf(file = paste("Out/run_plot_ess.pdf", sep = "_"), height = 4)
 par(mfrow = c(1,1))
 mean.asv <- rep(0, length(conv.pts))
 mean.rsv <- rep(0, length(conv.pts))
-lower.asv <- rep(0, length(conv.pts))
-lower.rsv <- rep(0, length(conv.pts))
-upper.asv <- rep(0, length(conv.pts))
-upper.rsv <- rep(0, length(conv.pts))
+#lower.asv <- rep(0, length(conv.pts))
+#lower.rsv <- rep(0, length(conv.pts))
+#upper.asv <- rep(0, length(conv.pts))
+#upper.rsv <- rep(0, length(conv.pts))
 for (i in 1:length(conv.pts)){
   asv <- confidence_interval(ess.asv.samp[[i]], .9)
   rsv <- confidence_interval(ess.rsv.samp[[i]], .9)
   mean.asv[i] <- log(asv[1])
   mean.rsv[i] <- log(rsv[1])
-  lower.asv[i] <- log(asv[2])
-  lower.rsv[i] <- log(rsv[2])
-  upper.asv[i] <- log(asv[3])
-  upper.rsv[i] <- log(rsv[3])
+ # lower.asv[i] <- log(asv[2])
+#  lower.rsv[i] <- log(rsv[2])
+ # upper.asv[i] <- log(asv[3])
+  #upper.rsv[i] <- log(rsv[3])
 }
-plot(conv.pts, mean.asv, type = "l", col = "red", main = "ESS running plot", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(mean.asv))
+plot(conv.pts, mean.asv, type = "l", col = "red", main = "ESS running plot", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(mean.asv, mean.rsv))
 lines(conv.pts, mean.rsv, type = "l", col = "blue")
-segments(x0 = conv.pts[1:100], y0 = lower.asv[1:100], y1 = upper.asv[1:100], col = "red")
-segments(x0 = conv.pts[1:100], y0 = lower.rsv[1:100], y1 = upper.rsv[1:100], col = "blue")
+#segments(x0 = conv.pts[1:100], y0 = lower.asv[1:100], y1 = upper.asv[1:100], col = "red")
+#segments(x0 = conv.pts[1:100], y0 = lower.rsv[1:100], y1 = upper.rsv[1:100], col = "blue")
 legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=1.2)
 dev.off()
 
