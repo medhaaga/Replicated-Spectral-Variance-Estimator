@@ -1,4 +1,4 @@
-set.seed(10)
+set.seed(1)
 library(cubature)
 library(Rcpp)
 library(RcppArmadillo)
@@ -98,102 +98,102 @@ create.output <- function(start, aux, j.scale, Ob, Os, Xb, Xs, Yb, Ys, m, check.
 convergence <- function(min, max, start, aux, j.scale, Ob, Os, Xb, Xs, Yb, Ys, m, rep=100, step=500){
 
   p <- 8
-
-  #master.chain.rep <- array(0, dim = c(max, p, m, rep))
-
-  #for (i in 1:rep){
-   # print(paste("Sampling for rep =", i))
-    #for (j in 1:m){
-     # print(paste("Sampling chain = ", j))
-    # temp <- MHwG.RAM(start[j,], aux[j,], jump.scale = j.scale,Ob, Os, Xb, Xs, Yb, Ys, n.sample = max+1, n.burn = 0)
-    #  master.chain.rep[,,j,i] <- temp$x
-    #  print(colMeans(temp$accept))
-    #}
-  #}
-
   conv.pts <- seq(min, max, step)
   l <- length(conv.pts)
-  asv.samp <- array(0, dim = c(p,p,l))
-  rsv.samp <- array(0, dim = c(p,p,l))
-  ess.asv.samp <- list()
-  ess.rsv.samp <- list()
-
-  for (j in 1:l){
-    nsim = conv.pts[j]
-    sve.rep <- array(0, dim = c(p, p, rep))
-    rsve.rep <- array(0, dim = c(p, p, rep))
-    lambda.rep <- array(0, dim = c(p,p,rep))
-    ess.asv.rep <- rep(0,rep)
-    ess.rsv.rep <- rep(0,rep)
-
-    for (r in 1:rep){
+  asv <- list()
+  rsv <- list()
+  ess.asv <- list()
+  ess.rsv <- list()
+  
+  for (r in 1:rep){
+    
+    print(paste("Sampling for rep =", r))
+    
+    asv.samp <- array(0, dim = c(p, p, l))
+    rsv.samp <- array(0, dim = c(p, p, l))
+    ess.asv.samp <- rep(0, l)
+    ess.rsv.samp <- rep(0, l)
+    
+    master.chain <- array(0, dim = c(max, p, m))
+    
+    for (k in 1:m){
+      temp <- MHwG.RAM(start[k,], aux[k,], jump.scale = j.scale,Ob, Os, Xb, Xs, Yb, Ys, n.sample = max+1, n.burn = 0)
+      master.chain[,,k] <- temp$x
+      print(colMeans(temp$accept)) 
+    }
+    
+    for (j in 1:l){
       
-      print(paste("Sampling for nsim = ", nsim, "; rep = ", r))
-      
-      chain <-array(0, dim = c(nsim,p,m))
-      #chain <- master.chain.rep[1:nsim,,,r]
-      chain[,,1] <- MHwG.RAM(start[1,], aux[1,], jump.scale = j.scale, Ob, Os, Xb, Xs, Yb, Ys, n.sample = nsim+1, n.burn = 0)$x
-      chain[,,2] <- MHwG.RAM(start[2,], aux[2,], jump.scale = j.scale, Ob, Os, Xb, Xs, Yb, Ys, n.sample = nsim+1, n.burn = 0)$x
-      
+      nsim <- conv.pts[j]
+      chain <- master.chain[1:nsim,,]
       sve <- array(0, dim = c(p,p,m))
       rsve <- array(0, dim = c(p,p,m))
       smpl.cov <- array(0, dim = c(p,p,m))
       b <- rep(0,m)
-
+      
       for (k in 1:m){
         b[k] <- batchSize(chain[,,k], method = "bartlett")
-        smpl.cov[,,k] <- var(chain[,,k])
+        smpl.cov[,,k] <- cov(chain[,,k])
       }
-
-      b.avg <- floor(mean(b))
-
+      
+      b.avg <- ceiling(mean(b))
+      
       global.mean <- apply(chain,2,mean)
-
+      
       for (k in 1:m){
         chain.cen.loc <- scale(chain[,,k], scale = FALSE)  ## X_st - bar(X)_s
         sve[,,k] <- mSVEfft(A = chain.cen.loc, b = b.avg)
         chain.cen <- scale(chain[,,k], center = global.mean, scale =FALSE)
         rsve[,,k] <- mSVEfft(A = chain.cen, b = b.avg)
-
+        
       }
-
-      sve.rep[,,r] <- apply(sve, c(1,2), mean)
-      rsve.rep[,,r] <- apply(rsve, c(1,2), mean)
-      lambda.rep[,,r] <- apply(smpl.cov, c(1,2), mean)
-      ess.asv.rep[r] <- (lambda.rep[1,1,r]/sve.rep[1,1,r]) #(det(lambda.rep[,,r])/det(sve.rep[,,r]))^(1/p)
-      ess.rsv.rep[r] <- (lambda.rep[1,1,r]/rsve.rep[1,1,r])
+      
+      asv.samp[,,j] <- apply(sve, c(1,2), mean)
+      rsv.samp[,,j] <- apply(rsve, c(1,2), mean)
+      lambda.rep <- apply(smpl.cov, c(1,2), mean)
+      ess.asv.samp[j] <- (det(lambda.rep)/det(asv.samp[,,j]))^(1/p)
+      ess.rsv.samp[j] <- (det(lambda.rep)/det(rsv.samp[,,j]))^(1/p)
+      
     }
-
-    asv.samp[,,j] <- apply(sve.rep, c(1,2), mean)
-    rsv.samp[,,j] <- apply(rsve.rep, c(1,2), mean)
-    ess.asv.samp[[j]] <- ess.asv.rep
-    ess.rsv.samp[[j]] <- ess.rsv.rep
-    print(paste("Percentage completion: ", round(100*j/l, 2)))
+    
+    asv[[r]] <- asv.samp
+    rsv[[r]] <- rsv.samp
+    ess.asv[[r]] <- ess.asv.samp
+    ess.rsv[[r]] <- ess.rsv.samp
+    
+    save(master.chain, asv, rsv, ess.asv, ess.rsv, 
+    file = paste("Out/conv_data_m", m, "_min", min, "_max", max, ".Rdata", sep = "")) 
   }
-  save(asv.samp,rsv.samp, ess.asv.samp, ess.rsv.samp, file = paste(paste("Out/conv_data", min, max, sep = "_"), ".Rdata", sep = ""))
-
+  
 }
 
 
 ######################################################################
-m <- 2
-start1 <- runif(n=8, min=-0.3, max=0)
-aux1 <- runif(n=8, min=-0.3, max=0)
-start2 <- runif(n=8, min= 0.7, max=1)
-aux2 <- runif(n=8, min= 0.7, max=1)
-start <- rbind(start1, start2)
-aux <- rbind(aux1, aux2)
-j.scale <- rep(1,.08, 4)
+m <- 5
+start1 <- c(-0.1, 0.5, -0.1, -0.2, 0.1, 0.1, -0.5, -0.5)
+aux1 <- runif(n=8, min=min(start1), max=max(start1))
+start2 <- c(0.0, 0.6, 0.1, 0.1, 0.2, 0.2, 1.0, 0.0)
+aux2 <- runif(n=8, min=min(start2), max=max(start2))
+start3 <- c(0.2, 0.7, 0.5, 0.4, 0.5, 0.3, 0.5, 0.5)
+aux3 <- runif(n=8, min=min(start3), max=max(start3))
+start4 <- c(0.4, 0.8, 0.8, 0.6, 0.7, 0.4, 1.0, 1.0)
+aux4 <- runif(n=8, min=min(start4), max=max(start4))
+start5 <- c(0.7, 1.0, 1.2, 0.9, 0.9, 0.5, 1.5, 1.5)
+aux5 <- runif(n=8, min=min(start5), max=max(start5))
+
+start <- rbind(start1, start2, start3, start4, start5)
+aux <- rbind(aux1, aux2, aux3, aux4, aux5)
+j.scale <- rep(0.5, 4)
 truth <- c(0.5748, 0.9069, 0.0991, 0.3651, 0.2578, 0.1350, 0.8546, 0.0392)
 #sims for plotting densities and calculating coverage
 
 check.pts <- c(1e3, 5e3, 1e4, 5e4, 1e5)
 freq <- 10
-rep <- 2
+rep <- 1
 c.prob <- .95
-min <- 1e3
+min <- 500
 max <- 2e5
-step <- 5e2
+step <- 500
 conv.pts <- seq(min, max, step)
 
 print("Carrying out 1000 repititions for each value of nsim in check.pts")

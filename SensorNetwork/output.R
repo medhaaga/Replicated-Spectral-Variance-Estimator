@@ -57,19 +57,19 @@ check.pts <- c(5e3, 1e4, 5e4, 1e5)
 r <- length(check.pts)
 freq <- 1e2
 c.prob <- .95
-min <- 1e3
-max <- 1e5
-step <- 100
+min <- 500
+max <- 2e5
+step <- 500
 conv.pts <- seq(min, max, step)
 
 ## 1.) Running plots
 
-load(file = paste(paste("Out/conv_data", min, max, sep = "_"), ".Rdata", sep = ""))
+load(file = paste("Out/conv_data_m", m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
 for (k in 1:p){
   pdf(file = paste("Out/run_plots-", k, ".pdf", sep = ""))
-  plot(conv.pts,asv.samp[k,k,], type = "l", col = "red", main = paste("Variance of component -", k), xlab = "Simulation size", ylab = "Variance", ylim = range(rsv.samp[k,k,], asv.samp[k,k,]))
-  lines(conv.pts, rsv.samp[k,k,], col="blue")
+  plot(conv.pts,asv[[1]][k,k,], type = "l", col = "red", main = paste("Variance of component -", k), xlab = "Simulation size", ylab = "Variance", ylim = range(rsv[[1]][k,k,], asv[[1]][k,k,]))
+  lines(conv.pts, rsv[[1]][k,k,], col="blue")
   legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=.75)
   dev.off()
 }
@@ -80,8 +80,8 @@ det.rsv <- rep(0,length(conv.pts))
 det.asv <- rep(0,length(conv.pts))
 
 for (i in 1:length(conv.pts)){
-  det.rsv[i] <- (det(rsv.samp[,,i]))
-  det.asv[i] <- (det(asv.samp[,,i]))
+  det.rsv[i] <- (det(rsv[[1]][,,i]))
+  det.asv[i] <- (det(asv[[1]][,,i]))
 }
 
 plot(conv.pts,det.asv, type = "l", col="red", main = paste("Determinant"), xlab = "Simulation size", ylab = "Determinant", ylim = range(det.rsv))
@@ -114,6 +114,8 @@ plot(conv.pts, mean.asv, type = "l", col = "red", main = "ESS running plot", xla
 lines(conv.pts, mean.rsv, type = "l", col = "blue")
 #segments(x0 = conv.pts[1:100], y0 = lower.asv[1:100], y1 = upper.asv[1:100], col = "red")
 #segments(x0 = conv.pts[1:100], y0 = lower.rsv[1:100], y1 = upper.rsv[1:100], col = "blue")
+plot(conv.pts, ess.asv[[1]], type = "l", col = "red", main = "ESS running plot", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(ess.asv[[1]], ess.rsv[[1]]))
+lines(conv.pts, ess.rsv[[1]], col = "blue")
 legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=1.2)
 dev.off()
 
