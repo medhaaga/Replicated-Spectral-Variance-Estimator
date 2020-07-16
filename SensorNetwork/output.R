@@ -43,7 +43,7 @@ Ys <- matrix(c(0, 0, 0, 0.9266,
                0.9266, 0.8524, 0, 0), ncol = 4)
 
 
-m <- 2
+m <- 5
 start <- rbind(runif(n=8, min=-0.3, max=0), runif(n=8, min=0.7, max=1))
 aux <- rbind(runif(n=8, min=-0.3, max=0), runif(n=8, min=0.7, max=1))
 j.scale <- rep(1,.08, 4)
@@ -58,12 +58,12 @@ r <- length(check.pts)
 freq <- 1e2
 c.prob <- .95
 min <- 500
-max <- 2e5
+max <- 5e5
 step <- 500
 conv.pts <- seq(min, max, step)
 
 ## 1.) Running plots
-
+p <- 8
 load(file = paste("Out/conv_data_m", m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
 for (k in 1:p){
@@ -73,6 +73,12 @@ for (k in 1:p){
   legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=.75)
   dev.off()
 }
+
+  pdf(file = paste("Out/run_plots-Frob.pdf", sep = ""))
+  plot(apply(asv[[1]], 3, norm, "F"), type = "l", col = "red", main = paste("Frobenius Norm"), xlab = "Simulation size", ylab = "Variance", ylim = range(apply(asv[[1]], 3, norm, "F"), apply(rsv[[1]], 3, norm, "F")) )
+  lines(apply(rsv[[1]], 3, norm, "F"), col="blue")
+  legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=.75)
+  dev.off()
 #### 1c.) Determinant
 pdf(file = paste(paste("Out/run_plots_det", sep = "_"), ".pdf", sep = ""), height = 3)
 
@@ -80,8 +86,8 @@ det.rsv <- rep(0,length(conv.pts))
 det.asv <- rep(0,length(conv.pts))
 
 for (i in 1:length(conv.pts)){
-  det.rsv[i] <- (det(rsv[[1]][,,i]))
-  det.asv[i] <- (det(asv[[1]][,,i]))
+  det.rsv[i] <- (det(rsv[[1]][,,i]))^(1/p)
+  det.asv[i] <- (det(asv[[1]][,,i]))^(1/p)
 }
 
 plot(conv.pts,det.asv, type = "l", col="red", main = paste("Determinant"), xlab = "Simulation size", ylab = "Determinant", ylim = range(det.rsv))
@@ -93,29 +99,29 @@ dev.off()
 
 pdf(file = paste("Out/run_plot_ess.pdf", sep = "_"), height = 4)
 
-par(mfrow = c(k,k))
-mean.asv <- rep(0, length(conv.pts))
-mean.rsv <- rep(0, length(conv.pts))
+# par(mfrow = c(k,k))
+# mean.asv <- rep(0, length(conv.pts))
+# mean.rsv <- rep(0, length(conv.pts))
 #lower.asv <- rep(0, length(conv.pts))
 #lower.rsv <- rep(0, length(conv.pts))
 #upper.asv <- rep(0, length(conv.pts))
 #upper.rsv <- rep(0, length(conv.pts))
-for (i in 1:length(conv.pts)){
-  asv <- confidence_interval(ess.asv.samp[[i]], .9)
-  rsv <- confidence_interval(ess.rsv.samp[[i]], .9)
-  mean.asv[i] <- log(asv[1])
-  mean.rsv[i] <- log(rsv[1])
+# for (i in 1:length(conv.pts)){
+#   asv <- confidence_interval(ess.asv.samp[[i]], .9)
+#   rsv <- confidence_interval(ess.rsv.samp[[i]], .9)
+#   mean.asv[i] <- log(asv[1])
+#   mean.rsv[i] <- log(rsv[1])
   # lower.asv[i] <- log(asv[2])
   #  lower.rsv[i] <- log(rsv[2])
   # upper.asv[i] <- log(asv[3])
   #upper.rsv[i] <- log(rsv[3])
-}
-plot(conv.pts, mean.asv, type = "l", col = "red", main = "ESS running plot", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(mean.asv, mean.rsv))
-lines(conv.pts, mean.rsv, type = "l", col = "blue")
+# }
+# plot(conv.pts, mean.asv, type = "l", col = "red", main = "ESS running plot", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(mean.asv, mean.rsv))
+# lines(conv.pts, mean.rsv, type = "l", col = "blue")
 #segments(x0 = conv.pts[1:100], y0 = lower.asv[1:100], y1 = upper.asv[1:100], col = "red")
 #segments(x0 = conv.pts[1:100], y0 = lower.rsv[1:100], y1 = upper.rsv[1:100], col = "blue")
-plot(conv.pts, ess.asv[[1]], type = "l", col = "red", main = "ESS running plot", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(ess.asv[[1]], ess.rsv[[1]]))
-lines(conv.pts, ess.rsv[[1]], col = "blue")
+plot(conv.pts, log(ess.asv[[1]]), type = "l", col = "red", main = "ESS running plot", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(log(ess.asv[[1]]), log(ess.rsv[[1]])))
+lines(conv.pts, log(ess.rsv[[1]]), col = "blue")
 legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=1.2)
 dev.off()
 
@@ -123,25 +129,25 @@ dev.off()
 
 ## 3.) Density plots for determinant of ASV and RSV.
 
-pdf(file = "Out/densities.pdf", height = 5)
+# pdf(file = "Out/densities.pdf", height = 5)
 
-par(mfrow = c(2,3))
-for (j in 1:5){
-  nsim <- check.pts[j]
-  load(file = paste(paste("Out/out", nsim, sep = "_"), ".Rdata", sep = ""))
+# par(mfrow = c(2,3))
+# for (j in 1:5){
+#   nsim <- check.pts[j]
+#   load(file = paste(paste("Out/out", nsim, sep = "_"), ".Rdata", sep = ""))
   
-  det.rsv <- rep(0,freq)
-  det.asv <- rep(0,freq)
-  for (k in 1:freq){
-    det.rsv[k] <- det(rsv.samp[,,k])
-    det.asv[k] <- det(asv.samp[,,k])
-  }
-  plot(density(det.asv), col="red", main = paste(" n =", nsim), xlab = "Determinant")
-  lines(density(det.rsv), col="blue")
-  legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=1.2)
+#   det.rsv <- rep(0,freq)
+#   det.asv <- rep(0,freq)
+#   for (k in 1:freq){
+#     det.rsv[k] <- det(rsv.samp[,,k])
+#     det.asv[k] <- det(asv.samp[,,k])
+#   }
+#   plot(density(det.asv), col="red", main = paste(" n =", nsim), xlab = "Determinant")
+#   lines(density(det.rsv), col="blue")
+#   legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=1.2)
   
-  print(paste("Coverage probabilities for nsim =  ", nsim, " are: "))
-  print(paste("ASV : ", mean(asv.coverage), "RSV: ", mean(rsv.coverage)))
-}
-dev.off()
+#   print(paste("Coverage probabilities for nsim =  ", nsim, " are: "))
+#   print(paste("ASV : ", mean(asv.coverage), "RSV: ", mean(rsv.coverage)))
+# }
+# dev.off()
 

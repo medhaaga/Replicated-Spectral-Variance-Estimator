@@ -161,7 +161,7 @@ convergence <- function(min, max, start, aux, j.scale, Ob, Os, Xb, Xs, Yb, Ys, m
     ess.asv[[r]] <- ess.asv.samp
     ess.rsv[[r]] <- ess.rsv.samp
     
-    save(master.chain, asv, rsv, ess.asv, ess.rsv, 
+    save(asv, rsv, ess.asv, ess.rsv, 
     file = paste("Out/conv_data_m", m, "_min", min, "_max", max, ".Rdata", sep = "")) 
   }
   
@@ -176,7 +176,7 @@ start2 <- c(0.0, 0.6, 0.1, 0.1, 0.2, 0.2, 1.0, 0.0)
 aux2 <- runif(n=8, min=min(start2), max=max(start2))
 start3 <- c(0.2, 0.7, 0.5, 0.4, 0.5, 0.3, 0.5, 0.5)
 aux3 <- runif(n=8, min=min(start3), max=max(start3))
-start4 <- c(0.4, 0.8, 0.8, 0.6, 0.co7, 0.4, 1.0, 1.0)
+start4 <- c(0.4, 0.8, 0.8, 0.6, 0.7, 0.4, 1.0, 1.0)
 aux4 <- runif(n=8, min=min(start4), max=max(start4))
 start5 <- c(0.7, 1.0, 1.2, 0.9, 0.9, 0.5, 1.5, 1.5)
 aux5 <- runif(n=8, min=min(start5), max=max(start5))
@@ -192,12 +192,12 @@ freq <- 10
 rep <- 1
 c.prob <- .95
 min <- 500
-max <- 2e5
+max <- 5e5
 step <- 500
 conv.pts <- seq(min, max, step)
 
-print("Carrying out 1000 repititions for each value of nsim in check.pts")
-create.output(start, aux, j.scale, Ob, Os, Xb, Xs, Yb, Ys, m, check.pts, freq, truth)
+# print("Carrying out 1000 repititions for each value of nsim in check.pts")
+# create.output(start, aux, j.scale, Ob, Os, Xb, Xs, Yb, Ys, m, check.pts, freq, truth)
 
 print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
 
