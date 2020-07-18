@@ -45,14 +45,13 @@
 % \newcommand{\indep}{\perp \!\!\! \perp}
 
 
-\title{Estimating autocorrelation from multiple Markov chains}
+\title{Globally-centered autocovariances in MCMC}
 
 \author{
   Medha Agarwal \\
   Department of Mathematics and Statistics\\
   IIT Kanpur\\
   \texttt{medhaaga@iitk.ac.in} \and
-  %% examples of more authors
  Dootika Vats \\
   Department of Mathematics and Statistics\\
   IIT Kanpur\\
@@ -67,10 +66,49 @@
 
 \onehalfspacing
 \begin{abstract}
-    This is best abstract in the world.\\.\\.\\.\\.\\.
+Autocovariances are the fundamental quantity in many features of Markov chain Monte Carlo (MCMC) simulations with autcorrelation function (ACF) plots being often used as a visual tool to ascertain the performance of a Markov chain. Unfortunately, for slow mixing Markov chains, the empirical autocovariance can highly underestimate the truth. For multiple chain MCMC sampling,  we propose a globally-centered estimate of the autocovariance that pools information from all Markov chains. We show the impact of these improved estimators in three aspects: (1) acf plots, (2) estimates of the Monte Carlo asymptotic covariance matrix, and (3) estimates of the effective sample size. 
 \end{abstract}
 
 
+{\color{blue} Main things to change
+\begin{itemize}
+  \item I don't want to call this ``Replicated autocovariance'' or ``Replicated spectral variance''. I think ``Globally-centered autocovariance'' is more appropriate and self-explanatory. So we will have to go over the whole document and change this.
+
+\end{itemize}
+
+A rough outline of the organization
+\begin{enumerate}
+  \item Introduction, with a sneak peak at new plots. Change this example to a univariate mixture of Gaussians.
+
+  \item Globally-centered autocovariance
+    \begin{itemize}
+      \item Theoretical soundness
+    \end{itemize}
+
+  \item Variance of Monte Carlo averages
+
+    Describe MC averages and CLT
+    \begin{itemize}
+      \item Globally-centered Spectral variance estimators
+      \begin{itemize}
+        \item Theoretical results
+        \item Computational gains
+      \end{itemize}
+      \item Explore: Charlie's initial sequence estimators
+    \end{itemize}
+
+  \item Effective sample size
+
+  \item Examples
+
+  \item Appendix
+    \begin{itemize}
+      \item Proofs
+      \item ACF plots for other examples.
+    \end{itemize}
+
+\end{enumerate}
+}
 \section{Introduction} \label{sec:intro}
 
 Markov chain Monte Carlo (MCMC) is a sampling method used to obtain correlated realizations from a stochastic process. Due to this serial correlation in observations, a large number of MCMC samples are required to estimate features of the target distribution as compared to the independent ones. Therefore, it becomes imperative for an MCMC practitioner to have an idea about underlying dependence structure in the Markov chains. Autocovariance function (ACF) characterizes this dependence for a stationary Markov chain. A famous sample autovariance function is the empirical estimator, which unfortunately comes with its drawbacks. Firstly, it is not immune to outliers (see \cite{ma2000highly}) and secondly, it is usually non-informative in case of slowly mixing Markov chains for decently finite samples. We address the second issue in this paper by using multiple representative samples of the target distribution via parallel Markov chains.
@@ -126,7 +164,7 @@ In the next section we introduce the new sample autocovariance estimator and cal
 \end{figure}
 
 \end{example}
-\section{Replicated Autocovariance Function} \label{sec:R-ACF}
+\section{Globally-centered autocovariance} \label{sec:R-ACF}
 
 For a stationary stochastic process $\{X_t\}_{t \geq 1}$, let $\Gamma(k)$ denote the lag -k autocovariance. In time series literature, we generally encounter the following estimator for autocovariance. 
 %
@@ -442,6 +480,7 @@ The conditional distribution of $x$ given $y$ and vice versa is a normal distrib
 
 We use a carefully chosen parameterization of $A = 1,\; B = 3,\; C = 8$ which ensures bimodality for our purpose.  Let $n$ be the number of samples in each chain and $m$ be the number of Markov chain replications. Finding the actual mean of this distribution in closed form is difficult. Therefore, we use numerical integration with fine tuning to calculate it. We sample two parallel Markov chains with well-separated starting values. 
 
+\begin{comment}
 \begin{figure}[h]
     \centering
     \begin{subfigure}[h]{.4\textwidth}
@@ -459,7 +498,9 @@ We use a carefully chosen parameterization of $A = 1,\; B = 3,\; C = 8$ which en
     \caption{Perspective plots of the target distribution for two different parameterizations.}
    \label{fig:3d_plot}
 \end{figure}
+\end{comment}
 
+\begin{comment}
 \begin{figure}[h]
     \centering
     \begin{subfigure}[h]{.4\textwidth}
@@ -477,24 +518,25 @@ We use a carefully chosen parameterization of $A = 1,\; B = 3,\; C = 8$ which en
     \caption{The scatter plots for two parallel Markov chains. (a): Both the chains are stuck in one of the mode (b): Both the chains have travelled and explored both the modes.}
     \label{fig:boom-sp}
 \end{figure}
+\end{comment}
 
 In Figure \ref{fig:boom-sp}, we demonstrate the ``sticky'' nature of the Markov chains. For the first thousand samples, both the chains are oblivious of the existence of another mode. By ten thousand samples, both the Markov chains have explored the two modes. This property will affect the single chain estimators like ACF. In Figure \ref{subfig:boom-acf_1e3}, the ACF is severely underestimated because the chain-1 has not jumped to the other mode. Whereas, in Figure \ref{subfig:boom-acf_1e4}, both ACF and R-ACF give almost similar results indicating that both modes have been explored by chain-1. 
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[h]{.7\textwidth}
+    \begin{subfigure}[h]{.8\textwidth}
       \centering
-      \includegraphics[width = \textwidth]{plots/boom-acf,n=1000.pdf}
+      \includegraphics[width = \textwidth, height = 2in]{plots/boom-acf,n=1000.pdf}
       \caption{$n = 1000$}
       \label{subfig:boom-acf_1e3}
     \end{subfigure}
-    \begin{subfigure}[h]{.7\textwidth}
+    \begin{subfigure}[h]{.8\textwidth}
       \centering
-      \includegraphics[width = \textwidth]{plots/boom-acf,n=50000.pdf}
+      \includegraphics[width = \textwidth, height = 2in]{plots/boom-acf,n=50000.pdf}
       \caption{$n = 50000$}
       \label{subfig:boom-acf_1e4}
     \end{subfigure}
-    \caption{ACF and R-ACF for component-1 of chain-1 at two different sample sizes. }
+    \caption{ACF and R-ACF for component-1 of chain-1 at two different number of Monte Carlo samples. }
     \label{fig:boom-acf}
 \end{figure}
 
@@ -556,9 +598,63 @@ To examine the performance of RSV for a nicely mixing Markov chain, we use the p
     \label{table:boom-coverage_1_10_7}
 \end{table}
 
+\subsection{Sensor Network Localization}
 
+For our third example, we consider a real-life problem of sensor locations previously discussed by \cite{ihler2005nonparametric}. The goal is to identify unknown sensor locations using noisy distance data. This problem is specifically interesting in our case because the joint posterior distribution for missing sensor locations is multi-modal. \\
+
+\cite{tak2018repelling} modified the simulation settings of \cite{lan2014wormhole} to include only six sensor locations (four unknown and two unknown) out of eleven locations (eight known and three unknown). Following \cite{tak2018repelling}, we assume that there are six sensors scattered on a planar region where $x_i = (x_{i1}, x_{i2})^T$ denote the $2d$ coordinates of $i^{th}$ sensor. Let $y_{ij} = (y_{ji})$ denote the distance between the sensors $x_i$ and $x_j$. The distance between $x_i$ and $x_j$ is observed with probability $\pi (x_i, x_j) = \exp{\|x_i - x_j\|^2 / 2R^2}$ and with a Gaussian measurement error of $\sigma^2$. Let $z{ij}$ denote the indicator variable which is equal to 1 when the distance between $x_i$ and $x_j$ is observed. The probability model is then,
+
+\begin{align*}
+    z_{ij}|x_1, ..., x_6 &\sim Bernoulli\left(\exp\left(\dfrac{-\|x_i - x_j\|^2}{2R^2}\right)\right)\\
+    y_{ij}| w_{ij} = 1, x_1, ..., x_6 &\sim N(\|x_i - x_j\|^2, \sigma^2)
+\end{align*}
+
+\cite{ahn2013distributed} suggested the value of $R = 0.3$ and $\sigma = 0.02$. We use a Gaussian prior for the unknown locations with  mean equal to $(0,0)$ and covariance matrix equal to $100 I_2$. $y_{ij}$ is specified only if $w_{ij} = 1$. The likelihood function is then,
+
+\begin{multline*}
+    L(x_1, x_2, x_3, x_4) \propto \\
+\prod_{j>i} \left[ \left(\exp\left(\dfrac{-\|x_i - x_j\|^2}{2 \times 0.3^2}\right)\right)^{w_{ij}} \left(1 - \exp\left(\dfrac{-\|x_i - x_j\|^2}{2 \times 0.3^2}\right)\right)^{1 - w_{ij}} \exp \left(-\dfrac{y_{ij} - \|x_i - x_j\|^2}{2 \times 0.02^2}\right)\right]    
+\end{multline*}
+
+The full posterior distribution with Gaussian prior is given by,
+\begin{equation} \label{ex:sensor_post}
+    \pi (x_1, x_2, x_3, x_4 | y, w) \propto 
+    L(x_1, x_2, x_3, x_4) \times \exp \left(- \dfrac{\sum_{i = 1}^{4} x_i^Tx_i}{2 \times 0.02^2}\right) 
+\end{equation}
+
+where $y = (y_{ij}, j>i)$ and $w = (w_{ij}, j>i)$. We follow the Markov chain structure as described by \cite{tak2018repelling} and sample from the four bivariate conditionals for each sensor location using a Gibbs sampler. In their paper on Repelling Attractive Metropolis (RAM) algorithms, \cite{tak2018repelling} compare the performance of three different sampling techniques namely - Metropolis, RAM and Tempered Transitions (TT). RAM is shown to improve the acceptance rate by a factor of at least 5.5 over Metropolis using the same jumping scale. RAM algorithm supplies Markov chains with higher jumping frequency between the modes of a multimodal target distribution.\\
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width = .7\textwidth]{plots/sensor-trace.pdf}
+    \caption{Trace plots for the x-component of all four locations of the third chain.}
+    \label{fig:sensor-trace-3}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[h]{.8\textwidth}
+      \centering
+      \includegraphics[width = \textwidth, height = 2in]{plots/sensor-acf-n1000.pdf}
+      \caption{$n = 10^3$}
+      \label{subfig:sensor-acf_n1e3}
+    \end{subfigure}
+    \begin{subfigure}[h]{.8\textwidth}
+      \centering
+      \includegraphics[width = \textwidth, height = 2in]{plots/sensor-acf-n1e5.pdf}
+      \caption{$n = 10^5$}
+      \label{subfig:sensor-acf_n1e5}
+    \end{subfigure}
+    \caption{ACF and R-ACF for component-3 of chain-3 at two different number of Monte Carlo samples. }
+    \label{fig:sensor-acf}
+\end{figure}
+
+
+We will use the RAM algorithm with a jumping scale equal to $0.5$ to sample five parallel Markov chains with well-separated starting points. The total simulation size for each chain is fixed at $100,000$. Figure \ref{fig:sensor-trace-3} demonstrates the trace plots of the first chain for the x-component of all four unknown locations. We observe the bi-modal nature of the marginal distribution for each component. The Markov chains get stuck at a particular mode for a long time before jumping to the other mode. Figure \ref{fig:sensor-acf} shows the effect of this "sticky" nature of Markov chains over the autocorrelations centered around the local and global mean. For a small sample size of 1000, it can be seen that the third chain has not explored the sample space well. As a consequence, the local mean differs a lot from the global mean (averaged over all five chains).
+
+ 
 \section{Discussion} \label{sec:discussion}
-
+ 
 
 \appendix
 
@@ -984,7 +1080,7 @@ where both $O_1 \textrm{ and } O_2$ are the small order terms. By our assumption
 \begin{align*}
     &\mathbb{E} \left[\hat{\Sigma}_{RSV} - \Sigma \right]\\
     &= \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Gamma}_{RAC}(k) \right] - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
-    &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\Gamma(k) +O_1 + O_2\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
+    &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\Gamma(k) +O_1 + O_2\right]  - \sum_{k=-\infty}^{\inf}\Gamma(k)\\
     &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k)\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)\left(O_1 + O_2\right)\right] \\ 
     & = P_1 + o \left( \dfrac{1}{n} \right)\,
 \end{align*}
@@ -1131,6 +1227,54 @@ Finally,
 Plugging (\ref{eq:hannan_var}) into variance of $\hat{\Sigma}_{RSV}$ gives the result of the theorem.
  
 \end{proof}
+
+\section{Additional Examples}
+We have established that estimating autocovariance is crucial to estimate the Markov chain standard error.  In this section we will use two real-life datsets to exemplify the better performance of our replicated autocovariance estimator for multiple Markov chains. R packages already exist to create Markov chains for these examples. However, when these chains are started from different points, we will observe that they do not represent the target distribution well for finite samples. The traditional empirical ACF estimator fails in these cases, whereas our estimator shows promising results. We will not engage into full error analysis for these examples due to computational restrictions posed by high dimensional sample space. 
+\subsection{Bayesian Poisson Change Point Model}
+
+\cite{pollins1996global} theorizes a cyclical pattern in the number of international conflicts. Four core theories by \cite{gilpin1981war}, \cite{wallerstein1983three}, \cite{goldstein1988long}, and \cite{modelski1988seapower} put different weights on the role of global economic and political order in explaining this cyclical pattern. See \cite{martin2011mcmcpack} for detailed discussion on the effect of these theories on the cyclic behavior of international disputes.\\
+
+In this example, we will fit a Poisson change-point model on the annual number of military conflicts from the militarized interstate dispute (MID) data. We wish to detect the number and timings of the cyclic phases in the international conflicts. \cite{chib1998estimation} describes the Poisson change-point as a Markov mixture model where observations are assumed to be drawn from latent states. Following \cite{martin2011mcmcpack}, we will use \texttt{MCMCpoissonChange} from \texttt{MCMCpack} to fit the model which samples the latent states based on the algorithm in \cite{chib1998estimation}. The Poisson change-point model in \texttt{MCMCpoissonChange} uses conjugate priors and can be written as:
+
+\begin{align*}
+    y_t &\sim \textit{Poisson}(\lambda_i), \qquad i = 1, ..., k\\
+    \lambda_i &\sim \textit{Gamma}(c_o, d_o), \qquad i = 1,..., k\\
+    p_{ii} &\sim \textit{Beta}(\alpha, \beta), \qquad i = 1,..., k
+\end{align*}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.8\textwidth, height = 4in]{plots/spatio-acf.pdf}
+    \caption{ACF and R-ACF for first component of first chain. ACF underestimates the autocorrelations for $10^3$ samples (top) whereas R-ACF gives more realistic estimates. They perform alike for $10^5$ samples (bottom).}
+    \label{fig:spatio-acf_racfl}
+\end{figure}
+The results of model comparison by \cite{martin2011mcmcpack} showed that the ratio of maximum likelihood for six change-point model is favored over the alternatives. We will use this information and present the ACF results for a six change-points model only. We will use the hyperparameters values $c_o = 13 \textrm{ and } d_o = 1$ because the mean of MID is around 13. \\
+
+We run two parallel Markov chains starting from random poits. In Figure \ref{fig:spatio-acf_racfl}, it is evident that the chains have not explored the sample space well. Hence for $10^3$ samples ACF severely underestimates the autocorrelations whereas R-ACF gives more realistic estimates. For a large sample size of $10^5$, the Markov chains have mixed properly and therefore, both the estimators are approximately alike.
+
+\subsection{High School Social Network}
+
+\cite{handcock2008statnet} implemented an exponential-family random graph modelling (ERGM) on network data in the package \texttt{ergm}. The \texttt{faux.magnolia.high} dataset available in the package represents a simulated within school friendship network based on Ad-Health data (\cite{resnick1997protecting}). The school communities represented by the network data are located in the southern United States. Each node represents a student and each edge represents a friendship between the nodes it connects. \cite{nilakanta2019ensuring} modified the data by removing 1,022 out of 1,461 nodes to obtain a well-connected graph. This resulting social network has 439 nodes and 573 edges.\\
+
+Let $V$ denote the non-empty set of countable nodes, $E \subseteq V \times V$ denote the set of edges, and $G = (V,E)$ denote the network. We are interested in exploring all the nodes uniformly, i.e. sample from a uniform distribution over $V$. Let $\lambda$ denote a uniform distribution over $V$  let $h: V \to \mathbb{R}^p$ map each node to certain features of interest. If $X \sim \lambda$, we wish to calculate the expected value of $h(X)$ with respect to $\lambda$ given by
+
+\[
+\mathbb{E}[h(X)]_{\lambda} = \dfrac{1}{n}\sum_{x \in V}h(x).
+\]
+
+Here n is the set cardinality of $V$. We use a Metropolis-Hastings algorithm with a simple random-walk (SRW) proposal suggested by \cite{gjoka2011practical}. The stationary distribution for this algorithm is a uniform distribution over $V$, i.e. $\lambda(i) = 1/n$ for all $i \in V$.  The Metropolis-Hastings transition kernel for this method is
+
+\[
+P(i,j) = \left \{
+        \begin{array}{cc}
+             \dfrac{1}{d_i} min\left(1, \dfrac{d_i}{d_j}\right) & \textrm{if j is a neighbor of i}  \\
+             1 - \sum_{k \neq i} \dfrac{1}{d_i} min\left(1, \dfrac{d_i}{d_k}\right) & \textrm{if } j = i\\
+             0 & \textrm{otherwise}.
+        \end{array}
+\right.
+\]
+
+Table (blah) shows the population parameters we are interested in estimating using MCMC methods.  The race and sex parameters are estimated as proportion of whites and females in the sample respectively. We start two parallel Markov chains from two students belonging to different races and study its impacts on the average features of their immediate social group. It is hypothesized that students from certain communities tend to engage more with students of same or other marginally represented communities. We believe that this "selective networking" might cause formation of clusters in the network wherein students within a cluster engage more with each other than with the students outside it. Given that the graph is well-connected, the Markov chains will eventually explore all the nodes. 
+
 
 \singlespacing
 \bibliographystyle{apalike}

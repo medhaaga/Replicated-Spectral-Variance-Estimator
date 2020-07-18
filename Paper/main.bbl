@@ -1,5 +1,10 @@
 \begin{thebibliography}{}
 
+\bibitem[Ahn et~al., 2013]{ahn2013distributed}
+Ahn, S., Chen, Y., and Welling, M. (2013).
+\newblock Distributed and adaptive darting monte carlo through regenerations.
+\newblock In {\em Artificial Intelligence and Statistics}, pages 108--116.
+
 \bibitem[Argon and Andrad{\'o}ttir, 2006]{arg:and:2006}
 Argon, N.~T. and Andrad{\'o}ttir, S. (2006).
 \newblock Replicated batch means for steady-state simulations.
@@ -9,6 +14,11 @@ Argon, N.~T. and Andrad{\'o}ttir, S. (2006).
 Box, G.~E., Jenkins, G.~M., Reinsel, G.~C., and Ljung, G.~M. (2015).
 \newblock {\em Time series analysis: forecasting and control}.
 \newblock John Wiley \& Sons.
+
+\bibitem[Chib, 1998]{chib1998estimation}
+Chib, S. (1998).
+\newblock Estimation and comparison of multiple change-point models.
+\newblock {\em Journal of econometrics}, 86(2):221--241.
 
 \bibitem[Cs{\"o}rgo and R{\'e}v{\'e}sz, 2014]{csorgo2014strong}
 Cs{\"o}rgo, M. and R{\'e}v{\'e}sz, P. (2014).
@@ -31,11 +41,27 @@ Gelman, A., Rubin, D.~B., et~al. (1992).
 \newblock Inference from iterative simulation using multiple sequences.
 \newblock {\em Statistical science}, 7(4):457--472.
 
+\bibitem[Gilpin, 1981]{gilpin1981war}
+Gilpin, R. (1981).
+\newblock {\em War and change in world politics}.
+\newblock Cambridge University Press.
+
+\bibitem[Gjoka et~al., 2011]{gjoka2011practical}
+Gjoka, M., Kurant, M., Butts, C.~T., and Markopoulou, A. (2011).
+\newblock Practical recommendations on crawling online social networks.
+\newblock {\em IEEE Journal on Selected Areas in Communications},
+  29(9):1872--1892.
+
 \bibitem[Glynn et~al., 1992]{glynn1992asymptotic}
 Glynn, P.~W., Whitt, W., et~al. (1992).
 \newblock The asymptotic validity of sequential stopping rules for stochastic
   simulations.
 \newblock {\em The Annals of Applied Probability}, 2(1):180--198.
+
+\bibitem[Goldstein, 1988]{goldstein1988long}
+Goldstein, J.~S. (1988).
+\newblock {\em Long cycles: Prosperity and war in the modern age}.
+\newblock yale university Press.
 
 \bibitem[Gong and Flegal, 2016]{gong2016practical}
 Gong, L. and Flegal, J.~M. (2016).
@@ -44,10 +70,24 @@ Gong, L. and Flegal, J.~M. (2016).
 \newblock {\em Journal of Computational and Graphical Statistics},
   25(3):684--700.
 
+\bibitem[Handcock et~al., 2008]{handcock2008statnet}
+Handcock, M.~S., Hunter, D.~R., Butts, C.~T., Goodreau, S.~M., and Morris, M.
+  (2008).
+\newblock statnet: Software tools for the representation, visualization,
+  analysis and simulation of network data.
+\newblock {\em Journal of statistical software}, 24(1):1548.
+
 \bibitem[Hannan, 2009]{hannan2009multiple}
 Hannan, E.~J. (2009).
 \newblock {\em Multiple time series}, volume~38.
 \newblock John Wiley \& Sons.
+
+\bibitem[Ihler et~al., 2005]{ihler2005nonparametric}
+Ihler, A.~T., Fisher, J.~W., Moses, R.~L., and Willsky, A.~S. (2005).
+\newblock Nonparametric belief propagation for self-localization of sensor
+  networks.
+\newblock {\em IEEE Journal on Selected Areas in Communications},
+  23(4):809--819.
 
 \bibitem[Jones et~al., 2004]{jones2004markov}
 Jones, G.~L. et~al. (2004).
@@ -60,15 +100,41 @@ Kuelbs, J. and Philipp, W. (1980).
   random variables.
 \newblock {\em The Annals of Probability}, pages 1003--1036.
 
+\bibitem[Lan et~al., 2014]{lan2014wormhole}
+Lan, S., Streets, J., and Shahbaba, B. (2014).
+\newblock Wormhole hamiltonian monte carlo.
+\newblock In {\em AAAI}, pages 1953--1959.
+
 \bibitem[Ma and Genton, 2000]{ma2000highly}
 Ma, Y. and Genton, M.~G. (2000).
 \newblock Highly robust estimation of the autocovariance function.
 \newblock {\em Journal of time series analysis}, 21(6):663--684.
 
+\bibitem[Martin et~al., 2011]{martin2011mcmcpack}
+Martin, A.~D., Quinn, K.~M., and Park, J.~H. (2011).
+\newblock Mcmcpack: Markov chain monte carlo in r.
+
+\bibitem[Modelski and Thompson, 1988]{modelski1988seapower}
+Modelski, G. and Thompson, W.~R. (1988).
+\newblock Seapower and global politics.
+\newblock In {\em Seapower in Global Politics, 1494--1993}, pages 3--26.
+  Springer.
+
+\bibitem[Nilakanta et~al., 2019]{nilakanta2019ensuring}
+Nilakanta, H., Almquist, Z.~W., and Jones, G.~L. (2019).
+\newblock Ensuring reliable monte carlo estimates of network properties.
+\newblock {\em arXiv preprint arXiv:1911.08682}.
+
 \bibitem[Parzen et~al., 1961]{parzen1961approach}
 Parzen, E. et~al. (1961).
 \newblock An approach to time series analysis.
 \newblock {\em The Annals of Mathematical Statistics}, 32(4):951--989.
+
+\bibitem[Pollins, 1996]{pollins1996global}
+Pollins, B.~M. (1996).
+\newblock Global political order, economic change, and armed conflict:
+  Coevolving systems and the use of force.
+\newblock {\em American Political Science Review}, pages 103--117.
 
 \bibitem[Priestley, 1981]{priestley1981spectral}
 Priestley, M.~B. (1981).
@@ -82,6 +148,13 @@ Quenouille, M.~H. (1947).
   schemes.
 \newblock {\em Biometrika}, 34(3/4):365--367.
 
+\bibitem[Resnick et~al., 1997]{resnick1997protecting}
+Resnick, M.~D., Bearman, P.~S., Blum, R.~W., Bauman, K.~E., Harris, K.~M.,
+  Jones, J., Tabor, J., Beuhring, T., Sieving, R.~E., Shew, M., et~al. (1997).
+\newblock Protecting adolescents from harm: findings from the national
+  longitudinal study on adolescent health.
+\newblock {\em Jama}, 278(10):823--832.
+
 \bibitem[Song and Schmeiser, 1995]{song1995optimal}
 Song, W.~T. and Schmeiser, B.~W. (1995).
 \newblock Optimal mean-squared-error batch sizes.
@@ -92,6 +165,12 @@ Strassen, V. (1964).
 \newblock An invariance principle for the law of the iterated logarithm.
 \newblock {\em Zeitschrift f{\"u}r Wahrscheinlichkeitstheorie und Verwandte
   Gebiete}, 3:211--226.
+
+\bibitem[Tak et~al., 2018]{tak2018repelling}
+Tak, H., Meng, X.-L., and van Dyk, D.~A. (2018).
+\newblock A repelling--attracting metropolis algorithm for multimodality.
+\newblock {\em Journal of Computational and Graphical Statistics},
+  27(3):479--490.
 
 \bibitem[Tjøstheim, 1990]{10.2307/1427459}
 Tjøstheim, D. (1990).
@@ -108,6 +187,13 @@ Vats, D., Flegal, J.~M., and Jones, G.~L. (2018).
 Vats, D., Flegal, J.~M., and Jones, G.~L. (2019).
 \newblock Multivariate output analysis for markov chain monte carlo.
 \newblock {\em Biometrika}, 106(2):321--337.
+
+\bibitem[Wallerstein, 1983]{wallerstein1983three}
+Wallerstein, I. (1983).
+\newblock The three instances of hegemony in the history of the capitalist
+  world-economy.
+\newblock {\em International Journal of Comparative Sociology},
+  24(1-2):100--108.
 
 \bibitem[Wilks, 1932]{wilks1932certain}
 Wilks, S.~S. (1932).

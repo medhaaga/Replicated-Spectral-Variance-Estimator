@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  24 JUN 2020 18:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  18 JUL 2020 07:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -237,18 +237,18 @@ Excluding comment 'comment')
  (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -343,148 +343,167 @@ e
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 65.
+LaTeX Font Info:    Try loading font information for U+msa on input line 64.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 65.
+LaTeX Font Info:    Try loading font information for U+msb on input line 64.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1
+)
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 75.
 
-{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
-<plots/acf,n=500.pdf, id=22, 578.16pt x 289.08pt>
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 75.
+ [1
+
+{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
+
+<plots/acf,n=500.pdf, id=25, 578.16pt x 289.08pt>
 File: plots/acf,n=500.pdf Graphic file (type pdf)
  <use plots/acf,n=500.pdf>
-Package pdftex.def Info: plots/acf,n=500.pdf used on input line 114.
+Package pdftex.def Info: plots/acf,n=500.pdf used on input line 152.
 (pdftex.def)             Requested size: 375.80544pt x 187.89977pt.
 
-<plots/acf,n=10000.pdf, id=23, 578.16pt x 289.08pt>
+<plots/acf,n=10000.pdf, id=26, 578.16pt x 289.08pt>
 File: plots/acf,n=10000.pdf Graphic file (type pdf)
 
 <use plots/acf,n=10000.pdf>
-Package pdftex.def Info: plots/acf,n=10000.pdf used on input line 120.
+Package pdftex.def Info: plots/acf,n=10000.pdf used on input line 158.
 (pdftex.def)             Requested size: 375.80544pt x 187.89977pt.
- [3] [4 <./plots/acf,n=500.pdf> <./plots/acf,n=10000.pdf>] [5] [6] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 254--255
+ [4] [5 <./plots/acf,n=500.pdf> <./plots/acf,n=10000.pdf>] [6] [7] [8]
+Underfull \hbox (badness 10000) in paragraph at lines 292--293
 
  []
 
-[8] [9] [10] [11]
+[9] [10] [11]
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no ¸ in font cmr10!
+ [12]
+
+LaTeX Warning: Reference `subfig:var-sp_500' on page 13 undefined on input line
+ 438.
 
 
-LaTeX Warning: Reference `subfig:var-sp_500' on page 12 undefined on input line
- 400.
+LaTeX Warning: Reference `subfig:var-sp_50000' on page 13 undefined on input li
+ne 438.
 
-
-LaTeX Warning: Reference `subfig:var-sp_50000' on page 12 undefined on input li
-ne 400.
-
-<plots/var-ess.pdf, id=65, 505.89pt x 505.89pt>
+<plots/var-ess.pdf, id=69, 505.89pt x 505.89pt>
 File: plots/var-ess.pdf Graphic file (type pdf)
  <use plots/var-ess.pdf>
-Package pdftex.def Info: plots/var-ess.pdf used on input line 422.
+Package pdftex.def Info: plots/var-ess.pdf used on input line 460.
 (pdftex.def)             Requested size: 234.8775pt x 234.88132pt.
 
-[12 <./plots/var-ess.pdf>]
-<plots/boom-pers_1_3_8.pdf, id=76, 505.89pt x 505.89pt>
-File: plots/boom-pers_1_3_8.pdf Graphic file (type pdf)
+[13 <./plots/var-ess.pdf>] Excluding 'comment' comment.
+Excluding 'comment' comment.
 
-<use plots/boom-pers_1_3_8.pdf>
-Package pdftex.def Info: plots/boom-pers_1_3_8.pdf used on input line 449.
-(pdftex.def)             Requested size: 187.89914pt x 187.90196pt.
+LaTeX Warning: Reference `fig:boom-sp' on page 14 undefined on input line 523.
 
-<plots/boom-pers_1_10_7.pdf, id=77, 505.89pt x 505.89pt>
-File: plots/boom-pers_1_10_7.pdf Graphic file (type pdf)
-
-<use plots/boom-pers_1_10_7.pdf>
-Package pdftex.def Info: plots/boom-pers_1_10_7.pdf used on input line 455.
-(pdftex.def)             Requested size: 187.89914pt x 187.90196pt.
-
-<plots/scatter_n1000.pdf, id=78, 361.35pt x 361.35pt>
-File: plots/scatter_n1000.pdf Graphic file (type pdf)
-
-<use plots/scatter_n1000.pdf>
-Package pdftex.def Info: plots/scatter_n1000.pdf used on input line 467.
-(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
-
-<plots/scatter_n50000.pdf, id=79, 361.35pt x 361.35pt>
-File: plots/scatter_n50000.pdf Graphic file (type pdf)
-
-<use plots/scatter_n50000.pdf>
-Package pdftex.def Info: plots/scatter_n50000.pdf used on input line 473.
-(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[13 <./plots/boom-pers_1_3_8.pdf> <./plots/boom-pers_1_10_7.pdf>]
-<plots/boom-acf,n=1000.pdf, id=94, 578.16pt x 289.08pt>
+<plots/boom-acf,n=1000.pdf, id=80, 578.16pt x 289.08pt>
 File: plots/boom-acf,n=1000.pdf Graphic file (type pdf)
 
 <use plots/boom-acf,n=1000.pdf>
-Package pdftex.def Info: plots/boom-acf,n=1000.pdf used on input line 487.
-(pdftex.def)             Requested size: 328.82707pt x 164.4112pt.
+Package pdftex.def Info: plots/boom-acf,n=1000.pdf used on input line 529.
+(pdftex.def)             Requested size: 375.79955pt x 144.53964pt.
 
-<plots/boom-acf,n=50000.pdf, id=95, 578.16pt x 289.08pt>
+<plots/boom-acf,n=50000.pdf, id=81, 578.16pt x 289.08pt>
 File: plots/boom-acf,n=50000.pdf Graphic file (type pdf)
 
 <use plots/boom-acf,n=50000.pdf>
-Package pdftex.def Info: plots/boom-acf,n=50000.pdf used on input line 493.
-(pdftex.def)             Requested size: 328.82707pt x 164.4112pt.
+Package pdftex.def Info: plots/boom-acf,n=50000.pdf used on input line 535.
+(pdftex.def)             Requested size: 375.79955pt x 144.53964pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<plots/boom-ess.pdf, id=96, 505.89pt x 289.08pt>
+<plots/boom-ess.pdf, id=82, 505.89pt x 289.08pt>
 File: plots/boom-ess.pdf Graphic file (type pdf)
  <use plots/boom-ess.pdf>
-Package pdftex.def Info: plots/boom-ess.pdf used on input line 526.
+Package pdftex.def Info: plots/boom-ess.pdf used on input line 568.
 (pdftex.def)             Requested size: 328.82707pt x 187.90417pt.
 
-[14 <./plots/scatter_n1000.pdf> <./plots/scatter_n50000.pdf>]
-<plots/boom-ess_1_10_7.pdf, id=112, 505.89pt x 289.08pt>
+
+LaTeX Warning: Reference `subfig:boom-pers_1_10_7' on page 14 undefined on inpu
+t line 573.
+
+[14] <plots/boom-ess_1_10_7.pdf, id=86, 505.89pt x 289.08pt>
 File: plots/boom-ess_1_10_7.pdf Graphic file (type pdf)
 
 <use plots/boom-ess_1_10_7.pdf>
-Package pdftex.def Info: plots/boom-ess_1_10_7.pdf used on input line 535.
+Package pdftex.def Info: plots/boom-ess_1_10_7.pdf used on input line 577.
 (pdftex.def)             Requested size: 328.82707pt x 187.90417pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 603--604
+
+ []
+
 [15 <./plots/boom-acf,n=1000.pdf> <./plots/boom-acf,n=50000.pdf>] [16 <./plots/
 boom-ess.pdf> <./plots/boom-ess_1_10_7.pdf>]
-Overfull \hbox (9.37782pt too wide) in paragraph at lines 675--675
+Underfull \hbox (badness 10000) in paragraph at lines 625--626
+
+ []
+
+[17] <plots/sensor-trace.pdf, id=118, 505.89pt x 361.35pt>
+File: plots/sensor-trace.pdf Graphic file (type pdf)
+
+<use plots/sensor-trace.pdf>
+Package pdftex.def Info: plots/sensor-trace.pdf used on input line 629.
+(pdftex.def)             Requested size: 328.82707pt x 234.88023pt.
+
+<plots/sensor-acf-n1000.pdf, id=119, 505.89pt x 216.81pt>
+File: plots/sensor-acf-n1000.pdf Graphic file (type pdf)
+
+<use plots/sensor-acf-n1000.pdf>
+Package pdftex.def Info: plots/sensor-acf-n1000.pdf used on input line 638.
+(pdftex.def)             Requested size: 375.81166pt x 144.54735pt.
+
+<plots/sensor-acf-n1e5.pdf, id=120, 505.89pt x 216.81pt>
+File: plots/sensor-acf-n1e5.pdf Graphic file (type pdf)
+
+<use plots/sensor-acf-n1e5.pdf>
+Package pdftex.def Info: plots/sensor-acf-n1e5.pdf used on input line 644.
+(pdftex.def)             Requested size: 375.81166pt x 144.54735pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[18 <./plots/sensor-trace.pdf>] [19 <./plots/sensor-acf-n1000.pdf> <./plots/sen
+sor-acf-n1e5.pdf>]
+Overfull \hbox (9.37782pt too wide) in paragraph at lines 771--771
 [] 
  []
 
-[17]
-Overfull \hbox (19.69678pt too wide) in paragraph at lines 701--701
+[20]
+Overfull \hbox (19.69678pt too wide) in paragraph at lines 797--797
 [] 
  []
 
-[18]
-Overfull \hbox (13.48308pt too wide) in paragraph at lines 720--720
+[21]
+Overfull \hbox (13.48308pt too wide) in paragraph at lines 816--816
 [] 
  []
 
-[19] [20] [21]
-Overfull \hbox (0.85567pt too wide) in paragraph at lines 832--832
+[22] [23]
+Overfull \hbox (0.85567pt too wide) in paragraph at lines 928--928
 [] 
  []
 
-[22]
-Overfull \hbox (14.93965pt too wide) in paragraph at lines 877--877
+[24] [25]
+Overfull \hbox (14.93965pt too wide) in paragraph at lines 973--973
 [] 
  []
 
-[23]
-Overfull \hbox (4.68176pt too wide) in paragraph at lines 883--885
+
+Overfull \hbox (4.68176pt too wide) in paragraph at lines 979--981
 \OT1/cmr/m/n/10.95 Under our as-sump-tions, $\OML/cmm/m/it/10.95 b[] [] [] n=n 
 \OMS/cmsy/m/n/10.95 ! \OT1/cmr/m/n/10.95 0$ and $\OML/cmm/m/it/10.95  \OT1/cmr/
 m/n/10.95 (\OML/cmm/m/it/10.95 n\OT1/cmr/m/n/10.95 ) = \OML/cmm/m/it/10.95 o\OT
@@ -493,32 +512,53 @@ m/n/10.95 (\OML/cmm/m/it/10.95 n\OT1/cmr/m/n/10.95 ) = \OML/cmm/m/it/10.95 o\OT
 msy/m/n/10.95 !
  []
 
-[24]
-Overfull \hbox (11.52263pt too wide) in paragraph at lines 938--938
+[26] [27]
+Overfull \hbox (11.52263pt too wide) in paragraph at lines 1034--1034
 [] 
  []
 
-[25]
-Overfull \hbox (8.18376pt too wide) in paragraph at lines 977--977
+[28]
+Overfull \hbox (8.18376pt too wide) in paragraph at lines 1073--1073
 [] 
  []
 
-[26] [27] [28] [29] (./main.bbl [30]
+[29] [30] [31] [32]
+Underfull \hbox (badness 10000) in paragraph at lines 1235--1236
+
+ []
+
+[33] <plots/spatio-acf.pdf, id=190, 505.89pt x 505.89pt>
+File: plots/spatio-acf.pdf Graphic file (type pdf)
+
+<use plots/spatio-acf.pdf>
+Package pdftex.def Info: plots/spatio-acf.pdf used on input line 1246.
+(pdftex.def)             Requested size: 375.81166pt x 289.08589pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1243--1251
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1256--1257
+
+ []
+
+[34 <./plots/spatio-acf.pdf>] (./main.bbl [35] [36]
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no ¸ in font cmr10!
- [31]) [32] (./main.aux)
+ [37]) [38] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 5289 strings out of 493089
- 76052 string characters out of 6134842
- 165765 words of memory out of 5000000
- 8674 multiletter control sequences out of 15000+600000
- 14575 words of font info for 56 fonts, out of 8000000 for 9000
+ 5354 strings out of 493089
+ 77555 string characters out of 6134842
+ 169205 words of memory out of 5000000
+ 8735 multiletter control sequences out of 15000+600000
+ 14743 words of font info for 57 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,17n,38p,1334b,554s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,17n,38p,1334b,552s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
@@ -534,12 +574,13 @@ e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
 015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/20
 15/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2015/t
-exmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (32 pages, 2197485 bytes).
+texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2015/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2015/te
+xmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (38 pages, 558469 bytes).
 PDF statistics:
- 247 PDF objects out of 1000 (max. 8388607)
- 172 compressed objects within 2 object streams
+ 272 PDF objects out of 1000 (max. 8388607)
+ 190 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  56 words of extra memory for PDF output out of 10000 (max. 10000000)
 
