@@ -74,11 +74,15 @@ Autocovariances are the fundamental quantity in many features of Markov chain Mo
 \begin{itemize}
   \item I don't want to call this ``Replicated autocovariance'' or ``Replicated spectral variance''. I think ``Globally-centered autocovariance'' is more appropriate and self-explanatory. So we will have to go over the whole document and change this.
 
+  \item The contents are a bit messy right now, and I am having trouble organizing my thoughts. 
+
 \end{itemize}
 
 A rough outline of the organization
 \begin{enumerate}
-  \item Introduction, with a sneak peak at new plots. Change this example to a univariate mixture of Gaussians.
+  \item Introduction, with a sneak peak at new plots. Change this example to a univariate mixture of Gaussians.:
+
+    Here, we will just explain the problem with the old ACF and what happens by using the new ACF. We will show a plot to illustrate the impact. Then we will summarize the three places this will have an impact: (1) ACF plots (2) estimators of the asymptotic variance-covariance matrix (3) estimating effective sample size.
 
   \item Globally-centered autocovariance
     \begin{itemize}
@@ -87,19 +91,24 @@ A rough outline of the organization
 
   \item Variance of Monte Carlo averages
 
-    Describe MC averages and CLT
+    Describe MC averages and CLT here and not before
     \begin{itemize}
       \item Globally-centered Spectral variance estimators
       \begin{itemize}
         \item Theoretical results
-        \item Computational gains
+        \item Fast implementation
       \end{itemize}
-      \item Explore: Charlie's initial sequence estimators
     \end{itemize}
 
   \item Effective sample size
 
   \item Examples
+
+  \item Discussion
+    \begin{itemize}
+      \item All plots have been made using the package:(name). The package can be found on GitHub.
+      \item One thing to discuss is that the new autocovariances can be used in the initial sequence estimators as well.
+    \end{itemize}
 
   \item Appendix
     \begin{itemize}
@@ -115,53 +124,34 @@ Markov chain Monte Carlo (MCMC) is a sampling method used to obtain correlated r
 
 Calculation of exact theoretical ACF has been done for simple models like autoregressive (AR), moving average (MA) (\cite{quenouille1947notes}), and autoregressive-moving-average (ARMA) (\cite{box2015time}) models. However, for most of the complex processes, we rely on sample ACF to understand the correlation in the chain at a particular lag. For a slowly mixing Markov chain or a multi-modal target distribution, Markov chains explore the sample space only partially for even high sample size. In such situations, single chain empirical ACF will underestimate the autocovariance giving misleading inferences. With convenient multi-core computation resources, it is possible to get multiple Markov chains for a target distribution.  We propose a new autocovariance estimator called replicated autocovariance function (R-ACF) with a simple fix in centering a chain about the overall mean. An important application of ACF is in calculating the asymptotic variance in the CLT of a Markov chain process.   
 
-Suppose $F$ is the target distribution on support $\chi \subseteq \mathbb{R}^d$. For $g:\chi \longrightarrow \mathbb{R}^p$ be an F-integrable function. We are interested in
-%
-\[
-\mu_g = \mathbb{E}_F[g(X)] = \int_{\chi}g(x)F(dx)
-\]
 
-Suppose we have $m$ replications of Markov chains with $n$ samples in each chain. Let $\{X_{st}\}_{t \geq 1}$ denote the $s^{th}$ Harris ergodic (aperiodic, F-irreducible, and positive Harris recurrent) Markov chain having invariant distribution $F$. We will use the following Monte Carlo estimator in order to estimate $\mu$ for the $s^{th}$ chain
-%
-\[
-\hat{\mu}_s = \dfrac{1}{n}\sum_{i = 1}^{n} g(X_{si}) \xrightarrow{a.s.} \mu \textrm{ as } n \to \infty
-\]
-
-Throughout this paper, we will deal with the function $g(X) = X$. We denote the sample mean of $s^{th}$ Markov chain by $\bar{X}_s$ and the overall mean by $\bar{\bar{X}} = \sum_{s = 1}^{m}\bar{X}_s/m$. We are interested in Monte Carlo error, i.e. $\bar{\bar{X}} - \mu$ to assess the reliability of simulations. The sampling distribution for Monte Carlo error of $s^{th}$ chain is available via Markov chain CLT (\cite{jones2004markov}) if there exists a positive definite matrix $\Sigma$ such that
-%
-\[
-\sqrt{n}(\bar{X}_s-\mu) \xrightarrow{d} N(0,\Sigma)
-\]
-
- With $m$ i.i.d. samples of $\bar{X}_s$, $s \in \{1,..., m\}$, the MCSE is given by $\Sigma/mn$. We are interested in consistent estimates of $\Sigma$ for two reasons. Firstly, to construct asymptotically valid confidence intervals and secondly, to determine when to stop the simulations. For this purpose, we use the class of Multivariate Spectral Variance Estimators (MSVE) wherein we use R-ACF to estimate the autocovariance. We call this replicated spectral variance (RSV) estimator (see \cite{arg:and:2006} for replicated batch means). 
- 
-MCMC ensures asymptotic convergence, however this is not practically very useful where the number of samples is finite. There are many criteria for terminating simulation like fixed-time rule, sequencial fixed-volume rule (see \cite{glynn1992asymptotic}), and using Gelman Rubin diagnostics (\cite{gelman1992inference}). The relative fixed-volume rule has been thoroughly discussed for MCMC by \cite{flegal2015relative} and \cite{gong2016practical}. We will use method of effective sample size (ESS) defined by \cite{vats2019multivariate} for terminating the simulations. The quality of estimation of $\Sigma$ is critical in determining that the simulations are not stopped prematurely. 
- 
-Markov chains are serially correlated and therefore $\Var_F(X)$ is non-informative about the correlatons in Markov chain. It is important to construct an estimator for $\Sigma$ which is very close to underlying reality. There are many techniques for estimating $\Sigma$ like batch means (BM), overlapping bath means (OBM), and spectral variance estimator (SVE). Due to their highly accurate results, we will only focus on SV estimates in this paper. Strong consistency for MSVE has been addressed by \cite{vats:fleg:jon:2018}. Bias and variance calculations for a variant of SV estimator with known mean is done by \cite{hannan2009multiple}. In this paper, we will address the asymptotic properties (basically strong consistency), bias and variance calculations for RSV estimator. 
-
-The most common practice would be to combine the SVE from $m$ chains by averaging over them. We call this technique average spectral variance (ASV) estimator. We will address the issue of slowly mixing Markov chains and show that RSV performs better than ASV. Whereas on one side RSV gives better estimates than ASV for a poor Markov chain, it is as good as ASV for a good Markov chain. We will exemplify this property of RSV for a bi-modal target distribution in subsection \ref{ex:boomerang}. This appeals intuitively because for a fast mixing Markov chain, all the chains will give almost same estimates for mean. 
 
 In the next section we introduce the new sample autocovariance estimator and calculate its bias for finite samples. We observe that the bias term for R-ACF is similar to the bias of empirical ACF except for a few small order end-effect terms that vanish as $n \to \infty$. In section \ref{sec:variance_est}, we introduce three estimators for $\Sigma$ and study the properties of RSV estimator through proof of strong consistency, bias, and variance calculations. We will elaborate on the estimator for ESS using RSV in section \ref{sec:ess}. Section \ref{sec:examples} gives a simulation study on three different examples for the proposed estimators. There are only a handful of stochastic processes where the true autocovariance and $\Sigma$ are known. To compare the estimators when the truth is known, we use a slowly mixing vector autoregressive process of order 1 (VAR(1)). We successfully show in section \ref{ex:var} that our estimators yield better results as compared to the classical sample ACF and SVE. A more promising advantage of our estimators is observed when the target distribution is multi-modal. For this purpose we use a bivariate bi-modal probability distribution introduced by \cite{gelman1991note} in section \ref{ex:boomerang}. All the important proofs are given in the Appendix. 
 
+{\color{blue} Dootika: The introduction above needs some rewrite based on my pointers in blue above. We should introduce the definition of autocovariance here and present the old and the new estimators of $\Gamma$ here. So take some of the details out of the next section and put them here.}
 
-\begin{example}[Motivating example]
-  gj
-\begin{figure}
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{plots/acf,n=500.pdf}
-  \caption{$n = 500$}
-  \label{subfig:acf-500}
-\end{subfigure}\\
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=.8\linewidth]{plots/acf,n=10000.pdf} 
-  \caption{$n = 10^4$}
-  \label{subfig:acf-5e4}
-\end{subfigure}
-\caption{Autocorrelation plot for ACF and R-ACF for first chain out of two parallel Markov chains. First column corresponds to ACF calculated using arithmetic mean of first Markov chain and the second column corresponds to the one calculated using global mean of two Markov chains.(a): $n = 500$, not converged yet; (b): $n =  10^4$, converged}
-\label{fig:var_acf_ccf}
-\end{figure}
+
+\begin{example}[Demonstrative example]
+
+We demonstrate the striking difference in the ACF plots through mixture of Gaussian target density using a random-walk Metropolis-Hastings sampler.
+
+{\color{blue} Dootika: add new plots here when available for this target density. }
+% \begin{figure}
+% \begin{subfigure}{\textwidth}
+%   \centering
+%   \includegraphics[width=.8\linewidth]{plots/acf,n=500.pdf}
+%   \caption{$n = 500$}
+%   \label{subfig:acf-500}
+% \end{subfigure}\\
+% \begin{subfigure}{\textwidth}
+%   \centering
+%   \includegraphics[width=.8\linewidth]{plots/acf,n=10000.pdf} 
+%   \caption{$n = 10^4$}
+%   \label{subfig:acf-5e4}
+% \end{subfigure}
+% \caption{Autocorrelation plot for ACF and R-ACF for first chain out of two parallel Markov chains. First column corresponds to ACF calculated using arithmetic mean of first Markov chain and the second column corresponds to the one calculated using global mean of two Markov chains.(a): $n = 500$, not converged yet; (b): $n =  10^4$, converged}
+% \label{fig:var_acf_ccf}
+% \end{figure}
 
 \end{example}
 \section{Globally-centered autocovariance} \label{sec:R-ACF}
@@ -182,6 +172,11 @@ A commonly faced problem with the MCMC algorithms is the slow mixing property. I
 
 If the starting points of these parallel Markov chains are sufficiently dispersed, R-ACF provides more realistic estimation of lag covariances. It is a known problem that getting true autocovariance in closed form for non-simple problems is difficult. In Figure \ref{fig:var_acf_ccf}, we will illustrate the comparison between ACF and R-ACF for a slowly mixing VAR-1 example, where the truth is known. We wish to make two points here: firstly, for small sample size, we observe that ACF gives extremely misleading estimates of autocovariance whereas R-ACF is very close to reality. Figure \ref{subfig:acf-500} depicts the scenario where the convergence is not achieved yet. Secondly, for a large sample size , the estimates from R-ACF as well as ACF are equivalent. Figure \ref{subfig:acf-5e4} depicts the scenario when convergence is achieved. This shows that R-ACF is at least as good as ACF; hence safe to use in any setting.
 
+
+\subsection{Theoretical results} % (fold)
+\label{sub:theoretical_results}
+
+% subsection theoretical_results (end)
 
 The bias for R-ACF is similar to the bias of sample autocovariance estimator in case of single chain except for a few small order terms that shall be later addressed in theorem \ref{th:RAC_expec}. Before getting to the bias results for $\hat{\Gamma}_{RAV}(k)$ for any lag k, we introduce an additional notation. For $q \geq 1$, we define
 \[
@@ -236,7 +231,50 @@ We know that the sample autocovariance $\hat{\Gamma}(k)$ underestimates the trut
  The proof is in Appendix subsection \ref{appendix:bias}.
 \end{proof}
 
+
+
+
+
+
+
+
+
+
 \section{Variance Estimators for multiple Markov chains} \label{sec:variance_est}
+
+{\color{blue}Dootika: this section here needs to be much tighter in its presentation. We will need to remember that the paper is no longer about the SV estimators but about autocorrelations. So will have to present the discussion similarly. }
+
+
+Suppose $F$ is the target distribution on support $\chi \subseteq \mathbb{R}^d$. For $g:\chi \longrightarrow \mathbb{R}^p$ be an F-integrable function. We are interested in
+%
+\[
+\mu_g = \mathbb{E}_F[g(X)] = \int_{\chi}g(x)F(dx)
+\]
+
+Suppose we have $m$ replications of Markov chains with $n$ samples in each chain. Let $\{X_{st}\}_{t \geq 1}$ denote the $s^{th}$ Harris ergodic (aperiodic, F-irreducible, and positive Harris recurrent) Markov chain having invariant distribution $F$. We will use the following Monte Carlo estimator in order to estimate $\mu$ for the $s^{th}$ chain
+%
+\[
+\hat{\mu}_s = \dfrac{1}{n}\sum_{i = 1}^{n} g(X_{si}) \xrightarrow{a.s.} \mu \textrm{ as } n \to \infty
+\]
+
+Throughout this paper, we will deal with the function $g(X) = X$. We denote the sample mean of $s^{th}$ Markov chain by $\bar{X}_s$ and the overall mean by $\bar{\bar{X}} = \sum_{s = 1}^{m}\bar{X}_s/m$. We are interested in Monte Carlo error, i.e. $\bar{\bar{X}} - \mu$ to assess the reliability of simulations. The sampling distribution for Monte Carlo error of $s^{th}$ chain is available via Markov chain CLT (\cite{jones2004markov}) if there exists a positive definite matrix $\Sigma$ such that
+%
+\[
+\sqrt{n}(\bar{X}_s-\mu) \xrightarrow{d} N(0,\Sigma)
+\]
+
+ With $m$ i.i.d. samples of $\bar{X}_s$, $s \in \{1,..., m\}$, the MCSE is given by $\Sigma/mn$. We are interested in consistent estimates of $\Sigma$ for two reasons. Firstly, to construct asymptotically valid confidence intervals and secondly, to determine when to stop the simulations. For this purpose, we use the class of Multivariate Spectral Variance Estimators (MSVE) wherein we use R-ACF to estimate the autocovariance. We call this replicated spectral variance (RSV) estimator (see \cite{arg:and:2006} for replicated batch means). 
+ 
+MCMC ensures asymptotic convergence, however this is not practically very useful where the number of samples is finite. There are many criteria for terminating simulation like fixed-time rule, sequencial fixed-volume rule (see \cite{glynn1992asymptotic}), and using Gelman Rubin diagnostics (\cite{gelman1992inference}). The relative fixed-volume rule has been thoroughly discussed for MCMC by \cite{flegal2015relative} and \cite{gong2016practical}. We will use method of effective sample size (ESS) defined by \cite{vats2019multivariate} for terminating the simulations. The quality of estimation of $\Sigma$ is critical in determining that the simulations are not stopped prematurely. 
+ 
+Markov chains are serially correlated and therefore $\Var_F(X)$ is non-informative about the correlatons in Markov chain. It is important to construct an estimator for $\Sigma$ which is very close to underlying reality. There are many techniques for estimating $\Sigma$ like batch means (BM), overlapping bath means (OBM), and spectral variance estimator (SVE). Due to their highly accurate results, we will only focus on SV estimates in this paper. Strong consistency for MSVE has been addressed by \cite{vats:fleg:jon:2018}. Bias and variance calculations for a variant of SV estimator with known mean is done by \cite{hannan2009multiple}. In this paper, we will address the asymptotic properties (basically strong consistency), bias and variance calculations for RSV estimator. 
+
+The most common practice would be to combine the SVE from $m$ chains by averaging over them. We call this technique average spectral variance (ASV) estimator. We will address the issue of slowly mixing Markov chains and show that RSV performs better than ASV. Whereas on one side RSV gives better estimates than ASV for a poor Markov chain, it is as good as ASV for a good Markov chain. We will exemplify this property of RSV for a bi-modal target distribution in subsection \ref{ex:boomerang}. This appeals intuitively because for a fast mixing Markov chain, all the chains will give almost same estimates for mean. 
+
+\subsection{Globally-centered spectral variance estimators} % (fold)
+\label{sub:globally_centered_spectral_variance_estimators}
+
+% subsection globally_centered_spectral_variance_estimators (end)
 
 Let $\{X_t\}_{t \geq 1}$ be a stochastic process. Denote lag-k autocovariance matrix by $\Gamma(k)$, which is given by,
 
@@ -260,22 +298,22 @@ where $w(.)$ is the lag window and $b_n$ is the truncation point.
 
  Consider $m$ Markov chains where $\bar{X}_s$, $\hat{\Gamma}_s(k)$ and $\hat{\Sigma}_{SV, s}$ are the sample mean, sample lag-k autocovariance and spectral variance estimators respectively for $s^{th}$ Markov chain, $s\in {1,...,m}$. We will consider two estimators for spectral variance calculations using multiple Markov chains.
 
-\subsection{Average Spectral Variance } \label{sec:asv}
+% \subsection{Average Spectral Variance } \label{sec:asv}
 
-Recall that for $s^{th}$ Markov chain, the spectral variance estimator is given by,
+% Recall that for $s^{th}$ Markov chain, the spectral variance estimator is given by,
 
-\begin{align*}
-    \hat{\Sigma}_{SV,s} &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Gamma}_s(k)\\
-    \hat{\Gamma}_s(k) &= \dfrac{1}{n}\sum_{t=1}^{n-k}(X_{st}-\overline{X_s})(X_{s(t+k)}-\overline{X_s})^T
-\end{align*}
+% \begin{align*}
+%     \hat{\Sigma}_{SV,s} &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Gamma}_s(k)\\
+%     \hat{\Gamma}_s(k) &= \dfrac{1}{n}\sum_{t=1}^{n-k}(X_{st}-\overline{X_s})(X_{s(t+k)}-\overline{X_s})^T
+% \end{align*}
 
-The average spectral variance ($\Sigma_{ASV}$) is computed by averaging the SV estimates from all $m$ Markov chains.
+% The average spectral variance ($\Sigma_{ASV}$) is computed by averaging the SV estimates from all $m$ Markov chains.
 
-\[
-\hat{\Sigma}_{ASV} = \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{SV,s}
-\]
+% \[
+% \hat{\Sigma}_{ASV} = \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{SV,s}
+% \]
 
-\subsection{Replicated Spectral Variance } \label{sec:rsv}
+
 
 Now we introduce the Replicated Spectral Variance Estimator (RSV). $\hat{\Gamma}_{RAC,s}(k)$ is the sample replicated lag-k autocovariance estimator for the $s^{th}$ MC using overall mean $(\bar{\bar{X}})$ instead of $\bar{X}_s$ for centering. We construct an RSV estimator $\hat{\Sigma}_{RSV} $ using this replicated version of autocovariance estimator. Consider, 
 %
@@ -285,6 +323,9 @@ Now we introduce the Replicated Spectral Variance Estimator (RSV). $\hat{\Gamma}
 \[
 \hat{\Sigma}_{RSV} =  \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{RSV,s}
 \]
+
+
+\subsubsection{Theoretical results} \label{sec:rsv}
 
 The RSV estimator centers the data around the global mean. We are interested in proving the strong consistency, finding the bias and variance of RSV. 
 
@@ -380,6 +421,10 @@ Let $\{X_{st}\}_{t \geq 1}$ be the $s^{th}$ Markov chain for which SIP holds.
 Recall that $\tilde{\Sigma}$ is the averaged pseudo spectral variance estimator which uses the unobserved mean. Further, let $\tilde{\Sigma}^{ij}$ be the $(i,j)^{th}$ element of this matrix. We will prove that the variance of $\hat{\Sigma}_{RSV} \textrm{ and } \tilde{\Sigma}$ are equivalent for large sample sizes. The proof is in Appendix subsection \ref{appendix:variance}
 \end{proof}
 
+\subsubsection{Fast implementation} % (fold)
+\label{ssub:fast_implementation}
+
+% subsubsection fast_implementation (end)
 
 \section{Effective sample size} \label{sec:ess}
 

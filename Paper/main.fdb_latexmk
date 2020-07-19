@@ -1,15 +1,13 @@
 # Fdb version 3
-["bibtex main"] 1595039033 "main.aux" "main.bbl" "main" 1595039034
+["bibtex main"] 1595131989 "main.aux" "main.bbl" "main" 1595131991
   "/usr/local/texlive/2015/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "main.aux" 1595039034 10709 8593cfd0106d180813e5eef7bf9567b2 ""
+  "main.aux" 1595131990 10442 bbf4778be2807b2d6aeb7c571310676e ""
   "main.bcf" 0 -1 0 ""
   "sample.bib" 1595014424 13221 50aef78568d8ccc52e6b58a82128b0b4 ""
   (generated)
-  "main.bbl"
   "main.blg"
-["pdflatex"] 1595039033 "main.tex" "main.pdf" "main" 1595039034
-  "./plots/acf,n=10000.pdf" 1595014424 9997 ff87893d35be8d972378a3fce76a7a7b ""
-  "./plots/acf,n=500.pdf" 1595014424 10080 9a508fa87ab905cce86d2acaf8b68b9e ""
+  "main.bbl"
+["pdflatex"] 1595131989 "main.tex" "main.pdf" "main" 1595131991
   "./plots/boom-acf,n=1000.pdf" 1595014424 6509 7b54fbc6e957334a5d9b888cfe28d5de ""
   "./plots/boom-acf,n=50000.pdf" 1595014424 6322 d85c4717a3d6149e76fb84ad4f6185b0 ""
   "./plots/boom-ess.pdf" 1595014424 5864 d9eb65c5abb220399b132534e725233b ""
@@ -117,11 +115,9 @@
   "/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1432479641 1764542 91654ba72bdb667e84ea24f076ae16d8 ""
   "/usr/local/texlive/2015/texmf-var/web2c/pdftex/pdflatex.fmt" 1432479681 3849859 39a7d258195bde2394e244961601fbc5 ""
   "/usr/local/texlive/2015/texmf.cnf" 1432479636 577 0d611272082f3cdb8e80e09a3c69cf07 ""
-  "main.aux" 1595039034 10709 8593cfd0106d180813e5eef7bf9567b2 ""
-  "main.bbl" 1595039033 8270 1c593177dd1f754694d342fa41658f2b "bibtex main"
-  "main.tex" 1595039032 96046 bf9d601d54c0723e5339b459cc6ea109 ""
-  "plots/acf,n=10000.pdf" 1595014424 9997 ff87893d35be8d972378a3fce76a7a7b ""
-  "plots/acf,n=500.pdf" 1595014424 10080 9a508fa87ab905cce86d2acaf8b68b9e ""
+  "main.aux" 1595131990 10442 bbf4778be2807b2d6aeb7c571310676e ""
+  "main.bbl" 1595131989 8270 1c593177dd1f754694d342fa41658f2b "bibtex main"
+  "main.tex" 1595131988 97969 5dc51d6141c547bc0eb72e4847b60fc4 ""
   "plots/boom-acf,n=1000.pdf" 1595014424 6509 7b54fbc6e957334a5d9b888cfe28d5de ""
   "plots/boom-acf,n=50000.pdf" 1595014424 6322 d85c4717a3d6149e76fb84ad4f6185b0 ""
   "plots/boom-ess.pdf" 1595014424 5864 d9eb65c5abb220399b132534e725233b ""
@@ -132,6 +128,6 @@
   "plots/spatio-acf.pdf" 1595014424 8648 3096c16f2bca1d6b26cb8d517ddf0836 ""
   "plots/var-ess.pdf" 1595014424 10832 7696afb48570f2cf11fb90f78191d99f ""
   (generated)
-  "main.aux"
   "main.log"
+  "main.aux"
   "main.pdf"
