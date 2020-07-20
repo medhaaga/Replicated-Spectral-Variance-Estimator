@@ -1,10 +1,14 @@
+################################################################
+##This code is responsible for simulating and storing R objects 
+##that are later used for plotting figures and making tables.
+################################################################
+
 set.seed(10)
 library(Rcpp)
 library(RcppArmadillo)
 library(fftwtools)
 library(mcmcse)
 source("functions.R")
-library(sandwich)
 sourceCpp("lag.cpp")
 
 ############################################################
@@ -22,11 +26,12 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
     start[m-i+1,] <- -2*i*sqrt(diag(truth))
   }
 
-  critical <- qchisq(c.prob, df=2)
   master.chain.rep <- list()
+  
   for (i in 1:freq){
     print(paste("Sampling percentage completion: ", i*100/freq))
     chains <- array(0, dim = c(max(check.pts), p, m))
+    
     for (j in 1:m){
       chains[,,j] <- markov.chain(phi, omega, max(check.pts), start[j,])
     }
@@ -36,7 +41,8 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
   for (i in 1:length(check.pts)){
 
     nsim <- check.pts[i]
-
+    critical <- ((nsim*m - 1)*p/(nsim*m  - p))*qf(.95, df1 = p, df2 = (nsim*m-p))
+    
     asv.samp <- array(0, dim = c(p,p,freq))
     rsv.samp <- array(0, dim = c(p,p,freq))
     asv.coverage <- rep(0,freq)
@@ -53,7 +59,7 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
         b[k] <- batchSize(chain[,,k], method = "bartlett")
       }
 
-      b.avg <- mean(b)
+      b.avg <- ceiling(mean(b))
       global.mean <- apply(chain, 2, mean)
 
       for (k in 1:m){
@@ -71,17 +77,16 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
       if (chi.sq.asv <= critical) {asv.coverage[j]=1}
       if (chi.sq.rsv <= critical) {rsv.coverage[j]=1}
     }
-    save(asv.samp,rsv.samp,asv.coverage,rsv.coverage, file = paste(paste("Out/bartlett/out", m, nsim, sep = "_"),".Rdata", sep = ""))
+    save(asv.samp,rsv.samp,asv.coverage,rsv.coverage, file = paste(paste("Out/out", m, nsim, sep = "_"),".Rdata", sep = ""))
   }
-
 }
 
 ##################################################
 #function for storing convergence plots data
 ##################################################
-convergence <- function(min, max, phi, omega, m, rep=100){
 
-  print("Function started")
+convergence <- function(min, max, step, phi, omega, m, rep=100){
+
   p <- ncol(phi)
   truth <- target.sigma(phi, omega)
   start <- matrix(0, nrow = m, ncol = p)  #only depends on C
@@ -98,7 +103,7 @@ convergence <- function(min, max, phi, omega, m, rep=100){
     }
   }
 
-  conv.pts <- seq(min, max,500)
+  conv.pts <- seq(min, max, step)
   l <- length(conv.pts)
   asv.samp <- array(0, dim = c(p,p,l))
   rsv.samp <- array(0, dim = c(p,p,l))
@@ -106,7 +111,7 @@ convergence <- function(min, max, phi, omega, m, rep=100){
   ess.rsv.samp <- list()
 
   for (j in 1:l){
-    print(paste("Working for j =", j))
+    
     nsim = conv.pts[j]
     sve.rep <- array(0, dim = c(p, p, rep))
     rsve.rep <- array(0, dim = c(p, p, rep))
@@ -115,6 +120,7 @@ convergence <- function(min, max, phi, omega, m, rep=100){
     ess.rsv.rep <- rep(0,rep)
 
     for (r in 1:rep){
+      
       chain <- master.chain.rep[1:nsim,,,r]
       sve <- array(0, dim = c(p,p,m))
       rsve <- array(0, dim = c(p,p,m))
@@ -130,9 +136,9 @@ convergence <- function(min, max, phi, omega, m, rep=100){
       global.mean <- apply(chain,2,mean)
 
       for (k in 1:m){
-        chain.cen.loc <- scale(chain[,,k], scale = FALSE)  ## X_st - bar(X)_s
+        chain.cen.loc <- scale(chain[,,k], scale = FALSE)  ## locally cented chains
         sve[,,k] <- mSVEfft(A = chain.cen.loc, b = b.avg)
-        chain.cen <- scale(chain[,,k], center = global.mean, scale =FALSE)
+        chain.cen <- scale(chain[,,k], center = global.mean, scale =FALSE)   ## globally centered chains
         rsve[,,k] <- mSVEfft(A = chain.cen, b = b.avg)
 
       }
@@ -142,6 +148,7 @@ convergence <- function(min, max, phi, omega, m, rep=100){
       lambda.rep[,,r] <- apply(smpl.cov, c(1,2), mean)
       ess.asv.rep[r] <- (det(lambda.rep[,,r])/det(sve.rep[,,r]))^(1/p)
       ess.rsv.rep[r] <- (det(lambda.rep[,,r])/det(rsve.rep[,,r]))^(1/p)
+      
     }
 
     asv.samp[,,j] <- apply(sve.rep, c(1,2), mean)
@@ -149,18 +156,19 @@ convergence <- function(min, max, phi, omega, m, rep=100){
     ess.asv.samp[[j]] <- ess.asv.rep
     ess.rsv.samp[[j]] <- ess.rsv.rep
     print(paste("Percentage completion: ", round(100*j/l, 2)))
+    
   }
-  save(asv.samp,rsv.samp, ess.asv.samp, ess.rsv.samp, file = paste(paste("Out/bartlett/run_data", m, min, max, sep = "_"), ".Rdata", sep = ""))
+  save(asv.samp,rsv.samp, ess.asv.samp, ess.rsv.samp, file = paste(paste("Out/run_data", m, min, max, sep = "_"), ".Rdata", sep = ""))
 
 }
 
-
-
-
 ######################################################################
 
-m <- 5
-p <- 2
+m <- 5  #### number of chains
+p <- 2  #### dimension
+
+#### target distribution specifications######
+
 omega <- diag(p)
 for (i in 1:(p-1)){
   for (j in 1:(p-i)){
@@ -174,19 +182,21 @@ dummy <- matrix(1:p^2, nrow = p, ncol = p)
 dummy <- qr.Q(qr(dummy))
 phi <- dummy %*% phi %*% t(dummy)
 
-#sims for plotting densities and calculating coverage
-
 check.pts <- c(1e3, 5e3, 1e4, 5e4, 1e5)
 freq <- 1e3
 rep <- 50
 c.prob <- .95
 min <- 5e2
 max <- 1e5
-conv.pts <- seq(min, max, 500)
+step <- 500
+conv.pts <- seq(min, max, step)
+
+
+################Starting simulations#############################
 
 print("Carrying out 1000 repititions for each value of nsim in check.pts")
 create.output(phi, omega, m, check.pts, freq, c.prob)
 
 print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
-convergence(min, max, phi, omega, m, rep)
+convergence(min, max, step, phi, omega, m, rep)
 

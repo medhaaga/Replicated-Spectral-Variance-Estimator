@@ -1,3 +1,8 @@
+################################################################
+##This code is responsible for simulating and storing R objects 
+##that are later used for plotting figures and making tables.
+################################################################
+
 set.seed(1)
 library(cubature)
 library(Rcpp)
@@ -20,13 +25,12 @@ create.output <- function(A,B,C,m,check.pts,freq,c.prob){
     start[m-i+1,] <- c(C*(2^(2-i)), 0)
   }
 
-  critical <- qchisq(c.prob, df=2)
   T.mean <- true.mean(A,B,C)
 
   for (i in 1:length(check.pts)){
 
     nsim <- check.pts[i]
-
+    critical <- ((nsim*m - 1)*p/(nsim*m  - p))*qf(.95, df1 = p, df2 = (nsim*m-p))
     asv.samp <- array(0, dim = c(2,2,freq))
     rsv.samp <- array(0, dim = c(2,2,freq))
     asv.coverage <- rep(0,freq)
@@ -62,7 +66,7 @@ create.output <- function(A,B,C,m,check.pts,freq,c.prob){
       if (chi.sq.asv <= critical) {asv.coverage[j]=1}
       if (chi.sq.rsv <= critical) {rsv.coverage[j]=1}
     }
-    save(asv.samp,rsv.samp,asv.coverage,rsv.coverage, file = paste(paste("Out/", A, B, C, "/out", m,nsim,A,B,C, sep = "_"),".Rdata", sep = ""))
+    save(asv.samp, rsv.samp, asv.coverage, rsv.coverage, file = paste(paste("Out/", A, B, C, "/out", m, nsim, A, B, C, sep = "_"),".Rdata", sep = ""))
   }
 
 }
@@ -70,7 +74,8 @@ create.output <- function(A,B,C,m,check.pts,freq,c.prob){
 ##################################################
 #function for storing convergence plots data
 ##################################################
-convergence <- function(min, max, A, B, C, m, rep=100){
+
+convergence <- function(min, max, step, A, B, C, m, rep=100){
 
   p <- 2
   start <- matrix(0, nrow = m, ncol = 2)  #only depends on C
@@ -88,7 +93,7 @@ convergence <- function(min, max, A, B, C, m, rep=100){
     }
   }
 
-  conv.pts <- seq(min, max,100)
+  conv.pts <- seq(min, max, step)
   l <- length(conv.pts)
   asv.samp <- array(0, dim = c(2,2,l))
   rsv.samp <- array(0, dim = c(2,2,l))
@@ -96,6 +101,7 @@ convergence <- function(min, max, A, B, C, m, rep=100){
   ess.rsv.samp <- list()
 
   for (j in 1:l){
+    
     nsim = conv.pts[j]
     sve.rep <- array(0, dim = c(2, 2, rep))
     rsve.rep <- array(0, dim = c(2, 2, rep))
@@ -115,13 +121,13 @@ convergence <- function(min, max, A, B, C, m, rep=100){
         smpl.cov[,,k] <- cov(chain[,,k])
       }
 
-      b.avg <- mean(b)
+      b.avg <- ceiling(mean(b))
       global.mean <- apply(chain,2,mean)
 
       for (k in 1:m){
-        chain.cen.loc <- scale(chain[,,k], scale = FALSE)  ## X_st - bar(X)_s
+        chain.cen.loc <- scale(chain[,,k], scale = FALSE)  ## locally centered chains
         sve[,,k] <- mSVEfft(A = chain.cen.loc, b = b.avg)
-        chain.cen <- scale(chain[,,k], center = global.mean, scale =FALSE)
+        chain.cen <- scale(chain[,,k], center = global.mean, scale =FALSE)  ## globally centered chains
         rsve[,,k] <- mSVEfft(A = chain.cen, b = b.avg)
 
       }
@@ -144,26 +150,99 @@ convergence <- function(min, max, A, B, C, m, rep=100){
 }
 
 
-######################################################################
+#########################################
+### Simulation setting-1; A=1, B=3, C=8
+#########################################
 
-A <- 2
-B <- 9
-C <- 7
+#### Two chains
+
+A <- 1
+B <- 3
+C <- 8
 m = 2
 
-#sims for plotting densities and calculating coverage
-
-check.pts <- c(1e3, 2e3, 5e3, 1e4, 2e4)
-freq <- 1e3  #100 for now, will change later
+check.pts <- c(1e3, 2e3, 5e3, 1e4, 2e4, 5e4, 1e5)
+freq <- 1e3  
 rep <- 10
 c.prob <- .95
 min <- 5e2
 max <- 5e4
-conv.pts <- seq(min, max, 100)
+step <- 5e2
+conv.pts <- seq(min, max, step)
 
 print("Carrying out 1000 repititions for each value of nsim in check.pts")
 create.output(A, B, C, m, check.pts, freq, c.prob)
 
-print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
-convergence(min, max, A, B, C, m, rep)
+print("Carrying out simulations for running plots of ASV and RSV in the range(1e3, 1e5")
+convergence(min, max, step, A, B, C, m, rep)
+
+#### Five chains
+
+A <- 1
+B <- 3
+C <- 8
+m = 5
+
+check.pts <- c(1e3, 2e3, 5e3, 1e4, 2e4, 5e4, 1e5)
+freq <- 1e3  
+rep <- 10
+c.prob <- .95
+min <- 5e2
+max <- 1e5
+step <- 5e2
+conv.pts <- seq(min, max, step)
+
+print("Carrying out 1000 repititions for each value of nsim in check.pts")
+create.output(A, B, C, m, check.pts, freq, c.prob)
+
+print("Carrying out simulations for running plots of ASV and RSV in the range(1e3, 1e5")
+convergence(min, max, step, A, B, C, m, rep)
+
+#########################################
+### Simulation seeting-2; A=1, B=10, C=7
+#########################################
+
+#### Two chains
+
+A <- 1
+B <- 10
+C <- 7
+m = 2
+
+check.pts <- c(1e3, 2e3, 5e3, 1e4, 5e4)
+freq <- 1e3  
+rep <- 10
+c.prob <- .95
+min <- 5e2
+max <- 1e5
+step <- 5e2
+conv.pts <- seq(min, max, step)
+
+print("Carrying out 1000 repititions for each value of nsim in check.pts")
+create.output(A, B, C, m, check.pts, freq, c.prob)
+
+print("Carrying out simulations for running plots of ASV and RSV in the range(1e3, 1e5")
+convergence(min, max, step, A, B, C, m, rep)
+
+#### Five chains
+
+A <- 1
+B <- 3
+C <- 8
+m = 5
+
+check.pts <- c(1e3, 2e3, 5e3, 1e4, 5e4)
+freq <- 1e3  
+rep <- 10
+c.prob <- .95
+min <- 5e2
+max <- 1e5
+step <- 5e2
+conv.pts <- seq(min, max, step)
+
+print("Carrying out 1000 repititions for each value of nsim in check.pts")
+create.output(A, B, C, m, check.pts, freq, c.prob)
+
+print("Carrying out simulations for running plots of ASV and RSV in the range(1e3, 1e5")
+convergence(min, max, step, A, B, C, m, rep)
 
