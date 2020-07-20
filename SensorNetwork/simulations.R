@@ -1,8 +1,3 @@
-################################################################
-##This code is responsible for simulating and storing R objects 
-##that are later used for plotting figures and making tables.
-################################################################
-
 set.seed(1)
 library(cubature)
 library(Rcpp)
@@ -11,7 +6,91 @@ library(fftwtools)
 library(mcmcse)
 source("functions.R")
 sourceCpp("lag.cpp")
+######## Data
 
+# Observation indicators from the fifth sensor (1st column) to the first four sensors
+# and those from the sixth sensor (2nd column) to the first four sensors.
+Ob <- matrix(c(1, 0, 1, 0, 1, 0, 1, 0), ncol = 2)
+
+# Observation indicators among the first four sensors.
+Os <- matrix(c(0, 0, 0, 1,
+               0, 0, 1, 1,
+               0, 1, 0, 0,
+               1, 1, 0, 0), ncol = 4)
+
+# Each row indicates the location of the known sensors (5th and 6th).
+Xb <- matrix(c(0.5, 0.3, 0.3, 0.7), ncol = 2)
+
+# Each row indicates the location of the unknown sensors (1st, 2nd, 3rd, and 4th).
+Xs <- matrix(c(0.5748, 0.0991, 0.2578, 0.8546,
+               0.9069, 0.3651, 0.1350, 0.0392), ncol = 2)
+
+# The observed distances from the fifth sensor (1st column) to the first four sensors
+# and those from the sixth sensor (2nd column) to the first four sensors.
+Yb <- matrix(c(0.6103, 0, 0.2995, 0,
+               0.3631, 0, 0.5656, 0), ncol = 2)
+
+# Observed distances among the first four sensors.
+Ys <- matrix(c(0, 0, 0, 0.9266,
+               0, 0, 0.2970, 0.8524,
+               0, 0.2970, 0, 0,
+               0.9266, 0.8524, 0, 0), ncol = 4)
+
+############################################################
+##creates freq=1000 replications of ASV and RSV for each value of nsim from check.pts
+############################################################
+
+create.output <- function(start, aux, j.scale, Ob, Os, Xb, Xs, Yb, Ys, m, check.pts, freq,truth){
+
+  p <- 8
+
+  for (i in 1:length(check.pts)){
+
+    nsim <- check.pts[i]
+    critical <- ((nsim*m - 1)*p/(nsim*m  - p))*qf(.95, df1 = p, df2 = (nsim*m-p))
+    asv.samp <- array(0, dim = c(p,p,freq))
+    rsv.samp <- array(0, dim = c(p,p,freq))
+    asv.coverage <- rep(0,freq)
+    rsv.coverage <- rep(0,freq)
+
+
+    for (j in 1:freq){
+      if(j %% (freq/10) == 0) print(paste("Percentage completion: ", round(j/freq*100, 2), "for nsim = ", nsim))
+      chain <- array(0,dim = c(nsim,p,m))
+      sve <- array(0, dim = c(p,p,m))
+      rsve <- array(0, dim = c(p,p,m))
+      b <- rep(0,m)
+
+      for(k in 1:m){
+        temp <- MHwG.RAM(start[k,], aux[k,], jump.scale = j.scale, Ob, Os, Xb, Xs, Yb, Ys,
+                               n.sample = nsim+1, n.burn = 0)
+        chain[,,k] <- temp$x
+        print(colMeans(temp$accept))
+        b[k] <- batchSize(chain[,,k], method = "bartlett")
+      }
+
+      b.avg <- floor(mean(b))
+      global.mean <- apply(chain,2,mean)
+
+      for (k in 1:m){
+        chain.cen.loc <- scale(chain[,,k], scale = FALSE)  ## X_st - bar(X)_s
+        sve[,,k] <- mSVEfft(A = chain.cen.loc, b = b.avg)
+        chain.cen <- scale(chain[,,k], center = global.mean, scale =FALSE)
+        rsve[,,k] <- mSVEfft(A = chain.cen, b = b.avg)
+      }
+
+      asv.samp[,,j] <- apply(sve, c(1,2), mean)
+      rsv.samp[,,j] <- apply(rsve, c(1,2), mean)
+
+      chi.sq.asv <- t2.stat(global.mean,truth,asv.samp[,,j],nsim*m)
+      chi.sq.rsv <- t2.stat(global.mean,truth,rsv.samp[,,j],nsim*m)
+      if (chi.sq.asv <= critical) {asv.coverage[j]=1}
+      if (chi.sq.rsv <= critical) {rsv.coverage[j]=1}
+    }
+    save(asv.coverage, rsv.coverage, asv.samp,rsv.samp, file = paste(paste("Out/out",nsim, sep = "_"),".Rdata", sep = ""))
+  }
+
+}
 
 ##################################################
 #function for storing convergence plots data
@@ -88,47 +167,9 @@ convergence <- function(min, max, start, aux, j.scale, Ob, Os, Xb, Xs, Yb, Ys, m
   
 }
 
-#############################################
-################### Data#####################
-#############################################
 
-# Observation indicators from the fifth sensor (1st column) to the first four sensors
-# and those from the sixth sensor (2nd column) to the first four sensors.
-Ob <- matrix(c(1, 0, 1, 0, 1, 0, 1, 0), ncol = 2)
-
-# Observation indicators among the first four sensors.
-Os <- matrix(c(0, 0, 0, 1,
-               0, 0, 1, 1,
-               0, 1, 0, 0,
-               1, 1, 0, 0), ncol = 4)
-
-# Each row indicates the location of the known sensors (5th and 6th).
-Xb <- matrix(c(0.5, 0.3, 0.3, 0.7), ncol = 2)
-
-# Each row indicates the location of the unknown sensors (1st, 2nd, 3rd, and 4th).
-Xs <- matrix(c(0.5748, 0.0991, 0.2578, 0.8546,
-               0.9069, 0.3651, 0.1350, 0.0392), ncol = 2)
-
-# The observed distances from the fifth sensor (1st column) to the first four sensors
-# and those from the sixth sensor (2nd column) to the first four sensors.
-Yb <- matrix(c(0.6103, 0, 0.2995, 0,
-               0.3631, 0, 0.5656, 0), ncol = 2)
-
-# Observed distances among the first four sensors.
-Ys <- matrix(c(0, 0, 0, 0.9266,
-               0, 0, 0.2970, 0.8524,
-               0, 0.2970, 0, 0,
-               0.9266, 0.8524, 0, 0), ncol = 4)
-
-####################################################
-############ Model Parameters#######################
-###################################################
-
-m <- 5 #### number of chains
-p <- 8 #### dimensions
-
-####### Starting Values####################
-
+######################################################################
+m <- 5
 start1 <- c(-0.1, 0.5, -0.1, -0.2, 0.1, 0.1, -0.5, -0.5)
 aux1 <- runif(n=8, min=min(start1), max=max(start1))
 start2 <- c(0.0, 0.6, 0.1, 0.1, 0.2, 0.2, 1.0, 0.0)
@@ -143,16 +184,23 @@ aux5 <- runif(n=8, min=min(start5), max=max(start5))
 start <- rbind(start1, start2, start3, start4, start5)
 aux <- rbind(aux1, aux2, aux3, aux4, aux5)
 j.scale <- rep(0.5, 4)
+truth <- c(0.5748, 0.9069, 0.0991, 0.3651, 0.2578, 0.1350, 0.8546, 0.0392)
+#sims for plotting densities and calculating coverage
 
-#sims for plotting running plots
-
-rep <- 100
+check.pts <- c(1e3, 5e3, 1e4, 5e4, 1e5)
+freq <- 10
+rep <- 10
+c.prob <- .95
 min <- 500
 max <- 2e5
 step <- 500
 conv.pts <- seq(min, max, step)
 
+# print("Carrying out 1000 repititions for each value of nsim in check.pts")
+# create.output(start, aux, j.scale, Ob, Os, Xb, Xs, Yb, Ys, m, check.pts, freq, truth)
+
 print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
-convergence(min, max, start, aux, j.scale, Ob, Os, Xb, Xs, Yb, Ys, m, rep, step=500)
+
+convergence(min, max, start, aux, j.scale, Ob, Os, Xb, Xs, Yb, Ys, m, rep, step = step)
 
 

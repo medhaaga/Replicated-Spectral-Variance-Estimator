@@ -86,7 +86,7 @@ copyright (c) 2012, James M. Flegal, University of California, Riverside
 > freq <- 1e2
 > c.prob <- .95
 > min <- 500
-> max <- 5e5
+> max <- 1e5
 > step <- 500
 > conv.pts <- seq(min, max, step)
 > 
@@ -188,4 +188,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  4.929   0.364   6.367 
+  4.852   0.398   6.414 

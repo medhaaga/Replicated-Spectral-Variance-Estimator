@@ -1,8 +1,3 @@
-###################################################################
-##This code produces and saves all the plots in pdf and prints the
-##contents of tables using R objects generated in simulations.R
-###################################################################
-
 set.seed(1)
 library(cubature)
 library(graphics)
@@ -16,7 +11,7 @@ sourceCpp("lag.cpp")
 source("functions.R")
 
 ###################################################
-### Data 
+### Data and model parameters
 ######################################################################
 
 # Observation indicators from the fifth sensor (1st column) to the first four sensors
@@ -47,252 +42,152 @@ Ys <- matrix(c(0, 0, 0, 0.9266,
                0, 0.2970, 0, 0,
                0.9266, 0.8524, 0, 0), ncol = 4)
 
-#######################################
-####Model Parameters#################
-######################################
 
 m <- 5
-p <- 8
-j.scale <- rep(0.5, 4)
+start <- rbind(runif(n=8, min=-0.3, max=0), runif(n=8, min=0.7, max=1))
+aux <- rbind(runif(n=8, min=-0.3, max=0), runif(n=8, min=0.7, max=1))
+j.scale <- rep(1,.08, 4)
+truth <- c(0.5748, 0.9069, 0.0991, 0.3651, 0.2578, 0.1350, 0.8546, 0.0392)
 
-####### Starting Values####################
 
-start1 <- c(-0.1, 0.5, -0.1, -0.2, 0.1, 0.1, -0.5, -0.5)
-aux1 <- runif(n=8, min=min(start1), max=max(start1))
-start2 <- c(0.0, 0.6, 0.1, 0.1, 0.2, 0.2, 1.0, 0.0)
-aux2 <- runif(n=8, min=min(start2), max=max(start2))
-start3 <- c(0.2, 0.7, 0.5, 0.4, 0.5, 0.3, 0.5, 0.5)
-aux3 <- runif(n=8, min=min(start3), max=max(start3))
-start4 <- c(0.4, 0.8, 0.8, 0.6, 0.7, 0.4, 1.0, 1.0)
-aux4 <- runif(n=8, min=min(start4), max=max(start4))
-start5 <- c(0.7, 1.0, 1.2, 0.9, 0.9, 0.5, 1.5, 1.5)
-aux5 <- runif(n=8, min=min(start5), max=max(start5))
+###############################################
 
-start <- rbind(start1, start2, start3, start4, start5)
-aux <- rbind(aux1, aux2, aux3, aux4, aux5)
 
+check.pts <- c(5e3, 1e4, 5e4, 1e5)
+r <- length(check.pts)
+freq <- 1e2
+c.prob <- .95
 min <- 500
 max <- 2e5
 step <- 500
 conv.pts <- seq(min, max, step)
 
-####################################################
-####################################################
-###### log-frobenius norm running plots#############
-#####################################################
-#####################################################
-
+## 1.) Running plots
+p <- 8
 load(file = paste("Out/conv_data_m", m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
-mean.asv <- rep(0, length(conv.pts))
-mean.rsv <- rep(0, length(conv.pts))
-lower.asv <- rep(0, length(conv.pts))
-lower.rsv <- rep(0, length(conv.pts))
-upper.asv <- rep(0, length(conv.pts))
-upper.rsv <- rep(0, length(conv.pts))
+# for (k in 1:p){
+#   a <- lapply(asv, function(x) x[k,k, ])
+#   r <- lapply(rsv, function(x) x[k,k, ])
+#   a <- Reduce("+", a)/length(a)
+#   r <- Reduce("+", r)/length(r)
+#   pdf(file = paste("Out/run_plots-", k, ".pdf", sep = ""))
+#   plot(conv.pts, a, type = "l", col = "red", main = paste("Variance of component -", k), xlab = "Simulation size", ylab = "Variance", ylim = range(a, r))
+#   lines(conv.pts, r, col="blue")
+#   legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=.75)
+#   dev.off()
+# }
 
 
-for (i in 1:length(conv.pts)){
-  vec.asv <- rep(0, rep)
-  vec.rsv <- rep(0, rep)
-  for (j in 1:rep){
-    vec.asv[j] <- log(norm(asv[[j]][,,i], type = "F"))
-    vec.rsv[j] <- log(norm(rsv[[j]][,,i], type = "F"))
-  }
-  asv.ci <- confidence_interval(vec.asv, .95)
-  rsv.ci <- confidence_interval(vec.rsv, .95)
-  mean.asv[i] <- asv.ci[1]
-  mean.rsv[i] <- rsv.ci[1]
-  lower.asv[i] <- asv.ci[2]
-  lower.rsv[i] <- rsv.ci[2]
-  upper.asv[i] <- asv.ci[3]
-  upper.rsv[i] <- rsv.ci[3]
-}
+ind <- seq(1,length(conv.pts), by = 2)
 
+a <- lapply(asv, function(x) log(apply(x, 3, norm, "F") ) )
+r <- lapply(rsv, function(x) log(apply(x, 3, norm, "F") ) )
+a <- Reduce("rbind", a)
+r <- Reduce("rbind", r)
 
-pdf(file = paste("Out/run_plot-Frob.pdf", sep = ""))
-plot(conv.pts, mean.asv, type = "l", col = "orange", main = "", lwd = 2,
-     xlab = "Simulation size", ylab = "log-Frobenius norm", ylim = range(mean.asv, mean.rsv))
-lines(conv.pts, mean.rsv, col="navy", lwd = 2)
-segments(x0 = conv.pts, y0 = lower.asv, y1 = upper.asv, col = "orange")
-segments(x0 = conv.pts, y0 = lower.rsv, y1 = upper.rsv, col = "navy")
-legend("bottomright", legend=c("ASV", "RSV"),col=c("orange", "navy"), lty=1, lwd=2, cex=1)
+se.a <- apply(a, 2, sd)/sqrt(length(asv))
+se.r <- apply(r, 2, sd)/sqrt(length(rsv))
+
+a <- colMeans(a)
+r <- colMeans(r)
+  pdf(file = paste("Out/run_plots-Frob.pdf", sep = ""), height = 5, width = 5)
+  plot(conv.pts, a, type = "l", col = "red", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)) )
+  lines(conv.pts, r, col="blue")
+  segments(x0 = conv.pts[ind], y0 = (a - se.a)[ind], y1 = (a + se.a)[ind], col = adjustcolor("red", alpha.f = .70))
+segments(x0 = conv.pts[ind], y0 = (r - se.r)[ind], y1 = (r + se.r)[ind], col = adjustcolor("blue", alpha.f = .70))
+
+  legend("bottomright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1)
+  dev.off()
+
+#### 1c.) Determinant
+# pdf(file = paste(paste("Out/run_plots_det", sep = "_"), ".pdf", sep = ""), height = 3)
+
+# det.rsv <- rep(0,length(conv.pts))
+# det.asv <- rep(0,length(conv.pts))
+
+#   a <- lapply(asv, function(x) det(x[, ,i])^(1/p))
+#   r <- lapply(rsv, function(x) det(x[, ,i])^(1/p))
+# for (i in 1:length(conv.pts)){
+
+#   a <- lapply(asv, function(x) det(x[, ,i])^(1/p))
+#   r <- lapply(rsv, function(x) det(x[, ,i])^(1/p))
+#   # a <- Reduce("+", a)/length(a)
+#   # r <- Reduce("+", r)/length(r)
+#   det.asv[i] <- Reduce("+", a)/length(a)
+#   det.rsv[i] <- Reduce("+", r)/length(r)
+# }
+
+# plot(conv.pts,det.asv, type = "l", col="red", main = paste("Determinant"), xlab = "Simulation size", ylab = "Determinant", ylim = range(c(det.asv, det.rsv)))
+# lines(conv.pts,det.rsv, col="blue")
+
+# legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=.75)
+# dev.off()
+
+#### 1d.) ESS
+
+pdf(file = paste("Out/run_plot_ess.pdf", sep = "_"), height = 5, width = 5)
+
+# par(mfrow = c(k,k))
+# mean.asv <- rep(0, length(conv.pts))
+# mean.rsv <- rep(0, length(conv.pts))
+#lower.asv <- rep(0, length(conv.pts))
+#lower.rsv <- rep(0, length(conv.pts))
+#upper.asv <- rep(0, length(conv.pts))
+#upper.rsv <- rep(0, length(conv.pts))
+# for (i in 1:length(conv.pts)){
+#   asv <- confidence_interval(ess.asv.samp[[i]], .9)
+#   rsv <- confidence_interval(ess.rsv.samp[[i]], .9)
+#   mean.asv[i] <- log(asv[1])
+#   mean.rsv[i] <- log(rsv[1])
+  # lower.asv[i] <- log(asv[2])
+  #  lower.rsv[i] <- log(rsv[2])
+  # upper.asv[i] <- log(asv[3])
+  #upper.rsv[i] <- log(rsv[3])
+# }
+# plot(conv.pts, mean.asv, type = "l", col = "red", main = "ESS running plot", xlab = "Simulation size", ylab = "ESS/mn", ylim = range(mean.asv, mean.rsv))
+# lines(conv.pts, mean.rsv, type = "l", col = "blue")
+#segments(x0 = conv.pts[1:100], y0 = lower.asv[1:100], y1 = upper.asv[1:100], col = "red")
+#segments(x0 = conv.pts[1:100], y0 = lower.rsv[1:100], y1 = upper.rsv[1:100], col = "blue")
+
+  a <- lapply(ess.asv, log)
+  r <- lapply(ess.rsv, log)
+  se.a <- 2*apply(Reduce("rbind", a), 2, sd)/sqrt(length(a))
+  se.r <- 2*apply(Reduce("rbind", r), 2, sd)/sqrt(length(r))
+  a <- Reduce("+", a)/length(ess.asv)
+  r <- Reduce("+", r)/length(ess.rsv)
+
+plot(conv.pts, a, type = "l", col = "red", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r))
+lines(conv.pts, r, col = "blue")
+  segments(x0 = conv.pts[ind], y0 = (a - se.a)[ind], y1 = (a + se.a)[ind], col = adjustcolor("red", alpha.f = .70))
+segments(x0 = conv.pts[ind], y0 = (r - se.r)[ind], y1 = (r + se.r)[ind], col = adjustcolor("blue", alpha.f = .70))
+
+legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=1.2)
 dev.off()
 
-##############################################
-##############################################
-####### Effective Sample Size ################
-##############################################
-##############################################
 
 
-mean.asv <- rep(0, length(conv.pts))
-mean.rsv <- rep(0, length(conv.pts))
-lower.asv <- rep(0, length(conv.pts))
-lower.rsv <- rep(0, length(conv.pts))
-upper.asv <- rep(0, length(conv.pts))
-upper.rsv <- rep(0, length(conv.pts))
+## 3.) Density plots for determinant of ASV and RSV.
 
+# pdf(file = "Out/densities.pdf", height = 5)
 
-for (i in 1:length(conv.pts)){
-  vec.asv <- rep(0, rep)
-  vec.rsv <- rep(0, rep)
-  for (j in 1:rep){
-    vec.asv[j] <- log(ess.asv[[j]][i])
-    vec.rsv[j] <- log(ess.rsv[[j]][i])
-  }
-  asv.ci <- confidence_interval(vec.asv, .95)
-  rsv.ci <- confidence_interval(vec.rsv, .95)
-  mean.asv[i] <- asv.ci[1]
-  mean.rsv[i] <- rsv.ci[1]
-  lower.asv[i] <- asv.ci[2]
-  lower.rsv[i] <- rsv.ci[2]
-  upper.asv[i] <- asv.ci[3]
-  upper.rsv[i] <- rsv.ci[3]
-}
+# par(mfrow = c(2,3))
+# for (j in 1:5){
+#   nsim <- check.pts[j]
+#   load(file = paste(paste("Out/out", nsim, sep = "_"), ".Rdata", sep = ""))
+  
+#   det.rsv <- rep(0,freq)
+#   det.asv <- rep(0,freq)
+#   for (k in 1:freq){
+#     det.rsv[k] <- det(rsv.samp[,,k])
+#     det.asv[k] <- det(asv.samp[,,k])
+#   }
+#   plot(density(det.asv), col="red", main = paste(" n =", nsim), xlab = "Determinant")
+#   lines(density(det.rsv), col="blue")
+#   legend("topright", legend=c("ASV", "RSV"),col=c("red", "blue"), lty=1, cex=1.2)
+  
+#   print(paste("Coverage probabilities for nsim =  ", nsim, " are: "))
+#   print(paste("ASV : ", mean(asv.coverage), "RSV: ", mean(rsv.coverage)))
+# }
+# dev.off()
 
-
-pdf(file = paste("Out/run_plot-ess.pdf", sep = ""))
-plot(conv.pts, mean.asv, type = "l", col = "orange", main = "", lwd = 2,
-     xlab = "Simulation size", ylab = "log-Frobenius norm", ylim = range(mean.asv, mean.rsv))
-lines(conv.pts, mean.rsv, col="navy", lwd = 2)
-segments(x0 = conv.pts, y0 = lower.asv, y1 = upper.asv, col = "orange")
-segments(x0 = conv.pts, y0 = lower.rsv, y1 = upper.rsv, col = "navy")
-legend("topright", legend=c("ASV", "RSV"),col=c("orange", "navy"), lty=1, lwd=2, cex=1)
-dev.off()
-
-################################################
-################################################
-### Scatter plots for four unknown locations ###
-################################################
-################################################
-
-load(file = "Out/two_chains.Rdata")
-
-nsim1 <- 1e4
-nsim2 <- 1e5
-
-pdf(file = "Out/sp-loc1.pdf", height = 4)
-par(mfrow = c(1, 2))
-
-# X_1 for nsim1
-plot(res.ram1$x[1:nsim1, c(1, 2)], pch = 1, xlim = range(res.ram1$x[1:nsim1,1], res.ram2$x[1:nsim1,1], 0.5748),
-     ylim = range(res.ram1$x[1:nsim1,2], res.ram2$x[1:nsim1,2]), xlab = "", ylab = "", main = "", col = "orange")
-points(res.ram2$x[1:nsim1,c(1,2)], pch = 1, xlim = range(res.ram1$x[1:nsim1,1], res.ram2$x[1:nsim1,1]),
-       ylim = range(res.ram1$x[1:nsim1,2], res.ram2$x[1:nsim1,2]), xlab = "", ylab = "", main = "", col = "navy")
-title(expression(bold(paste("RAM: ", x[1]))))
-mtext(side = 1, text = expression(bold(x[11])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[12])), line = 1.9, cex = 1)
-abline(v = 0.5748, lty = 2, lwd = 1)
-abline(h = 0.9069, lty = 2, lwd = 1)
-
-#X_1 for nsim2
-
-plot(res.ram1$x[1:nsim2, c(1, 2)], pch = 1, xlim = range(res.ram1$x[1:nsim2,1], res.ram2$x[1:nsim2,1]),
-     ylim = range(res.ram1$x[1:nsim2,2], res.ram2$x[1:nsim2,2]), xlab = "", ylab = "", main = "", col = "orange")
-points(res.ram2$x[1:nsim2,c(1,2)], pch = 1, xlim = range(res.ram1$x[1:nsim2,1], res.ram2$x[1:nsim2,1]),
-       ylim = range(res.ram1$x[1:nsim2,2], res.ram2$x[1:nsim2,2]), xlab = "", ylab = "", main = "", col = "navy")
-title(expression(bold(paste("RAM: ", x[1]))))
-mtext(side = 1, text = expression(bold(x[11])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[12])), line = 1.9, cex = 1)
-abline(v = 0.5748, lty = 2, lwd = 1)
-abline(h = 0.9069, lty = 2, lwd = 1)
-dev.off()
-
-pdf(file = "Out/sp-loc2.pdf", height = 4)
-
-par(mfrow = c(1,2))
-#X_2 for nsim1
-plot(res.ram1$x[1:nsim1, c(3, 4)], pch = 1, xlim = range(res.ram1$x[1:nsim1,3], res.ram2$x[1:nsim1,3]),
-     ylim = range(res.ram1$x[1:nsim1,4], res.ram2$x[1:nsim1,4]), xlab = "", ylab = "", main = "", col = "orange")
-points(res.ram2$x[1:nsim1,c(3,4)], pch = 1, xlab = "", ylab = "", main = "", col = "navy")
-title(expression(bold(paste("RAM: ", x[2]))))
-mtext(side = 1, text = expression(bold(x[21])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[22])), line = 1.9, cex = 1)
-abline(v = 0.0991, lty = 2, lwd = 1)
-abline(h = 0.3651, lty = 2, lwd = 1)
-
-#X_2 for nsim2
-
-plot(res.ram1$x[1:nsim2, c(3, 4)], pch = 1, xlim = range(res.ram1$x[1:nsim2,3], res.ram2$x[1:nsim2,3]),
-     ylim = range(res.ram1$x[1:nsim2,4], res.ram2$x[1:nsim2,4]), xlab = "", ylab = "", main = "", col = "orange")
-points(res.ram2$x[1:nsim2,c(3,4)], pch = 1, xlab = "", ylab = "", main = "", col = "navy")
-title(expression(bold(paste("RAM: ", x[2]))))
-mtext(side = 1, text = expression(bold(x[21])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[22])), line = 1.9, cex = 1)
-abline(v = 0.0991, lty = 2, lwd = 1)
-abline(h = 0.3651, lty = 2, lwd = 1)
-
-dev.off()
-
-pdf(file = "Out/sp-loc3.pdf", height = 4)
-par(mfrow = c(1,2))
-#X_3 for nsim1
-
-plot(res.ram1$x[1:nsim1, c(5, 6)], pch = 1, xlim = range(res.ram1$x[1:nsim1,5], res.ram2$x[1:nsim1,5]),
-     ylim = range(res.ram1$x[1:nsim1,6], res.ram2$x[1:nsim1,6]), xlab = "", ylab = "", main = "", col = "orange")
-points(res.ram2$x[1:nsim1,c(5,6)], pch = 1, xlim = range(res.ram1$x[1:nsim1,5], res.ram2$x[1:nsim1,5]),
-       ylim = range(res.ram1$x[1:nsim1,6], res.ram2$x[1:nsim1,6]), xlab = "", ylab = "", main = "", col = "navy")
-title(expression(bold(paste("RAM: ", x[3]))))
-mtext(side = 1, text = expression(bold(x[31])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[32])), line = 1.9, cex = 1)
-abline(v = 0.2578, lty = 2, lwd = 1)
-abline(h = 0.1350, lty = 2, lwd = 1)
-
-
-#X_3 for nsim2
-
-plot(res.ram1$x[1:nsim2, c(5, 6)], pch = 1, xlim = range(res.ram1$x[1:nsim2,5], res.ram2$x[1:nsim2,5]),
-     ylim = range(res.ram1$x[1:nsim2,6], res.ram2$x[1:nsim2,6]), xlab = "", ylab = "", main = "", col = "orange")
-points(res.ram2$x[1:nsim2,c(5,6)], pch = 1, xlim = range(res.ram1$x[1:nsim2,5], res.ram2$x[1:nsim2,5]),
-       ylim = range(res.ram1$x[1:nsim2,6], res.ram2$x[1:nsim2,6]), xlab = "", ylab = "", main = "", col = "navy")
-title(expression(bold(paste("RAM: ", x[3]))))
-mtext(side = 1, text = expression(bold(x[31])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[32])), line = 1.9, cex = 1)
-abline(v = 0.2578, lty = 2, lwd = 1)
-abline(h = 0.1350, lty = 2, lwd = 1)
-dev.off()
-
-pdf("Out/sp-loc4.pdf", height = 4)
-
-par(mfrow = c(1,2))
-#X_4 for nsim1
-
-plot(res.ram1$x[1:nsim1, c(7, 8)], pch = 1, xlim = range(res.ram1$x[1:nsim1,7], res.ram2$x[1:nsim1,7]),
-     ylim = range(res.ram1$x[1:nsim1,8], res.ram2$x[1:nsim1,8]), xlab = "", ylab = "", main = "", col = "orange")
-points(res.ram2$x[1:nsim1,c(7,8)], pch = 1, xlim = range(res.ram1$x[1:nsim1,7], res.ram2$x[1:nsim1,7]),
-       ylim = range(res.ram1$x[1:nsim1,8], res.ram2$x[1:nsim1,8]), xlab = "", ylab = "", main = "", col = "navy")
-title(expression(bold(paste("RAM: ", x[4]))))
-mtext(side = 1, text = expression(bold(x[41])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[42])), line = 1.9, cex = 1)
-abline(v = 0.8546, lty = 2, lwd = 1)
-abline(h = 0.0392, lty = 2, lwd = 1)
-
-#X_4 for nsim2
-
-plot(res.ram1$x[1:nsim2, c(7, 8)], pch = 1, xlim = range(res.ram1$x[1:nsim2,7], res.ram2$x[1:nsim2,7]),
-     ylim = range(res.ram1$x[1:nsim2,8], res.ram2$x[1:nsim2,8]), xlab = "", ylab = "", main = "", col = "orange")
-points(res.ram2$x[1:nsim2,c(7,8)], pch = 1, xlab = "", ylab = "", main = "", col = "navy")
-title(expression(bold(paste("RAM: ", x[4]))))
-mtext(side = 1, text = expression(bold(x[41])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[42])), line = 1.9, cex = 1)
-abline(v = 0.8546, lty = 2, lwd = 1)
-abline(h = 0.0392, lty = 2, lwd = 1)
-dev.off()
-
-########################################################
-########################################################
-### Trace for x-coordinate of four unknown locations ###
-########################################################
-########################################################
-
-load(file = "Out/two_chains.Rdata")
-
-pdf(file = "Out/trace.pdf")
-par(mfrow = c(2,2))
-
-plot.ts(res.ram1$x[,1])
-plot.ts(res.ram1$x[,3])
-plot.ts(res.ram1$x[,5])
-plot.ts(res.ram1$x[,7])
-dev.off()
