@@ -17,6 +17,7 @@
 \newcommand{\dd}[1]{\mathrm{d}#1}
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\Var}{\text{Var}}
+\newcommand{\Cov}{\text{Cov}}
 \newcommand{\X}{\mathcal{X}}
 \newcommand{\B}{\mathcal{B}}
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
@@ -123,10 +124,10 @@ Autocovariances are the fundamental quantity in many features of Markov chain Mo
 
 \section{Introduction} \label{sec:intro}
 
-Markov chain Monte Carlo (MCMC) is a sampling method used to obtain correlated realizations from a stochastic process. Due to this serial correlation in observations, a large number of MCMC samples are required to estimate features of the target distribution as compared to the independent ones. Therefore, it becomes imperative for an MCMC pG-titioner to have an idea about underlying dependence structure in the Markov chains. Autocovariance function (ACF) chaG-terizes this dependence for a stationary Markov chain. Suppose $\{X_t; t \in \mathbb{Z}\}$ is a stochastic process with mean $\mu$ and follows second-order stationarity i.e. (1) $\mathbb{E}[X_t] = \mu$ is constant for all $t$, (2) $\mathbb{E}[X_t^2]$ is constant for all $t$, and (3) $\mathbb{E}[X_t X_{t+k}]$ is a function of $k$ only $\forall k,t \in \mathbb{Z}$. Then, the autocovariance function at lag-$k$ is defined as
+Markov chain Monte Carlo (MCMC) is a sampling method used to obtain correlated realizations from a stochastic process. Due to this serial correlation in observations, a large number of MCMC samples are required to estimate features of the target distribution as compared to the independent ones. Therefore, it becomes imperative for an MCMC practitioner to have an idea about underlying dependence structure in the Markov chains. Autocovariance function (ACF) characterizes this dependence for a stationary Markov chain. Suppose $\{X_t; t \in \mathbb{Z}\}$ is a stochastic process with mean $\mu$ and follows second-order stationarity i.e. (1) $\mathbb{E}[X_t] = \mu$ is constant for all $t$, (2) $\mathbb{E}[X_t^2]$ is constant for all $t$, and (3) $\mathbb{E}[X_t X_{t+k}]$ is a function of $k$ only $\forall k,t \in \mathbb{Z}$. Then, the autocovariance function at lag-$k$ is defined as
 
 \[
-    \Gamma(k) = Cov(X_t, X_{t+k}) = \mathbb{E}[(X_t - \mu)(X_{t+k} - \mu)^T].
+    \Gamma(k) = \Cov(X_t, X_{t+k}) = \mathbb{E}[(X_t - \mu)(X_{t+k} - \mu)^T].
 \]
 
 A popular sample autocovariance function is the empirical estimator. On a finite sample $X = (X_1, X_2, ..., X_n)^T$, the autocovariance at lag-$k$ is estimated as
@@ -148,7 +149,6 @@ In the next section we introduce the new sample autocovariance estimator and cal
 \begin{example}[Demonstrative example]
 
 We demonstrate the striking difference in the ACF plots through mixture of Gaussian target density using a random-walk Metropolis-Hastings sampler. The target density has two well separated and non-equal modes. Two Markov chains are started close to each mode. It can be seen in Figure \ref{fig:gaussian-trace} that for the first $10^4$ samples, the chains do not communicate with the other mode. Whereas for a sample size of $10^5$, the chains have jumped modes and therefore, a single chain can give reliable information about the distribution. We wish to make two points here: firstly, for small sample size, we observe that ACF gives extremely misleading estimates of autocovariance whereas G-ACF is very close to reality (Figure \ref{subfig:gauss-acf-1e4}). Whereas, sharing the information about Monte Carlo average across chains leads to better estimation of autocovariances. Secondly, for a large sample size, the estimates from G-ACF as well as ACF are equivalent. Figure \ref{subfig:gauss-trace_1e5} depicts the scenario when convergence is achieved. This shows that G-ACF is at least as good as ACF; hence safe to use in any setting.
-
 
 \begin{figure}[htbp]
     \begin{subfigure}{.5\textwidth}
@@ -284,7 +284,7 @@ We are interested in Markov chain average and therefore, throughout this paper, 
  
 
 
- 
+
 
 
 Given m parallel Markov chains, we have $m$ i.i.d. samples of $\bar{X}_s$, $s \in \{1,..., m\}$. The Markov Chain standard error (MCSE) is given by $\Sigma/mn$. We are interested in consistent estimates of $\Sigma$ for two reasons. Firstly, to construct asymptotically valid confidence intervals and secondly, to determine when to stop the simulations. For this purpose, we use the class of Multivariate Spectral Variance Estimators (MSVE). The most common practice would be to combine the spectral variance estimates from $m$ chains by averaging over them. We call this technique average spectral variance estimator and denote it by $\hat{\Sigma}_A$). We propose using a globally-centered spectral variance estimator (G-SVE) wherein we use G-ACF to estimate the autocovariance. Strong consistency for MSVE has been addressed by \cite{vats:fleg:jon:2018}. Bias and variance calculations for a variant of SVE with known mean is done by \cite{hannan2009multiple}. In this paper, we will address the asymptotic properties (strong consistency), bias and variance calculations for G-SVE. 
