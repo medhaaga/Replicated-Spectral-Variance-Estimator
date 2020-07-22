@@ -1,0 +1,22 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Globally-centered autocovariance}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Autocorrelation}{section.2}% 3
+\BOOKMARK [1][-]{section.3}{Variance Estimators for multiple Markov chains}{}% 4
+\BOOKMARK [2][-]{subsection.3.1}{Globally-centered spectral variance estimators}{section.3}% 5
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Theoretical results}{subsection.3.1}% 6
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Fast implementation}{subsection.3.1}% 7
+\BOOKMARK [1][-]{section.4}{Effective sample size}{}% 8
+\BOOKMARK [1][-]{section.5}{Examples}{}% 9
+\BOOKMARK [2][-]{subsection.5.1}{Vector Autoregressive Process}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.2}{Boomerang Distribution}{section.5}% 11
+\BOOKMARK [2][-]{subsection.5.3}{Sensor Network Localization}{section.5}% 12
+\BOOKMARK [1][-]{section.6}{Discussion}{}% 13
+\BOOKMARK [1][-]{appendix.A}{Preliminaries}{}% 14
+\BOOKMARK [1][-]{appendix.B}{Proof of Theorems}{}% 15
+\BOOKMARK [2][-]{subsection.B.1}{Bias of Theorem 1}{appendix.B}% 16
+\BOOKMARK [2][-]{subsection.B.2}{Strong consistency argument}{appendix.B}% 17
+\BOOKMARK [2][-]{subsection.B.3}{G-SVE Bias}{appendix.B}% 18
+\BOOKMARK [2][-]{subsection.B.4}{Variance Calculation}{appendix.B}% 19
+\BOOKMARK [1][-]{appendix.C}{Additional Examples}{}% 20
+\BOOKMARK [2][-]{subsection.C.1}{Bayesian Poisson Change Point Model}{appendix.C}% 21
+\BOOKMARK [2][-]{subsection.C.2}{High School Social Network}{appendix.C}% 22
