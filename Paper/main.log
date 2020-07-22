@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  19 JUL 2020 09:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  22 JUL 2020 08:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -228,27 +228,78 @@ Package: fullpage 1999/02/23 1.1 (PWD)
 \CommentStream=\write3
 
 Excluding comment 'comment')
-\c@theorem=\count107
-\c@lemma=\count108
-\c@corollary=\count109
-\c@example=\count110
-\c@ass=\count111
-\c@remark=\count112
+(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
+Package: algorithm2e 2013/01/06 v5.00 algorithms environments
+\c@AlgoLine=\count107
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/tools/xspace.sty
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/relsize/relsize.sty
+Package: relsize 2013/03/29 ver 4.1
+)
+********************************************************
+Package `algorithm2e' Release 5.0 -- january 06 2013 --
+- algorithm2e-announce@lirmm.fr mailing list for announcement about releases
+- algorithm2e-discussion@lirmm.fr mailing list for discussion about package
+subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
+- Author: Christophe Fiorio (cfiorio@um2.fr)
+********************************************************
+\skiptotal=\skip52
+\skiplinenumber=\skip53
+\skiprule=\skip54
+\skiphlne=\skip55
+\skiptext=\skip56
+\skiplength=\skip57
+\algomargin=\skip58
+\skipalgocfslide=\skip59
+\algowidth=\dimen129
+\inoutsize=\dimen130
+\inoutindent=\dimen131
+\interspacetitleruled=\dimen132
+\interspacealgoruled=\dimen133
+\interspacetitleboxruled=\dimen134
+\algocf@inoutbox=\box28
+\algocf@inputbox=\box29
+\AlCapSkip=\skip60
+\AlCapHSkip=\skip61
+\algoskipindent=\skip62
+\algocf@nlbox=\box30
+\algocf@hangingbox=\box31
+\algocf@untilbox=\box32
+\algocf@skipuntil=\skip63
+\algocf@capbox=\box33
+\algoheightruledefault=\skip64
+\algoheightrule=\skip65
+\algotitleheightruledefault=\skip66
+\algotitleheightrule=\skip67
+\c@algocfline=\count108
+\c@algocfproc=\count109
+\c@algocf=\count110
+\algocf@algoframe=\box34
+\algocf@algobox=\box35
+)
+\c@theorem=\count111
+\c@lemma=\count112
+\c@corollary=\count113
+\c@example=\count114
+\c@ass=\count115
+\c@remark=\count116
  (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -286,16 +337,16 @@ LaTeX Font Info:    ... okay on input line 62.
 
 (/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count113
-\scratchdimen=\dimen129
-\scratchbox=\box28
-\nofMPsegments=\count114
-\nofMParguments=\count115
+\scratchcounter=\count117
+\scratchdimen=\dimen135
+\scratchbox=\box36
+\nofMPsegments=\count118
+\nofMParguments=\count119
 \everyMPshowfont=\toks29
-\MPscratchCnt=\count116
-\MPscratchDim=\dimen130
-\MPnumerator=\count117
-\makeMPintoPDFobject=\count118
+\MPscratchCnt=\count120
+\MPscratchDim=\dimen136
+\MPnumerator=\count121
+\makeMPintoPDFobject=\count122
 \everyMPtoPDFconversion=\toks30
 ) (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
@@ -343,175 +394,228 @@ e
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 64.
+LaTeX Font Info:    Try loading font information for U+msa on input line 65.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 64.
+LaTeX Font Info:    Try loading font information for U+msb on input line 65.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 75.
+) [1
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 75.
- [1
-
-{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
-
-
-LaTeX Warning: Reference `fig:var_acf_ccf' on page 4 undefined on input line 17
-3.
-
-
-LaTeX Warning: Reference `subfig:acf-500' on page 4 undefined on input line 173
-.
-
-
-LaTeX Warning: Reference `subfig:acf-5e4' on page 4 undefined on input line 173
-.
-
-[4] [5] [6] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 333--334
+{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 139--140
 
  []
 
-[8] [9] [10] [11]
 
-LaTeX Warning: Reference `fig:var_acf_ccf' on page 12 undefined on input line 4
-64.
+Underfull \hbox (badness 10000) in paragraph at lines 141--142
 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 144--145
+
+ []
+
+[2] <plots/gaussian-Targettrace_n1e4.pdf, id=23, 433.62pt x 361.35pt>
+File: plots/gaussian-Targettrace_n1e4.pdf Graphic file (type pdf)
+
+<use plots/gaussian-Targettrace_n1e4.pdf>
+Package pdftex.def Info: plots/gaussian-Targettrace_n1e4.pdf used on input line
+ 156.
+(pdftex.def)             Requested size: 234.8775pt x 195.7326pt.
+
+<plots/gaussian-Targettrace_n1e5.pdf, id=24, 433.62pt x 361.35pt>
+File: plots/gaussian-Targettrace_n1e5.pdf Graphic file (type pdf)
+
+<use plots/gaussian-Targettrace_n1e5.pdf>
+Package pdftex.def Info: plots/gaussian-Targettrace_n1e5.pdf used on input line
+ 162.
+(pdftex.def)             Requested size: 234.8775pt x 195.7326pt.
+
+Overfull \hbox (2.43332pt too wide) in paragraph at lines 154--166
+[]$[]$ $[]$ 
+ []
+
+<plots/gaussian-acf_n1e4.pdf, id=25, 722.7pt x 289.08pt>
+File: plots/gaussian-acf_n1e4.pdf Graphic file (type pdf)
+
+<use plots/gaussian-acf_n1e4.pdf>
+Package pdftex.def Info: plots/gaussian-acf_n1e4.pdf used on input line 173.
+(pdftex.def)             Requested size: 375.80544pt x 150.32245pt.
+
+<plots/gaussian-acf_n1e5.pdf, id=26, 722.7pt x 289.08pt>
+File: plots/gaussian-acf_n1e5.pdf Graphic file (type pdf)
+
+<use plots/gaussian-acf_n1e5.pdf>
+Package pdftex.def Info: plots/gaussian-acf_n1e5.pdf used on input line 179.
+(pdftex.def)             Requested size: 375.80544pt x 150.32245pt.
+ [3] [4 <./plots/gaussian-Targettrace_n1e4.pdf> <./plots/gaussian-Targettrace_n
+1e5.pdf>] [5 <./plots/gaussian-acf_n1e4.pdf> <./plots/gaussian-acf_n1e5.pdf>]
+
+LaTeX Warning: Reference `th:G_expec' on page 6 undefined on input line 241.
+
+[6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 325--326
+
+ []
+
+[8] [9]
+
+LaTeX Warning: Reference `th:G-ACF_expec' on page 10 undefined on input line 39
+4.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 419--420
+
+ []
+
+
+Overfull \hbox (29.93741pt too wide) in paragraph at lines 429--434
+[]\OT1/cmr/m/n/10.95 and $\OML/cmm/m/it/10.95 T\OT1/cmr/m/n/10.95 (\OML/cmm/m/i
+t/10.95 w\OT1/cmr/m/n/10.95 )$ is the $\OML/cmm/m/it/10.95 n \OMS/cmsy/m/n/10.9
+5 ^^B \OML/cmm/m/it/10.95 n$ \OT1/cmr/m/n/10.95 Toeplitz ma-trix of weights wit
+h the first col-umn be-ing $\OML/cmm/m/it/10.95 w \OT1/cmr/m/n/10.95 = [][]$.
+ []
+
+[10] [11] [12]
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no ¸ in font cmr10!
 
-LaTeX Warning: Reference `subfig:var-sp_500' on page 12 undefined on input line
- 483.
+
+LaTeX Warning: Reference `subfig:var-sp_500' on page 13 undefined on input line
+ 504.
 
 
-LaTeX Warning: Reference `subfig:var-sp_50000' on page 12 undefined on input li
-ne 483.
+LaTeX Warning: Reference `subfig:var-sp_50000' on page 13 undefined on input li
+ne 504.
 
-<plots/var-ess.pdf, id=52, 505.89pt x 505.89pt>
+<plots/acf,n=500.pdf, id=83, 578.16pt x 289.08pt>
+File: plots/acf,n=500.pdf Graphic file (type pdf)
+ <use plots/acf,n=500.pdf>
+Package pdftex.def Info: plots/acf,n=500.pdf used on input line 527.
+(pdftex.def)             Requested size: 375.80544pt x 187.89977pt.
+
+<plots/acf,n=10000.pdf, id=84, 578.16pt x 289.08pt>
+File: plots/acf,n=10000.pdf Graphic file (type pdf)
+
+<use plots/acf,n=10000.pdf>
+Package pdftex.def Info: plots/acf,n=10000.pdf used on input line 533.
+(pdftex.def)             Requested size: 375.80544pt x 187.89977pt.
+ <plots/var-ess.pdf, id=85, 505.89pt x 505.89pt>
 File: plots/var-ess.pdf Graphic file (type pdf)
- <use plots/var-ess.pdf>
-Package pdftex.def Info: plots/var-ess.pdf used on input line 505.
+
+<use plots/var-ess.pdf>
+Package pdftex.def Info: plots/var-ess.pdf used on input line 544.
 (pdftex.def)             Requested size: 234.8775pt x 234.88132pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[12] Excluding 'comment' comment. Excluding 'comment' comment.
+Excluding 'comment' comment. Excluding 'comment' comment.
 
-LaTeX Warning: Reference `fig:boom-sp' on page 13 undefined on input line 568.
+LaTeX Warning: Reference `fig:boom-sp' on page 13 undefined on input line 608.
 
-<plots/boom-acf,n=1000.pdf, id=57, 578.16pt x 289.08pt>
+[13] [14 <./plots/acf,n=500.pdf> <./plots/acf,n=10000.pdf>]
+<plots/boom-acf,n=1000.pdf, id=103, 578.16pt x 289.08pt>
 File: plots/boom-acf,n=1000.pdf Graphic file (type pdf)
 
 <use plots/boom-acf,n=1000.pdf>
-Package pdftex.def Info: plots/boom-acf,n=1000.pdf used on input line 574.
+Package pdftex.def Info: plots/boom-acf,n=1000.pdf used on input line 614.
 (pdftex.def)             Requested size: 375.79955pt x 144.53964pt.
 
-<plots/boom-acf,n=50000.pdf, id=58, 578.16pt x 289.08pt>
+<plots/boom-acf,n=50000.pdf, id=104, 578.16pt x 289.08pt>
 File: plots/boom-acf,n=50000.pdf Graphic file (type pdf)
 
 <use plots/boom-acf,n=50000.pdf>
-Package pdftex.def Info: plots/boom-acf,n=50000.pdf used on input line 580.
+Package pdftex.def Info: plots/boom-acf,n=50000.pdf used on input line 620.
 (pdftex.def)             Requested size: 375.79955pt x 144.53964pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[13 <./plots/var-ess.pdf>]
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+LaTeX Warning: Reference `fig:run_ess' on page 15 undefined on input line 649.
 
-<plots/boom-ess.pdf, id=69, 505.89pt x 289.08pt>
-File: plots/boom-ess.pdf Graphic file (type pdf)
- <use plots/boom-ess.pdf>
-Package pdftex.def Info: plots/boom-ess.pdf used on input line 613.
-(pdftex.def)             Requested size: 328.82707pt x 187.90417pt.
+[15 <./plots/var-ess.pdf>] <plots/boom-ess1.pdf, id=114, 505.89pt x 505.89pt>
+File: plots/boom-ess1.pdf Graphic file (type pdf)
 
+<use plots/boom-ess1.pdf>
+Package pdftex.def Info: plots/boom-ess1.pdf used on input line 656.
+(pdftex.def)             Requested size: 140.92793pt x 140.93033pt.
+ <plots/boom-ess2.pdf, id=115, 505.89pt x 505.89pt>
+File: plots/boom-ess2.pdf Graphic file (type pdf)
 
-LaTeX Warning: Reference `subfig:boom-pers_1_10_7' on page 14 undefined on inpu
-t line 618.
-
-<plots/boom-ess_1_10_7.pdf, id=70, 505.89pt x 289.08pt>
-File: plots/boom-ess_1_10_7.pdf Graphic file (type pdf)
-
-<use plots/boom-ess_1_10_7.pdf>
-Package pdftex.def Info: plots/boom-ess_1_10_7.pdf used on input line 622.
-(pdftex.def)             Requested size: 328.82707pt x 187.90417pt.
+<use plots/boom-ess2.pdf>
+Package pdftex.def Info: plots/boom-ess2.pdf used on input line 663.
+(pdftex.def)             Requested size: 140.92793pt x 140.93033pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 648--649
+LaTeX Warning: Reference `subfig:boom-pers_1_10_7' on page 16 undefined on inpu
+t line 672.
+
+
+LaTeX Warning: Reference `fig:boom-ess_1_10_7' on page 16 undefined on input li
+ne 672.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 695--696
 
  []
 
-[14 <./plots/boom-acf,n=1000.pdf> <./plots/boom-acf,n=50000.pdf>] [15 <./plots/
-boom-ess.pdf> <./plots/boom-ess_1_10_7.pdf>] [16]
-Underfull \hbox (badness 10000) in paragraph at lines 670--671
+[16 <./plots/boom-acf,n=1000.pdf> <./plots/boom-acf,n=50000.pdf>] [17 <./plots/
+boom-ess1.pdf> <./plots/boom-ess2.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 717--718
 
  []
 
-<plots/sensor-trace.pdf, id=102, 505.89pt x 361.35pt>
+<plots/sensor-trace.pdf, id=144, 505.89pt x 361.35pt>
 File: plots/sensor-trace.pdf Graphic file (type pdf)
 
 <use plots/sensor-trace.pdf>
-Package pdftex.def Info: plots/sensor-trace.pdf used on input line 674.
+Package pdftex.def Info: plots/sensor-trace.pdf used on input line 721.
 (pdftex.def)             Requested size: 328.82707pt x 234.88023pt.
 
-<plots/sensor-acf-n1000.pdf, id=103, 505.89pt x 216.81pt>
-File: plots/sensor-acf-n1000.pdf Graphic file (type pdf)
 
-<use plots/sensor-acf-n1000.pdf>
-Package pdftex.def Info: plots/sensor-acf-n1000.pdf used on input line 683.
-(pdftex.def)             Requested size: 375.81166pt x 144.54735pt.
+LaTeX Warning: Reference `fig:sensoG-ACF' on page 18 undefined on input line 74
+5.
 
-<plots/sensor-acf-n1e5.pdf, id=104, 505.89pt x 216.81pt>
-File: plots/sensor-acf-n1e5.pdf Graphic file (type pdf)
-
-<use plots/sensor-acf-n1e5.pdf>
-Package pdftex.def Info: plots/sensor-acf-n1e5.pdf used on input line 689.
-(pdftex.def)             Requested size: 375.81166pt x 144.54735pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[17] [18 <./plots/sensor-trace.pdf>]
-Overfull \hbox (9.37782pt too wide) in paragraph at lines 816--816
-[] 
- []
-
-[19 <./plots/sensor-acf-n1000.pdf> <./plots/sensor-acf-n1e5.pdf>]
-Overfull \hbox (19.69678pt too wide) in paragraph at lines 842--842
+[18] [19 <./plots/sensor-trace.pdf>]
+Overfull \hbox (9.37782pt too wide) in paragraph at lines 863--863
 [] 
  []
 
 [20]
-Overfull \hbox (13.48308pt too wide) in paragraph at lines 861--861
+Overfull \hbox (19.69678pt too wide) in paragraph at lines 889--889
 [] 
  []
 
-[21] [22] [23]
-Overfull \hbox (0.85567pt too wide) in paragraph at lines 973--973
+[21]
+Overfull \hbox (13.48308pt too wide) in paragraph at lines 908--908
 [] 
  []
 
-[24]
-Overfull \hbox (14.93965pt too wide) in paragraph at lines 1018--1018
+[22] [23]
+Overfull \hbox (0.85567pt too wide) in paragraph at lines 1020--1020
 [] 
  []
 
-[25]
-Overfull \hbox (4.68176pt too wide) in paragraph at lines 1024--1026
+[24] [25]
+Overfull \hbox (14.93965pt too wide) in paragraph at lines 1065--1065
+[] 
+ []
+
+
+Overfull \hbox (4.68176pt too wide) in paragraph at lines 1071--1073
 \OT1/cmr/m/n/10.95 Under our as-sump-tions, $\OML/cmm/m/it/10.95 b[] [] [] n=n 
 \OMS/cmsy/m/n/10.95 ! \OT1/cmr/m/n/10.95 0$ and $\OML/cmm/m/it/10.95  \OT1/cmr/
 m/n/10.95 (\OML/cmm/m/it/10.95 n\OT1/cmr/m/n/10.95 ) = \OML/cmm/m/it/10.95 o\OT
@@ -520,77 +624,81 @@ m/n/10.95 (\OML/cmm/m/it/10.95 n\OT1/cmr/m/n/10.95 ) = \OML/cmm/m/it/10.95 o\OT
 msy/m/n/10.95 !
  []
 
-[26]
-Overfull \hbox (11.52263pt too wide) in paragraph at lines 1079--1079
+[26] [27]
+Overfull \hbox (11.52263pt too wide) in paragraph at lines 1126--1126
 [] 
  []
 
-[27]
-Overfull \hbox (8.18376pt too wide) in paragraph at lines 1118--1118
+[28]
+Overfull \hbox (8.18376pt too wide) in paragraph at lines 1165--1165
 [] 
  []
 
-[28] [29] [30] [31] [32]
-Underfull \hbox (badness 10000) in paragraph at lines 1280--1281
+[29] [30] [31]
+Overfull \hbox (2.91158pt too wide) in paragraph at lines 1313--1313
+[] 
+ []
+
+[32]
+Underfull \hbox (badness 10000) in paragraph at lines 1327--1328
 
  []
 
-<plots/spatio-acf.pdf, id=173, 505.89pt x 505.89pt>
+[33] <plots/spatio-acf.pdf, id=203, 505.89pt x 505.89pt>
 File: plots/spatio-acf.pdf Graphic file (type pdf)
- <use plots/spatio-acf.pdf>
-Package pdftex.def Info: plots/spatio-acf.pdf used on input line 1291.
+
+<use plots/spatio-acf.pdf>
+Package pdftex.def Info: plots/spatio-acf.pdf used on input line 1338.
 (pdftex.def)             Requested size: 375.81166pt x 289.08589pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1288--1296
+Underfull \hbox (badness 10000) in paragraph at lines 1335--1343
 
  []
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1301--1302
+Underfull \hbox (badness 10000) in paragraph at lines 1348--1349
 
  []
 
-[33] [34 <./plots/spatio-acf.pdf>] (./main.bbl [35] [36]
+[34 <./plots/spatio-acf.pdf>] (./main.bbl [35] [36]
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no ¸ in font cmr10!
-) [37] (./main.aux)
+ [37]) [38] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 5344 strings out of 493089
- 77383 string characters out of 6134842
- 166187 words of memory out of 5000000
- 8727 multiletter control sequences out of 15000+600000
- 14743 words of font info for 57 fonts, out of 8000000 for 9000
+ 6722 strings out of 493089
+ 97254 string characters out of 6134842
+ 211133 words of memory out of 5000000
+ 10093 multiletter control sequences out of 15000+600000
+ 15052 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,17n,38p,1334b,498s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,17n,38p,1380b,559s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
-/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
-usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></us
-r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/
-local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/lo
-cal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loca
-l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/
-texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/tex
-live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texliv
-e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
-015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/20
-15/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2015/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2015/te
-xmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (37 pages, 540799 bytes).
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
+usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></u
+sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></us
+r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/
+local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/lo
+cal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/loca
+l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/
+texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/te
+xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texli
+ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/
+2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/201
+5/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2015/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2015/texm
+f-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (38 pages, 1099639 bytes).
 PDF statistics:
- 257 PDF objects out of 1000 (max. 8388607)
- 180 compressed objects within 2 object streams
+ 289 PDF objects out of 1000 (max. 8388607)
+ 201 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
- 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 66 words of extra memory for PDF output out of 10000 (max. 10000000)
 

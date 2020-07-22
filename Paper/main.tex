@@ -23,6 +23,7 @@
 % These three packages are from the American Mathematical Society and includes all of the important symbols and operations 
 \usepackage{fullpage}
 \usepackage{comment}
+\usepackage[linesnumbered, ruled]{algorithm2e}
 % By default, an article has some vary large margins to fit the smaller page format.  This allows us to use more standard margins.
 \allowdisplaybreaks
 \newtheorem{theorem}{Theorem}
@@ -70,107 +71,131 @@ Autocovariances are the fundamental quantity in many features of Markov chain Mo
 \end{abstract}
 
 
-{\color{blue} Main things to change
-\begin{itemize}
-  \item I don't want to call this ``Replicated autocovariance'' or ``Replicated spectral variance''. I think ``Globally-centered autocovariance'' is more appropriate and self-explanatory. So we will have to go over the whole document and change this.
+% {\color{blue} Main things to change
+% \begin{itemize}
+%   \item I don't want to call this ``Replicated autocovariance'' or ``Replicated spectral variance''. I think ``Globally-centered autocovariance'' is more appropriate and self-explanatory. So we will have to go over the whole document and change this.
 
-  \item The contents are a bit messy right now, and I am having trouble organizing my thoughts. 
+%   \item The contents are a bit messy right now, and I am having trouble organizing my thoughts. 
 
-\end{itemize}
+% \end{itemize}
 
-A rough outline of the organization
-\begin{enumerate}
-  \item Introduction, with a sneak peak at new plots. Change this example to a univariate mixture of Gaussians.:
+% A rough outline of the organization
+% \begin{enumerate}
+%   \item Introduction, with a sneak peak at new plots. Change this example to a univariate mixture of Gaussians.:
 
-    Here, we will just explain the problem with the old ACF and what happens by using the new ACF. We will show a plot to illustrate the impact. Then we will summarize the three places this will have an impact: (1) ACF plots (2) estimators of the asymptotic variance-covariance matrix (3) estimating effective sample size.
+%     Here, we will just explain the problem with the old ACF and what happens by using the new ACF. We will show a plot to illustrate the impact. Then we will summarize the three places this will have an impact: (1) ACF plots (2) estimators of the asymptotic variance-covariance matrix (3) estimating effective sample size.
 
-  \item Globally-centered autocovariance
-    \begin{itemize}
-      \item Theoretical soundness
-    \end{itemize}
+%   \item Globally-centered autocovariance
+%     \begin{itemize}
+%       \item Theoretical soundness
+%     \end{itemize}
 
-  \item Variance of Monte Carlo averages
+%   \item Variance of Monte Carlo averages
 
-    Describe MC averages and CLT here and not before
-    \begin{itemize}
-      \item Globally-centered Spectral variance estimators
-      \begin{itemize}
-        \item Theoretical results
-        \item Fast implementation
-      \end{itemize}
-    \end{itemize}
+%     Describe MC averages and CLT here and not before
+%     \begin{itemize}
+%       \item Globally-centered Spectral variance estimators
+%       \begin{itemize}
+%         \item Theoretical results
+%         \item Fast implementation
+%       \end{itemize}
+%     \end{itemize}
 
-  \item Effective sample size
+%   \item Effective sample size
 
-  \item Examples
+%   \item Examples
 
-  \item Discussion
-    \begin{itemize}
-      \item All plots have been made using the package:(name). The package can be found on GitHub.
-      \item One thing to discuss is that the new autocovariances can be used in the initial sequence estimators as well.
-    \end{itemize}
+%   \item Discussion
+%     \begin{itemize}
+%       \item All plots have been made using the package:(name). The package can be found on GitHub.
+%       \item One thing to discuss is that the new autocovariances can be used in the initial sequence estimators as well.
+%     \end{itemize}
 
-  \item Appendix
-    \begin{itemize}
-      \item Proofs
-      \item ACF plots for other examples.
-    \end{itemize}
+%   \item Appendix
+%     \begin{itemize}
+%       \item Proofs
+%       \item ACF plots for other examples.
+%     \end{itemize}
 
-\end{enumerate}
-}
+% \end{enumerate}
+% }
+% \newpage
+
 \section{Introduction} \label{sec:intro}
 
-Markov chain Monte Carlo (MCMC) is a sampling method used to obtain correlated realizations from a stochastic process. Due to this serial correlation in observations, a large number of MCMC samples are required to estimate features of the target distribution as compared to the independent ones. Therefore, it becomes imperative for an MCMC practitioner to have an idea about underlying dependence structure in the Markov chains. Autocovariance function (ACF) characterizes this dependence for a stationary Markov chain. A famous sample autovariance function is the empirical estimator, which unfortunately comes with its drawbacks. Firstly, it is not immune to outliers (see \cite{ma2000highly}) and secondly, it is usually non-informative in case of slowly mixing Markov chains for decently finite samples. We address the second issue in this paper by using multiple representative samples of the target distribution via parallel Markov chains.
+Markov chain Monte Carlo (MCMC) is a sampling method used to obtain correlated realizations from a stochastic process. Due to this serial correlation in observations, a large number of MCMC samples are required to estimate features of the target distribution as compared to the independent ones. Therefore, it becomes imperative for an MCMC pG-titioner to have an idea about underlying dependence structure in the Markov chains. Autocovariance function (ACF) chaG-terizes this dependence for a stationary Markov chain. Suppose $\{X_t; t \in \mathbb{Z}\}$ is a stochastic process with mean $\mu$ and follows second-order stationarity i.e. (1) $\mathbb{E}[X_t] = \mu$ is constant for all $t$, (2) $\mathbb{E}[X_t^2]$ is constant for all $t$, and (3) $\mathbb{E}[X_t X_{t+k}]$ is a function of $k$ only $\forall k,t \in \mathbb{Z}$. Then, the autocovariance function at lag-$k$ is defined as
 
-Calculation of exact theoretical ACF has been done for simple models like autoregressive (AR), moving average (MA) (\cite{quenouille1947notes}), and autoregressive-moving-average (ARMA) (\cite{box2015time}) models. However, for most of the complex processes, we rely on sample ACF to understand the correlation in the chain at a particular lag. For a slowly mixing Markov chain or a multi-modal target distribution, Markov chains explore the sample space only partially for even high sample size. In such situations, single chain empirical ACF will underestimate the autocovariance giving misleading inferences. With convenient multi-core computation resources, it is possible to get multiple Markov chains for a target distribution.  We propose a new autocovariance estimator called replicated autocovariance function (R-ACF) with a simple fix in centering a chain about the overall mean. An important application of ACF is in calculating the asymptotic variance in the CLT of a Markov chain process.   
+\[
+    \Gamma(k) = Cov(X_t, X_{t+k}) = \mathbb{E}[(X_t - \mu)(X_{t+k} - \mu)^T].
+\]
+
+A popular sample autocovariance function is the empirical estimator. On a finite sample $X = (X_1, X_2, ..., X_n)^T$, the autocovariance at lag-$k$ is estimated as
+%
+\begin{equation} \label{eq:empirical_acf}
+    \hat{\Gamma}(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}}(X_t - \bar{X})(X_{(t+\abs{k})} - \bar{X})^T
+\end{equation}
 
 
+where $\bar{X} = \sum_{t=1}^nX_t/n$. Calculation of exact ACF has been done for simple models like autoregressive (AR), moving average (MA) (\cite{quenouille1947notes}), and autoregressive-moving-average (ARMA) (\cite{box2015time}) models. However, for most of the complex sampling algorithms, we rely on sample estimators for ACF. Unfortunately, the estimator given in equation \ref{eq:empirical_acf} has been observed to have a some drawbacks. Firstly, it is not immune to outliers (see \cite{ma2000highly}) and secondly, it is usually non-informative in case of slowly mixing Markov chains for decently finite samples. We address the second issue in this paper by using multiple representative samples of the target distribution via parallel Markov chains. With convenient multi-core computation resources, it is possible to get multiple Markov chains for a target distribution. Our goal is to combine the information from all the Markov chains while calculating the autocovariances\\
 
-In the next section we introduce the new sample autocovariance estimator and calculate its bias for finite samples. We observe that the bias term for R-ACF is similar to the bias of empirical ACF except for a few small order end-effect terms that vanish as $n \to \infty$. In section \ref{sec:variance_est}, we introduce three estimators for $\Sigma$ and study the properties of RSV estimator through proof of strong consistency, bias, and variance calculations. We will elaborate on the estimator for ESS using RSV in section \ref{sec:ess}. Section \ref{sec:examples} gives a simulation study on three different examples for the proposed estimators. There are only a handful of stochastic processes where the true autocovariance and $\Sigma$ are known. To compare the estimators when the truth is known, we use a slowly mixing vector autoregressive process of order 1 (VAR(1)). We successfully show in section \ref{ex:var} that our estimators yield better results as compared to the classical sample ACF and SVE. A more promising advantage of our estimators is observed when the target distribution is multi-modal. For this purpose we use a bivariate bi-modal probability distribution introduced by \cite{gelman1991note} in section \ref{ex:boomerang}. All the important proofs are given in the Appendix. 
+ A commonly faced problem with the MCMC models is the slow mixing property. In case of multi modal target distributions, it has been observed that the Markov chains tend to get \textit{stuck} in a particular mode for a long time. As a consequence, the chain fails to explore the sample space. In such situations, single chain empirical ACF will underestimate the autocovariance giving misleading inferences.  We propose an autocovariance estimator called globally-centered autocovariance function (G-ACF) with a simple fix in centering which has been observed to show drastically better results in many cases. We will further study the impact of G-ACF in calculation of two important applications of ACF (1) asymptotic variance of Markov chain average and (2) effective sample size (ESS).\\
+ 
 
-{\color{blue} Dootika: The introduction above needs some rewrite based on my pointers in blue above. We should introduce the definition of autocovariance here and present the old and the new estimators of $\Gamma$ here. So take some of the details out of the next section and put them here.}
+ MCMC ensures asymptotic convergence, however this is not practically very useful where the number of samples is finite. There are many criteria for terminating simulation like fixed-time rule, sequencial fixed-volume rule (see \cite{glynn1992asymptotic}), and using Gelman Rubin diagnostics (\cite{gelman1992inference}). The relative fixed-volume rule has been thoroughly discussed for MCMC by \cite{flegal2015relative} and \cite{gong2016practical}. We will use method of effective sample size (ESS) by \cite{vats2019multivariate} for terminating the simulations. The quality of estimation of $\Sigma$ is critical in estimating their ESS. We will successfully show that the G-SVE estimates the truth better and prevents the premature stopping of Markov chain.\\
 
+In the next section we introduce the new sample autocovariance estimator and calculate its bias for finite samples. We observe that the bias term for G-ACF is similar to the bias of empirical ACF except for a few small order end-effect terms that vanish as $n \to \infty$. In section \ref{sec:variance_est}, we introduce the globally-centered SVE and give a proof of strong consistency, bias, and variance calculations. We will elaborate on the estimator for ESS using G-SVE in section \ref{sec:ess}. Section \ref{sec:examples} gives an experimental study on three different examples for the proposed estimators. All the important proofs are given in the Appendix. 
 
 \begin{example}[Demonstrative example]
 
-We demonstrate the striking difference in the ACF plots through mixture of Gaussian target density using a random-walk Metropolis-Hastings sampler.
+We demonstrate the striking difference in the ACF plots through mixture of Gaussian target density using a random-walk Metropolis-Hastings sampler. The target density has two well separated and non-equal modes. Two Markov chains are started close to each mode. It can be seen in Figure \ref{fig:gaussian-trace} that for the first $10^4$ samples, the chains do not communicate with the other mode. Whereas for a sample size of $10^5$, the chains have jumped modes and therefore, a single chain can give reliable information about the distribution. We wish to make two points here: firstly, for small sample size, we observe that ACF gives extremely misleading estimates of autocovariance whereas G-ACF is very close to reality (Figure \ref{subfig:gauss-acf-1e4}). Whereas, sharing the information about Monte Carlo average across chains leads to better estimation of autocovariances. Secondly, for a large sample size, the estimates from G-ACF as well as ACF are equivalent. Figure \ref{subfig:gauss-trace_1e5} depicts the scenario when convergence is achieved. This shows that G-ACF is at least as good as ACF; hence safe to use in any setting.
 
-{\color{blue} Dootika: add new plots here when available for this target density. }
-% \begin{figure}
-% \begin{subfigure}{\textwidth}
-%   \centering
-%   \includegraphics[width=.8\linewidth]{plots/acf,n=500.pdf}
-%   \caption{$n = 500$}
-%   \label{subfig:acf-500}
-% \end{subfigure}\\
-% \begin{subfigure}{\textwidth}
-%   \centering
-%   \includegraphics[width=.8\linewidth]{plots/acf,n=10000.pdf} 
-%   \caption{$n = 10^4$}
-%   \label{subfig:acf-5e4}
-% \end{subfigure}
-% \caption{Autocorrelation plot for ACF and R-ACF for first chain out of two parallel Markov chains. First column corresponds to ACF calculated using arithmetic mean of first Markov chain and the second column corresponds to the one calculated using global mean of two Markov chains.(a): $n = 500$, not converged yet; (b): $n =  10^4$, converged}
-% \label{fig:var_acf_ccf}
-% \end{figure}
 
+\begin{figure}[htbp]
+    \begin{subfigure}{.5\textwidth}
+   \centering
+   \includegraphics[width=\linewidth]{plots/gaussian-Targettrace_n1e4.pdf}
+   \caption{$n = 10^4$}
+   \label{subfig:gauss-trace_1e4}
+ \end{subfigure}
+ \begin{subfigure}{0.5\textwidth}
+   \centering
+   \includegraphics[width=\linewidth]{plots/gaussian-Targettrace_n1e5.pdf} 
+   \caption{$n = 10^5$}
+   \label{subfig:gauss-trace_1e5}
+ \end{subfigure}
+    \caption{Target density and Density plot for two chains starting at different values for a Gaussian mixture model with mixture probability $= 0.7, \; \mu_1 = -5, \; \mu_2 = 5, \; \sigma_1 = 1, \textrm{ and } \sigma_2 = 0.5$. (a) $n = 10^4$; chains don't interact. (b) $n = 10^5$; chains interact.}
+    \label{fig:gaussian-trace}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{subfigure}{\textwidth}
+   \centering
+   \includegraphics[width=.8\linewidth]{plots/gaussian-acf_n1e4.pdf}
+   \caption{$n = 10^4$}
+   \label{subfig:gauss-acf-1e4}
+ \end{subfigure}\\
+ \begin{subfigure}{\textwidth}
+   \centering
+   \includegraphics[width=.8\linewidth]{plots/gaussian-acf_n1e5.pdf} 
+   \caption{$n = 10^5$}
+   \label{subfig:gauss-acf-1e5}
+ \end{subfigure}
+ \caption{Autocorrelation plot for locally-centered ACF (left) and globally centered ACF (right) averaged over all chains. (a) $n = 10^4$, not converged yet; (b) $n =  10^5$, converged}
+ \label{fig:gauss:acf}
+\end{figure}
 \end{example}
-\section{Globally-centered autocovariance} \label{sec:R-ACF}
 
-For a stationary stochastic process $\{X_t\}_{t \geq 1}$, let $\Gamma(k)$ denote the lag -k autocovariance. In time series literature, we generally encounter the following estimator for autocovariance. 
+
+
+\section{Globally-centered autocovariance} \label{sec:G-ACF}
+
+ Suppose we have $m$ replications of Markov chains for same target distribution and $\{X_{st}; \; t \in \mathbb{Z}\}$ denote the $s^{th}$ Markov chain. Let the sample mean of $s^{th}$ Markov chain be denoted by $\bar{X}_s$ and the global mean by $\bar{\bar{X}} = \sum_{s = 1}^{m}\bar{X}_s/m$. The global mean provides a better estimate for the expectation value when the number of simulation per chain are not sufficient for the convergence to kick in. The globally-centered autocovariance function (G-ACF) for the $s^{th}$ Markov chain is given by:
 %
 \[
-\hat{\Gamma}(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}}(X_t - \bar{X})(X_{(t+\abs{k})} - \bar{X})^T
+\hat{\Gamma}_{G}(k) = \dfrac{1}{mn} \sum_{s=1}^{m}\sum_{t=1}^{n-k}(X_{st}-\bar{\bar{X}})(X_{s(t+k)}-\bar{\bar{X}})^T
 \]
 
-\cite{priestley1981spectral} shows that this estimator is biased with the main bias term equal to $\abs{k}\Gamma(k)/n$, ignoring the small order terms arising due to estimation of $\mu$. An unbiased estimator with a divisor of $n - \abs{k}$ instead of $n$ exists, say $\Gamma^*(k)$. Nevertheless, the biased estimator is preferred for its lower mean square error (\cite{priestley1981spectral}). For a small $k$ relative to $n$, the two estimators are almost the same. However, for larger relative $k$ the variance of $\hat{\Gamma}(k)$ compensates for larger bias rendering a smaller mean square error than $\Gamma^*(k)$. 
-
-A commonly faced problem with the MCMC algorithms is the slow mixing property. In case of multi modal target distributions, it has been observed that even decently mixing Markov chains fail to explore the sample space for the first few thousand observations. This leads to underestimation of autocovariance for a single Markov chain. We propose a simple and neat fix for estimating ACF while dealing with slow convergence. Suppose we have $m$ replications of Markov chains for same target distribution, the overall mean $\bar{\bar{X}} = \sum_{i = 1}^{m}\bar{X}_i/m$ provides a better estimate for the expectation value when the number of simulation per chain are not sufficient for the convergence to kick in. The replicated autocovariance estimator or $s^{th}$ Markov chain is given by:
-%
-\[
-\hat{\Gamma}_{RAC,s}(k) = \dfrac{1}{n}\sum_{t=1}^{n-k}(X_{st}-\bar{\bar{X}})(X_{s(t+k)}-\bar{\bar{X}})^T
-\]
-
-If the starting points of these parallel Markov chains are sufficiently dispersed, R-ACF provides more realistic estimation of lag covariances. It is a known problem that getting true autocovariance in closed form for non-simple problems is difficult. In Figure \ref{fig:var_acf_ccf}, we will illustrate the comparison between ACF and R-ACF for a slowly mixing VAR-1 example, where the truth is known. We wish to make two points here: firstly, for small sample size, we observe that ACF gives extremely misleading estimates of autocovariance whereas R-ACF is very close to reality. Figure \ref{subfig:acf-500} depicts the scenario where the convergence is not achieved yet. Secondly, for a large sample size , the estimates from R-ACF as well as ACF are equivalent. Figure \ref{subfig:acf-5e4} depicts the scenario when convergence is achieved. This shows that R-ACF is at least as good as ACF; hence safe to use in any setting.
+If the starting points of these parallel Markov chains are sufficiently dispersed, G-ACF provides more realistic estimation of lag covariances. \cite{priestley1981spectral} shows that the empirical estimator in Equation \ref{eq:empirical_acf} is biased with the main bias term equal to $\abs{k}\Gamma(k)/n$, ignoring the small order terms arising due to estimation of $\mu$. An unbiased estimator with a divisor of $n - \abs{k}$ instead of $n$ exists, say $\Gamma^*(k)$. Nevertheless, the biased estimator is preferred for its lower mean square error (\cite{priestley1981spectral}). For a small $k$ relative to $n$, the two estimators are almost the same. However, for larger relative $k$ the variance of $\hat{\Gamma}(k)$ compensates for larger bias rendering a smaller mean square error than $\Gamma^*(k)$. 
 
 
 \subsection{Theoretical results} % (fold)
@@ -178,14 +203,14 @@ If the starting points of these parallel Markov chains are sufficiently disperse
 
 % subsection theoretical_results (end)
 
-The bias for R-ACF is similar to the bias of sample autocovariance estimator in case of single chain except for a few small order terms that shall be later addressed in theorem \ref{th:RAC_expec}. Before getting to the bias results for $\hat{\Gamma}_{RAV}(k)$ for any lag k, we introduce an additional notation. For $q \geq 1$, we define
+The bias for G-ACF is similar to the bias of sample autocovariance estimator in case of single chain except for a few small order terms that shall be later addressed in theorem \ref{th:G-_expec}. Before getting to the bias results for $\hat{\Gamma}_{RAV}(k)$ for any lag $k$, we introduce an additional notation. For $q \geq 1$, we define
 \[
 \Phi^{(q)} = \sum\limits_{-\infty}^{\infty}\abs{k}^q \|\Gamma(k)\|
 \]
 We denote $\Phi^{(1)} \textrm{ by } \Phi$. 
-\begin{theorem} \label{th:RAC_expec}
+\begin{theorem} \label{th:G-_expec}
    \[
-   \mathbb{E}[\hat{\Gamma}_{RAC}(k)] = \left(1- \dfrac{|k|}{n}\right)\left(\Gamma(k) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2}\right)  + \dfrac{2(m-1)}{m}\dfrac{\abs{k}}{n^2} \left(\Sigma - \sum_{h=0}^{n-1}\Gamma(h)\right) + o(n^{-2})
+   \mathbb{E}[\hat{\Gamma}_{G}(k)] = \left(1- \dfrac{|k|}{n}\right)\left(\Gamma(k) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2}\right)  + \dfrac{2(m-1)}{m}\dfrac{\abs{k}}{n^2} \left(\Sigma - \sum_{h=0}^{n-1}\Gamma(h)\right) + o(n^{-2})
    \]
 \end{theorem}
 
@@ -203,27 +228,27 @@ By proposition 1 in \cite{song1995optimal}
 \Var(\bar{X}) = \dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2} + o(n^{-2})
 \end{equation}
 
-As a consequence, if $\Var(\bar{X})$ is finite, then $\Var(\bar{X}) \to 0 \textrm{ as } n \to \infty$. We can break $\hat{\Gamma}_{RAC}$ into four parts for all $k \geq 1$ as:
+As a consequence, if $\Var(\bar{X})$ is finite, then $\Var(\bar{X}) \to 0 \textrm{ as } n \to \infty$. We can break $\hat{\Gamma}_{G-}$ into four parts for all $k \geq 1$ as:
  \[
- \hat{\Gamma}_{RAC} =  \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Gamma}_s(k) - \dfrac{1}{mn}\sum_{s=1}^{m}\sum_{t=1}^{|k|}A_{st}^T - \dfrac{1}{mn}\sum_{s=1}^{m}\sum_{t=n-|k|+1}^{n}A_{st} + \dfrac{n-|k|}{mn}\sum_{s=1}^{m}(\bar{X}_s - \bar{\bar{X}})(\bar{X}_s - \bar{\bar{X}})^T\,,
+ \hat{\Gamma}_{G} =  \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Gamma}_s(k) - \dfrac{1}{mn}\sum_{s=1}^{m}\sum_{t=1}^{|k|}A_{st}^T - \dfrac{1}{mn}\sum_{s=1}^{m}\sum_{t=n-|k|+1}^{n}A_{st} + \dfrac{n-|k|}{mn}\sum_{s=1}^{m}(\bar{X}_s - \bar{\bar{X}})(\bar{X}_s - \bar{\bar{X}})^T\,,
  \]
 %
 where $A_{st} = (X_{st}-\bar{X}_s)(\bar{X}_s - \bar{\bar{X}})^T$\\
 The expectation value of the first term is given by equation \ref{eq:priestly} and \ref{eq:song} while the other three terms contribute $o(1)$ terms. The complete proof evaluating the expectation values of last three terms can be found in Appendix subsection \ref{appendix:bias}.
 \end{proof}
 
-\begin{remark} \label{rmrk:exp_racf_minus_acf}
-Using theorem \ref{th:RAC_expec} and equation \ref{eq:priestly},
+\begin{remark} \label{rmrk:exp_G-f_minus_acf}
+Using theorem \ref{th:G_expec} and equation \ref{eq:priestly},
 \[
-\mathbb{E}[\hat{\Gamma}_{RAC}(k) - \hat{\Gamma}(k)] = \dfrac{\abs{k}}{n}\left(1 - \dfrac{1}{m}\right)\left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right) + \dfrac{2(m-1)}{m}\dfrac{\abs{k}}{n^2} \left(\Sigma - \sum_{h=0}^{n-1}\Gamma(h)\right) + o(n^{-2})
+\mathbb{E}[\hat{\Gamma}_{G}(k) - \hat{\Gamma}(k)] = \dfrac{\abs{k}}{n}\left(1 - \dfrac{1}{m}\right)\left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right) + \dfrac{2(m-1)}{m}\dfrac{\abs{k}}{n^2} \left(\Sigma - \sum_{h=0}^{n-1}\Gamma(h)\right) + o(n^{-2})
 \]
-We know that the sample autocovariance $\hat{\Gamma}(k)$ underestimates the truth due to a negative bias of $\abs{k}\Gamma(k)/n$ for finite $n$. However, in practice, it is preferred to overestimate the autocovariance for finite $n$ than to underestimate it in order to have a more realistic idea about the correlation in a Markov chain at a particular lag.  Note that the RHS in the above expression is positive. As a consequence, R-ACF will counter this negative bias and give more reliable estimates for ACF. 
+We know that the sample autocovariance $\hat{\Gamma}(k)$ underestimates the truth due to a negative bias of $\abs{k}\Gamma(k)/n$ for finite $n$. However, in practice, it is preferred to overestimate the autocovariance for finite $n$ than to underestimate it in order to have a more realistic idea about the correlation in a Markov chain at a particular lag.  Note that the RHS in the above expression is positive. As a consequence, G-ACF will counter this negative bias and give more reliable estimates for ACF. 
 
 \end{remark}
 
 \begin{corollary} \label{cor:lag0_expectation}
 \[
-\mathbb{E}[\hat{\Gamma}_{RAC}(0)] = \Gamma(0) + \dfrac{\Sigma}{mn} + \dfrac{\Phi}{mn^2} + o(n^{-2})
+\mathbb{E}[\hat{\Gamma}_{G}(0)] = \Gamma(0) + \dfrac{\Sigma}{mn} + \dfrac{\Phi}{mn^2} + o(n^{-2})
 \]
 \end{corollary}
 
@@ -232,105 +257,72 @@ We know that the sample autocovariance $\hat{\Gamma}(k)$ underestimates the trut
 \end{proof}
 
 
-
-
-
-
-
-
-
-
 \section{Variance Estimators for multiple Markov chains} \label{sec:variance_est}
 
 {\color{blue}Dootika: this section here needs to be much tighter in its presentation. We will need to remember that the paper is no longer about the SV estimators but about autocorrelations. So will have to present the discussion similarly. }
 
 
-Suppose $F$ is the target distribution on support $\chi \subseteq \mathbb{R}^d$. For $g:\chi \longrightarrow \mathbb{R}^p$ be an F-integrable function. We are interested in
+  Suppose $F$ is the target distribution on support $\chi \subseteq \mathbb{R}^d$. For $g:\chi \longrightarrow \mathbb{R}^p$ be an F-integrable function. We are interested in
 %
 \[
 \mu_g = \mathbb{E}_F[g(X)] = \int_{\chi}g(x)F(dx)
 \]
-
-Suppose we have $m$ replications of Markov chains with $n$ samples in each chain. Let $\{X_{st}\}_{t \geq 1}$ denote the $s^{th}$ Harris ergodic (aperiodic, F-irreducible, and positive Harris recurrent) Markov chain having invariant distribution $F$. We will use the following Monte Carlo estimator in order to estimate $\mu$ for the $s^{th}$ chain
+ 
+Let $\{X_{t}\}_{t \geq 1}$ denote the Harris ergodic (aperiodic, F-irreducible, and positive Harris recurrent) Markov chain having invariant distribution $F$. We will use the following Monte Carlo estimator in order to estimate $\mu$
 %
 \[
 \hat{\mu}_s = \dfrac{1}{n}\sum_{i = 1}^{n} g(X_{si}) \xrightarrow{a.s.} \mu \textrm{ as } n \to \infty
 \]
 
-Throughout this paper, we will deal with the function $g(X) = X$. We denote the sample mean of $s^{th}$ Markov chain by $\bar{X}_s$ and the overall mean by $\bar{\bar{X}} = \sum_{s = 1}^{m}\bar{X}_s/m$. We are interested in Monte Carlo error, i.e. $\bar{\bar{X}} - \mu$ to assess the reliability of simulations. The sampling distribution for Monte Carlo error of $s^{th}$ chain is available via Markov chain CLT (\cite{jones2004markov}) if there exists a positive definite matrix $\Sigma$ such that
+We are interested in Markov chain average and therefore, throughout this paper, we will deal with the function $g(X) = X$. To assess the reliability of our simulations, we are interested in Monte Carlo error, i.e. $\bar{\bar{X}} - \mu$. The sampling distribution for Monte Carlo error is available via Markov chain CLT (\cite{jones2004markov}) if there exists a positive definite matrix $\Sigma$ such that
 %
 \[
 \sqrt{n}(\bar{X}_s-\mu) \xrightarrow{d} N(0,\Sigma)
 \]
 
- With $m$ i.i.d. samples of $\bar{X}_s$, $s \in \{1,..., m\}$, the MCSE is given by $\Sigma/mn$. We are interested in consistent estimates of $\Sigma$ for two reasons. Firstly, to construct asymptotically valid confidence intervals and secondly, to determine when to stop the simulations. For this purpose, we use the class of Multivariate Spectral Variance Estimators (MSVE) wherein we use R-ACF to estimate the autocovariance. We call this replicated spectral variance (RSV) estimator (see \cite{arg:and:2006} for replicated batch means). 
+ It is important to construct an estimator for $\Sigma$ which is very close to underlying reality. There are many techniques for estimating $\Sigma$ like batch means (BM), overlapping bath means (OBM), and spectral variance estimator (SVE). Due to its nice statistical properties and heavy dependence on autocovariance, we will only focus on SVE in this paper. SVE involves a truncated and weighted sum of autocovariances. We will give theoretical as well as experimental results for the version of SVE that uses our globally centered autocovariances. We call this globally-centered SVE (G-SVE). 
  
-MCMC ensures asymptotic convergence, however this is not practically very useful where the number of samples is finite. There are many criteria for terminating simulation like fixed-time rule, sequencial fixed-volume rule (see \cite{glynn1992asymptotic}), and using Gelman Rubin diagnostics (\cite{gelman1992inference}). The relative fixed-volume rule has been thoroughly discussed for MCMC by \cite{flegal2015relative} and \cite{gong2016practical}. We will use method of effective sample size (ESS) defined by \cite{vats2019multivariate} for terminating the simulations. The quality of estimation of $\Sigma$ is critical in determining that the simulations are not stopped prematurely. 
- 
-Markov chains are serially correlated and therefore $\Var_F(X)$ is non-informative about the correlatons in Markov chain. It is important to construct an estimator for $\Sigma$ which is very close to underlying reality. There are many techniques for estimating $\Sigma$ like batch means (BM), overlapping bath means (OBM), and spectral variance estimator (SVE). Due to their highly accurate results, we will only focus on SV estimates in this paper. Strong consistency for MSVE has been addressed by \cite{vats:fleg:jon:2018}. Bias and variance calculations for a variant of SV estimator with known mean is done by \cite{hannan2009multiple}. In this paper, we will address the asymptotic properties (basically strong consistency), bias and variance calculations for RSV estimator. 
 
-The most common practice would be to combine the SVE from $m$ chains by averaging over them. We call this technique average spectral variance (ASV) estimator. We will address the issue of slowly mixing Markov chains and show that RSV performs better than ASV. Whereas on one side RSV gives better estimates than ASV for a poor Markov chain, it is as good as ASV for a good Markov chain. We will exemplify this property of RSV for a bi-modal target distribution in subsection \ref{ex:boomerang}. This appeals intuitively because for a fast mixing Markov chain, all the chains will give almost same estimates for mean. 
+
+ 
+
+
+Given m parallel Markov chains, we have $m$ i.i.d. samples of $\bar{X}_s$, $s \in \{1,..., m\}$. The Markov Chain standard error (MCSE) is given by $\Sigma/mn$. We are interested in consistent estimates of $\Sigma$ for two reasons. Firstly, to construct asymptotically valid confidence intervals and secondly, to determine when to stop the simulations. For this purpose, we use the class of Multivariate Spectral Variance Estimators (MSVE). The most common practice would be to combine the spectral variance estimates from $m$ chains by averaging over them. We call this technique average spectral variance estimator and denote it by $\hat{\Sigma}_A$). We propose using a globally-centered spectral variance estimator (G-SVE) wherein we use G-ACF to estimate the autocovariance. Strong consistency for MSVE has been addressed by \cite{vats:fleg:jon:2018}. Bias and variance calculations for a variant of SVE with known mean is done by \cite{hannan2009multiple}. In this paper, we will address the asymptotic properties (strong consistency), bias and variance calculations for G-SVE. 
 
 \subsection{Globally-centered spectral variance estimators} % (fold)
 \label{sub:globally_centered_spectral_variance_estimators}
 
 % subsection globally_centered_spectral_variance_estimators (end)
 
-Let $\{X_t\}_{t \geq 1}$ be a stochastic process. Denote lag-k autocovariance matrix by $\Gamma(k)$, which is given by,
+Recall from Equation \ref{eq:empirical_acf} that $\hat{\Gamma}(k)$ is the empirical autocovariance function given by 
 
-\[
-\Gamma(k) = \Gamma(-k) = \E[(X_t - \E[X])(X_{t+k} - \E[X])^T]
-\]
+\begin{equation}
+    \hat{\Gamma}(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}}(X_t - \bar{X})(X_{t + \abs{k}} - \bar{X})^T
+\end{equation}
 
-Recall that $\hat{\Gamma}(k)$ is the empirical autocovariance function given by 
-
-\[
-\hat{\Gamma}(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}}(X_t - \bar{X})(X_{t + \abs{k}} - \bar{X})^T
-\]
 
 The spectral variance estimator is the weighted and truncated sum of lag-k autocovariances, given by:
 
-\[
-\hat{\Sigma}_{SV} = \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Gamma}_n(k)
-\]
+\begin{equation} \label{eq:sve}
+    \hat{\Sigma}_{SV} = \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Gamma}_n(k)
+\end{equation}
 
-where $w(.)$ is the lag window and $b_n$ is the truncation point.
-
- Consider $m$ Markov chains where $\bar{X}_s$, $\hat{\Gamma}_s(k)$ and $\hat{\Sigma}_{SV, s}$ are the sample mean, sample lag-k autocovariance and spectral variance estimators respectively for $s^{th}$ Markov chain, $s\in {1,...,m}$. We will consider two estimators for spectral variance calculations using multiple Markov chains.
-
-% \subsection{Average Spectral Variance } \label{sec:asv}
-
-% Recall that for $s^{th}$ Markov chain, the spectral variance estimator is given by,
-
-% \begin{align*}
-%     \hat{\Sigma}_{SV,s} &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Gamma}_s(k)\\
-%     \hat{\Gamma}_s(k) &= \dfrac{1}{n}\sum_{t=1}^{n-k}(X_{st}-\overline{X_s})(X_{s(t+k)}-\overline{X_s})^T
-% \end{align*}
-
-% The average spectral variance ($\Sigma_{ASV}$) is computed by averaging the SV estimates from all $m$ Markov chains.
-
-% \[
-% \hat{\Sigma}_{ASV} = \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{SV,s}
-% \]
-
-
-
-Now we introduce the Replicated Spectral Variance Estimator (RSV). $\hat{\Gamma}_{RAC,s}(k)$ is the sample replicated lag-k autocovariance estimator for the $s^{th}$ MC using overall mean $(\bar{\bar{X}})$ instead of $\bar{X}_s$ for centering. We construct an RSV estimator $\hat{\Sigma}_{RSV} $ using this replicated version of autocovariance estimator. Consider, 
+where $w(.)$ is the lag window and $b_n$ is the truncation point. Consider $m$ Markov chains where $\hat{\Gamma}_s(k)$, $\hat{\Gamma}_{G,s}(k)$ and $\hat{\Sigma}_{S, s}$ are the lag-$k$ empirical ACF, G-ACF, and SVE respectively for $s^{th}$ Markov chain, $s\in {1,...,m}$. We construct the globally-centered SVE estimator $\hat{\Sigma}_{G}$ using the globally-centered ACF. Consider, 
 %
 \begin{align*}
-    \hat{\Sigma}_{RSV,s} &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Gamma}_{RAC,s}(k)
+    \hat{\Sigma}_{G,s} &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Gamma}_{G,s}(k)
 \end{align*}
 \[
-\hat{\Sigma}_{RSV} =  \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{RSV,s}
+\hat{\Sigma}_{G} =  \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{G,s}
 \]
 
 
-\subsubsection{Theoretical results} \label{sec:rsv}
+\subsubsection{Theoretical results} \label{sec:G-SVE}
 
-The RSV estimator centers the data around the global mean. We are interested in proving the strong consistency, finding the bias and variance of RSV. 
+The G-SVE estimator centers the data around the global mean. We are interested in proving the strong consistency, finding the bias and variance of G-SVE. 
 
 \begin{ass}[Strong Invariance Principle (SIP)] \label{ass:sip}
-    We assume the SIP holds for the Markov chain. Here $\{X_t\}_{t\geq 1}$ is the stochastic process that follows SIP with mean $\mu = \mathbb{E}[X]$. Let $\|.\|$ denote the Euclidean norm. Through SIP, there exists a $p \times p$ lower triangular matrix L, an increasing function $\psi$ on the integers, a finite random variable D, and a  sufficiently rich probability space such that, with probability 1, \\
+    We assume the SIP holds for the Markov chain. Here $\{X_t\}_{t\geq 1}$ is the stochastic process that follows SIP with mean $\mu$. Let $\|.\|$ denote the Euclidean norm. Through SIP, there exists a $p \times p$ lower triangular matrix L, an increasing function $\psi$ on the integers, a finite random variable D, and a  sufficiently rich probability space such that, with probability 1, \\
   $$\left\|\sum_{t=1}^{n}X_t - n\mu - LB(n)\right\| < D\psi(n)$$
   
   Let $\{B(n)\}_{n\geq 0}$ denotes a standard p-dim Brownian motion and $B^{(i)}$ denotes its $i^{th}$ component. As shown in the results \cite{kuelbs1980almost}, SIP will hold for $\psi(n) = n^{1/2 - \lambda, \; \lambda > 0}$ for Markov chains commonly encountered in MCMC settings. We know that $\psi(n)$ is an inherent property of the stochastic process that satisfies the CLT. This implies that $\psi(n)$ is at least $o(\sqrt{n})$. Using Law of Iterative Logarithms (LIL), a tighter bound for $\psi(n)$ is given by \cite{stra:1964} as $\mathcal{O}(\sqrt{n\log \log n})$.
@@ -339,7 +331,7 @@ The RSV estimator centers the data around the global mean. We are interested in 
 
 \begin{ass} \label{ass:sve_consis} We assume that all the conditions given by \cite{vats:fleg:jon:2018} for strong consistency of the spectral variance estimator hold true. As a consequence, 
 \[
-\hat{\Sigma}_{SV,s} \xrightarrow{a.s.} \Sigma \textrm{ as } n \to \infty \;\; \forall s \in \{1,..., m\}
+\hat{\Sigma}_{S,s} \xrightarrow{a.s.} \Sigma \textrm{ as } n \to \infty \;\; \forall s \in \{1,..., m\}
 \]
 \end{ass}
 
@@ -348,14 +340,14 @@ The RSV estimator centers the data around the global mean. We are interested in 
 
 \begin{theorem}
 \label{th:consistency}
- Let the Assumptions \ref{ass:sip},\ref{ass:sve_consis} hold and $n^{-1}{b_n \log \log n} \to 0 \textrm{ as } n \to \infty$, then $\hat{\Sigma}_{RSV} \to \Sigma$ with probability 1, as $n \to \infty$.
+ Let the Assumptions \ref{ass:sip},\ref{ass:sve_consis} hold and $n^{-1}{b_n \log \log n} \to 0 \textrm{ as } n \to \infty$, then $\hat{\Sigma}_{G} \to \Sigma$ with probability 1, as $n \to \infty$.
 \end{theorem} 
 
 \begin{proof}
-We complete the proof by showing that $\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij}$ converges to 0 almost surely for all $i,j \in \{1,...,p\}$ and $\tilde{\Sigma}^{ij} \to \Sigma^{ij}$ with probability 1 as $n \to \infty$. We will show that 
+We complete the proof by showing that $\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij}$ converges to 0 almost surely for all $i,j \in \{1,...,p\}$ and $\tilde{\Sigma}^{ij} \to \Sigma^{ij}$ with probability 1 as $n \to \infty$. We will show that 
 
 \[
-\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} = g_1(n)D^2 + g_2(n)D + g_3(n)
+\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} = g_1(n)D^2 + g_2(n)D + g_3(n)
 \]
 where $D$ is the finite random variable associated with SIP. We will show that
 \begin{align*}
@@ -364,21 +356,21 @@ where $D$ is the finite random variable associated with SIP. We will show that
     g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C_1)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right]
 \end{align*}
 
-Using $\psi(n) = \mathcal{O}(\sqrt{n \log \log n}),\; b_n = o(n), \textrm{ and } b_n \log \log n = o(n)$, we will finally we prove that $g_1(n), g_2(n), g_3(n) \to 0$ with probability 1, as $n \to \infty$. The proof is in Appendix subsection \ref{appendix:strong_consis}
+Using $\psi(n) = \mathcal{O}(\sqrt{n \log \log n}),\; b_n = o(n), \textrm{ and } b_n \log \log n = o(n)$, we can finally we prove that $g_1(n), g_2(n), g_3(n) \to 0$ with probability 1, as $n \to \infty$. The proof is in Appendix subsection \ref{appendix:strong_consis}
 \end{proof}
 
-We are interested in the finding the bias for RSV estimator as a function of $n$. The proof below applies to all the important range of lag windows $w(x)$; where $w(x)$ is a continuous, even fnction with $w(0)=1, \abs{w(x)} < c$, and $\int_{-\infty}^{\infty}w^2(x)dx < \infty$. Define
+We are interested in the finding the bias for G-SVE estimator as a function of $n$. The proof below applies to all the important range of lag windows $w(x)$; where $w(x)$ is a continuous, even fnction with $w(0)=1, \abs{w(x)} < c$, and $\int_{-\infty}^{\infty}w^2(x)dx < \infty$. Define
 %
 \[
-W_n = \dfrac{1}{2\pi}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)
+W_n = \dfrac{1}{2\pi}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right).
 \]
 
 We have $W_n < \infty$ for all the important lag windows.
 
 \begin{ass} \label{ass:bias}
-    Let $\Gamma_s(k)$ be the lag-k autocovariance for $s^{th}$ Markov chain and $w(x)$ be the lag window. We assume that there exists a $q \geq 0$ such that
+    Let $\Gamma_s(k)$ be the lag-k autocovariance for $s^{th}$ Markov chain and $w(x)$ be the lag window. We assume that there exists a $q \geq 0$ such that for all $s$
     \begin{enumerate} [a.]
-        \item $\sum\limits_{-\infty}^{\infty}\abs{k}^q \|\Gamma(k)\| < \infty$
+        \item $\sum\limits_{-\infty}^{\infty}\abs{k}^q \|\Gamma_s(k)\| < \infty$
         \item $\lim _{x \to 0}\dfrac{1 - w(x)}{\abs{x}^q} = k_q < \infty$
         \item $\dfrac{b_n^q}{n} \to 0$ as $n \to \infty$
     \end{enumerate}
@@ -387,19 +379,19 @@ We have $W_n < \infty$ for all the important lag windows.
 \end{ass}
 
 
-\begin{theorem}\label{th:rsv_bias}
+\begin{theorem}\label{th:G-SVE_bias}
 The limiting bias of replicated spectral variance is given by:
 \[
- \lim_{n \to \infty}b_n^q\mathbb{E} \left[\hat{\Sigma}_{RSV} - \Sigma \right] = -k_q\Phi^{(q)}
+ \lim_{n \to \infty}b_n^q\mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = -k_q\Phi^{(q)}
  \]
 \end{theorem}
 
 \begin{proof}
 \[
-\mathbb{E} \left[\hat{\Sigma}_{RSV} - \Sigma \right] = \sum_{k=-b_n+1}^{b_n-1} w\left(\dfrac{|k|}{b_n}\right)\mathbb{E} \left[\hat{\Gamma}_{RAC}(k) \right] - \sum_{k=-\infty}^{\infty}\Gamma(k)
+\mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = \sum_{k=-b_n+1}^{b_n-1} w\left(\dfrac{|k|}{b_n}\right)\mathbb{E} \left[\hat{\Gamma}_{G}(k) \right] - \sum_{k=-\infty}^{\infty}\Gamma(k)
 \]
 
-Using theorem \ref{th:RAC_expec}, we can write the expectation of $\hat{\Gamma}_{RAC}$ as  a sum of equation \ref{eq:priestly} and some small order terms.
+Using theorem \ref{th:G-ACF_expec}, we can write the expectation of $\hat{\Gamma}_{G}$ as  a sum of equation \ref{eq:priestly} and some small order terms.
 The proof is given in the Appendix subsection \ref{appendix:bias}.
 \end{proof}
 
@@ -413,55 +405,84 @@ Let $\{X_{st}\}_{t \geq 1}$ be the $s^{th}$ Markov chain for which SIP holds.
 \end{ass}
 
 
-\begin{theorem} \label{th:rsv_variance}
- If Assumption \ref{ass:variance_cal} hold, $b_n^{-1}{n}\Var \left(\hat{\Sigma}_{RSV}^{ij} \right) = [\Sigma_{ii}\Sigma_{jj} + \Sigma_{ij}^2]\int_{-\infty}^{\infty}w(x)^2dx  + o(1)$.
+\begin{theorem} \label{th:G-SVE_variance}
+ If Assumption \ref{ass:variance_cal} hold, $b_n^{-1}{n}\Var \left(\hat{\Sigma}_{G}^{ij} \right) = [\Sigma_{ii}\Sigma_{jj} + \Sigma_{ij}^2]\int_{-\infty}^{\infty}w(x)^2dx  + o(1)$.
 \end{theorem}
 
 \begin{proof}
-Recall that $\tilde{\Sigma}$ is the averaged pseudo spectral variance estimator which uses the unobserved mean. Further, let $\tilde{\Sigma}^{ij}$ be the $(i,j)^{th}$ element of this matrix. We will prove that the variance of $\hat{\Sigma}_{RSV} \textrm{ and } \tilde{\Sigma}$ are equivalent for large sample sizes. The proof is in Appendix subsection \ref{appendix:variance}
+Recall that $\tilde{\Sigma}$ is the averaged pseudo spectral variance estimator which uses the unobserved mean. Further, let $\tilde{\Sigma}^{ij}$ be the $(i,j)^{th}$ element of this matrix. We will prove that the variance of $\hat{\Sigma}_{G} \textrm{ and } \tilde{\Sigma}$ are equivalent for large sample sizes. The proof is in Appendix subsection \ref{appendix:variance}
 \end{proof}
 
 \subsubsection{Fast implementation} % (fold)
 \label{ssub:fast_implementation}
 
+The multivariate spectral variance estimator (MSVE) despite having good statistical properties poses application limitations due to slow computation and high storage demands. Observe from equation \ref{eq:empirical_acf} and \ref{eq:sve}, the computation of spectral variance estimator has a complexity of $\mathcal{O}(b_n n p)$ where $n$ is the MCMC sample size, $p$ is the dimensionality and $b_n$ is the truncation point. To overcome this limitation for our experimental purposes, we used a fast Fourier transform based algorithm presented by \cite{heberle2017fast} for calculating the alternate formulation of MSVE given by Kyriakoulis (2005).\\
+
+Suppose $\{X_t\}_{t=1}^n$ is the Markov chain of $n$ samples where $\overline{X}_n = \dfrac{1}{n}\sum_{t=1}^{n}X_t$ is the MCMC average. Let $w_k$ denote the lag-window at lag-k, i.e. $w_k = w_n(k/b_n)$. The alternate formulation for MSVE is given by
+
+\begin{equation} \label{eq:Kyriakoulis_sv}
+    \hat{\Sigma}_{SV} = \dfrac{1}{n}A^T T(w) A, \qquad \textrm{ where } A = \begin{pmatrix}
+    X_1 - \overline{X}_n  & \dots & X_n - \overline{X}_n
+\end{pmatrix}^T
+\end{equation}
+
+and $T(w)$ is the $n \times n$ Toeplitz matrix of weights with the first column being $w = 
+\begin{pmatrix}
+    1 & w_1 & w_2 & \dots w_{n-1}
+\end{pmatrix}^T$.
+$T(w)$ is an $n \times n$ matrix which can be difficult to store. Therefore, \cite{heberle2017fast} computed $T(w)A$ directly using an FFT based algorithm. The algorithm requires embedding $T(w)$ in a $2n \times 2n$ circulation matrix $C(w^*)$. We write the spectral decomposition of $C(w^*)$ as $V\Lambda V^*$. A is extrapolated into a $2n \times p$ matrix $A^*$ such that
+\[
+    \hat{\Sigma}_{SV} = \dfrac{1}{n} A^T T(w) A = \dfrac{1}{n} A^T (C(w^*) A^*)_{1:n, :} = \dfrac{1}{n} A^T (V \Lambda V^* A^*)_{1:n, :}).
+\]
+The complete algorithm is as follows
+\\
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+
+Construct $C(w^*) \textrm{ and } A^*$ from the MCMC samples.\\ Compute the DFT of the first column of $C(w^*)$. This gives the eigenvalues of $C(w^*)$.\;
+\For{$j = 1, 2, ..., p$}    
+    { 
+    Calculate $V^*A_j^*$ by FFT of $A_j$\;
+    Multiply the $i^{th}$ entry of the vector $V^* A_j^*$ with the eigenvalue $\lambda_i$ for all $i = 1, 2, ..., 2n$ in order to construct $\Lambda V^* A_j^*$.\;
+    Determine $C(w^*)A^* = V \Lambda V^* A_j^*$ by inverse FFT of $\Lambda V^* A_j^*$.\;
+    }
+ Select the first $n$ rows of $C(w^*)A^*$ to form $T(w)A$.\;
+ Premultiply by $A^T$ and divide by $n$.
+ \caption{Herberle's Algorithm}
+\end{algorithm}
+
+The algorithm has been implemented in the \texttt{R} package \texttt{mcmcse} for fast implementation of spectral variance estimators. We do a slight variation in the alternate formulation of SVE proposed by Kyriakoulis (2005) by centering the chain $\{X_{st}; \; t \in \mathbb{Z}\}$ around $\overline{\overline{X}}$ instead of $\overline{X}_s$ for all $s \in \{1, ..., m\}$. Herberle's algorithm is then applied on the formulation
+
+\[
+\hat{\Sigma}_{S,s} = \dfrac{1}{n}B^T T(w) B \qquad \textrm{ where } B = 
+\begin{pmatrix}
+    X_{s1} - \overline{\overline{X}} \; \dots \; X_{sn} - \overline{\overline{X}}
+\end{pmatrix}^T
+\].
+
 % subsubsection fast_implementation (end)
 
 \section{Effective sample size} \label{sec:ess}
 
-Estimating the MCSE is crucial for determining when to terminate the simulations. The existing stopping rules rely on the strong consistency of the estimator of $\Sigma$. We will use the \textit{relative standard deviation fixed-volume sequential stopping rule} proposed in \cite{vats2019multivariate} when multivariate Markov chain central limit theorem holds. This stopping rule terminates the simulations on the basis of size of confidence interval relative to inherent variability in the target distribution. It terminates after the total number of samples, i.e. $mn$ exceed some pre-specified $n^*$ iterations to prevent pre-mature termination due to bad estimates of $\Sigma$ and $\Lambda$. The rule is given by
+Estimating the MCSE is crucial for determining when to terminate the simulations. The existing stopping rules rely on the strong consistency of the estimator of $\Sigma$. The determinant of Monte Carlo standard error is called generalized variance in  \cite{wilks1932certain} and gives a metric for volume of confidence interval. 
+
+We will use the multivariate effective sample size (m-ESS) by \cite{vats2019multivariate} to understand the effectiveness of simulations so far. m-ESS requires a strongly consistent estimator of $\Sigma$. G-SVE better captures the MCSE by considering the global sample mean across the Markov chains; which might otherwise get lost when considering a single localized slowly mixing Markov chain. We therefore define our ESS estimator as
 
 \[
-\textrm{Volume of confidence region}^{1/p} + n^{-1} < \epsilon \abs{\Lambda_n}^{1/2p} 
-\]
-%
-where $\epsilon$ is the tolerance level, $\abs{.}$ denotes the determinant and $\Lambda_n$ is the sample covariance matrix given by
-%
-\[
-\dfrac{1}{mn-1}\sum_{s=1}^{m}\sum_{t=1}^{n}(X_{st} - \bar{\bar{X}})(X_{st} - \bar{\bar{X}})^T
-\]
-%
-The determinant of Monte Carlo standard error is called generalized variance in  \cite{wilks1932certain} and gives a metric for volume of confidence interval. \cite{vats2019multivariate} showed that if the estimator for $\Sigma$ is strongly consistent, the stopping rule is asymptotically valid, in that the confidence regions created at termination have the right coverage probability as $\epsilon \to 0$. Since $\hat{\Sigma}_{RSV}$ is a strongly consistent estimator of $\Sigma$, w
-
-\[
-\abs{\hat{\Sigma}_{RSV}}^{1/p} + (mn)^{-1} < \epsilon \abs{\Lambda_{mn}}^{1/2p}
+\text{ESS} = mn\left(\dfrac{\abs{\Lambda_{mn}}}{\abs{\hat{\Sigma}_{G-SVE}}}\right)^{1/p}
 \]
 
-Another way to get more accurate stopping rule is to use RSV estimator for estimating Effective Sample Size (ESS) in multivariate settings. RSV estimator better captures the standard error of target distribution by considering the global sample mean across the Markov chains; which might otherwise get lost when considering a single localized slowly mixing Markov chain. We therefore define our ESS rule as
-
-\[
-\text{ESS} = mn\left(\dfrac{\abs{\Lambda_{mn}}}{\abs{\hat{\Sigma}_{RSV}}}\right)^{1/p}
-\]
-
-When there is no correlation in Markov chain $\hat{\Sigma}_{RSV} = \Lambda_{mn}$ and therefore, ESS = $n$. Both the rules involve the ratio of generalized variances and therefore the relative standard deviation fixed-volume sequential stopping rule is asymptotically equivalent to stopping when ESS is greater than $W_{p,\alpha,\epsilon}$ which depends on dimension of state-space, level of confidence of the confidence region, and the relative precision required. 
+where $\Lambda_{mn}$ is the sample covariance of $mn$ samples. When there is no correlation in Markov chain $\hat{\Sigma}_{G} = \Lambda_{mn}$ and therefore, ESS = $n$. 
 
 \section{Examples} \label{sec:examples}
 
-In the following examples we compare the performance of asymptotic variance estimators (ASVE and RSVE) for Markov chain CLT. We will successfully illustrate that the replicated spectral variance estimator performs better than the average spectral variance estimator in terms of ESS calculations, coverage probabilities , and sample distribution of $\Sigma$. We will also show that in case of nicely mixing Markov chains, these estimators give almost equivalent results. As a consequence, while out replicated version of variance estimator is better in cases where the Markov chains do not explore the entire sample space in finite time, it is harmless to be used in cases where they do.  
-{\color{red}about this new FFT based method for faster RSVE calculations}
+There are only a handful of stochastic processes where the true autocovariance and $\Sigma$ are known. To compare the estimators when the truth is known, we use a slowly mixing vector autoregressive process of order 1 (VAR(1)). A more promising advantage of our estimators is observed when the target distribution is multi-modal. For this purpose we use a bivariate bi-modal probability distribution introduced by \cite{gelman1991note} in section \ref{ex:boomerang}. Through this example, we will also show that in case of nicely mixing Markov chains, these estimators give almost equivalent results. As a consequence, while out replicated version of variance estimator is better in cases where the Markov chains do not explore the entire sample space in finite time, it is harmless to be used in cases where they do. Lastly, we consider a real-life example of finding unknown locations of sensors using noisy distance data in section \ref{ex:sensor_post}. The posterior distribution is this case is marginally bimodal in all dimensions. All the examples have been selected to display some kind of \textit{sticky} nature in the Markov chains. In such scenario, we successfully show that our globally-centered estimators yield better results as compared to the classical autocovariance function, spectral variance estimator, and effective sample size.
+
 
 \subsection{Vector Autoregressive Process} \label{ex:var}
 
-We examine the vector autoregressive process of order 1 (VAR(1)) where the true autocovariance in known in closed form. We have already illustrated the better performance of R-ACF over traditional ACF on a slowly mixing VAR(1) process in Figure \ref{fig:var_acf_ccf}. Here we will examine the performance of RSV estimator on the same process. Consider a p-dimensional VAR(1) process $\{X_t\}_{t \geq 1}$ such that
+We examine the vector autoregressive process of order 1 (VAR(1)) where the true autocovariance in known in closed form. Consider a p-dimensional VAR(1) process $\{X_t\}_{t \geq 1}$ such that
 %
 \[
 X_t = \Phi X_{t-1} + \epsilon_t
@@ -500,10 +521,28 @@ Let $\phi_{max}$ be the largest absolute eigenvalue of $\Phi$ such that $\abs{\p
 %     \label{fig:var-sp}
 % \end{figure}
 
+\begin{figure}
+ \begin{subfigure}{\textwidth}
+   \centering
+   \includegraphics[width=.8\linewidth]{plots/acf,n=500.pdf}
+   \caption{$n = 500$}
+   \label{subfig:acf-500}
+\end{subfigure}\\
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=.8\linewidth]{plots/acf,n=10000.pdf} 
+  \caption{$n = 10^4$}
+  \label{subfig:acf-5e4}
+\end{subfigure}
+\caption{Autocorrelation plot for ACF and G-ACF for first chain out of two parallel Markov chains. First column corresponds to ACF calculated using arithmetic mean of first Markov chain and the second column corresponds to the one calculated using global mean of two Markov chains.(a): $n = 500$, not converged yet; (b): $n =  10^4$, converged}
+\label{fig:var-acf}
+\end{figure}
+
+
 \begin{figure}[h]
     \centering
     \includegraphics[width = .5\textwidth]{plots/var-ess.pdf}
-    \caption{Running plots for $\hat{ESS}/mn$ calculated using ASV (black) and RSV (blue). The true $ESS/mn$ (red) is known.}
+    \caption{Running plots for $\hat{ESS}/mn$ calculated using ASV (black) and G-SVE (blue). The true $ESS/mn$ (red) is known.}
     \label{fig:var-ess}
 \end{figure}
 
@@ -565,7 +604,8 @@ We use a carefully chosen parameterization of $A = 1,\; B = 3,\; C = 8$ which en
 \end{figure}
 \end{comment}
 
-In Figure \ref{fig:boom-sp}, we demonstrate the ``sticky'' nature of the Markov chains. For the first thousand samples, both the chains are oblivious of the existence of another mode. By ten thousand samples, both the Markov chains have explored the two modes. This property will affect the single chain estimators like ACF. In Figure \ref{subfig:boom-acf_1e3}, the ACF is severely underestimated because the chain-1 has not jumped to the other mode. Whereas, in Figure \ref{subfig:boom-acf_1e4}, both ACF and R-ACF give almost similar results indicating that both modes have been explored by chain-1. 
+%
+In Figure \ref{fig:boom-sp}, we demonstrate the ``sticky'' nature of the Markov chains. For the first thousand samples, both the chains are oblivious of the existence of another mode. By ten thousand samples, both the Markov chains have explored the two modes. This property will affect the estimation of ACF from a single chain. In Figure \ref{subfig:boom-acf_1e3}, the ACF is severely underestimated because the first chain has not jumped to the other mode. Whereas, in Figure \ref{subfig:boom-acf_1e4}, both ACF and G-ACF give almost similar results indicating that both modes have been explored by chain-1. 
 
 \begin{figure}[h]
     \centering
@@ -581,11 +621,11 @@ In Figure \ref{fig:boom-sp}, we demonstrate the ``sticky'' nature of the Markov 
       \caption{$n = 50000$}
       \label{subfig:boom-acf_1e4}
     \end{subfigure}
-    \caption{ACF and R-ACF for component-1 of chain-1 at two different number of Monte Carlo samples. }
+    \caption{ACF and G-ACF for component-1 of chain-1 at two different number of Monte Carlo samples. }
     \label{fig:boom-acf}
 \end{figure}
 
-We also run five parallel Markov chains with well-separated starting points. In Table \ref{table:boom-coverage_1_3_8}, we give the coverage probabilities for $95 \%$ confidence interval for both the estimator. We can see that the RSVE gives better coverage probabilities for all the $n$. For smaller sample size, the coverage probability of RSVE is significantly higher than ASVE. As the number of samples per chain increases, they start coming closer due to the strong consistency of both the estimators.
+We also run five parallel Markov chains with well-separated starting points. In Table \ref{table:boom-coverage_1_3_8}, we give the coverage probabilities for $95 \%$ confidence interval for both the estimator. We can see that the G-SVE gives better coverage probabilities for all the $n$. For smaller sample size, the coverage probability of G-SVE is significantly higher than A-SVE. As the number of samples per chain increases, they start coming closer due to the strong consistency of both the estimators.
 
 \begin{table}[h]
 \centering
@@ -593,7 +633,7 @@ We also run five parallel Markov chains with well-separated starting points. In 
     % \toprule
         n & \multicolumn{2}{|c|}{$m = 2$} & \multicolumn{2}{|c|}{$m=5$}\\
         \hline
-        & ASV & RSV & ASV & RSV\\
+        & ASV & G-SVE & ASV & G-SVE\\
         \hline
         $10^3$ & 0.612 & 0.689 & 0.602 & 0.753   \\
         $2\cdot10^3$ & 0.693 & 0.751 & 0.735 & 0.827 \\
@@ -606,23 +646,30 @@ We also run five parallel Markov chains with well-separated starting points. In 
     \label{table:boom-coverage_1_3_8}
 \end{table}
 
-A good estimate of ESS is crucial to determine when to stop the simulations. We can see in Figure \ref{fig:run_ess} that for the first few thousand samples, ASVE gives misleadingly higher $\hat{ESS}/mn$ than RSVE. This can cause us to stop the sampling before the sample space has been explored by the chains. The inferences derived from this chain would then be severely non-informative.
+A good estimate of ESS is crucial to determine when to stop the simulations. We can see in Figure \ref{fig:run_ess} that for the first few thousand samples, A-SVE gives misleadingly higher $\hat{ESS}/mn$ than G-SVE. This can cause us to stop the sampling before the sample space has been explored by the chains. The inferences derived from this chain would then be severely non-informative.
 
-\begin{figure}[htbp]
+\begin{figure}[h]
     \centering
-    \includegraphics[width = .7\textwidth]{plots/boom-ess.pdf}
-    \caption{Running plot for $\hat{ESS}/mn$ using ASV and RSV calculated for two chains (left) and five chains (right). The parameters for target distribution are $A == 1, \; B = 3, \; C = 8.$}
-    \label{fig:run_ess}
+    
+    \begin{subfigure}[h]{.3\textwidth}
+      \centering
+      \includegraphics[width = \textwidth]{plots/boom-ess1.pdf}
+      \caption{$A = 1, \; B = 3, \; C = 8$}
+      \label{subfig:boom-ess1}
+    \end{subfigure}
+    
+    \begin{subfigure}[h]{.3\textwidth}
+      \centering
+      \includegraphics[width = \textwidth]{plots/boom-ess2.pdf}
+      \caption{$A = 1, \; B=10, \; C = 7 $}
+      \label{subfig:boom-ess2}
+    \end{subfigure}
+    \caption{Running plot for $\hat{ESS}/mn$ using A-SVE and G-SVE calculated for two chains for two different parameterizations.}
+    \label{fig:boom-ess}
 \end{figure}
 
-To examine the performance of RSV for a nicely mixing Markov chain, we use the parametrization of $A = 1, \; B = 10, \; C=7$. This is also a bimodal distribution, however, the two modes interact well with each other (Figure \ref{subfig:boom-pers_1_10_7}). In Figure \ref{fig:boom-ess_1_10_7}, we observe that both RSV and ASV give almost the same estimates for ESS. Similar is the case with coverage probabilities in Table \ref{table:boom-coverage_1_10_7} for a $95\%$ confidence region.
- 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width = .7\textwidth]{plots/boom-ess_1_10_7.pdf}
-    \caption{Running plot for $\hat{ESS}/mn$ using ASV and RSV calculated for two chains (left) and five chains (right). The parameters of target distribution are $A = 1, \; B = 10, \; C = 7$}
-    \label{fig:boom-ess_1_10_7}
-\end{figure}
+
+To examine the performance of G-SVE for a nicely mixing Markov chain, we use the parametrization of $A = 1, \; B = 10, \; C=7$. This is also a bimodal distribution, however, the two modes interact well with each other (Figure \ref{subfig:boom-pers_1_10_7}). In Figure \ref{fig:boom-ess_1_10_7}, we observe that both G-SVE and A-SVE give almost the same estimates for ESS. Similar is the case with coverage probabilities in Table \ref{table:boom-coverage_1_10_7} for a $95\%$ confidence region.
 
 \begin{table}[h]
 \centering
@@ -630,7 +677,7 @@ To examine the performance of RSV for a nicely mixing Markov chain, we use the p
     % \toprule
         n & \multicolumn{2}{|c|}{$m = 2$} & \multicolumn{2}{|c|}{$m=5$}\\
         \hline
-        & ASV & RSV & ASV & RSV\\
+        & ASV & G-SVE & ASV & G-SVE\\
         \hline
         $10^3$ & 0.873 & 0.884 & 0.875 & 0.898   \\
         $2\cdot10^3$ & 0.881 &  0.888 & 0.897    & 0.914     \\
@@ -667,35 +714,35 @@ The full posterior distribution with Gaussian prior is given by,
     L(x_1, x_2, x_3, x_4) \times \exp \left(- \dfrac{\sum_{i = 1}^{4} x_i^Tx_i}{2 \times 0.02^2}\right) 
 \end{equation}
 
-where $y = (y_{ij}, j>i)$ and $w = (w_{ij}, j>i)$. We follow the Markov chain structure as described by \cite{tak2018repelling} and sample from the four bivariate conditionals for each sensor location using a Gibbs sampler. In their paper on Repelling Attractive Metropolis (RAM) algorithms, \cite{tak2018repelling} compare the performance of three different sampling techniques namely - Metropolis, RAM and Tempered Transitions (TT). RAM is shown to improve the acceptance rate by a factor of at least 5.5 over Metropolis using the same jumping scale. RAM algorithm supplies Markov chains with higher jumping frequency between the modes of a multimodal target distribution.\\
+where $y = (y_{ij}, j>i)$ and $w = (w_{ij}, j>i)$. We follow the Markov chain structure as described by \cite{tak2018repelling} and sample from the four bivariate conditionals for each sensor location using a Gibbs sampler. In their paper on Repelling AttG-tive Metropolis (RAM) algorithms, \cite{tak2018repelling} compare the performance of three different sampling techniques namely - Metropolis, RAM and Tempered Transitions (TT). RAM is shown to improve the acceptance rate by a factor of at least 5.5 over Metropolis using the same jumping scale. RAM algorithm supplies Markov chains with higher jumping frequency between the modes of a multimodal target distribution.\\
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width = .7\textwidth]{plots/sensor-trace.pdf}
-    \caption{Trace plots for the x-component of all four locations of the third chain.}
+    \caption{trace plots for the x-component of all four locations of the third chain.}
     \label{fig:sensor-trace-3}
 \end{figure}
 
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}[h]{.8\textwidth}
-      \centering
-      \includegraphics[width = \textwidth, height = 2in]{plots/sensor-acf-n1000.pdf}
-      \caption{$n = 10^3$}
-      \label{subfig:sensor-acf_n1e3}
-    \end{subfigure}
-    \begin{subfigure}[h]{.8\textwidth}
-      \centering
-      \includegraphics[width = \textwidth, height = 2in]{plots/sensor-acf-n1e5.pdf}
-      \caption{$n = 10^5$}
-      \label{subfig:sensor-acf_n1e5}
-    \end{subfigure}
-    \caption{ACF and R-ACF for component-3 of chain-3 at two different number of Monte Carlo samples. }
-    \label{fig:sensor-acf}
-\end{figure}
+% \begin{figure}[h]
+%     \centering
+%     \begin{subfigure}[h]{.8\textwidth}
+%       \centering
+%       \includegraphics[width = \textwidth, height = 2in]{plots/sensoG-ACF-n1000.pdf}
+%       \caption{$n = 10^3$}
+%       \label{subfig:sensoG-ACF_n1e3}
+%     \end{subfigure}
+%     \begin{subfigure}[h]{.8\textwidth}
+%       \centering
+%       \includegraphics[width = \textwidth, height = 2in]{plots/sensoG-ACF-n1e5.pdf}
+%       \caption{$n = 10^5$}
+%       \label{subfig:sensoG-ACF_n1e5}
+%     \end{subfigure}
+%     \caption{ACF and G-ACF for component-3 of chain-3 at two different number of Monte Carlo samples. }
+%     \label{fig:sensoG-ACF}
+% \end{figure}
 
 
-We will use the RAM algorithm with a jumping scale equal to $0.5$ to sample five parallel Markov chains with well-separated starting points. The total simulation size for each chain is fixed at $100,000$. Figure \ref{fig:sensor-trace-3} demonstrates the trace plots of the first chain for the x-component of all four unknown locations. We observe the bi-modal nature of the marginal distribution for each component. The Markov chains get stuck at a particular mode for a long time before jumping to the other mode. Figure \ref{fig:sensor-acf} shows the effect of this "sticky" nature of Markov chains over the autocorrelations centered around the local and global mean. For a small sample size of 1000, it can be seen that the third chain has not explored the sample space well. As a consequence, the local mean differs a lot from the global mean (averaged over all five chains).
+We will use the RAM algorithm with a jumping scale equal to $0.5$ to sample five parallel Markov chains with well-separated starting points. The total simulation size for each chain is fixed at $100,000$. Figure \ref{fig:sensor-trace-3} demonstrates the trace plots of the first chain for the x-component of all four unknown locations. We observe the bi-modal nature of the marginal distribution for each component. The Markov chains get stuck at a particular mode for a long time before jumping to the other mode. Figure \ref{fig:sensoG-ACF} shows the effect of this "sticky" nature of Markov chains over the autocorrelations centered around the local and global mean. For a small sample size of 1000, it can be seen that the third chain has not explored the sample space well. As a consequence, the local mean differs a lot from the global mean (averaged over all five chains).
 
  
 \section{Discussion} \label{sec:discussion}
@@ -794,9 +841,9 @@ We will use the RAM algorithm with a jumping scale equal to $0.5$ to sample five
 % \end{proof}
 
 
-\begin{proof}[Proof of Theorem~\ref{th:RAC_expec}]
+\begin{proof}[Proof of Theorem~\ref{th:G-_expec}]
 \begin{align*}
-    & \hat{\Gamma}_{RAC,s}(k) \\
+    & \hat{\Gamma}_{G-,s}(k) \\
    & = \dfrac{1}{n}\sum_{t=1}^{n-|k|} \left(X_{st} - \bar{\bar{X}} \right) \left(X_{s(t+k)} - \bar{\bar{X}} \right)^T \\
     &= \left[\dfrac{1}{n} \sum_{t=1}^{n-|k|} \left(X_{st} - \bar{X}_s \right) \left(X_{s(t+k)} - \bar{X}_s \right)^T \right] + \left[\dfrac{1}{n} \sum_{t=1}^{|k|} \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - X_{st} \right)^T\right] \\ 
     & \quad +  \left[\dfrac{1}{n} \sum_{t=n-|k|+1}^{n}  \left( \bar{X}_s - X_{st} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right] + \left[\dfrac{n-|k|}{n} \left(\bar{X}_s - \bar{\bar{X}}\right)   \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right]\\
@@ -835,15 +882,15 @@ Further,
 %
 Using \eqref{eq:priestly}, \eqref{eq:acf_2}, \eqref{eq:acf_3}, and \eqref{eq:acf_4} in \eqref{eq:acf_breakdown},
 \begin{align*}
-    & \E \left[\hat{\Gamma}_{RAC,s}(k) \right] \\
+    & \E \left[\hat{\Gamma}_{G-,s}(k) \right] \\
     &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - \dfrac{1}{n} \left(\sum\limits_{t=1}^{|k|}\mathbb{E}[A_{1t}^T] + \sum\limits_{t=n-|k|+1}^{n}\mathbb{E}[A_{1t}]\right) + \left(1- \dfrac{|k|}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
     &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - {\color{red}\dfrac{|k|}{n}\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h) + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T - 2 \Var(\bar{X}_1)\right)} + \left(1- \dfrac{|k|}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
     &= \left(1- \dfrac{|k|}{n}\right)\Gamma(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\overline{X}_1)}{m}\,.
 \end{align*}
 %
- We can use the results of \cite{song1995optimal} given in \eqref{eq:song} to expand $\Var(\bar{X}_1)$. Expectation of $\hat{\Gamma}_{RAC,s}(k)$ can then broken down as following,
- \begin{equation} \label{eq:rac_expec_breakdown}
-     \mathbb{E}\left[\hat{\Gamma}_{RAC}(k)\right] = \left(1- \dfrac{|k|}{n}\right)\Gamma(k) + O_1 + O_2\,.
+ We can use the results of \cite{song1995optimal} given in \eqref{eq:song} to expand $\Var(\bar{X}_1)$. Expectation of $\hat{\Gamma}_{G-,s}(k)$ can then broken down as following,
+ \begin{equation} \label{eq:G-_expec_breakdown}
+     \mathbb{E}\left[\hat{\Gamma}_{G-}(k)\right] = \left(1- \dfrac{|k|}{n}\right)\Gamma(k) + O_1 + O_2\,.
  \end{equation}
 %
 where,
@@ -856,7 +903,7 @@ We observe that both $O_1 \textrm{ and } O_2$ are small order terms that converg
 % We observe that this expectation result is very similar to equation \ref{eq:priestly} from \cite{priestley1981spectral} for the asymptotically unbiased estimator of autocovariance except for an additional positive bias term. This helps in countering the inherent negative bias in $\hat{\Gamma}(k)$ and give more informative estimates of autocovariance.  Although, bias term for a fixed $k$ is $o(1)$, it increases with $k$. We have explicitly written the end effect term arising from using the estimator $\bar{\bar{X}}$ for $\mu$. These are small order terms that vanish as $n \to \infty$.
 %
 \begin{align*}
-& \E \left[ \hat{\Gamma}_{RAC,s}^{ii}\right]\\
+& \E \left[ \hat{\Gamma}_{G-,s}^{ii}\right]\\
 & = \mathbb{E}\left[\hat{\Gamma}^{ii}_{s}(k)\right] - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma^{ii}(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma^{ii}(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\overline{X}_1)^{ii}\right] - \dfrac{\Var(\overline{X}_1)^{ii}}{m}\,.
 \end{align*}
 In the presence of positive correlation, the leftover term is positive.
@@ -865,14 +912,14 @@ In the presence of positive correlation, the leftover term is positive.
 \begin{proof}[Proof of corollary \ref{cor:lag0_expectation}]
 
 \begin{align*}
-    \hat{\Gamma}_{RAC}(0) &= \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Gamma}_{RAC,s}(0) = \dfrac{1}{mn}\sum_{s=1}^{m}\sum_{t=1}^{n}  \left(X_{st} - \bar{\bar{X}}\right)  \left(X_{st} - \bar{\bar{X}}\right)^T\\
+    \hat{\Gamma}_{G-}(0) &= \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Gamma}_{G-,s}(0) = \dfrac{1}{mn}\sum_{s=1}^{m}\sum_{t=1}^{n}  \left(X_{st} - \bar{\bar{X}}\right)  \left(X_{st} - \bar{\bar{X}}\right)^T\\
     &= \left[\dfrac{1}{mn}\sum_{s=1}^{m}\sum_{t=1}^{n} \left(X_{st} - \bar{X}_s \right)  \left(X_{st} - \bar{X}_s \right)^T\right] + \left[\dfrac{1}{m}\sum_{s=1}^{m} \left(\bar{X}_s - \bar{\bar{X}} \right) \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right]\\
     &= \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Gamma}_s(0)  + \dfrac{1}{m}\sum_{s=1}^{m} \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\,.
 \end{align*}
-Using \eqref{eq:priestly} and \eqref{eq:acf_4} the expectation of $\hat{\Gamma}_{RAC}(0)$ can be written as 
+Using \eqref{eq:priestly} and \eqref{eq:acf_4} the expectation of $\hat{\Gamma}_{G-}(0)$ can be written as 
 %
 \begin{align*}
-    \mathbb{E} \left[\hat{\Gamma}_{RAC}(0) \right] &= \E\left[\hat{\Gamma}_1(0) \right] + \left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1) \\
+    \mathbb{E} \left[\hat{\Gamma}_{G-}(0) \right] &= \E\left[\hat{\Gamma}_1(0) \right] + \left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1) \\
     & = \Gamma(k) - \dfrac{1}{m}\Var(\bar{X}_1)\,.
     % &= \Gamma(0) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2} + o(n^{-2})
 \end{align*}
@@ -901,8 +948,8 @@ Further, let
   %
 M_2 &= \left(\mu-\bar{\bar{X}} \right)_i   \left(\mu-\bar{\bar{X}} \right)_j\sum\limits_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\,.
 \end{align*}
-\begin{lemma} \label{lemma:rsv_breakdown}
-For the RSV estimator $\hat{\Sigma}_{RSV}^{ij} = \tilde{\Sigma}^{ij} + M_1 + M_2$ and 
+\begin{lemma} \label{lemma:G-SVE_breakdown}
+For the G-SVE estimator $\hat{\Sigma}_{G-SVE}^{ij} = \tilde{\Sigma}^{ij} + M_1 + M_2$ and 
 \[
 |M_1 + M_2| \leq D^2 g_1(n) + D g_2(n) + g_3(n)\,
 \]
@@ -917,7 +964,7 @@ where
 \begin{proof}
 The proof follows from standard algebraic calculations and is presented here for completeness. Consider,
 \begin{align*}
-&\hat{\Sigma}_{RSV}^{ij} \\
+&\hat{\Sigma}_{G-SVE}^{ij} \\
 &= \dfrac{1}{m}\sum_{s=1}^{m} \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|} \left(X_{st}-\bar{\bar{X}} \right)_i \left(X_{s(t+k)}-\bar{\bar{X}} \right)_j\\
 &= \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|} \left[  \left\{\left(X_{st}-\mu \right)_i + \left(\mu-\bar{\bar{X}} \right)_i \right \}  \left\{ \left(X_{s(t+k)}-\mu \right)_j + \left(\mu-\bar{\bar{X}} \right)_j \right \} \right]\\
 &= \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left[ \left(X_{st}-\mu \right)_i  \left(X_{s(t+k)}-\mu \right)_j+  \left(X_{st} - \mu \right)_i    \left(\mu - \bar{\bar{X}} \right)_j \right. \\  
@@ -929,7 +976,7 @@ The proof follows from standard algebraic calculations and is presented here for
 
 Consequently
 \[
-\left|\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij}  \right| = |M_1 + M_2| \leq |M_1| + |M_2|\,.
+\left|\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij}  \right| = |M_1 + M_2| \leq |M_1| + |M_2|\,.
 \]
 %
 We first present a result which will be useful to use later. For any Markov chain $s$, 
@@ -1007,7 +1054,7 @@ For $M_2$,
 % \end{equation}
 %
 % Equation~\eqref{eq:strong_consis_term-2} has the same order as equation \eqref{eq:strong_consis_term-1}, i.e. $\mathcal{O}\left(b_n \log \log n/n\right) \to 0 \textrm{ as } n \to \infty$.
-% We have already shown that $M_1$ and $M_2$ converge to 0 almost surely $\implies \hat{\Sigma}_{RSV} \xrightarrow{a.s.} \tilde{\Sigma}$ as $n \to \infty$. Now we can find the functions $g_1(n), g_2(n) \textrm{ and, } g_3(n)$ by adding \eqref{eq:strong_consis_term-1} and \eqref{eq:strong_consis_term-2}. After some simple algebra, we obtain the following results:
+% We have already shown that $M_1$ and $M_2$ converge to 0 almost surely $\implies \hat{\Sigma}_{G-SVE} \xrightarrow{a.s.} \tilde{\Sigma}$ as $n \to \infty$. Now we can find the functions $g_1(n), g_2(n) \textrm{ and, } g_3(n)$ by adding \eqref{eq:strong_consis_term-1} and \eqref{eq:strong_consis_term-2}. After some simple algebra, we obtain the following results:
 %
 Using \eqref{eq:strong_consis_term-1} and \eqref{eq:strong_consis_term-2},
 \begin{align*}
@@ -1045,13 +1092,13 @@ N_1 & = \dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_
 N_2 & = \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{X}_s - \mu \right)_i  \left(\bar{X}_s - \mu \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\,.
 \end{align*}
 %
-Using the above and  Lemma~\ref{lemma:rsv_breakdown}, 
+Using the above and  Lemma~\ref{lemma:G-SVE_breakdown}, 
 \begin{align*}
-\left|\hat{\Sigma}_{RSV}^{ij} - \Sigma^{ij} \right| & = \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} + N_1 + N_2 + M_1 + M_2 \right| \\
-& \leq \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} \right| +  \left| N_1 \right| +  \left|N_2 \right| + \left| M_1 + M_2 \right| \numberthis \label{eq:RSV_full_decomp}
+\left|\hat{\Sigma}_{G-SVE}^{ij} - \Sigma^{ij} \right| & = \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} + N_1 + N_2 + M_1 + M_2 \right| \\
+& \leq \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} \right| +  \left| N_1 \right| +  \left|N_2 \right| + \left| M_1 + M_2 \right| \numberthis \label{eq:G-SVE_full_decomp}
 \end{align*}
 %
-By Assumption~\ref{ass:sve_consis}, the first term goes to with probability 1 and by Lemma~\ref{lemma:rsv_breakdown}, the third term goes to 0 with probability 1 as $n \to \infty$. What is left to show is that $|N_1| \to 0$ and $|N_2| \to 0$ with probability 1
+By Assumption~\ref{ass:sve_consis}, the first term goes to with probability 1 and by Lemma~\ref{lemma:G-SVE_breakdown}, the third term goes to 0 with probability 1 as $n \to \infty$. What is left to show is that $|N_1| \to 0$ and $|N_2| \to 0$ with probability 1
 %
 \begin{align*}
 |N_1| & = \left|\dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t=1}^{n-|k|}  \left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j + \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right] \right|\\
@@ -1096,7 +1143,7 @@ Following the steps in \eqref{eq:strong_consis_term-2}, we get
     % & = \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2\, \dfrac{1}{b_n} \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
     % & \leq \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2 \int_{-\infty}^{\infty} \abs{w(x)}dx\,.
 \end{align*}
-Thus, in \eqref{eq:RSV_full_decomp}, each of the terms goes to 0 with probability 1, and $\hat{\Sigma}_{RSV}^{ij} \to \Sigma^{ij}$ with probability 1 as $n \to \infty$. 
+Thus, in \eqref{eq:G-SVE_full_decomp}, each of the terms goes to 0 with probability 1, and $\hat{\Sigma}_{G-SVE}^{ij} \to \Sigma^{ij}$ with probability 1 as $n \to \infty$. 
 \end{proof}
 
 
@@ -1107,24 +1154,24 @@ Thus, in \eqref{eq:RSV_full_decomp}, each of the terms goes to 0 with probabilit
 
 
 
-\subsection{RSV Bias}
+\subsection{G-SVE Bias}
 
-\begin{proof}[Proof of theorem \ref{th:rsv_bias}]
-The convoluted end effect terms in theorem \ref{th:RAC_expec} are all essentially $\mathcal{O}(1/n)$. We are interested in finding the asymptotic bias here. Therefore we can write the expectation of replicated autocovariance in form of equation \ref{eq:rac_expec_breakdown} as,
+\begin{proof}[Proof of theorem \ref{th:G-SVE_bias}]
+The convoluted end effect terms in theorem \ref{th:G-_expec} are all essentially $\mathcal{O}(1/n)$. We are interested in finding the asymptotic bias here. Therefore we can write the expectation of replicated autocovariance in form of equation \ref{eq:G-_expec_breakdown} as,
 \begin{align*}
-&\mathbb{E} \left[\hat{\Gamma}_{RAC}(k) \right]\\
+&\mathbb{E} \left[\hat{\Gamma}_{G-}(k) \right]\\
 &  = \left(1- \dfrac{|k|}{n}\right)\Gamma(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\overline{X}_1)}{m} \\
-& = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2  \numberthis \label{eq:rac_bias2}  \,.
+& = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2  \numberthis \label{eq:G-_bias2}  \,.
 \end{align*}
 %
-% \begin{equation} \label{eq:rac_bias2}
-% \mathbb{E} \left[\hat{\Gamma}_{RAC}(k) \right] = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2    \,.
+% \begin{equation} \label{eq:G-_bias2}
+% \mathbb{E} \left[\hat{\Gamma}_{G-}(k) \right] = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2    \,.
 % \end{equation}
 %
-where both $O_1 \textrm{ and } O_2$ are the small order terms. By our assumptions, $\sum_{h=-\infty}^{\infty}\Gamma(h) < \infty$, so $O_1 = o(1/n) \text{ and } O_2 = o(1/n)$.  Consider the RSV estimator,
+where both $O_1 \textrm{ and } O_2$ are the small order terms. By our assumptions, $\sum_{h=-\infty}^{\infty}\Gamma(h) < \infty$, so $O_1 = o(1/n) \text{ and } O_2 = o(1/n)$.  Consider the G-SVE estimator,
 \begin{align*}
-    &\mathbb{E} \left[\hat{\Sigma}_{RSV} - \Sigma \right]\\
-    &= \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Gamma}_{RAC}(k) \right] - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
+    &\mathbb{E} \left[\hat{\Sigma}_{G-SVE} - \Sigma \right]\\
+    &= \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Gamma}_{G-}(k) \right] - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
     &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\Gamma(k) +O_1 + O_2\right]  - \sum_{k=-\infty}^{\inf}\Gamma(k)\\
     &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k)\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)\left(O_1 + O_2\right)\right] \\ 
     & = P_1 + o \left( \dfrac{1}{n} \right)\,
@@ -1195,20 +1242,20 @@ So,
 %
 Using \eqref{eq:P1_first}, \eqref{eq:P1_second}, and \eqref{eq:P1_third} in \eqref{eq:P1_decomp}, we get
 \[
-\mathbb{E} \left[\hat{\Sigma}_{RSV} - \Sigma \right] = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right)\,,
+\mathbb{E} \left[\hat{\Sigma}_{G-SVE} - \Sigma \right] = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right)\,,
 \]
 which completes the result.
 %
- % We have shown that all, but one, terms are $o(1/b_n^q)$. Therefore, the limiting value of $b_n^q\mathbb{E}[\hat{\Sigma}_{RAC} - \Sigma]$ is proved to be same as that of $b_n^q\mathbb{E}[\tilde{\Sigma} - \Sigma]$ in \cite{hannan2009multiple} with some extra $o(1)$ terms. This is quite intuitive as we are using a strongly consistent estimator $\bar{\bar{X}}$ for $\mu$ in our replicated autovariance estimator. Similar to theorem \ref{th:RAC_expec}, the effect of estimating $\mu$ contributes only $o(1)$ terms. 
+ % We have shown that all, but one, terms are $o(1/b_n^q)$. Therefore, the limiting value of $b_n^q\mathbb{E}[\hat{\Sigma}_{G-} - \Sigma]$ is proved to be same as that of $b_n^q\mathbb{E}[\tilde{\Sigma} - \Sigma]$ in \cite{hannan2009multiple} with some extra $o(1)$ terms. This is quite intuitive as we are using a strongly consistent estimator $\bar{\bar{X}}$ for $\mu$ in our replicated autovariance estimator. Similar to theorem \ref{th:G-_expec}, the effect of estimating $\mu$ contributes only $o(1)$ terms. 
 \end{proof}
 \subsection{Variance Calculation}
 \label{appendix:variance}
  
-\begin{proof}[Proof of Theorem~\ref{th:rsv_variance}]
+\begin{proof}[Proof of Theorem~\ref{th:G-SVE_variance}]
  Due to the strong consistency proof from theorem \ref{th:consistency}, as $n \to \infty$,
 \begin{equation}
-\label{eq:rsv_asv_consis}
- \left|\hat{\Sigma}_{RSV} -  \tilde{\Sigma}\right| \to 0 \text{ with probability 1}\,. 
+\label{eq:G-SVE_asv_consis}
+ \left|\hat{\Sigma}_{G-SVE} -  \tilde{\Sigma}\right| \to 0 \text{ with probability 1}\,. 
 \end{equation}
 Further, we have defined $g_1(n), g_2(n), g_3(n)$ such that as $n \to \infty$,
 \begin{align*}
@@ -1219,49 +1266,49 @@ Further, we have defined $g_1(n), g_2(n), g_3(n)$ such that as $n \to \infty$,
 %
 We have shown from the proof of strong consistency that,
 \begin{align*}
- &\left| \hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right|\\
+ &\left| \hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right|\\
  & \leq \dfrac{1}{m} \sum_{s=1}^m \left| \sum_{k=-b_n+1}^{b_n-1} w \left(\dfrac{k}{b_n} \right) \sum_{t=1}^{n-|k|}   \left[ \left( \dfrac{(X_{st} - \mu)_i(\mu-\bar{\bar{X}})_j}{n}\right)+ \left(\dfrac{(\mu-\bar{\bar{X}})_i(X_{s(t+k)}-\mu)_j}{n}\right) \right] \right.\\
 & \quad \quad  \left. + (\mu-\bar{\bar{X}})(\mu-\bar{\bar{X}})^T\sum_{k=-b_n+1}^{b_n-1}\left(\dfrac{n-|k|}{n}\right)w\left(\dfrac{k}{n}\right) \right| \\ 
  & < D^2g_1(n) + Dg_2(n) + g_3(n)\,.
 \end{align*}
 
-By \eqref{eq:rsv_asv_consis}, there exists an $N_0$ such that
+By \eqref{eq:G-SVE_asv_consis}, there exists an $N_0$ such that
 \begin{align*}
-\left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right)^2 &= \left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) + \left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(n > N_0)\\
-& \leq \left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) +  \left(D^2g_1(n) + Dg_2(n) + g_3(n) \right)^2 I(n > N_0)\\
+\left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)^2 &= \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) + \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(n > N_0)\\
+& \leq \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) +  \left(D^2g_1(n) + Dg_2(n) + g_3(n) \right)^2 I(n > N_0)\\
 & := g_n^*(X_{11}, \dots, X_{1n}, \dots, X_{m1}, \dots, X_{mn})\,.
 \end{align*}
 But since by assumption $\E D^4 <\infty$ and the fourth moment is finite,
 \[
-\E \left| g_n^* \right| \leq  \E \left[\left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}_{A}^{ij} \right)^2 \right] + \E \left[\left(D^2g_1(n) + Dg_2(n) + g_3(n) \right)^2 \right] < \infty\,.
+\E \left| g_n^* \right| \leq  \E \left[\left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}_{A}^{ij} \right)^2 \right] + \E \left[\left(D^2g_1(n) + Dg_2(n) + g_3(n) \right)^2 \right] < \infty\,.
 \]
 Thus, $\E \left| g_n^* \right| < \infty$ and further as $n \to \infty$, $g_n \to 0$ under the assumptions. Since $g_1, g_2, g_3 \to 0$, $\E g_n^* \to 0$. By the majorized convergence theorem \citep{zeid:2013}, as $n \to \infty$,
 \begin{equation}
 \label{eq:squared_mean_diff}
-  \E \left[\left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \right] \to 0\,.
+  \E \left[\left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \right] \to 0\,.
 \end{equation}
 %
 We will use \eqref{eq:squared_mean_diff} to show that the variances are equivalent. Define,
 \[
-\xi\left(\hat{\Sigma}_{RSV}^{ij}, \tilde{\Sigma}^{ij} \right) = \Var\left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right) + 2 \E\left[ \left(\hat{\Sigma}_{RSV}^{ij} -  \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right]
+\xi\left(\hat{\Sigma}_{G-SVE}^{ij}, \tilde{\Sigma}^{ij} \right) = \Var\left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right) + 2 \E\left[ \left(\hat{\Sigma}_{G-SVE}^{ij} -  \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right]
 \]
 We will show that the above is $o(1)$. Using Cauchy-Schwarz inequality followed by \eqref{eq:squared_mean_diff},
 \begin{align*}
-\left|  \xi\left(\hat{\Sigma}_{RSV}^{ij}, \tilde{\Sigma}^{ij} \right) \right| & \leq \left| \Var\left(\hat{\Sigma}_{RSV}^{ij} -  \tilde{\Sigma}^{ij} \right) \right| + \left| 2 \E\left[ \left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right]\right| \\ 
-& \leq \E\left[\left(\hat{\Sigma}_{RSV}^{ij} -  \tilde{\Sigma}^{ij} \right)^2 \right] + 2 \left| \left(\E\left[ \left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \right]  \Var\left(\tilde{\Sigma}^{ij}  \right)   \right)^{1/2}\right| \\ 
+\left|  \xi\left(\hat{\Sigma}_{G-SVE}^{ij}, \tilde{\Sigma}^{ij} \right) \right| & \leq \left| \Var\left(\hat{\Sigma}_{G-SVE}^{ij} -  \tilde{\Sigma}^{ij} \right) \right| + \left| 2 \E\left[ \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right]\right| \\ 
+& \leq \E\left[\left(\hat{\Sigma}_{G-SVE}^{ij} -  \tilde{\Sigma}^{ij} \right)^2 \right] + 2 \left| \left(\E\left[ \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \right]  \Var\left(\tilde{\Sigma}^{ij}  \right)   \right)^{1/2}\right| \\ 
 & = o(1) + 2\left(o(1) \left(O\left( \dfrac{b_n}{n}\right)  + o\left( \dfrac{b_n}{n}\right) \right)  \right) \\ 
 & = o(1)\,.
 \end{align*}
 %
 Finally,
 \begin{align*}
- & \Var\left(\hat{\Sigma}_{RSV}^{ij} \right)\\
-  & = \E \left[ \left(\hat{\Sigma}_{RSV}^{ij}  - \E \left[\hat{\Sigma}_{R}^{ij}  \right] \right)^2 \right]\\
-& = \E \left[ \left(\hat{\Sigma}_{RSV}^{ij} \pm \tilde{\Sigma}^{ij} \pm \E \left[ \tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{RSV}^{ij}  \right] \right)^2 \right]\\
-& = \E\left[ \left( \left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right) + \left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right) + \left(\E\left[\tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{RSV}^{ij}  \right] \right)  \right)^2 \right] \\ 
-& =  \E\left[ \left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right)^2 \right] + \E \left[ \left(\left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right) + \left(\E\left[\tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{RSV}^{ij}  \right] \right) \right)^2 \right] \\
-& \quad \quad + 2\E\left[\left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right) \left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right)\right] + 2 \E\left[\left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right) \left(\E \left[\tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{RSV}^{ij}  \right] \right)\right]\\
-& = \Var\left( \tilde{\Sigma}^{ij}\right) + \Var\left(\hat{\Sigma}_{RSV}^{ij} - \tilde{\Sigma}^{ij} \right) + 2 \E\left[ \left(\hat{\Sigma}_{RSV}^{ij} -  \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right] + o(1)\\
+ & \Var\left(\hat{\Sigma}_{G-SVE}^{ij} \right)\\
+  & = \E \left[ \left(\hat{\Sigma}_{G-SVE}^{ij}  - \E \left[\hat{\Sigma}_{R}^{ij}  \right] \right)^2 \right]\\
+& = \E \left[ \left(\hat{\Sigma}_{G-SVE}^{ij} \pm \tilde{\Sigma}^{ij} \pm \E \left[ \tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{G-SVE}^{ij}  \right] \right)^2 \right]\\
+& = \E\left[ \left( \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right) + \left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right) + \left(\E\left[\tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{G-SVE}^{ij}  \right] \right)  \right)^2 \right] \\ 
+& =  \E\left[ \left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right)^2 \right] + \E \left[ \left(\left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right) + \left(\E\left[\tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{G-SVE}^{ij}  \right] \right) \right)^2 \right] \\
+& \quad \quad + 2\E\left[\left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right) \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)\right] + 2 \E\left[\left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right) \left(\E \left[\tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{G-SVE}^{ij}  \right] \right)\right]\\
+& = \Var\left( \tilde{\Sigma}^{ij}\right) + \Var\left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right) + 2 \E\left[ \left(\hat{\Sigma}_{G-SVE}^{ij} -  \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right] + o(1)\\
 & = \Var\left( \tilde{\Sigma}^{ij}\right) + o(1)
 \end{align*}
 
@@ -1269,7 +1316,7 @@ Finally,
 \begin{equation} \label{eq:hannan_var}
 \dfrac{n}{b_n}\Var(\tilde{\Sigma}^{ij}) = [\Sigma^{ii}\Sigma^{jj} + \left(\Sigma^{ij} \right)2]\int_{-\infty}^{\infty}w^2(x)dx + o(1)    
 \end{equation}
-Plugging (\ref{eq:hannan_var}) into variance of $\hat{\Sigma}_{RSV}$ gives the result of the theorem.
+Plugging (\ref{eq:hannan_var}) into variance of $\hat{\Sigma}_{G-SVE}$ gives the result of the theorem.
  
 \end{proof}
 
@@ -1289,12 +1336,12 @@ In this example, we will fit a Poisson change-point model on the annual number o
 \begin{figure}[h]
     \centering
     \includegraphics[width = 0.8\textwidth, height = 4in]{plots/spatio-acf.pdf}
-    \caption{ACF and R-ACF for first component of first chain. ACF underestimates the autocorrelations for $10^3$ samples (top) whereas R-ACF gives more realistic estimates. They perform alike for $10^5$ samples (bottom).}
-    \label{fig:spatio-acf_racfl}
+    \caption{ACF and G-ACF for first component of first chain. ACF underestimates the autocorrelations for $10^3$ samples (top) whereas G-ACF gives more realistic estimates. They perform alike for $10^5$ samples (bottom).}
+    \label{fig:spatio-acf_G-fl}
 \end{figure}
 The results of model comparison by \cite{martin2011mcmcpack} showed that the ratio of maximum likelihood for six change-point model is favored over the alternatives. We will use this information and present the ACF results for a six change-points model only. We will use the hyperparameters values $c_o = 13 \textrm{ and } d_o = 1$ because the mean of MID is around 13. \\
 
-We run two parallel Markov chains starting from random poits. In Figure \ref{fig:spatio-acf_racfl}, it is evident that the chains have not explored the sample space well. Hence for $10^3$ samples ACF severely underestimates the autocorrelations whereas R-ACF gives more realistic estimates. For a large sample size of $10^5$, the Markov chains have mixed properly and therefore, both the estimators are approximately alike.
+We run two parallel Markov chains starting from random poits. In Figure \ref{fig:spatio-acf_G-fl}, it is evident that the chains have not explored the sample space well. Hence for $10^3$ samples ACF severely underestimates the autocorrelations whereas G-ACF gives more realistic estimates. For a large sample size of $10^5$, the Markov chains have mixed properly and therefore, both the estimators are approximately alike.
 
 \subsection{High School Social Network}
 
@@ -1318,7 +1365,7 @@ P(i,j) = \left \{
 \right.
 \]
 
-Table (blah) shows the population parameters we are interested in estimating using MCMC methods.  The race and sex parameters are estimated as proportion of whites and females in the sample respectively. We start two parallel Markov chains from two students belonging to different races and study its impacts on the average features of their immediate social group. It is hypothesized that students from certain communities tend to engage more with students of same or other marginally represented communities. We believe that this "selective networking" might cause formation of clusters in the network wherein students within a cluster engage more with each other than with the students outside it. Given that the graph is well-connected, the Markov chains will eventually explore all the nodes. 
+Table (blah) shows the population parameters we are interested in estimating using MCMC methods.  The G-e and sex parameters are estimated as proportion of whites and females in the sample respectively. We start two parallel Markov chains from two students belonging to different G-es and study its impacts on the average features of their immediate social group. It is hypothesized that students from certain communities tend to engage more with students of same or other marginally represented communities. We believe that this "selective networking" might cause formation of clusters in the network wherein students within a cluster engage more with each other than with the students outside it. Given that the graph is well-connected, the Markov chains will eventually explore all the nodes. 
 
 
 \singlespacing

@@ -5,11 +5,6 @@ Ahn, S., Chen, Y., and Welling, M. (2013).
 \newblock Distributed and adaptive darting monte carlo through regenerations.
 \newblock In {\em Artificial Intelligence and Statistics}, pages 108--116.
 
-\bibitem[Argon and Andrad{\'o}ttir, 2006]{arg:and:2006}
-Argon, N.~T. and Andrad{\'o}ttir, S. (2006).
-\newblock Replicated batch means for steady-state simulations.
-\newblock {\em Naval Research Logistics (NRL)}, 53:508--524.
-
 \bibitem[Box et~al., 2015]{box2015time}
 Box, G.~E., Jenkins, G.~M., Reinsel, G.~C., and Ljung, G.~M. (2015).
 \newblock {\em Time series analysis: forecasting and control}.
@@ -81,6 +76,12 @@ Handcock, M.~S., Hunter, D.~R., Butts, C.~T., Goodreau, S.~M., and Morris, M.
 Hannan, E.~J. (2009).
 \newblock {\em Multiple time series}, volume~38.
 \newblock John Wiley \& Sons.
+
+\bibitem[Heberle and Sattarhoff, 2017]{heberle2017fast}
+Heberle, J. and Sattarhoff, C. (2017).
+\newblock A fast algorithm for the computation of hac covariance matrix
+  estimators.
+\newblock {\em Econometrics}, 5(1):9.
 
 \bibitem[Ihler et~al., 2005]{ihler2005nonparametric}
 Ihler, A.~T., Fisher, J.~W., Moses, R.~L., and Willsky, A.~S. (2005).

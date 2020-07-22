@@ -8,24 +8,24 @@ Warning--there's a number but no series in priestley1981spectral
 Warning--empty publisher in priestley1981spectral
 You've used 37 entries,
             1935 wiz_defined-function locations,
-            706 strings with 9623 characters,
-and the built_in function-call counts, 15142 in all, are:
-= -- 1519
+            706 strings with 9653 characters,
+and the built_in function-call counts, 15084 in all, are:
+= -- 1509
 > -- 544
 < -- 32
-+ -- 192
++ -- 194
 - -- 178
-* -- 1253
-:= -- 2561
+* -- 1249
+:= -- 2554
 add.period$ -- 111
 call.type$ -- 37
 change.case$ -- 262
 chr.to.int$ -- 37
 cite$ -- 40
 duplicate$ -- 591
-empty$ -- 1095
+empty$ -- 1090
 format.name$ -- 235
-if$ -- 3005
+if$ -- 2992
 int.to.chr$ -- 1
 int.to.str$ -- 0
 missing$ -- 44
@@ -37,14 +37,14 @@ purify$ -- 269
 quote$ -- 0
 skip$ -- 473
 stack$ -- 0
-substring$ -- 1197
+substring$ -- 1177
 swap$ -- 101
 text.length$ -- 9
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 208
 warning$ -- 3
-while$ -- 136
+while$ -- 135
 width$ -- 0
 write$ -- 474
 (There were 3 warnings)
