@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex main"] 1595428409 "main.aux" "main.bbl" "main" 1595428410
+["bibtex main"] 1595471556 "main.aux" "main.bbl" "main" 1595471576
   "/usr/local/texlive/2015/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "main.aux" 1595428410 17133 8bd2ac17ec8cef8bd1ee5bbb9aaed398 ""
+  "main.aux" 1595471576 17133 5e5d63223b9021d3780f5f2ad8d6f176 ""
   "main.bcf" 0 -1 0 ""
   "sample.bib" 1595365558 13530 3fafd875cf207d29b3ecbf68db3c02e7 ""
   (generated)
   "main.blg"
   "main.bbl"
-["pdflatex"] 1595428409 "main.tex" "main.pdf" "main" 1595428410
-  "./main.out" 1595428410 1484 5ed3831c04584e4992dd4f25cba831f9 ""
+["pdflatex"] 1595471575 "main.tex" "main.pdf" "main" 1595471576
+  "./main.out" 1595471576 1484 5ed3831c04584e4992dd4f25cba831f9 ""
   "./plots/acf,n=10000.pdf" 1595365558 9997 ff87893d35be8d972378a3fce76a7a7b ""
   "./plots/acf,n=500.pdf" 1595365558 10080 9a508fa87ab905cce86d2acaf8b68b9e ""
   "./plots/boom-acf,n=1000.pdf" 1595365558 6509 7b54fbc6e957334a5d9b888cfe28d5de ""
@@ -128,10 +128,10 @@
   "/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1432479641 1764542 91654ba72bdb667e84ea24f076ae16d8 ""
   "/usr/local/texlive/2015/texmf-var/web2c/pdftex/pdflatex.fmt" 1432479681 3849859 39a7d258195bde2394e244961601fbc5 ""
   "/usr/local/texlive/2015/texmf.cnf" 1432479636 577 0d611272082f3cdb8e80e09a3c69cf07 ""
-  "main.aux" 1595428410 17133 8bd2ac17ec8cef8bd1ee5bbb9aaed398 ""
-  "main.bbl" 1595428409 8069 64f73c7a43e7566aaa86772f07807bbe "bibtex main"
-  "main.out" 1595428410 1484 5ed3831c04584e4992dd4f25cba831f9 ""
-  "main.tex" 1595428407 101961 879ca896657d6a8fa1e3207b19d10c7d ""
+  "main.aux" 1595471576 17133 5e5d63223b9021d3780f5f2ad8d6f176 ""
+  "main.bbl" 1595471556 8069 64f73c7a43e7566aaa86772f07807bbe "bibtex main"
+  "main.out" 1595471576 1484 5ed3831c04584e4992dd4f25cba831f9 ""
+  "main.tex" 1595471575 101891 552ffdf5a7fb4d4b551c019a60bd2bdf ""
   "plots/acf,n=10000.pdf" 1595365558 9997 ff87893d35be8d972378a3fce76a7a7b ""
   "plots/acf,n=500.pdf" 1595365558 10080 9a508fa87ab905cce86d2acaf8b68b9e ""
   "plots/boom-acf,n=1000.pdf" 1595365558 6509 7b54fbc6e957334a5d9b888cfe28d5de ""
@@ -146,7 +146,7 @@
   "plots/spatio-acf.pdf" 1595365558 8648 3096c16f2bca1d6b26cb8d517ddf0836 ""
   "plots/var-ess.pdf" 1595365558 10832 7696afb48570f2cf11fb90f78191d99f ""
   (generated)
-  "main.out"
-  "main.pdf"
   "main.aux"
   "main.log"
+  "main.pdf"
+  "main.out"
