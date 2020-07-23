@@ -56,7 +56,7 @@
 \citation{hannan2009multiple}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Globally-centered spectral variance estimators}{7}{subsection.3.1}}
 \newlabel{sub:globally_centered_spectral_variance_estimators}{{3.1}{7}{Globally-centered spectral variance estimators}{subsection.3.1}{}}
-\newlabel{eq:sve}{{3}{7}{Globally-centered spectral variance estimators}{equation.3.3}{}}
+\newlabel{eq:sve}{{2}{7}{Globally-centered spectral variance estimators}{equation.3.2}{}}
 \citation{kuelbs1980almost}
 \citation{stra:1964}
 \citation{vats:fleg:jon:2018}
@@ -65,9 +65,9 @@
 \newlabel{ass:sip}{{1}{8}{Strong Invariance Principle (SIP)}{ass.1}{}}
 \newlabel{ass:sve_consis}{{2}{8}{}{ass.2}{}}
 \newlabel{th:consistency}{{2}{8}{}{theorem.2}{}}
+\newlabel{ass:bias}{{3}{8}{}{ass.3}{}}
 \citation{heberle2017fast}
 \citation{heberle2017fast}
-\newlabel{ass:bias}{{3}{9}{}{ass.3}{}}
 \newlabel{th:G-SVE_bias}{{3}{9}{}{theorem.3}{}}
 \newlabel{ass:variance_cal}{{4}{9}{}{ass.4}{}}
 \newlabel{th:G-SVE_variance}{{4}{9}{}{theorem.4}{}}
@@ -75,15 +75,15 @@
 \newlabel{ssub:fast_implementation}{{3.1.2}{9}{Fast implementation}{subsubsection.3.1.2}{}}
 \citation{wilks1932certain}
 \citation{vats2019multivariate}
+\citation{gelman1991note}
 \@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces Herberle's Algorithm\relax }}{10}{algocf.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Effective sample size}{10}{section.4}}
 \newlabel{sec:ess}{{4}{10}{Effective sample size}{section.4}{}}
-\citation{gelman1991note}
+\citation{10.2307/1427459}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Examples}{11}{section.5}}
 \newlabel{sec:examples}{{5}{11}{Examples}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Vector Autoregressive Process}{11}{subsection.5.1}}
 \newlabel{ex:var}{{5.1}{11}{Vector Autoregressive Process}{subsection.5.1}{}}
-\citation{10.2307/1427459}
 \citation{gelman1991note}
 \newlabel{subfig:acf-500}{{3a}{12}{$n = 500$\relax }{figure.caption.4}{}}
 \newlabel{sub@subfig:acf-500}{{a}{12}{$n = 500$\relax }{figure.caption.4}{}}
@@ -91,89 +91,87 @@
 \newlabel{sub@subfig:acf-5e4}{{b}{12}{$n = 10^4$\relax }{figure.caption.4}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Autocorrelation plot for ACF and G-ACF for first chain out of two parallel Markov chains. First column corresponds to ACF calculated using arithmetic mean of first Markov chain and the second column corresponds to the one calculated using global mean of two Markov chains.(a): $n = 500$, not converged yet; (b): $n = 10^4$, converged\relax }}{12}{figure.caption.4}}
 \newlabel{fig:var-acf}{{3}{12}{Autocorrelation plot for ACF and G-ACF for first chain out of two parallel Markov chains. First column corresponds to ACF calculated using arithmetic mean of first Markov chain and the second column corresponds to the one calculated using global mean of two Markov chains.(a): $n = 500$, not converged yet; (b): $n = 10^4$, converged\relax }{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Boomerang Distribution}{12}{subsection.5.2}}
+\newlabel{ex:boomerang}{{5.2}{12}{Boomerang Distribution}{subsection.5.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Running plots for $\mathaccentV {hat}05E{\text  {ESS}}/mn$ calculated using ASV and G-SVE with the truth.\relax }}{13}{figure.caption.5}}
 \newlabel{fig:var-ess}{{4}{13}{Running plots for $\hat {\text {ESS}}/mn$ calculated using ASV and G-SVE with the truth.\relax }{figure.caption.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Boomerang Distribution}{13}{subsection.5.2}}
-\newlabel{ex:boomerang}{{5.2}{13}{Boomerang Distribution}{subsection.5.2}{}}
 \newlabel{subfig:boom-acf_1e3}{{5a}{14}{$n = 1000$\relax }{figure.caption.6}{}}
 \newlabel{sub@subfig:boom-acf_1e3}{{a}{14}{$n = 1000$\relax }{figure.caption.6}{}}
 \newlabel{subfig:boom-acf_1e4}{{5b}{14}{$n = 50000$\relax }{figure.caption.6}{}}
 \newlabel{sub@subfig:boom-acf_1e4}{{b}{14}{$n = 50000$\relax }{figure.caption.6}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces ACF and G-ACF for component-1 of chain-1 at two different number of Monte Carlo samples. \relax }}{14}{figure.caption.6}}
 \newlabel{fig:boom-acf}{{5}{14}{ACF and G-ACF for component-1 of chain-1 at two different number of Monte Carlo samples. \relax }{figure.caption.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Coverage probabilities for parameter values $A = 1,\tmspace  +\thickmuskip {.2777em} B = 3,\tmspace  +\thickmuskip {.2777em} C = 8$. \relax }}{15}{table.caption.7}}
-\newlabel{table:boom-coverage_1_3_8}{{1}{15}{Coverage probabilities for parameter values $A = 1,\; B = 3,\; C = 8$. \relax }{table.caption.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Coverage probabilities for parameter values $A = 1,\tmspace  +\thickmuskip {.2777em} B = 3,\tmspace  +\thickmuskip {.2777em} C = 8$. \relax }}{14}{table.caption.7}}
+\newlabel{table:boom-coverage_1_3_8}{{1}{14}{Coverage probabilities for parameter values $A = 1,\; B = 3,\; C = 8$. \relax }{table.caption.7}{}}
+\citation{ihler2005nonparametric}
+\citation{tak2018repelling}
+\citation{lan2014wormhole}
+\citation{tak2018repelling}
 \newlabel{subfig:boom-ess1}{{6a}{15}{$A = 1, \; B = 3, \; C = 8$\relax }{figure.caption.8}{}}
 \newlabel{sub@subfig:boom-ess1}{{a}{15}{$A = 1, \; B = 3, \; C = 8$\relax }{figure.caption.8}{}}
 \newlabel{subfig:boom-ess2}{{6b}{15}{$A = 1, \; B=10, \; C = 7 $\relax }{figure.caption.8}{}}
 \newlabel{sub@subfig:boom-ess2}{{b}{15}{$A = 1, \; B=10, \; C = 7 $\relax }{figure.caption.8}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Running plot for $\mathaccentV {hat}05E{\text  {ESS}}/mn$ using ASV and G-SVE for $m = 2$.\relax }}{15}{figure.caption.8}}
 \newlabel{fig:boom-ess}{{6}{15}{Running plot for $\hat {\text {ESS}}/mn$ using ASV and G-SVE for $m = 2$.\relax }{figure.caption.8}{}}
-\citation{ihler2005nonparametric}
-\citation{tak2018repelling}
-\citation{lan2014wormhole}
-\citation{tak2018repelling}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Coverage probabilities for parameter values $A = 1,\tmspace  +\thickmuskip {.2777em} B = 10,\tmspace  +\thickmuskip {.2777em} C = 7$. \relax }}{15}{table.caption.9}}
+\newlabel{table:boom-coverage_1_10_7}{{2}{15}{Coverage probabilities for parameter values $A = 1,\; B = 10,\; C = 7$. \relax }{table.caption.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Sensor Network Localization}{15}{subsection.5.3}}
 \citation{ahn2013distributed}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Coverage probabilities for parameter values $A = 1,\tmspace  +\thickmuskip {.2777em} B = 10,\tmspace  +\thickmuskip {.2777em} C = 7$. \relax }}{16}{table.caption.9}}
-\newlabel{table:boom-coverage_1_10_7}{{2}{16}{Coverage probabilities for parameter values $A = 1,\; B = 10,\; C = 7$. \relax }{table.caption.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Sensor Network Localization}{16}{subsection.5.3}}
 \citation{tak2018repelling}
 \citation{tak2018repelling}
-\newlabel{ex:sensor_post}{{4}{17}{Sensor Network Localization}{equation.5.4}{}}
+\newlabel{ex:sensor_post}{{3}{16}{Sensor Network Localization}{equation.5.3}{}}
+\citation{csorgo2014strong}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces trace plots for the x-component of all four locations of the third chain.\relax }}{17}{figure.caption.10}}
 \newlabel{fig:sensor-trace-3}{{7}{17}{trace plots for the x-component of all four locations of the third chain.\relax }{figure.caption.10}{}}
-\citation{csorgo2014strong}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{18}{section.6}}
-\newlabel{sec:discussion}{{6}{18}{Discussion}{section.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix}{18}{appendix.A}}
-\newlabel{sec:appendix}{{A}{18}{Appendix}{appendix.A}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Preliminaries}{18}{subsection.A.1}}
-\newlabel{apdx:preliminaries}{{A.1}{18}{Preliminaries}{subsection.A.1}{}}
-\newlabel{lemma: brownian}{{1}{18}{}{lemma.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{17}{section.6}}
+\newlabel{sec:discussion}{{6}{17}{Discussion}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix}{17}{appendix.A}}
+\newlabel{sec:appendix}{{A}{17}{Appendix}{appendix.A}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Preliminaries}{17}{subsection.A.1}}
+\newlabel{apdx:preliminaries}{{A.1}{17}{Preliminaries}{subsection.A.1}{}}
+\newlabel{lemma: brownian}{{1}{17}{}{lemma.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Proof of Theorem\nobreakspace  {}\ref  {th:G-_expec}}{18}{subsection.A.2}}
 \newlabel{appendix:bias}{{A.2}{18}{Proof of Theorem~\ref {th:G-_expec}}{subsection.A.2}{}}
-\newlabel{eq:acf_breakdown}{{{5}}{18}{Proof of Theorem~\ref {th:G-_expec}}{AMS.12}{}}
+\newlabel{eq:acf_breakdown}{{{4}}{18}{Proof of Theorem~\ref {th:G-_expec}}{AMS.12}{}}
+\newlabel{eq:acf_2}{{{5}}{18}{Proof of Theorem~\ref {th:G-_expec}}{AMS.14}{}}
+\newlabel{eq:acf_3}{{6}{18}{Proof of Theorem~\ref {th:G-_expec}}{equation.A.6}{}}
 \citation{song1995optimal}
-\newlabel{eq:acf_2}{{{6}}{19}{Proof of Theorem~\ref {th:G-_expec}}{AMS.14}{}}
-\newlabel{eq:acf_3}{{7}{19}{Proof of Theorem~\ref {th:G-_expec}}{equation.A.7}{}}
-\newlabel{eq:acf_4}{{{8}}{19}{Proof of Theorem~\ref {th:G-_expec}}{AMS.16}{}}
-\newlabel{eq:priestly}{{9}{19}{Proof of Theorem~\ref {th:G-_expec}}{equation.A.9}{}}
-\newlabel{eq:G-_expec_breakdown}{{10}{20}{Proof of Theorem~\ref {th:G-_expec}}{equation.A.10}{}}
+\newlabel{eq:acf_4}{{{7}}{19}{Proof of Theorem~\ref {th:G-_expec}}{AMS.16}{}}
+\newlabel{eq:priestly}{{8}{19}{Proof of Theorem~\ref {th:G-_expec}}{equation.A.8}{}}
+\newlabel{eq:G-_expec_breakdown}{{9}{19}{Proof of Theorem~\ref {th:G-_expec}}{equation.A.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {A.3}Strong consistency argument}{20}{subsection.A.3}}
 \newlabel{appendix:strong_consis}{{A.3}{20}{Strong consistency argument}{subsection.A.3}{}}
-\newlabel{lemma:G-SVE_breakdown}{{2}{21}{}{lemma.2}{}}
-\newlabel{eq:xbars_bound}{{{11}}{22}{Strong consistency argument}{AMS.18}{}}
-\newlabel{eq:xbarbar_bound}{{12}{22}{Strong consistency argument}{equation.A.12}{}}
-\newlabel{eq:strong_consis_term-1}{{{13}}{23}{Strong consistency argument}{AMS.20}{}}
-\newlabel{eq:strong_consis_term-2}{{{14}}{23}{Strong consistency argument}{AMS.22}{}}
-\newlabel{eq:G-SVE_full_decomp}{{{15}}{24}{Strong consistency argument}{AMS.24}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.4}Proof of Theorem \ref  {th:G-SVE_bias}}{25}{subsection.A.4}}
-\newlabel{eq:G-_bias2}{{{16}}{25}{Proof of Theorem \ref {th:G-SVE_bias}}{AMS.26}{}}
+\newlabel{lemma:G-SVE_breakdown}{{2}{20}{}{lemma.2}{}}
+\newlabel{eq:xbars_bound}{{{10}}{21}{Strong consistency argument}{AMS.18}{}}
+\newlabel{eq:xbarbar_bound}{{11}{21}{Strong consistency argument}{equation.A.11}{}}
+\newlabel{eq:strong_consis_term-1}{{{12}}{22}{Strong consistency argument}{AMS.20}{}}
+\newlabel{eq:strong_consis_term-2}{{{13}}{23}{Strong consistency argument}{AMS.22}{}}
+\newlabel{eq:G-SVE_full_decomp}{{{14}}{24}{Strong consistency argument}{AMS.24}{}}
 \citation{hannan2009multiple}
-\newlabel{eq:P1_decomp}{{17}{26}{Proof of Theorem \ref {th:G-SVE_bias}}{equation.A.17}{}}
-\newlabel{eq:P1_first}{{{18}}{26}{Proof of Theorem \ref {th:G-SVE_bias}}{AMS.28}{}}
-\newlabel{eq:P1_second}{{19}{27}{Proof of Theorem \ref {th:G-SVE_bias}}{equation.A.19}{}}
-\newlabel{eq:P1_third}{{{20}}{27}{Proof of Theorem \ref {th:G-SVE_bias}}{AMS.30}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.4}Proof of Theorem \ref  {th:G-SVE_bias}}{25}{subsection.A.4}}
+\newlabel{eq:G-_bias2}{{{15}}{25}{Proof of Theorem \ref {th:G-SVE_bias}}{AMS.26}{}}
+\newlabel{eq:P1_decomp}{{16}{25}{Proof of Theorem \ref {th:G-SVE_bias}}{equation.A.16}{}}
+\newlabel{eq:P1_first}{{{17}}{26}{Proof of Theorem \ref {th:G-SVE_bias}}{AMS.28}{}}
+\newlabel{eq:P1_second}{{18}{26}{Proof of Theorem \ref {th:G-SVE_bias}}{equation.A.18}{}}
+\newlabel{eq:P1_third}{{{19}}{26}{Proof of Theorem \ref {th:G-SVE_bias}}{AMS.30}{}}
+\citation{zeid:2013}
 \@writefile{toc}{\contentsline {subsection}{\numberline {A.5}Proof of Theorem\nobreakspace  {}\ref  {th:G-SVE_variance}}{27}{subsection.A.5}}
 \newlabel{appendix:variance}{{A.5}{27}{Proof of Theorem~\ref {th:G-SVE_variance}}{subsection.A.5}{}}
-\newlabel{eq:G-SVE_asv_consis}{{21}{27}{Proof of Theorem~\ref {th:G-SVE_variance}}{equation.A.21}{}}
-\citation{zeid:2013}
-\newlabel{eq:squared_mean_diff}{{22}{28}{Proof of Theorem~\ref {th:G-SVE_variance}}{equation.A.22}{}}
+\newlabel{eq:G-SVE_asv_consis}{{20}{27}{Proof of Theorem~\ref {th:G-SVE_variance}}{equation.A.20}{}}
 \citation{hannan2009multiple}
+\newlabel{eq:squared_mean_diff}{{21}{28}{Proof of Theorem~\ref {th:G-SVE_variance}}{equation.A.21}{}}
 \citation{martin2011mcmcpack}
-\newlabel{eq:hannan_var}{{23}{29}{Proof of Theorem~\ref {th:G-SVE_variance}}{equation.A.23}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {B}Additional Examples}{29}{appendix.B}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.1}Bayesian Poisson Change Point Model}{29}{subsection.B.1}}
 \citation{martin2011mcmcpack}
 \citation{chib1998estimation}
 \citation{resnick1997protecting}
 \citation{nilakanta2019ensuring}
 \citation{gjoka2011practical}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces ACF and G-ACF for the first component of the first chain.\relax }}{30}{figure.caption.31}}
-\newlabel{fig:spatio-acf_G-fl}{{8}{30}{ACF and G-ACF for the first component of the first chain.\relax }{figure.caption.31}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.2}Network crawling}{30}{subsection.B.2}}
 \bibstyle{apalike}
 \bibdata{sample}
+\newlabel{eq:hannan_var}{{22}{29}{Proof of Theorem~\ref {th:G-SVE_variance}}{equation.A.22}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Additional Examples}{29}{appendix.B}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.1}Bayesian Poisson Change Point Model}{29}{subsection.B.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.2}Network crawling}{29}{subsection.B.2}}
 \bibcite{ahn2013distributed}{{1}{2013}{{Ahn et~al.}}{{}}}
 \bibcite{box2015time}{{2}{2015}{{Box et~al.}}{{}}}
 \bibcite{chib1998estimation}{{3}{1998}{{Chib}}{{}}}
@@ -182,6 +180,8 @@
 \bibcite{gelman1991note}{{6}{1991}{{Gelman and Meng}}{{}}}
 \bibcite{gelman1992inference}{{7}{1992}{{Gelman et~al.}}{{}}}
 \bibcite{gjoka2011practical}{{8}{2011}{{Gjoka et~al.}}{{}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces ACF and G-ACF for the first component of the first chain.\relax }}{30}{figure.caption.31}}
+\newlabel{fig:spatio-acf_G-fl}{{8}{30}{ACF and G-ACF for the first component of the first chain.\relax }{figure.caption.31}{}}
 \bibcite{glynn1992asymptotic}{{9}{1992}{{Glynn et~al.}}{{}}}
 \bibcite{gong2016practical}{{10}{2016}{{Gong and Flegal}}{{}}}
 \bibcite{hannan2009multiple}{{11}{2009}{{Hannan}}{{}}}

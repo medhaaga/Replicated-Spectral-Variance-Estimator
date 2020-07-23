@@ -320,26 +320,26 @@ Given m parallel Markov chains, we have $m$ i.i.d. samples of $\bar{X}_s$, $s \i
 
 % subsection globally_centered_spectral_variance_estimators (end)
 
-Recall from Equation \ref{eq:empirical_acf} that $\hat{\Gamma}(k)$ is the empirical autocovariance function given by 
+% Recall from Equation \ref{eq:empirical_acf} that $\hat{\Gamma}(k)$ is the empirical autocovariance function given by 
 
-\begin{equation}
-    \hat{\Gamma}(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}}(X_t - \bar{X})(X_{t + \abs{k}} - \bar{X})^T
-\end{equation}
+% \begin{equation}
+%     \hat{\Gamma}(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}}(X_t - \bar{X})(X_{t + \abs{k}} - \bar{X})^T
+% \end{equation}
 
-
-The spectral variance estimator is the weighted and truncated sum of lag-k autocovariances, given by:
-
+Let $w_n: \mathbb{R} \to [-z,z]$ be a lag window function and let $b_n \in \mathbb{N}$ be a truncation point. The usual SV estimator is the weighted and truncated sum of lag-$k$ autocovariances:
 \begin{equation} \label{eq:sve}
     \hat{\Sigma}_{SV} = \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Gamma}_n(k)
 \end{equation}
 
-where $w(.)$ is the lag window and $b_n$ is the truncation point. Consider $m$ Markov chains where $\hat{\Gamma}_s(k)$, $\hat{\Gamma}_{G,s}(k)$ and $\hat{\Sigma}_{S, s}$ are the lag-$k$ empirical ACF, G-ACF, and SVE respectively for $s^{th}$ Markov chain, $s\in {1,...,m}$. We construct the globally-centered SVE estimator $\hat{\Sigma}_{G}$ using the globally-centered ACF. Consider, 
+% Consider $m$ Markov chains where $\hat{\Gamma}_s(k)$, $\hat{\Gamma}_{G,s}(k)$ and $\hat{\Sigma}_{S, s}$ are the lag-$k$ empirical ACF, G-ACF, and SVE respectively for $s^{th}$ Markov chain, $s\in {1,...,m}$. 
+Consider the globally-centered SV estimator (G-SVE) for the $s$th chain using G-ACF:
 %
 \begin{align*}
-    \hat{\Sigma}_{G,s} &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Gamma}_{G,s}(k)
+    \hat{\Sigma}_{G,s} &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Gamma}_{G,s}(k)\,,
 \end{align*}
+and the combined G-SVE is
 \[
-\hat{\Sigma}_{G} =  \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{G,s}
+\hat{\Sigma}_{G} =  \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{G,s}\,.
 \]
 
 
@@ -355,10 +355,10 @@ The G-SVE estimator centers the data around the global mean. We are interested i
 \end{ass}
 
 
-\begin{ass} \label{ass:sve_consis} We assume that all the conditions given by \cite{vats:fleg:jon:2018} for strong consistency of the spectral variance estimator hold true. As a consequence, 
-\[
-\hat{\Sigma}_{S,s} \xrightarrow{a.s.} \Sigma \textrm{ as } n \to \infty \;\; \forall s \in \{1,..., m\}
-\]
+\begin{ass} \label{ass:sve_consis} We assume that all the conditions given by \cite{vats:fleg:jon:2018} for strong consistency of the spectral variance estimator hold true. As a consequence, $\hat{\Sigma}_{S,s} \xrightarrow{a.s.} \Sigma$ as $n \to \infty$ for all Markov chains $s$.
+% \[
+% \hat{\Sigma}_{S,s} \xrightarrow{a.s.} \Sigma \textrm{ as } n \to \infty \;\; \forall s \in \{1,..., m\}
+% \]
 \end{ass}
 
 
