@@ -11,12 +11,12 @@
 \BOOKMARK [2][-]{subsection.5.2}{Boomerang Distribution}{section.5}% 11
 \BOOKMARK [2][-]{subsection.5.3}{Sensor Network Localization}{section.5}% 12
 \BOOKMARK [1][-]{section.6}{Discussion}{}% 13
-\BOOKMARK [1][-]{appendix.A}{Preliminaries}{}% 14
-\BOOKMARK [1][-]{appendix.B}{Proof of Theorems}{}% 15
-\BOOKMARK [2][-]{subsection.B.1}{Bias of Theorem 1}{appendix.B}% 16
-\BOOKMARK [2][-]{subsection.B.2}{Strong consistency argument}{appendix.B}% 17
-\BOOKMARK [2][-]{subsection.B.3}{G-SVE Bias}{appendix.B}% 18
-\BOOKMARK [2][-]{subsection.B.4}{Variance Calculation}{appendix.B}% 19
-\BOOKMARK [1][-]{appendix.C}{Additional Examples}{}% 20
-\BOOKMARK [2][-]{subsection.C.1}{Bayesian Poisson Change Point Model}{appendix.C}% 21
-\BOOKMARK [2][-]{subsection.C.2}{High School Social Network}{appendix.C}% 22
+\BOOKMARK [1][-]{appendix.A}{Appendix}{}% 14
+\BOOKMARK [2][-]{subsection.A.1}{Preliminaries}{appendix.A}% 15
+\BOOKMARK [2][-]{subsection.A.2}{Proof of Theorem 1}{appendix.A}% 16
+\BOOKMARK [2][-]{subsection.A.3}{Strong consistency argument}{appendix.A}% 17
+\BOOKMARK [2][-]{subsection.A.4}{Proof of Theorem 3}{appendix.A}% 18
+\BOOKMARK [2][-]{subsection.A.5}{Proof of Theorem 4}{appendix.A}% 19
+\BOOKMARK [1][-]{appendix.B}{Additional Examples}{}% 20
+\BOOKMARK [2][-]{subsection.B.1}{Bayesian Poisson Change Point Model}{appendix.B}% 21
+\BOOKMARK [2][-]{subsection.B.2}{Network crawling}{appendix.B}% 22

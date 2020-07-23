@@ -36,11 +36,6 @@ Gelman, A., Rubin, D.~B., et~al. (1992).
 \newblock Inference from iterative simulation using multiple sequences.
 \newblock {\em Statistical science}, 7(4):457--472.
 
-\bibitem[Gilpin, 1981]{gilpin1981war}
-Gilpin, R. (1981).
-\newblock {\em War and change in world politics}.
-\newblock Cambridge University Press.
-
 \bibitem[Gjoka et~al., 2011]{gjoka2011practical}
 Gjoka, M., Kurant, M., Butts, C.~T., and Markopoulou, A. (2011).
 \newblock Practical recommendations on crawling online social networks.
@@ -53,24 +48,12 @@ Glynn, P.~W., Whitt, W., et~al. (1992).
   simulations.
 \newblock {\em The Annals of Applied Probability}, 2(1):180--198.
 
-\bibitem[Goldstein, 1988]{goldstein1988long}
-Goldstein, J.~S. (1988).
-\newblock {\em Long cycles: Prosperity and war in the modern age}.
-\newblock yale university Press.
-
 \bibitem[Gong and Flegal, 2016]{gong2016practical}
 Gong, L. and Flegal, J.~M. (2016).
 \newblock A practical sequential stopping rule for high-dimensional markov
   chain monte carlo.
 \newblock {\em Journal of Computational and Graphical Statistics},
   25(3):684--700.
-
-\bibitem[Handcock et~al., 2008]{handcock2008statnet}
-Handcock, M.~S., Hunter, D.~R., Butts, C.~T., Goodreau, S.~M., and Morris, M.
-  (2008).
-\newblock statnet: Software tools for the representation, visualization,
-  analysis and simulation of network data.
-\newblock {\em Journal of statistical software}, 24(1):1548.
 
 \bibitem[Hannan, 2009]{hannan2009multiple}
 Hannan, E.~J. (2009).
@@ -115,22 +98,10 @@ Ma, Y. and Genton, M.~G. (2000).
 Martin, A.~D., Quinn, K.~M., and Park, J.~H. (2011).
 \newblock Mcmcpack: Markov chain monte carlo in r.
 
-\bibitem[Modelski and Thompson, 1988]{modelski1988seapower}
-Modelski, G. and Thompson, W.~R. (1988).
-\newblock Seapower and global politics.
-\newblock In {\em Seapower in Global Politics, 1494--1993}, pages 3--26.
-  Springer.
-
 \bibitem[Nilakanta et~al., 2019]{nilakanta2019ensuring}
 Nilakanta, H., Almquist, Z.~W., and Jones, G.~L. (2019).
 \newblock Ensuring reliable monte carlo estimates of network properties.
 \newblock {\em arXiv preprint arXiv:1911.08682}.
-
-\bibitem[Pollins, 1996]{pollins1996global}
-Pollins, B.~M. (1996).
-\newblock Global political order, economic change, and armed conflict:
-  Coevolving systems and the use of force.
-\newblock {\em American Political Science Review}, pages 103--117.
 
 \bibitem[Priestley, 1981]{priestley1981spectral}
 Priestley, M.~B. (1981).
@@ -183,13 +154,6 @@ Vats, D., Flegal, J.~M., and Jones, G.~L. (2018).
 Vats, D., Flegal, J.~M., and Jones, G.~L. (2019).
 \newblock Multivariate output analysis for markov chain monte carlo.
 \newblock {\em Biometrika}, 106(2):321--337.
-
-\bibitem[Wallerstein, 1983]{wallerstein1983three}
-Wallerstein, I. (1983).
-\newblock The three instances of hegemony in the history of the capitalist
-  world-economy.
-\newblock {\em International Journal of Comparative Sociology},
-  24(1-2):100--108.
 
 \bibitem[Wilks, 1932]{wilks1932certain}
 Wilks, S.~S. (1932).

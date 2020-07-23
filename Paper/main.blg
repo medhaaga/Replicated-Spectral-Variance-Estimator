@@ -6,45 +6,45 @@ Database file #1: sample.bib
 Warning--empty journal in martin2011mcmcpack
 Warning--there's a number but no series in priestley1981spectral
 Warning--empty publisher in priestley1981spectral
-You've used 36 entries,
+You've used 30 entries,
             1935 wiz_defined-function locations,
-            699 strings with 9523 characters,
-and the built_in function-call counts, 14681 in all, are:
-= -- 1467
-> -- 531
-< -- 31
-+ -- 188
-- -- 174
-* -- 1214
-:= -- 2486
-add.period$ -- 108
-call.type$ -- 36
-change.case$ -- 256
-chr.to.int$ -- 36
-cite$ -- 39
-duplicate$ -- 577
-empty$ -- 1060
-format.name$ -- 229
-if$ -- 2913
+            663 strings with 8549 characters,
+and the built_in function-call counts, 12389 in all, are:
+= -- 1239
+> -- 462
+< -- 24
++ -- 164
+- -- 152
+* -- 1043
+:= -- 2099
+add.period$ -- 89
+call.type$ -- 30
+change.case$ -- 217
+chr.to.int$ -- 30
+cite$ -- 33
+duplicate$ -- 475
+empty$ -- 883
+format.name$ -- 199
+if$ -- 2446
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 43
-newline$ -- 182
-num.names$ -- 108
-pop$ -- 233
+missing$ -- 35
+newline$ -- 152
+num.names$ -- 90
+pop$ -- 192
 preamble$ -- 1
-purify$ -- 263
+purify$ -- 222
 quote$ -- 0
-skip$ -- 461
+skip$ -- 381
 stack$ -- 0
-substring$ -- 1138
-swap$ -- 100
-text.length$ -- 9
+substring$ -- 976
+swap$ -- 80
+text.length$ -- 7
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 202
+type$ -- 170
 warning$ -- 3
-while$ -- 131
+while$ -- 110
 width$ -- 0
-write$ -- 461
+write$ -- 384
 (There were 3 warnings)

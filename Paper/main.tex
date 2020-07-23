@@ -125,7 +125,7 @@ Autocovariances are the fundamental quantity in many features of Markov chain Mo
 \section{Introduction} \label{sec:intro}
 
 Markov chain Monte Carlo (MCMC) is a sampling method used to obtain correlated realizations from a stochastic process. Due to this serial correlation in observations, a large number of MCMC samples are required to estimate features of the target distribution as compared to the independent ones. Therefore, it becomes imperative for an MCMC practitioner to have an idea about underlying dependence structure in the Markov chains. Autocovariance function (ACF) characterizes this dependence for a stationary Markov chain. Suppose $\{X_t; t \in \mathbb{Z}\}$ is a stochastic process with mean $\mu$ and follows second-order stationarity i.e. (1) $\mathbb{E}[X_t] = \mu$ is constant for all $t$, (2) $\mathbb{E}[X_t^2]$ is constant for all $t$, and (3) $\mathbb{E}[X_t X_{t+k}]$ is a function of $k$ only $\forall k,t \in \mathbb{Z}$. Then, the autocovariance function at lag-$k$ is defined as
-
+%
 \[
     \Gamma(k) = \Cov(X_t, X_{t+k}) = \mathbb{E}[(X_t - \mu)(X_{t+k} - \mu)^T].
 \]
@@ -432,7 +432,7 @@ Let $\{X_{st}\}_{t \geq 1}$ be the $s^{th}$ Markov chain for which SIP holds.
 
 
 \begin{theorem} \label{th:G-SVE_variance}
- If Assumption \ref{ass:variance_cal} hold, $b_n^{-1}{n}\Var \left(\hat{\Sigma}_{G}^{ij} \right) = [\Sigma_{ii}\Sigma_{jj} + \Sigma_{ij}^2]\int_{-\infty}^{\infty}w(x)^2dx  + o(1)$.
+ If Assumption \ref{ass:variance_cal} holds, $b_n^{-1}{n}\Var \left(\hat{\Sigma}_{G}^{ij} \right) = [\Sigma_{ii}\Sigma_{jj} + \Sigma_{ij}^2]\int_{-\infty}^{\infty}w(x)^2dx  + o(1)$.
 \end{theorem}
 
 
@@ -447,27 +447,28 @@ Let $\{X_{st}\}_{t \geq 1}$ be the $s^{th}$ Markov chain for which SIP holds.
 The multivariate spectral variance estimator (MSVE) despite having good statistical properties poses application limitations due to slow computation and high storage demands. Observe from equation \ref{eq:empirical_acf} and \ref{eq:sve}, the computation of spectral variance estimator has a complexity of $\mathcal{O}(b_n n p)$ where $n$ is the MCMC sample size, $p$ is the dimensionality and $b_n$ is the truncation point. To overcome this limitation for our experimental purposes, we used a fast Fourier transform based algorithm presented by \cite{heberle2017fast} for calculating the alternate formulation of MSVE given by Kyriakoulis (2005).\\
 
 Suppose $\{X_t\}_{t=1}^n$ is the Markov chain of $n$ samples where $\overline{X}_n = \dfrac{1}{n}\sum_{t=1}^{n}X_t$ is the MCMC average. Let $w_k$ denote the lag-window at lag-k, i.e. $w_k = w_n(k/b_n)$. The alternate formulation for MSVE is given by
-
-\begin{equation} \label{eq:Kyriakoulis_sv}
+%
+\[
     \hat{\Sigma}_{SV} = \dfrac{1}{n}A^T T(w) A, \qquad \textrm{ where } A = \begin{pmatrix}
     X_1 - \overline{X}_n  & \dots & X_n - \overline{X}_n
 \end{pmatrix}^T
-\end{equation}
+\]
 
-and $T(w)$ is the $n \times n$ Toeplitz matrix of weights with the first column being $w = 
-\begin{pmatrix}
-    1 & w_1 & w_2 & \dots w_{n-1}
-\end{pmatrix}^T$.
+and $T(w)$ is the $n \times n$ Toeplitz matrix of weights with the first column being $(1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1})^T$
+%  $w = 
+% \begin{pmatrix}
+%     1 & w_1 & w_2 & \dots w_{n-1}
+% \end{pmatrix}^T$.
 $T(w)$ is an $n \times n$ matrix which can be difficult to store. Therefore, \cite{heberle2017fast} computed $T(w)A$ directly using an FFT based algorithm. The algorithm requires embedding $T(w)$ in a $2n \times 2n$ circulation matrix $C(w^*)$. We write the spectral decomposition of $C(w^*)$ as $V\Lambda V^*$. A is extrapolated into a $2n \times p$ matrix $A^*$ such that
 \[
     \hat{\Sigma}_{SV} = \dfrac{1}{n} A^T T(w) A = \dfrac{1}{n} A^T (C(w^*) A^*)_{1:n, :} = \dfrac{1}{n} A^T (V \Lambda V^* A^*)_{1:n, :}).
 \]
 The complete algorithm is as follows
-\\
-\begin{algorithm}[H]
+
+
+\begin{algorithm}[htbp]
 \DontPrintSemicolon
 \SetAlgoLined
-
 Construct $C(w^*) \textrm{ and } A^*$ from the MCMC samples.\\ Compute the DFT of the first column of $C(w^*)$. This gives the eigenvalues of $C(w^*)$.\;
 \For{$j = 1, 2, ..., p$}    
     { 
@@ -498,7 +499,7 @@ Estimating the MCSE is crucial for determining when to terminate the simulations
 We will use the multivariate effective sample size (m-ESS) by \cite{vats2019multivariate} to understand the effectiveness of simulations so far. m-ESS requires a strongly consistent estimator of $\Sigma$. G-SVE better captures the MCSE by considering the global sample mean across the Markov chains; which might otherwise get lost when considering a single localized slowly mixing Markov chain. We therefore define our ESS estimator as
 
 \[
-\text{ESS} = mn\left(\dfrac{\abs{\Lambda_{mn}}}{\abs{\hat{\Sigma}_{G-SVE}}}\right)^{1/p}
+\text{ESS} = mn\left(\dfrac{\abs{\Lambda_{mn}}}{\abs{\hat{\Sigma}_{G}}}\right)^{1/p}
 \]
 
 where $\Lambda_{mn}$ is the sample covariance of $mn$ samples. When there is no correlation in Markov chain $\hat{\Sigma}_{G} = \Lambda_{mn}$ and therefore, ESS = $n$. 
@@ -549,16 +550,16 @@ Let $\phi_{max}$ be the largest absolute eigenvalue of $\Phi$ such that $\abs{\p
 %     \label{fig:var-sp}
 % \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
  \begin{subfigure}{\textwidth}
    \centering
-   \includegraphics[width=.8\linewidth]{plots/acf,n=500.pdf}
+   \includegraphics[width=.6\linewidth]{plots/acf,n=500.pdf}
    \caption{$n = 500$}
    \label{subfig:acf-500}
 \end{subfigure}\\
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=.8\linewidth]{plots/acf,n=10000.pdf} 
+  \includegraphics[width=.6\linewidth]{plots/acf,n=10000.pdf} 
   \caption{$n = 10^4$}
   \label{subfig:acf-5e4}
 \end{subfigure}
@@ -567,10 +568,10 @@ Let $\phi_{max}$ be the largest absolute eigenvalue of $\Phi$ such that $\abs{\p
 \end{figure}
 
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width = .5\textwidth]{plots/var-ess.pdf}
-    \caption{Running plots for $\hat{ESS}/mn$ calculated using ASV (black) and G-SVE (blue). The true $ESS/mn$ (red) is known.}
+    \includegraphics[width = .35\textwidth]{plots/var-ess.pdf}
+    \caption{Running plots for $\hat{\text{ESS}}/mn$ calculated using ASV and G-SVE with the truth.}
     \label{fig:var-ess}
 \end{figure}
 
@@ -580,7 +581,7 @@ Let $\phi_{max}$ be the largest absolute eigenvalue of $\Phi$ such that $\abs{\p
 We will use a bivariate bi-modal distribution introduced by \cite{gelman1991note} which has Gaussian conditional distributions in both directions. This allows us to sample parallel Markov chains using the Gibbs sampler. Let $x$ and $y$ be two random variable that are jointly distributed as 
 %
 \[
-f(x, y) \propto \exp\left(-\dfrac{1}{2}[Ax^2y^2 + x^2 + y^2 -2Bxy  -2C_1x - 2C_2y]\right)
+f(x, y) \propto \exp\left(-\dfrac{1}{2} \left[Ax^2y^2 + x^2 + y^2 -2Bxy  -2C_1x - 2C_2y  \right]\right)
 \]
 
 The conditional distribution of $x$ given $y$ and vice versa is a normal distribution given by:
@@ -593,7 +594,7 @@ The conditional distribution of $x$ given $y$ and vice versa is a normal distrib
 We use a carefully chosen parameterization of $A = 1,\; B = 3,\; C = 8$ which ensures bimodality for our purpose.  Let $n$ be the number of samples in each chain and $m$ be the number of Markov chain replications. Finding the actual mean of this distribution in closed form is difficult. Therefore, we use numerical integration with fine tuning to calculate it. We sample two parallel Markov chains with well-separated starting values. 
 
 \begin{comment}
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \begin{subfigure}[h]{.4\textwidth}
         \centering
@@ -613,7 +614,7 @@ We use a carefully chosen parameterization of $A = 1,\; B = 3,\; C = 8$ which en
 \end{comment}
 
 \begin{comment}
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \begin{subfigure}[h]{.4\textwidth}
       \centering
@@ -635,17 +636,17 @@ We use a carefully chosen parameterization of $A = 1,\; B = 3,\; C = 8$ which en
 %
 In Figure \ref{fig:boom-sp}, we demonstrate the ``sticky'' nature of the Markov chains. For the first thousand samples, both the chains are oblivious of the existence of another mode. By ten thousand samples, both the Markov chains have explored the two modes. This property will affect the estimation of ACF from a single chain. In Figure \ref{subfig:boom-acf_1e3}, the ACF is severely underestimated because the first chain has not jumped to the other mode. Whereas, in Figure \ref{subfig:boom-acf_1e4}, both ACF and G-ACF give almost similar results indicating that both modes have been explored by chain-1. 
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \begin{subfigure}[h]{.8\textwidth}
       \centering
-      \includegraphics[width = \textwidth, height = 2in]{plots/boom-acf,n=1000.pdf}
+      \includegraphics[width = .8\textwidth]{plots/boom-acf,n=1000.pdf}
       \caption{$n = 1000$}
       \label{subfig:boom-acf_1e3}
     \end{subfigure}
     \begin{subfigure}[h]{.8\textwidth}
       \centering
-      \includegraphics[width = \textwidth, height = 2in]{plots/boom-acf,n=50000.pdf}
+      \includegraphics[width = .8\textwidth]{plots/boom-acf,n=50000.pdf}
       \caption{$n = 50000$}
       \label{subfig:boom-acf_1e4}
     \end{subfigure}
@@ -655,19 +656,20 @@ In Figure \ref{fig:boom-sp}, we demonstrate the ``sticky'' nature of the Markov 
 
 We also run five parallel Markov chains with well-separated starting points. In Table \ref{table:boom-coverage_1_3_8}, we give the coverage probabilities for $95 \%$ confidence interval for both the estimator. We can see that the G-SVE gives better coverage probabilities for all the $n$. For smaller sample size, the coverage probability of G-SVE is significantly higher than A-SVE. As the number of samples per chain increases, they start coming closer due to the strong consistency of both the estimators.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
-    \begin{tabular}{p{1cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}}
+    \begin{tabular}{|c|l|l|l|l|}
     % \toprule
-        n & \multicolumn{2}{|c|}{$m = 2$} & \multicolumn{2}{|c|}{$m=5$}\\
+    \hline
+        $n$ & \multicolumn{2}{|c|}{$m = 2$} & \multicolumn{2}{|c|}{$m=5$}\\
         \hline
         & ASV & G-SVE & ASV & G-SVE\\
         \hline
-        $10^3$ & 0.612 & 0.689 & 0.602 & 0.753   \\
-        $2\cdot10^3$ & 0.693 & 0.751 & 0.735 & 0.827 \\
-        $5 \cdot 10^3$  & 0.826 & 0.854 & 0.847 & 0.880 \\
-        $10^4$  & 0.862 & 0.868 & 0.884 & 0.907 \\
-        $2 \cdot 10^4$ & 0.899 & 0.906 & 0.922 & 0.934  \\
+        $1000$ & 0.612 & 0.689 & 0.602 & 0.753   \\
+        $2000$ & 0.693 & 0.751 & 0.735 & 0.827 \\
+        $5000$  & 0.826 & 0.854 & 0.847 & 0.880 \\
+        $10000$  & 0.862 & 0.868 & 0.884 & 0.907 \\
+        $20000$ & 0.899 & 0.906 & 0.922 & 0.934  \\ \hline
     % \bottomrule
     \end{tabular}
     \caption{Coverage probabilities for parameter values $A = 1,\; B = 3,\; C = 8$. }
@@ -676,42 +678,42 @@ We also run five parallel Markov chains with well-separated starting points. In 
 
 A good estimate of ESS is crucial to determine when to stop the simulations. We can see in Figure \ref{fig:run_ess} that for the first few thousand samples, A-SVE gives misleadingly higher $\hat{ESS}/mn$ than G-SVE. This can cause us to stop the sampling before the sample space has been explored by the chains. The inferences derived from this chain would then be severely non-informative.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     
     \begin{subfigure}[h]{.3\textwidth}
       \centering
-      \includegraphics[width = \textwidth]{plots/boom-ess1.pdf}
+      \includegraphics[width = 1.1\textwidth]{plots/boom-ess1.pdf}
       \caption{$A = 1, \; B = 3, \; C = 8$}
       \label{subfig:boom-ess1}
-    \end{subfigure}
-    
+    \end{subfigure} \hspace{1cm}
     \begin{subfigure}[h]{.3\textwidth}
       \centering
-      \includegraphics[width = \textwidth]{plots/boom-ess2.pdf}
+      \includegraphics[width = 1.1\textwidth]{plots/boom-ess2.pdf}
       \caption{$A = 1, \; B=10, \; C = 7 $}
       \label{subfig:boom-ess2}
     \end{subfigure}
-    \caption{Running plot for $\hat{ESS}/mn$ using A-SVE and G-SVE calculated for two chains for two different parameterizations.}
+    \caption{Running plot for $\hat{\text{ESS}}/mn$ using ASV and G-SVE  for $m = 2$.}
     \label{fig:boom-ess}
 \end{figure}
 
 
 To examine the performance of G-SVE for a nicely mixing Markov chain, we use the parametrization of $A = 1, \; B = 10, \; C=7$. This is also a bimodal distribution, however, the two modes interact well with each other (Figure \ref{subfig:boom-pers_1_10_7}). In Figure \ref{fig:boom-ess_1_10_7}, we observe that both G-SVE and A-SVE give almost the same estimates for ESS. Similar is the case with coverage probabilities in Table \ref{table:boom-coverage_1_10_7} for a $95\%$ confidence region.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
-    \begin{tabular}{p{1cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}}
+    \begin{tabular}{|c|l|l|l|l|}
     % \toprule
-        n & \multicolumn{2}{|c|}{$m = 2$} & \multicolumn{2}{|c|}{$m=5$}\\
+    \hline
+        $n$ & \multicolumn{2}{|c|}{$m = 2$} & \multicolumn{2}{|c|}{$m=5$}\\
         \hline
         & ASV & G-SVE & ASV & G-SVE\\
         \hline
-        $10^3$ & 0.873 & 0.884 & 0.875 & 0.898   \\
-        $2\cdot10^3$ & 0.881 &  0.888 & 0.897    & 0.914     \\
-        $5 \cdot 10^3$  & 0.902 & 0.908 &  0.919 & 0.929\\
-        $10^4$  & 0.923 & 0.927 & 0.925 & 0.926 \\
-        $5 \cdot 10^4$ & 0.951& 0.952 & 0.939 & 0.939  \\
+        $10000$ & 0.873 & 0.884 & 0.875 & 0.898   \\
+        $2000$ & 0.881 &  0.888 & 0.897    & 0.914     \\
+        $5000$  & 0.902 & 0.908 &  0.919 & 0.929\\
+        $10000$  & 0.923 & 0.927 & 0.925 & 0.926 \\
+        $50000$ & 0.951& 0.952 & 0.939 & 0.939  \\ \hline
     % \bottomrule
     \end{tabular}
     \caption{Coverage probabilities for parameter values $A = 1,\; B = 10,\; C = 7$. }
@@ -720,17 +722,17 @@ To examine the performance of G-SVE for a nicely mixing Markov chain, we use the
 
 \subsection{Sensor Network Localization}
 
-For our third example, we consider a real-life problem of sensor locations previously discussed by \cite{ihler2005nonparametric}. The goal is to identify unknown sensor locations using noisy distance data. This problem is specifically interesting in our case because the joint posterior distribution for missing sensor locations is multi-modal. \\
+For our third example, we consider a real-life problem of sensor locations previously discussed by \cite{ihler2005nonparametric}. The goal is to identify unknown sensor locations using noisy distance data. This problem is specifically interesting in our case because the joint posterior distribution for missing sensor locations is multi-modal. 
 
 \cite{tak2018repelling} modified the simulation settings of \cite{lan2014wormhole} to include only six sensor locations (four unknown and two unknown) out of eleven locations (eight known and three unknown). Following \cite{tak2018repelling}, we assume that there are six sensors scattered on a planar region where $x_i = (x_{i1}, x_{i2})^T$ denote the $2d$ coordinates of $i^{th}$ sensor. Let $y_{ij} = (y_{ji})$ denote the distance between the sensors $x_i$ and $x_j$. The distance between $x_i$ and $x_j$ is observed with probability $\pi (x_i, x_j) = \exp{\|x_i - x_j\|^2 / 2R^2}$ and with a Gaussian measurement error of $\sigma^2$. Let $z{ij}$ denote the indicator variable which is equal to 1 when the distance between $x_i$ and $x_j$ is observed. The probability model is then,
-
+%
 \begin{align*}
-    z_{ij}|x_1, ..., x_6 &\sim Bernoulli\left(\exp\left(\dfrac{-\|x_i - x_j\|^2}{2R^2}\right)\right)\\
-    y_{ij}| w_{ij} = 1, x_1, ..., x_6 &\sim N(\|x_i - x_j\|^2, \sigma^2)
+    z_{ij} \mid x_1, ..., x_6 &\ sim \text{Bernoulli}\left(\exp\left(\dfrac{-\|x_i - x_j\|^2}{2R^2}\right)\right)\\
+    y_{ij} \mid w_{ij} = 1, x_1, ..., x_6 &\sim N(\|x_i - x_j\|^2, \sigma^2)
 \end{align*}
-
+%
 \cite{ahn2013distributed} suggested the value of $R = 0.3$ and $\sigma = 0.02$. We use a Gaussian prior for the unknown locations with  mean equal to $(0,0)$ and covariance matrix equal to $100 I_2$. $y_{ij}$ is specified only if $w_{ij} = 1$. The likelihood function is then,
-
+%
 \begin{multline*}
     L(x_1, x_2, x_3, x_4) \propto \\
 \prod_{j>i} \left[ \left(\exp\left(\dfrac{-\|x_i - x_j\|^2}{2 \times 0.3^2}\right)\right)^{w_{ij}} \left(1 - \exp\left(\dfrac{-\|x_i - x_j\|^2}{2 \times 0.3^2}\right)\right)^{1 - w_{ij}} \exp \left(-\dfrac{y_{ij} - \|x_i - x_j\|^2}{2 \times 0.02^2}\right)\right]    
@@ -778,7 +780,8 @@ We will use the RAM algorithm with a jumping scale equal to $0.5$ to sample five
 
 \appendix
 
-\section{Preliminaries} \label{apdx:preliminaries}
+\section{Appendix}  \label{sec:appendix}
+\subsection{Preliminaries} \label{apdx:preliminaries}
 
 \begin{lemma}
 \label{lemma: brownian}
@@ -822,12 +825,12 @@ We will use the RAM algorithm with a jumping scale equal to $0.5$ to sample five
 % \end{proof}
 
 
-\section{Proof of Theorems} \label{appendix:A}
+% \section{Proof of Theorems} \label{appendix:A}
 
-\subsection{Bias of Theorem~\ref{th:G-_expec}} 
+\subsection{Proof of Theorem~\ref{th:G-_expec}} 
 \label{appendix:bias}
 
- 
+ % \begin{proof}[Proof of Theorem~\ref{th:G-_expec}]
 % \begin{lemma} \label{lemma:bias1}
 % $\mathbb{E}\left[ \left(X_{11} - \bar{X}_1 \right) \left(\bar{X}_1 - \bar{\bar{X}} \right)^T \right] = \dfrac{m-1}{mn}\left(\sum\limits_{k=0}^{n-1}\Gamma(k) - \Sigma\right)$
 % \end{lemma}
@@ -870,7 +873,7 @@ We will use the RAM algorithm with a jumping scale equal to $0.5$ to sample five
 % \end{proof}
 
 
-\begin{proof}[Proof of Theorem~\ref{th:G-_expec}]
+
 \begin{align*}
 \hat{\Gamma}_{G,s}(k) & = \dfrac{1}{n}\sum_{t=1}^{n-|k|} \left(X_{st} - \bar{\bar{X}} \right) \left(X_{s(t+k)} - \bar{\bar{X}} \right)^T \\
     &= \left[\dfrac{1}{n} \sum_{t=1}^{n-|k|} \left(X_{st} - \bar{X}_s \right) \left(X_{s(t+k)} - \bar{X}_s \right)^T \right] + \left[\dfrac{1}{n} \sum_{t=1}^{|k|} \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - X_{st} \right)^T\right] \\ 
@@ -941,7 +944,7 @@ We observe that both $O_1 \textrm{ and } O_2$ are small order terms that converg
 & = \mathbb{E}\left[\hat{\Gamma}^{ii}_{s}(k)\right] - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1} \left[\Gamma^{ii}(h)^T + \Gamma^{ii}(h) \right] \right) - \left(2-\dfrac{1}{m}\right) \Var(\overline{X}_1)^{ii}\right] - \dfrac{\Var(\overline{X}_1)^{ii}}{m}\,.
 \end{align*}
 In the presence of positive correlation, the leftover term is positive.
-\end{proof}
+
 
 % \begin{proof}[Proof of corollary \ref{cor:lag0_expectation}]
 
@@ -1016,10 +1019,10 @@ Consequently
 We first present a result which will be useful to use later. For any Markov chain $s$, 
 \begin{align*}
   \|\bar{X}_s - \mu\|_{\infty} & \leq \|\bar{X}_s - \mu\| = \dfrac{1}{mn}\left\|\sum_{t=1}^{n}X_{st} - n\mu\right\| \\
-  &= \dfrac{1}{n}  \left \|\sum_{t=1}^{n}X_{st} - n\mu \pm L B(n) \right\|\\
+  % &= \dfrac{1}{n}  \left \|\sum_{t=1}^{n}X_{st} - n\mu \pm L B(n) \right\|\\
   & \leq \dfrac{1}{n}\left\|\sum_{t=1}^{n}X_{st} - n \mu - L B(n)\right\| + \dfrac{\left\|L B(n)\right\|}{n}\\
   &< \dfrac{D\psi(n)}{n} + \dfrac{\|L B(n)\|}{n}\\
-  &< \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| \left(\sum\limits_{i=1}^{p}|B^{(i)}(k)|^2\right)^{1/2}\\
+  &< \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| \left(\sum\limits_{i=1}^{p}|B^{(i)}(n)|^2\right)^{1/2}\\
   & \leq \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}\,. \numberthis \label{eq:xbars_bound}
   % & \xrightarrow[]{a.s.} 0\;\; as \;\; n\to \infty 
 \end{align*}
@@ -1042,8 +1045,8 @@ We first present a result which will be useful to use later. For any Markov chai
 Now consider,
 \begin{align*}
 & |M_1| \\ 
-   & = \left|\dfrac{1}{m}\sum _{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-|k|} \dfrac{1}{n}\left[ \left(X_{st} - \mu \right)_i  \left(\mu-\bar{\bar{X}} \right)_j + \left(\mu-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)} - \mu \right)_j\right]\right\}\right| \\
-   & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}{\left|\sum\limits_{t=1}^{n-|k|} \left(X_{st} - \mu \right)_i  \left(\mu - \bar{\bar{X}} \right)_j\right|} + \dfrac{1}{n}{\left|\sum_{t=1}^{n-|k|} \left(\mu-\bar{\bar{X}} \right)_i\left(X_{s(t+k)} - \mu \right)_j\right|} \right]\right\}\\
+   % & = \left|\dfrac{1}{m}\sum _{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-|k|} \dfrac{1}{n}\left[ \left(X_{st} - \mu \right)_i  \left(\mu-\bar{\bar{X}} \right)_j + \left(\mu-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)} - \mu \right)_j\right]\right\}\right| \\
+   % & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}{\left|\sum\limits_{t=1}^{n-|k|} \left(X_{st} - \mu \right)_i  \left(\mu - \bar{\bar{X}} \right)_j\right|} + \dfrac{1}{n}{\left|\sum_{t=1}^{n-|k|} \left(\mu-\bar{\bar{X}} \right)_i\left(X_{s(t+k)} - \mu \right)_j\right|} \right]\right\}\\
     & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}\left|\sum_{t=1}^{n-|k|}(X_{st}- \mu)_i\right|\left|(\mu-\bar{\bar{X}})_j\right|+ \dfrac{1}{n}\left|(\mu-\bar{\bar{X}})_i\right|\left|\sum_{t=1}^{n-|k|}(X_{j(t+k)}-\mu)_j\right|\right]\right\}\\
     & \leq \dfrac{\|(\bar{\bar{X}} - \mu)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t=1}^{n-|k|}(X_{st}-\mu)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t=1}^{n-|k|}(X_{s(t+k)}-\mu)\right\|_{\infty} \right]\\
     &\leq \dfrac{\|(\bar{\bar{X}} - \mu)\|_{\infty}}{m} \\
@@ -1056,10 +1059,9 @@ Now consider,
 Using SIP on summation of $k$ terms, we obtain the following upper bound for $|M_1|$
 \begin{align*}
 |M_1|
-    & < 2\|(\bar{\bar{X}} - \mu)\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] \\
-    & \quad + 2(2b_n - 1)\|\bar{\bar{X}} - \mu\|_{\infty}\|\bar{X}_1 - \mu\|_{\infty} \\
-    &\leq 2(2b_n - 1)\|(\bar{\bar{X}} - \mu)\|_{\infty} \left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]\\
-    & \quad  + 2(2b_n - 1)\|\bar{\bar{X}} - \mu\|_{\infty}\|\bar{X}_1 - \mu\|_{\infty}\\
+    & < 2\|(\bar{\bar{X}} - \mu)\|_{\infty} \left[\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] \right]  + 2(2b_n - 1) \|\bar{X}_1 - \mu\|_{\infty} \\
+    &\leq 2(2b_n - 1)\|(\bar{\bar{X}} - \mu)\|_{\infty} \left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n} + \|\bar{X}_1 - \mu\|_{\infty}  \right]\\
+    % & \quad  + 2(2b_n - 1)\|\bar{\bar{X}} - \mu\|_{\infty}\\
     & \leq 4(2b_n - 1)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2  \quad \text{(by \eqref{eq:xbars_bound} and \eqref{eq:xbarbar_bound})}\,. \numberthis \label{eq:strong_consis_term-1}
 \end{align*}
 %
@@ -1073,9 +1075,8 @@ Using SIP on summation of $k$ terms, we obtain the following upper bound for $|M
 For $M_2$,
 \begin{align*}
    |M_2| & = \left|\dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{ \left(\mu - \bar{\bar{X}} \right)_i  \left(\mu - \bar{\bar{X}} \right)_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right\}\right|\\
-    & \leq\|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right]\\
-    &< \|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
-    &= b_n\|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\dfrac{1}{b_n}\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
+    & \leq\|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right] < \|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
+    % &= b_n\|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\dfrac{1}{b_n}\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
     & \leq b_n\|\bar{\bar{X}} - \mu\|_{\infty}^2 \int_{-\infty}^{\infty}|w(x)|dx \\
     % & \leq Cb_n\|\bar{\bar{X}} - \mu \|^2 \\ 
     & \leq Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2 \quad \text{ (by \eqref{eq:xbarbar_bound})} \numberthis \label{eq:strong_consis_term-2} \,.
@@ -1092,10 +1093,9 @@ For $M_2$,
 %
 Using \eqref{eq:strong_consis_term-1} and \eqref{eq:strong_consis_term-2},
 \begin{align*}
-  &|M_1 + M_2|\\
-  & \leq |M_1| + |M_2|\\
-  & \leq 4(2b_n - 1)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2 + Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2\\
-  & = D^2g_1(n) + D g_2(n) + g_3(n)\,
+|M_1 + M_2  & \leq |M_1| + |M_2|
+  % & \leq 4(2b_n - 1)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2 + Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2\\
+   = D^2g_1(n) + D g_2(n) + g_3(n)\,,
 \end{align*}
 where
 \begin{align*}
@@ -1103,7 +1103,9 @@ where
     g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(8 + C)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right]\\
     g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(8 + C)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right]\,.
 \end{align*}
-Under our assumptions, $b_n\log \log n /n \to 0$ and $\psi(n) = o(\sqrt{n \log \log n})$. Consequently, $b_n \psi^2(n)/n^2 \to 0$, $\psi^2(n)/n^2 \to 0$, ${b_n\psi(n)\sqrt{n\log \log n}/n^2} \to 0$, and $\psi(n) \sqrt{n \log \log n}/n^2 \to 0$. Thus, $g_1(n), g_2(n)$ and $g_3(n) \to 0$ as $n \to \infty$. 
+Under our assumptions, 
+$b_n\log \log n /n \to 0$ and $\psi(n) = o(\sqrt{n \log \log n})$. Consequently, 
+$b_n \psi^2(n)/n^2 \to 0$, $\psi^2(n)/n^2 \to 0$, ${b_n\psi(n)\sqrt{n\log \log n}/n^2} \to 0$, and $\psi(n) \sqrt{n \log \log n}/n^2 \to 0$. Thus, $g_1(n), g_2(n)$ and $g_3(n) \to 0$ as $n \to \infty$. 
 
 \end{proof}
 % \begin{lemma} \label{lemma:pseudo_consis}
@@ -1113,8 +1115,8 @@ Under our assumptions, $b_n\log \log n /n \to 0$ and $\psi(n) = o(\sqrt{n \log \
 \begin{proof}[Proof of theorem \ref{th:consistency}]
 We have the following decomposition,
 \begin{align*}
-    &\tilde{\Sigma}^{ij} \\
-    & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(X_{st} - \mu \right)_i  \left(X_{s(t + k)} - \mu \right)_j\\
+\tilde{\Sigma}^{ij}
+    % & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(X_{st} - \mu \right)_i  \left(X_{s(t + k)} - \mu \right)_j\\
     & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(X_{st} \pm \bar{X}_s - \mu \right)_i  \left(X_{s(t + k)} \pm \bar{X}_s - \mu \right)_j\\
     & = \hat{\Sigma}_{SV}^{ij} + \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i   \left(\bar{X}_s - \mu \right)_j + \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right]\\
     & \quad + \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{X}_s - \mu \right)_i  \left(\bar{X}_s - \mu \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\\
@@ -1128,11 +1130,10 @@ N_2 & = \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{X}_s - \mu \right)_i  \le
 %
 Using the above and  Lemma~\ref{lemma:G-SVE_breakdown}, 
 \begin{align*}
-\left|\hat{\Sigma}_{G-SVE}^{ij} - \Sigma^{ij} \right| & = \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} + N_1 + N_2 + M_1 + M_2 \right| \\
-& \leq \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} \right| +  \left| N_1 \right| +  \left|N_2 \right| + \left| M_1 + M_2 \right| \numberthis \label{eq:G-SVE_full_decomp}
+\left|\hat{\Sigma}_{G}^{ij} - \Sigma^{ij} \right| & = \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} + N_1 + N_2 + M_1 + M_2 \right|  \leq \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} \right| +  \left| N_1 \right| +  \left|N_2 \right| + \left| M_1 + M_2 \right| \numberthis \label{eq:G-SVE_full_decomp}
 \end{align*}
 %
-By Assumption~\ref{ass:sve_consis}, the first term goes to with probability 1 and by Lemma~\ref{lemma:G-SVE_breakdown}, the third term goes to 0 with probability 1 as $n \to \infty$. What is left to show is that $|N_1| \to 0$ and $|N_2| \to 0$ with probability 1
+By Assumption~\ref{ass:sve_consis}, the first term goes to 0 with probability 1 and by Lemma~\ref{lemma:G-SVE_breakdown}, the third term goes to 0 with probability 1 as $n \to \infty$. It is left to show that $|N_1| \to 0$ and $|N_2| \to 0$ with probability 1
 %
 \begin{align*}
 |N_1| & = \left|\dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t=1}^{n-|k|}  \left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j + \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right] \right|\\
@@ -1140,23 +1141,22 @@ By Assumption~\ref{ass:sve_consis}, the first term goes to with probability 1 an
 & \quad + \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right] \right|
 \end{align*}
 %
-Both terms are similar and we will show that the first term goes to 0. The proof for the second term is similar. Consider
+We will show that the first term goes to 0 and the proof for the second term is similar. Consider
 \begin{align*}
     & \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j \right] \right| \\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right)  \right|\dfrac{  \left| \left(\bar{X}_s - \mu \right)_j \right| }{n} \left[ \left|  \sum_{t=1}^{|k|} \left(\bar{X}_s - X_{st} \right)_i  \right| \right]\\
+    % & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right)  \right|\dfrac{  \left| \left(\bar{X}_s - \mu \right)_j \right| }{n} \left[ \left|  \sum_{t=1}^{|k|} \left(\bar{X}_s - X_{st} \right)_i  \right| \right]\\
     & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left| w\left(\dfrac{k}{b_n}\right) \right| \dfrac{ \left|  \left(\bar{X}_s - \mu \right)_j \right| }{n} \left[ \left|\sum_{t=1}^{|k|} \left(\mu - X_{st} \right)_i \right| + \abs{k} \left|\left(\bar{X}_s - \mu \right)_i \right|\right]\\
     & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{X}_s - \mu\|_{\infty}}{n} \left\|\sum_{t=1}^{|k|} \left(\mu - X_{st} \right) + \abs{k} \left(\bar{X}_s - \mu \right)\right\|_{\infty}\\
     & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{X}_s - \mu\|_{\infty}}{n} \left(\left\|\sum_{t=1}^{|k|}  \left(X_{st} - \mu \right)\right\|_{\infty} + \abs{k}\|\bar{X}_s - \mu\|_{\infty} \right)\\
     & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\dfrac{\|\bar{X}_s - \mu\|_{\infty}}{n} \left\|\sum_{t=1}^{|k|} \left(X_{st} - \mu\right) \right\| + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n} \left \|\bar{X}_s - \mu \right \|_{\infty}^2\,.
 \end{align*}
 
-Using SIP on the summation of k terms,
+Using SIP on the summation of $k$ terms,
 \begin{align*}
     & \left|\dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j \right] \right|\\
    &  < \dfrac{1}{m}\sum\limits_{s=1}^{m}\|\bar{X}_s - \mu\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{X}_s - \mu\|_{\infty}^2\\
    &  < \dfrac{(2b_n-1)}{m}\sum\limits_{s=1}^{m}\|\bar{X}_s - \mu\|_{\infty}\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{X}_s - \mu\|_{\infty}^2 \\
-   &  \leq   \left(2b_n - 1 + \dfrac{b_n^2}{n} - \dfrac{b_n}{n}\right)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2 \quad \text{(by \eqref{eq:xbars_bound})} \\
-   & \to 0\,.
+   &  \leq   \left(2b_n - 1 + \dfrac{b_n^2}{n} - \dfrac{b_n}{n}\right)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2  \to 0\,. \quad  \text{(by \eqref{eq:xbars_bound})}
 \end{align*}
 %
 % Using Lemma~\ref{lemma:consis_1}, the above term can be upper bounded by,
@@ -1167,9 +1167,10 @@ Using SIP on the summation of k terms,
 %
 % Using the bound on $\psi(n)$ given by \cite{stra:1964}, (\ref{eq:PASVE_term-1}) becomes $\mathcal{O}\left(b_n \log \log n/n\right)$ which converges to 0 as $n \to \infty$.
 %
-Similar to the above proof, second part of $N_1$ can also be written as a summation of $k$ terms and the proof follows exactly as the first part. Now we prove that $N_2 \xrightarrow{a.s.} 0 \textrm{ as } n \to \infty$. 
+Similarly, the second part of $N_1 \to 0$ with probability 1. 
+% Now we prove that $N_2 \xrightarrow{a.s.} 0 \textrm{ as } n \to \infty$. 
 %
-Following the steps in \eqref{eq:strong_consis_term-2}, we get
+Following the steps in \eqref{eq:strong_consis_term-2}, 
 \begin{align*}
     |N_2| & \leq Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2  \to 0\,.
     % \left|\dfrac{1}{m} \sum_{s=1}^{m} \left(\bar{X}_s - \mu \right)_i \left(\bar{X}_s - \mu \right)_j\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right|\\
@@ -1177,7 +1178,7 @@ Following the steps in \eqref{eq:strong_consis_term-2}, we get
     % & = \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2\, \dfrac{1}{b_n} \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
     % & \leq \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2 \int_{-\infty}^{\infty} \abs{w(x)}dx\,.
 \end{align*}
-Thus, in \eqref{eq:G-SVE_full_decomp}, each of the terms goes to 0 with probability 1, and $\hat{\Sigma}_{G-SVE}^{ij} \to \Sigma^{ij}$ with probability 1 as $n \to \infty$. 
+Thus, in \eqref{eq:G-SVE_full_decomp}, every term goes to 0 and $\hat{\Sigma}_{G}^{ij} \to \Sigma^{ij}$ with probability 1 as $n \to \infty$. 
 \end{proof}
 
 
@@ -1188,36 +1189,37 @@ Thus, in \eqref{eq:G-SVE_full_decomp}, each of the terms goes to 0 with probabil
 
 
 
-\subsection{G-SVE Bias}
+\subsection{Proof of Theorem \ref{th:G-SVE_bias}}
 
-\begin{proof}[Proof of theorem \ref{th:G-SVE_bias}]
-The convoluted end effect terms in theorem \ref{th:G-_expec} are all essentially $\mathcal{O}(1/n)$. We are interested in finding the asymptotic bias here. Therefore we can write the expectation of replicated autocovariance in form of equation \ref{eq:G-_expec_breakdown} as,
+% \begin{proof}[Proof of theorem \ref{th:G-SVE_bias}]
+% The convoluted end effect terms in theorem \ref{th:G-_expec} are all essentially $\mathcal{O}(1/n)$. We are interested in finding the asymptotic bias here. Therefore we can write the expectation of replicated autocovariance in form of 
+By \ref{eq:G-_expec_breakdown},
 \begin{align*}
-&\mathbb{E} \left[\hat{\Gamma}_{G-}(k) \right]\\
-&  = \left(1- \dfrac{|k|}{n}\right)\Gamma(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\overline{X}_1)}{m} \\
-& = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2  \numberthis \label{eq:G-_bias2}  \,.
+\mathbb{E} \left[\hat{\Gamma}_{G}(k) \right]
+% &  = \left(1- \dfrac{|k|}{n}\right)\Gamma(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\overline{X}_1)}{m} \\
+& = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + o \left(n^{-1} \right)  \numberthis \label{eq:G-_bias2}  \,.
 \end{align*}
 %
 % \begin{equation} \label{eq:G-_bias2}
 % \mathbb{E} \left[\hat{\Gamma}_{G-}(k) \right] = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2    \,.
 % \end{equation}
 %
-where both $O_1 \textrm{ and } O_2$ are the small order terms. By our assumptions, $\sum_{h=-\infty}^{\infty}\Gamma(h) < \infty$, so $O_1 = o(1/n) \text{ and } O_2 = o(1/n)$.  Consider the G-SVE estimator,
+% where both $O_1 \textrm{ and } O_2$ are the small order terms. By our assumptions, $\sum_{h=-\infty}^{\infty}\Gamma(h) < \infty$, so $O_1 = o(1/n) \text{ and } O_2 = o(1/n)$.  
+Consider the G-SVE estimator,
 \begin{align*}
-    &\mathbb{E} \left[\hat{\Sigma}_{G-SVE} - \Sigma \right]\\
-    &= \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Gamma}_{G-}(k) \right] - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
-    &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\Gamma(k) +O_1 + O_2\right]  - \sum_{k=-\infty}^{\inf}\Gamma(k)\\
-    &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k)\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)\left(O_1 + O_2\right)\right] \\ 
-    & = P_1 + o \left( \dfrac{1}{n} \right)\,
+ \mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] & = \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Gamma}_{G}(k) \right] - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
+    &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\Gamma(k) + o\left(n^{-1} \right)\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
+    % &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k)\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)  o\left(n^{-1}\right)\right] \\ 
+    & = P_1 + o \left( \dfrac{1}{n} \right)\,,
 \end{align*}
 %
 where 
-\begin{align*}
-P_1 & = \sum\limits_{k=-n+1}^{n-1}\left[w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k) \right] - \sum\limits_{k=-\infty}^{\infty}\Gamma(k)\,.
+\[
+P_1  = \sum\limits_{k=-n+1}^{n-1}\left[w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k) \right] - \sum\limits_{k=-\infty}^{\infty}\Gamma(k)\,.
 % P_2 &= \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k }{b_n}\right)\left(O_1 + O_2\right)\right]\,.
-\end{align*}
+\]
 %
-We first solve for term $P_1$ by breaking it into three parts as in \cite{hannan2009multiple}. Note that notation $A = o(z)$ for matrix $A$  implies $A^{ij} = o(z)$ for each element of the matrix $A$. Consider,
+Similar to \cite{hannan2009multiple}, we break $P_1$ into three parts. Note that notation $A = o(z)$ for matrix $A$  implies $A^{ij} = o(z)$ for every $(i,j)$th element of the matrix $A$. Consider,
 \begin{equation}
 \label{eq:P1_decomp}
 P_1 = -\sum_{|k|\geq n}\Gamma(k)  -  \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Gamma(k)- \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{n}\right)\right)\Gamma(k)\,.  
@@ -1276,130 +1278,141 @@ So,
 %
 Using \eqref{eq:P1_first}, \eqref{eq:P1_second}, and \eqref{eq:P1_third} in \eqref{eq:P1_decomp}, we get
 \[
-\mathbb{E} \left[\hat{\Sigma}_{G-SVE} - \Sigma \right] = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right)\,,
+\mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right)\,,
 \]
 which completes the result.
 %
  % We have shown that all, but one, terms are $o(1/b_n^q)$. Therefore, the limiting value of $b_n^q\mathbb{E}[\hat{\Sigma}_{G-} - \Sigma]$ is proved to be same as that of $b_n^q\mathbb{E}[\tilde{\Sigma} - \Sigma]$ in \cite{hannan2009multiple} with some extra $o(1)$ terms. This is quite intuitive as we are using a strongly consistent estimator $\bar{\bar{X}}$ for $\mu$ in our replicated autovariance estimator. Similar to theorem \ref{th:G-_expec}, the effect of estimating $\mu$ contributes only $o(1)$ terms. 
-\end{proof}
-\subsection{Variance Calculation}
+% \end{proof}
+
+\subsection{Proof of Theorem~\ref{th:G-SVE_variance}}
 \label{appendix:variance}
  
-\begin{proof}[Proof of Theorem~\ref{th:G-SVE_variance}]
+% \begin{proof}[Proof of Theorem~\ref{th:G-SVE_variance}]
  Due to the strong consistency proof from theorem \ref{th:consistency}, as $n \to \infty$,
 \begin{equation}
 \label{eq:G-SVE_asv_consis}
- \left|\hat{\Sigma}_{G-SVE} -  \tilde{\Sigma}\right| \to 0 \text{ with probability 1}\,. 
+ \left|\hat{\Sigma}_{G} -  \tilde{\Sigma}\right| \to 0 \text{ with probability 1}\,. 
 \end{equation}
 Further, we have defined $g_1(n), g_2(n), g_3(n)$ such that as $n \to \infty$,
 \begin{align*}
     g_1(n) &= (4+C_1)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2} \to 0\\
     g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4+C_1)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
-    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C_1)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0
+    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C_1)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0\,.
 \end{align*}
 %
 We have shown from the proof of strong consistency that,
 \begin{align*}
- &\left| \hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right|\\
+ &\left| \hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right|\\
  & \leq \dfrac{1}{m} \sum_{s=1}^m \left| \sum_{k=-b_n+1}^{b_n-1} w \left(\dfrac{k}{b_n} \right) \sum_{t=1}^{n-|k|}   \left[ \left( \dfrac{(X_{st} - \mu)_i(\mu-\bar{\bar{X}})_j}{n}\right)+ \left(\dfrac{(\mu-\bar{\bar{X}})_i(X_{s(t+k)}-\mu)_j}{n}\right) \right] \right.\\
-& \quad \quad  \left. + (\mu-\bar{\bar{X}})(\mu-\bar{\bar{X}})^T\sum_{k=-b_n+1}^{b_n-1}\left(\dfrac{n-|k|}{n}\right)w\left(\dfrac{k}{n}\right) \right| \\ 
- & < D^2g_1(n) + Dg_2(n) + g_3(n)\,.
+& \quad \quad  \left. + (\mu-\bar{\bar{X}})(\mu-\bar{\bar{X}})^T\sum_{k=-b_n+1}^{b_n-1}\left(\dfrac{n-|k|}{n}\right)w\left(\dfrac{k}{n}\right) \right|  < D^2g_1(n) + Dg_2(n) + g_3(n)\,.
 \end{align*}
 
 By \eqref{eq:G-SVE_asv_consis}, there exists an $N_0$ such that
 \begin{align*}
-\left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)^2 &= \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) + \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(n > N_0)\\
-& \leq \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) +  \left(D^2g_1(n) + Dg_2(n) + g_3(n) \right)^2 I(n > N_0)\\
+\left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 &= \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) + \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(n > N_0)\\
+& \leq \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) +  \left(D^2g_1(n) + Dg_2(n) + g_3(n) \right)^2 I(n > N_0)\\
 & := g_n^*(X_{11}, \dots, X_{1n}, \dots, X_{m1}, \dots, X_{mn})\,.
 \end{align*}
 But since by assumption $\E D^4 <\infty$ and the fourth moment is finite,
 \[
-\E \left| g_n^* \right| \leq  \E \left[\left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}_{A}^{ij} \right)^2 \right] + \E \left[\left(D^2g_1(n) + Dg_2(n) + g_3(n) \right)^2 \right] < \infty\,.
+\E \left| g_n^* \right| \leq  \E \left[\left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}_{A}^{ij} \right)^2 \right] + \E \left[\left(D^2g_1(n) + Dg_2(n) + g_3(n) \right)^2 \right] < \infty\,.
 \]
 Thus, $\E \left| g_n^* \right| < \infty$ and further as $n \to \infty$, $g_n \to 0$ under the assumptions. Since $g_1, g_2, g_3 \to 0$, $\E g_n^* \to 0$. By the majorized convergence theorem \citep{zeid:2013}, as $n \to \infty$,
 \begin{equation}
 \label{eq:squared_mean_diff}
-  \E \left[\left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \right] \to 0\,.
+  \E \left[\left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \right] \to 0\,.
 \end{equation}
 %
 We will use \eqref{eq:squared_mean_diff} to show that the variances are equivalent. Define,
 \[
-\xi\left(\hat{\Sigma}_{G-SVE}^{ij}, \tilde{\Sigma}^{ij} \right) = \Var\left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right) + 2 \E\left[ \left(\hat{\Sigma}_{G-SVE}^{ij} -  \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right]
+\xi\left(\hat{\Sigma}_{G}^{ij}, \tilde{\Sigma}^{ij} \right) = \Var\left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right) + 2 \E\left[ \left(\hat{\Sigma}_{G}^{ij} -  \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right]
 \]
 We will show that the above is $o(1)$. Using Cauchy-Schwarz inequality followed by \eqref{eq:squared_mean_diff},
 \begin{align*}
-\left|  \xi\left(\hat{\Sigma}_{G-SVE}^{ij}, \tilde{\Sigma}^{ij} \right) \right| & \leq \left| \Var\left(\hat{\Sigma}_{G-SVE}^{ij} -  \tilde{\Sigma}^{ij} \right) \right| + \left| 2 \E\left[ \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right]\right| \\ 
-& \leq \E\left[\left(\hat{\Sigma}_{G-SVE}^{ij} -  \tilde{\Sigma}^{ij} \right)^2 \right] + 2 \left| \left(\E\left[ \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \right]  \Var\left(\tilde{\Sigma}^{ij}  \right)   \right)^{1/2}\right| \\ 
-& = o(1) + 2\left(o(1) \left(O\left( \dfrac{b_n}{n}\right)  + o\left( \dfrac{b_n}{n}\right) \right)  \right) \\ 
-& = o(1)\,.
+\left|  \xi\left(\hat{\Sigma}_{G}^{ij}, \tilde{\Sigma}^{ij} \right) \right| & \leq \left| \Var\left(\hat{\Sigma}_{G}^{ij} -  \tilde{\Sigma}^{ij} \right) \right| + \left| 2 \E\left[ \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right]\right| \\ 
+& \leq \E\left[\left(\hat{\Sigma}_{G}^{ij} -  \tilde{\Sigma}^{ij} \right)^2 \right] + 2 \left| \left(\E\left[ \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \right]  \Var\left(\tilde{\Sigma}^{ij}  \right)   \right)^{1/2}\right| \\ 
+& = o(1) + 2\left(o(1) \left(O\left( \dfrac{b_n}{n}\right)  + o\left( \dfrac{b_n}{n}\right) \right)  \right) = o(1)\,.
 \end{align*}
 %
 Finally,
 \begin{align*}
- & \Var\left(\hat{\Sigma}_{G-SVE}^{ij} \right)\\
-  & = \E \left[ \left(\hat{\Sigma}_{G-SVE}^{ij}  - \E \left[\hat{\Sigma}_{R}^{ij}  \right] \right)^2 \right]\\
-& = \E \left[ \left(\hat{\Sigma}_{G-SVE}^{ij} \pm \tilde{\Sigma}^{ij} \pm \E \left[ \tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{G-SVE}^{ij}  \right] \right)^2 \right]\\
-& = \E\left[ \left( \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right) + \left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right) + \left(\E\left[\tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{G-SVE}^{ij}  \right] \right)  \right)^2 \right] \\ 
-& =  \E\left[ \left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right)^2 \right] + \E \left[ \left(\left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right) + \left(\E\left[\tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{G-SVE}^{ij}  \right] \right) \right)^2 \right] \\
-& \quad \quad + 2\E\left[\left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right) \left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right)\right] + 2 \E\left[\left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right) \left(\E \left[\tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{G-SVE}^{ij}  \right] \right)\right]\\
-& = \Var\left( \tilde{\Sigma}^{ij}\right) + \Var\left(\hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} \right) + 2 \E\left[ \left(\hat{\Sigma}_{G-SVE}^{ij} -  \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right] + o(1)\\
-& = \Var\left( \tilde{\Sigma}^{ij}\right) + o(1)
+ \Var\left(\hat{\Sigma}_{G}^{ij} \right)  & = \E \left[ \left(\hat{\Sigma}_{G}^{ij}  - \E \left[\hat{\Sigma}_{R}^{ij}  \right] \right)^2 \right]\\
+& = \E \left[ \left(\hat{\Sigma}_{G}^{ij} \pm \tilde{\Sigma}^{ij} \pm \E \left[ \tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{G}^{ij}  \right] \right)^2 \right]\\
+& = \E\left[ \left( \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right) + \left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right) + \left(\E\left[\tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{G}^{ij}  \right] \right)  \right)^2 \right] \\ 
+& =  \E\left[ \left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right)^2 \right] + \E \left[ \left(\left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right) + \left(\E\left[\tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{G}^{ij}  \right] \right) \right)^2 \right] \\
+& \quad \quad + 2\E\left[\left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right) \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right) + 2 \left(\tilde{\Sigma}^{ij}  - \E\left[\tilde{\Sigma}^{ij}\right]\right) \left(\E \left[\tilde{\Sigma}^{ij}\right] - \E \left[\hat{\Sigma}_{G}^{ij}  \right] \right)\right]\\
+& = \Var\left( \tilde{\Sigma}^{ij}\right) + \Var\left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right) + 2 \E\left[ \left(\hat{\Sigma}_{G}^{ij} -  \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right] + o(1)\\
+& = \Var\left( \tilde{\Sigma}^{ij}\right) + o(1)\,.
 \end{align*}
 
 \cite{hannan2009multiple} has given the calculations for variance of $\tilde{\Sigma}$ as 
 \begin{equation} \label{eq:hannan_var}
-\dfrac{n}{b_n}\Var(\tilde{\Sigma}^{ij}) = [\Sigma^{ii}\Sigma^{jj} + \left(\Sigma^{ij} \right)2]\int_{-\infty}^{\infty}w^2(x)dx + o(1)    
+\dfrac{n}{b_n}\Var(\tilde{\Sigma}^{ij}) = \left[\Sigma^{ii}\Sigma^{jj} + \left(\Sigma^{ij} \right) \right]\int_{-\infty}^{\infty}w^2(x)dx + o(1)    
 \end{equation}
-Plugging (\ref{eq:hannan_var}) into variance of $\hat{\Sigma}_{G-SVE}$ gives the result of the theorem.
+Plugging (\ref{eq:hannan_var}) into variance of $\hat{\Sigma}_{G}$ gives the result of the theorem.
  
-\end{proof}
+% \end{proof}
 
 \section{Additional Examples}
-We have established that estimating autocovariance is crucial to estimate the Markov chain standard error.  In this section we will use two real-life datsets to exemplify the better performance of our replicated autocovariance estimator for multiple Markov chains. R packages already exist to create Markov chains for these examples. However, when these chains are started from different points, we will observe that they do not represent the target distribution well for finite samples. The traditional empirical ACF estimator fails in these cases, whereas our estimator shows promising results. We will not engage into full error analysis for these examples due to computational restrictions posed by high dimensional sample space. 
+We present two additional examples illustrating the difference between the ACF and G-ACF plots.
+% We have established that estimating autocovariance is crucial to estimate the Markov chain standard error.  In this section we will use two real-life datsets to exemplify the better performance of our replicated autocovariance estimator for multiple Markov chains. R packages already exist to create Markov chains for these examples. However, when these chains are started from different points, we will observe that they do not represent the target distribution well for finite samples. The traditional empirical ACF estimator fails in these cases, whereas our estimator shows promising results. We will not engage into full error analysis for these examples due to computational restrictions posed by high dimensional sample space. 
 \subsection{Bayesian Poisson Change Point Model}
 
-\cite{pollins1996global} theorizes a cyclical pattern in the number of international conflicts. Four core theories by \cite{gilpin1981war}, \cite{wallerstein1983three}, \cite{goldstein1988long}, and \cite{modelski1988seapower} put different weights on the role of global economic and political order in explaining this cyclical pattern. See \cite{martin2011mcmcpack} for detailed discussion on the effect of these theories on the cyclic behavior of international disputes.\\
+% \cite{pollins1996global} theorizes a cyclical pattern in the number of international conflicts. Four core theories by \cite{gilpin1981war}, \cite{wallerstein1983three}, \cite{goldstein1988long}, and \cite{modelski1988seapower} put different weights on the role of global economic and political order in explaining this cyclical pattern. See \cite{martin2011mcmcpack} for detailed discussion on the effect of these theories on the cyclic behavior of international disputes.\\
 
-In this example, we will fit a Poisson change-point model on the annual number of military conflicts from the militarized interstate dispute (MID) data. We wish to detect the number and timings of the cyclic phases in the international conflicts. \cite{chib1998estimation} describes the Poisson change-point as a Markov mixture model where observations are assumed to be drawn from latent states. Following \cite{martin2011mcmcpack}, we will use \texttt{MCMCpoissonChange} from \texttt{MCMCpack} to fit the model which samples the latent states based on the algorithm in \cite{chib1998estimation}. The Poisson change-point model in \texttt{MCMCpoissonChange} uses conjugate priors and can be written as:
-
+Consider the militarized interstate dispute (MID) data of \cite{martin2011mcmcpack} which describes the annual number of military conflicts in the United States. In order to detect the number and timings of the cyclic phases in international conflicts, we fit the following Bayesian Poisson change-point model:
+% The Poisson change-point model in \texttt{MCMCpoissonChange} uses conjugate priors and can be written as:
+%
 \begin{align*}
-    y_t &\sim \textit{Poisson}(\lambda_i), \qquad i = 1, ..., k\\
-    \lambda_i &\sim \textit{Gamma}(c_o, d_o), \qquad i = 1,..., k\\
-    p_{ii} &\sim \textit{Beta}(\alpha, \beta), \qquad i = 1,..., k
+    y_t &\sim \text{Poisson}(\lambda_i), \qquad i = 1, ..., k\\
+    \lambda_i &\sim \text{Gamma}(c_o, d_o), \qquad i = 1,..., k\\
+    p_{ii} &\sim \text{Beta}(\alpha, \beta), \qquad i = 1,..., k
 \end{align*}
+Following \cite{martin2011mcmcpack}, we will use \texttt{MCMCpoissonChange} from \texttt{MCMCpack} to fit the model with $k = 7$ which samples the latent states based on the algorithm in \cite{chib1998estimation}. 
+% The results of model comparison by \cite{martin2011mcmcpack} showed that the ratio of maximum likelihood for six change-point model is favored over the alternatives. We will use this information and present the ACF results for a six change-points model only. We will use the hyperparameters values $c_o = 13 \textrm{ and } d_o = 1$ because the mean of MID is around 13. \\
+
 \begin{figure}[h]
     \centering
-    \includegraphics[width = 0.8\textwidth, height = 4in]{plots/spatio-acf.pdf}
-    \caption{ACF and G-ACF for first component of first chain. ACF underestimates the autocorrelations for $10^3$ samples (top) whereas G-ACF gives more realistic estimates. They perform alike for $10^5$ samples (bottom).}
+    \includegraphics[width = 0.55\textwidth]{plots/spatio-acf.pdf}
+    \caption{ACF and G-ACF for the first component of the first chain.}
     \label{fig:spatio-acf_G-fl}
 \end{figure}
-The results of model comparison by \cite{martin2011mcmcpack} showed that the ratio of maximum likelihood for six change-point model is favored over the alternatives. We will use this information and present the ACF results for a six change-points model only. We will use the hyperparameters values $c_o = 13 \textrm{ and } d_o = 1$ because the mean of MID is around 13. \\
+We run two parallel Markov chains from randomly chosen starting points and present the resulting ACF and G-ACF in Figure \ref{fig:spatio-acf_G-fl}. The early G-ACF estimates are far closer to the G-ACF and ACF estimates at $10^5$.
 
-We run two parallel Markov chains starting from random poits. In Figure \ref{fig:spatio-acf_G-fl}, it is evident that the chains have not explored the sample space well. Hence for $10^3$ samples ACF severely underestimates the autocorrelations whereas G-ACF gives more realistic estimates. For a large sample size of $10^5$, the Markov chains have mixed properly and therefore, both the estimators are approximately alike.
+ % it is evident that the chains have not explored the sample space well. Hence for $10^3$ samples ACF severely underestimates the autocorrelations whereas G-ACF gives more realistic estimates. For a large sample size of $10^5$, the Markov chains have mixed properly and therefore, both the estimators are approximately alike.
 
-\subsection{High School Social Network}
+\subsection{Network crawling}
 
-\cite{handcock2008statnet} implemented an exponential-family random graph modelling (ERGM) on network data in the package \texttt{ergm}. The \texttt{faux.magnolia.high} dataset available in the package represents a simulated within school friendship network based on Ad-Health data (\cite{resnick1997protecting}). The school communities represented by the network data are located in the southern United States. Each node represents a student and each edge represents a friendship between the nodes it connects. \cite{nilakanta2019ensuring} modified the data by removing 1,022 out of 1,461 nodes to obtain a well-connected graph. This resulting social network has 439 nodes and 573 edges.\\
+% \cite{handcock2008statnet} implemented an exponential-family random graph modelling (ERGM) on network data in the package . 
 
-Let $V$ denote the non-empty set of countable nodes, $E \subseteq V \times V$ denote the set of edges, and $G = (V,E)$ denote the network. We are interested in exploring all the nodes uniformly, i.e. sample from a uniform distribution over $V$. Let $\lambda$ denote a uniform distribution over $V$  let $h: V \to \mathbb{R}^p$ map each node to certain features of interest. If $X \sim \lambda$, we wish to calculate the expected value of $h(X)$ with respect to $\lambda$ given by
+The \texttt{faux.magnolia.high} dataset available in the \texttt{ergm} \texttt{R} package represents a simulated within school friendship network based on Ad-Health data (\cite{resnick1997protecting}). The school communities represented by the network data are located in the southern United States. Each node represents a student and each edge represents a friendship between the nodes it connects. 
 
-\[
-\mathbb{E}[h(X)]_{\lambda} = \dfrac{1}{n}\sum_{x \in V}h(x).
-\]
+The goal is to draw each node uniformly from the network by using a network crawler. \cite{nilakanta2019ensuring} modified the data by removing 1,022 out of 1,461 nodes to obtain a well-connected graph. This resulting social network has 439 nodes and 573 edges. We use a Metropolis-Hastings algorithm with a simple random-walk  proposal suggested by \cite{gjoka2011practical}. The stationary distribution for this algorithm is a uniform distribution over the nodes. 
+% , i.e. $\lambda(i) = 1/n$ for all $i \in V$.  The Metropolis-Hastings transition kernel for this method is
 
-Here n is the set cardinality of $V$. We use a Metropolis-Hastings algorithm with a simple random-walk (SRW) proposal suggested by \cite{gjoka2011practical}. The stationary distribution for this algorithm is a uniform distribution over $V$, i.e. $\lambda(i) = 1/n$ for all $i \in V$.  The Metropolis-Hastings transition kernel for this method is
+% Let $V$ denote the non-empty set of countable nodes, $E \subseteq V \times V$ denote the set of edges, and $G = (V,E)$ denote the network. We are interested in exploring all the nodes uniformly, i.e. sample from a uniform distribution over $V$. Let $\lambda$ denote a uniform distribution over $V$  let $h: V \to \mathbb{R}^p$ map each node to certain features of interest. If $X \sim \lambda$, we wish to calculate the expected value of $h(X)$ with respect to $\lambda$ given by
 
-\[
-P(i,j) = \left \{
-        \begin{array}{cc}
-             \dfrac{1}{d_i} min\left(1, \dfrac{d_i}{d_j}\right) & \textrm{if j is a neighbor of i}  \\
-             1 - \sum_{k \neq i} \dfrac{1}{d_i} min\left(1, \dfrac{d_i}{d_k}\right) & \textrm{if } j = i\\
-             0 & \textrm{otherwise}.
-        \end{array}
-\right.
-\]
+% \[
+% \mathbb{E}[h(X)]_{\lambda} = \dfrac{1}{n}\sum_{x \in V}h(x).
+% \]
 
-Table (blah) shows the population parameters we are interested in estimating using MCMC methods.  The G-e and sex parameters are estimated as proportion of whites and females in the sample respectively. We start two parallel Markov chains from two students belonging to different G-es and study its impacts on the average features of their immediate social group. It is hypothesized that students from certain communities tend to engage more with students of same or other marginally represented communities. We believe that this "selective networking" might cause formation of clusters in the network wherein students within a cluster engage more with each other than with the students outside it. Given that the graph is well-connected, the Markov chains will eventually explore all the nodes. 
+% Here n is the set cardinality of $V$. 
+
+
+
+% \[
+% P(i,j) = \begin{cases}
+%              \dfrac{1}{d_i} \min\left\{1, d_i{d_j}^{-1}\right\} & \textrm{if $j$ is a neighbor of $i$}  \\
+%              1 - \sum_{k \neq i} d_i^{-1} \min \left\{1, {d_i}{d_k}^{-1}\right\} & \textrm{if } j = i\\
+%              0 & \textrm{otherwise}.
+%         \end{cases}
+% \]
+
+% Table (blah) shows the population parameters we are interested in estimating using MCMC methods.  The G-e and sex parameters are estimated as proportion of whites and females in the sample respectively. 
+
+We start two parallel Markov chains from two students belonging to different {\color{red}G-es ???} and study its impacts on the average features of their immediate social group. 
+% It is hypothesized that students from certain communities tend to engage more with students of same or other marginally represented communities. We believe that this "selective networking" might cause formation of clusters in the network wherein students within a cluster engage more with each other than with the students outside it. Given that the graph is well-connected, the Markov chains will eventually explore all the nodes. 
 
 
 \singlespacing
