@@ -3,121 +3,154 @@ source("functions.R")
 library(rep.acf.ccf)
 
 
-m <- 2
+m <- 5
 A <- 1
 B <- 3
 C <- 8
 start <- matrix(0, nrow = m, ncol = 2)  #only depends on C
-
 
 for(i in 1:floor(m/2)){
   start[i,] <- c(0, C*(2^(2-i)))
   start[m-i+1,] <- c(C*(2^(2-i)), 0)
 }
 
-lag.max <- 100
-####################################
-nsim <- 500
-########################################
 mc.chain.list <- list()
 global.mean <- c(0,0)
 for (i in 1:m){
-  chain <- markov.chain(A, B, C, nsim, start[i,])
+  chain <- markov.chain(A, B, C, 5e4, start[i,])
   global.mean <- global.mean + colMeans(chain)
   mc.chain.list[[i]] = chain
 }
 global.mean <- global.mean/m
+lag.max <- 100
+component <- 1
 
-acf.list <- combined_acf(mc.chain.list, chain = 1, component = c(1,2), lag.max = lag.max, type = "correlation")
-ccf.list <- combined_ccf(mc.chain.list, chain = 1, component = c(1,2), lag.max = lag.max, type = "correlation")
 
-pdf(file = paste(paste("Out/", A, B, C, "/boom-acf,n=", sep = "_"), nsim, ".pdf", sep = ""), width = 8, height = 4)
-#par(mfrow = c(3,2))
-#for (i in 1:2){
-#  plot(acf.list[[i]][[1]], main = paste("ACF for component -", i ))
-#  plot(acf.list[[i]][[2]], main = paste("R-ACF for component -", i ))
-#}
-#plot(ccf.list[[1]], main = "CCF for component 1-2")
-#plot(ccf.list[[2]], main = "R-CCF for component 1-2")
-par(mfrow = c(1,2))
-plot(acf.list[[1]][[1]], main = expression(paste("Old ACF for chain 1")))
-plot(acf.list[[1]][[2]], main = expression(paste("New ACF for chain 1")))
-
-dev.off()
-
-pdf(file = paste(paste("Out/", A, B, C, "/scatter_n", sep = "_"), nsim, ".pdf", sep = ""), width = 5, height = 5)
-par(mfrow = c(1,1))
-plot(mc.chain.list[[1]], xlim = c(0,11), ylim = c(0,11), col = 1, pch = 1)
-points(mc.chain.list[[2]], col = "red", pch = 2)
-dev.off()
 ####################################
 nsim <- 1000
 ########################################
-mc.chain.list <- list()
-global.mean <- c(0,0)
-for (i in 1:m){
-  chain <- markov.chain(A, B, C, nsim, start[i,])
-  global.mean <- global.mean + colMeans(chain)
-  mc.chain.list[[i]] = chain
-}
-global.mean <- global.mean/m
 
-acf.list <- combined_acf(mc.chain.list, chain = 1, component = c(1,2), lag.max = lag.max, type = "correlation")
-ccf.list <- combined_ccf(mc.chain.list, chain = 1, component = c(1,2), lag.max = lag.max, type = "correlation")
+x <- list()
+for (i in 1:m)
+  x[[i]] <- mc.chain.list[[i]][1:nsim,]
 
-pdf(file = paste(paste("Out/", A, B, C, "/boom-acf,n=", sep = "_"), nsim, ".pdf", sep = ""), width = 8, height = 4)
-#par(mfrow = c(3,2))
-#for (i in 1:2){
-#  plot(acf.list[[i]][[1]], main = paste("ACF for component -", i ))
-#  plot(acf.list[[i]][[2]], main = paste("R-ACF for component -", i ))
-#}
-#plot(ccf.list[[1]], main = "CCF for component 1-2")
-#plot(ccf.list[[2]], main = "R-CCF for component 1-2")
+
+global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
+local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
+for (i in 2:m)
+  local.acf$acf <- acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
+local.acf$acf <- local.acf$acf/m
+
+pdf(file = paste(paste("Out/", A, B, C, "/acf_n", sep = "_"), nsim, ".pdf", sep = ""), width = 10, height = 5)
 par(mfrow = c(1,2))
-plot(acf.list[[1]][[1]], main = expression(paste("Old ACF for chain 1")))
-plot(acf.list[[1]][[2]], main = expression(paste("New ACF for chain 1")))
+plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("Locally-centered ACF"))
+plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("Globally-centered ACF"))
 
 dev.off()
 
 
-pdf(file = paste(paste("Out/", A, B, C, "/scatter_n", sep = "_"), nsim, ".pdf", sep = ""), width = 5, height = 5)
-par(mfrow = c(1,1))
-plot(mc.chain.list[[1]], xlim = c(0,11), ylim = c(0,11), col = 1, pch = 1)
-points(mc.chain.list[[2]], col = "red", pch = 2)
-dev.off()
+
 ####################################
-nsim <- 50000
+nsim <- 5000
 ########################################
-mc.chain.list <- list()
-global.mean <- c(0,0)
-for (i in 1:m){
-  chain <- markov.chain(A, B, C, nsim, start[i,])
-  global.mean <- global.mean + colMeans(chain)
-  mc.chain.list[[i]] = chain
-}
-global.mean <- global.mean/m
 
-acf.list <- combined_acf(mc.chain.list, chain = 1, component = c(1,2), lag.max = lag.max, type = "correlation")
-ccf.list <- combined_ccf(mc.chain.list, chain = 1, component = c(1,2), lag.max = lag.max, type = "correlation")
+x <- list()
+for (i in 1:m)
+  x[[i]] <- mc.chain.list[[i]][1:nsim,]
 
-pdf(file = paste(paste("Out/", A, B, C, "/boom-acf,n=", sep = "_"), nsim, ".pdf", sep = ""), width = 8, height = 4)
-#par(mfrow = c(3,2))
-#for (i in 1:2){
-#  plot(acf.list[[i]][[1]], main = paste("ACF for component -", i ))
-#  plot(acf.list[[i]][[2]], main = paste("R-ACF for component -", i ))
-#}
-#plot(ccf.list[[1]], main = "CCF for component 1-2")
-#plot(ccf.list[[2]], main = "R-CCF for component 1-2")
+
+global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
+local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
+for (i in 2:m)
+  local.acf$acf <- acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
+local.acf$acf <- local.acf$acf/m
+
+pdf(file = paste(paste("Out/", A, B, C, "/acf_n", sep = "_"), nsim, ".pdf", sep = ""), width = 10, height = 5)
 par(mfrow = c(1,2))
-plot(acf.list[[1]][[1]], main = expression(paste("Old ACF for chain 1")))
-plot(acf.list[[1]][[2]], main = expression(paste("New ACF for chain 1")))
+plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("Locally-centered ACF"))
+plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("Globally-centered ACF"))
 
 dev.off()
 
-pdf(file = paste(paste("Out/", A, B, C, "/scatter_n", sep = "_"), nsim, ".pdf", sep = ""), width = 5, height = 5)
-par(mfrow = c(1,1))
-plot(mc.chain.list[[1]], xlim = c(0,11), ylim = c(0,11), col = 1, pch = 1)
-points(mc.chain.list[[2]], col = "red", pch = 2)
+
+
+####################################
+nsim <- 1e4
+########################################
+
+x <- list()
+for (i in 1:m)
+  x[[i]] <- mc.chain.list[[i]][1:nsim,]
+
+
+global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1 , graph = FALSE)$'G-ACF'
+local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
+for (i in 2:m)
+  local.acf$acf <- acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
+local.acf$acf <- local.acf$acf/m
+
+pdf(file = paste(paste("Out/", A, B, C, "/acf_n", sep = "_"), nsim, ".pdf", sep = ""), width = 10, height = 5)
+par(mfrow = c(1,2))
+plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("Locally-centered ACF"))
+plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("Globally-centered ACF"))
+
+dev.off()
+
+####################################
+nsim <- 5e4
+########################################
+
+x <- list()
+for (i in 1:m)
+  x[[i]] <- mc.chain.list[[i]][1:nsim,]
+
+
+global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
+local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
+for (i in 2:m)
+  local.acf$acf <- acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
+local.acf$acf <- local.acf$acf/m
+
+pdf(file = paste(paste("Out/", A, B, C, "/acf_n", sep = "_"), nsim, ".pdf", sep = ""), width = 10, height = 5)
+par(mfrow = c(1,2))
+plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("Locally-centered ACF"))
+plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("Globally-centered ACF"))
+
 dev.off()
 
 
+####################################
+nsim <- 1e3
+########################################
+
+x <- list()
+for (i in 1:m)
+  x[[i]] <- mc.chain.list[[i]][1:nsim,]
+
+pdf(file = paste("Out/_1_3_8_/globalACF_all_chains_n", nsim, ".pdf", sep = ""))
+globalACF(x, type = "correlation", lag.max = lag.max, chains = 0, component = 1)
+dev.off()
+
+####################################
+nsim <- 1e4
+########################################
+
+x <- list()
+for (i in 1:m)
+  x[[i]] <- mc.chain.list[[i]][1:nsim,]
+
+pdf(file = paste("Out/_1_3_8_/globalACF_all_chains_n", nsim, ".pdf", sep = ""))
+globalACF(x, type = "correlation", lag.max = lag.max, chains = 0, component = 1)
+dev.off()
+
+####################################
+nsim <- 5e4
+########################################
+
+x <- list()
+for (i in 1:m)
+  x[[i]] <- mc.chain.list[[i]][1:nsim,]
+
+pdf(file = paste("Out/_1_3_8_/globalACF_all_chains_n", nsim, ".pdf", sep = ""))
+globalACF(x, type = "correlation", lag.max = lag.max, chains = 0, component = 1)
+dev.off()
