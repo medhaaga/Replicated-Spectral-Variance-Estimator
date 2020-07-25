@@ -210,6 +210,8 @@ The bias for G-ACF is similar to the bias of sample autocovariance estimator in 
 We denote $\Phi^{(1)} \textrm{ by } \Phi$. 
 
 The proof of the following theorem is available in Appendix~\ref{appendix:bias}.
+
+{\color{blue} Fix the proof for this.}
 \begin{theorem} \label{th:G-_expec} Under stationarity,
 \[
    \mathbb{E} \left[\hat{\Gamma}_{G,s}(k) \right] = \left(1- \dfrac{|k|}{n}\right) \left(\Gamma(k) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2}\right)  + o \left(n^{-2} \right)\,,
@@ -262,6 +264,7 @@ When $m = 1$, $\hat{\Gamma}_G(k)$ corresponds to $\hat{\Gamma}(k)$, the expectat
 \[
 \mathbb{E} \left[\hat{\Gamma}_{G}(0) \right] = \Gamma(0) + \dfrac{\Sigma}{mn} + \dfrac{\Phi}{mn^2} + o(n^{-2})
 \]
+
 \end{corollary}
 
 \subsection{Autocorrelation} % (fold)
@@ -285,10 +288,7 @@ and is particularly useful for visualizing the serial correlation in components 
 
 \section{Variance Estimators for multiple Markov chains} \label{sec:variance_est}
 
-{\color{blue}Dootika: this section here needs to be much tighter in its presentation. We will need to remember that the paper is no longer about the SV estimators but about autocorrelations. So will have to present the discussion similarly. }
-
-
-  Suppose $F$ is the target distribution on support $\chi \subseteq \mathbb{R}^d$. For $g:\chi \longrightarrow \mathbb{R}^p$ be an F-integrable function. We are interested in
+Suppose $F$ is the target distribution on support $\chi \subseteq \mathbb{R}^d$. For $g:\chi \longrightarrow \mathbb{R}^p$ be an F-integrable function. We are interested in
 %
 \[
 \mu_g = \mathbb{E}_F[g(X)] = \int_{\chi}g(x)F(dx)
@@ -354,6 +354,7 @@ The G-SVE estimator centers the data around the global mean. We are interested i
   Let $\{B(n)\}_{n\geq 0}$ denotes a standard p-dim Brownian motion and $B^{(i)}$ denotes its $i^{th}$ component. As shown in the results \cite{kuelbs1980almost}, SIP will hold for $\psi(n) = n^{1/2 - \lambda, \; \lambda > 0}$ for Markov chains commonly encountered in MCMC settings. We know that $\psi(n)$ is an inherent property of the stochastic process that satisfies the CLT. This implies that $\psi(n)$ is at least $o(\sqrt{n})$. Using Law of Iterative Logarithms (LIL), a tighter bound for $\psi(n)$ is given by \cite{stra:1964} as $\mathcal{O}(\sqrt{n\log \log n})$.
 \end{ass}
 
+{\color{blue} Don't make this an assumption. Say this explicitly in Theorem 2. }
 
 \begin{ass} \label{ass:sve_consis} We assume that all the conditions given by \cite{vats:fleg:jon:2018} for strong consistency of the spectral variance estimator hold true. As a consequence, $\hat{\Sigma}_{S,s} \xrightarrow{a.s.} \Sigma$ as $n \to \infty$ for all Markov chains $s$.
 % \[
@@ -385,6 +386,8 @@ The G-SVE estimator centers the data around the global mean. We are interested i
 % Using $\psi(n) = \mathcal{O}(\sqrt{n \log \log n}),\; b_n = o(n), \textrm{ and } b_n \log \log n = o(n)$, we can finally we prove that $g_1(n), g_2(n), g_3(n) \to 0$ with probability 1, as $n \to \infty$. The proof is in Appendix subsection \ref{appendix:strong_consis}
 % \end{proof}
 
+
+{\color{blue}: Make the following an assumption. Is $2\pi$ needed? Is $W_n$ always finite? }
 We are interested in the finding the bias for G-SVE estimator as a function of $n$. The proof below applies to all the important range of lag windows $w(x)$; where $w(x)$ is a continuous, even fnction with $w(0)=1, \abs{w(x)} < c$, and $\int_{-\infty}^{\infty}w^2(x)dx < \infty$. Define
 %
 \[
@@ -405,6 +408,7 @@ We have $W_n < \infty$ for all the important lag windows.
 \end{ass}
 
 
+{\color{blue} Under what assumptions?}
 \begin{theorem}\label{th:G-SVE_bias}
 The limiting bias of replicated spectral variance is given by:
 \[
@@ -422,6 +426,7 @@ The limiting bias of replicated spectral variance is given by:
 % \end{proof}
 
 
+{\color{blue} Don't make this a separate assumption. Include in the statement of the theorem}
 \begin{ass} \label{ass:variance_cal}
 Let $\{X_{st}\}_{t \geq 1}$ be the $s^{th}$ Markov chain for which SIP holds. 
 \begin{enumerate}[a.]
@@ -727,7 +732,7 @@ For our third example, we consider a real-life problem of sensor locations previ
 \cite{tak2018repelling} modified the simulation settings of \cite{lan2014wormhole} to include only six sensor locations (four unknown and two unknown) out of eleven locations (eight known and three unknown). Following \cite{tak2018repelling}, we assume that there are six sensors scattered on a planar region where $x_i = (x_{i1}, x_{i2})^T$ denote the $2d$ coordinates of $i^{th}$ sensor. Let $y_{ij} = (y_{ji})$ denote the distance between the sensors $x_i$ and $x_j$. The distance between $x_i$ and $x_j$ is observed with probability $\pi (x_i, x_j) = \exp{\|x_i - x_j\|^2 / 2R^2}$ and with a Gaussian measurement error of $\sigma^2$. Let $z{ij}$ denote the indicator variable which is equal to 1 when the distance between $x_i$ and $x_j$ is observed. The probability model is then,
 %
 \begin{align*}
-    z_{ij} \mid x_1, ..., x_6 &\ sim \text{Bernoulli}\left(\exp\left(\dfrac{-\|x_i - x_j\|^2}{2R^2}\right)\right)\\
+    z_{ij} \mid x_1, ..., x_6 & \sim \text{Bernoulli}\left(\exp\left(\dfrac{-\|x_i - x_j\|^2}{2R^2}\right)\right)\\
     y_{ij} \mid w_{ij} = 1, x_1, ..., x_6 &\sim N(\|x_i - x_j\|^2, \sigma^2)
 \end{align*}
 %
