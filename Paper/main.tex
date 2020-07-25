@@ -234,10 +234,10 @@ and consequently,
 %  \right)
 %  \end{equation}
  
-% By proposition 1 in \cite{song1995optimal} 
-% \begin{equation} \label{eq:song}
-% \Var(\bar{X}) = \dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2} + o(n^{-2})
-% \end{equation}
+By proposition 1 in \cite{song1995optimal} 
+\begin{equation} \label{eq:song}
+\Var(\bar{X}) = \dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2} + o(n^{-2})
+\end{equation}
 
 % As a consequence, if $\Var(\bar{X})$ is finite, then $\Var(\bar{X}) \to 0 \textrm{ as } n \to \infty$. We can break $\hat{\Gamma}_{G-}$ into four parts for all $k \geq 1$ as:
 %  \[
@@ -260,17 +260,23 @@ and consequently,
 
 When $m = 1$, $\hat{\Gamma}_G(k)$ corresponds to $\hat{\Gamma}(k)$, the expectation of which can be found in \cite{priestley1981spectral}. Theorem~\ref{th:G-_expec} implies that the globally-centered autocovariances are asymptotically unbiased and exhibit reduced bias in finite samples compared to locally-centered autocovariances. The consequences of this are particularly pertinent for the diagonals of $\Gamma$. Special interest is also in the lag-0 autocovariance, that is, the variance of the target distribution. 
 
+{\color{blue} Below is a remark}
 \begin{corollary} \label{cor:lag0_expectation}
 \[
-\mathbb{E} \left[\hat{\Gamma}_{G}(0) \right] = \Gamma(0) + \dfrac{\Sigma}{mn} + \dfrac{\Phi}{mn^2} + o(n^{-2})
+\mathbb{E} \left[\hat{\Gamma}_{G}(0) \right] = \Gamma(0) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2} + o(n^{-2})
 \]
 
 \end{corollary}
 
-\subsection{Autocorrelation} % (fold)
-\label{sub:autocorrelation}
+% \subsection{Autocorrelation} % (fold)
+% \label{sub:autocorrelation}
 
 % subsection autocorrelation (end)
+{\color{blue}  Autocovariances will be used implictly in SVE estimators. But they are explicitly important in ACF plots via autocorrelations. 
+
+Notation in the appendix is $\Gamma^{ii}_{G,s}$
+}
+
 For any component $i$, the autocorrelation is
 \[
 \rho^{(i)}(k) = \dfrac{\Gamma^{(i)}(k)}{\Gamma^{(i)}(0)}\,,
@@ -279,7 +285,7 @@ and is particularly useful for visualizing the serial correlation in components 
 \[
 \hat{\rho}_{G,s}^{(i)}(k) = \dfrac{ \hat{\Gamma}^{(i)}_{G,s} (k)}{\hat{\Gamma}^{(i)}_{G,s} (0)}
 \]
-{\color{blue} Add more about autocorrelation}
+{\color{blue} Add more about autocorrelation. Refer to Figure 2 above and the impacts of the correlation methods. }
 
 % \begin{proof}
 %  The proof is in Appendix subsection \ref{appendix:bias}.
@@ -302,6 +308,7 @@ Let $\{X_{t}\}_{t \geq 1}$ denote the Harris ergodic (aperiodic, F-irreducible, 
 
 We are interested in Markov chain average and therefore, throughout this paper, we will deal with the function $g(X) = X$. To assess the reliability of our simulations, we are interested in Monte Carlo error, i.e. $\bar{\bar{X}} - \mu$. The sampling distribution for Monte Carlo error is available via Markov chain CLT (\cite{jones2004markov}) if there exists a positive definite matrix $\Sigma$ such that
 %
+{\color{blue} }
 \[
 \sqrt{n}(\bar{X}_s-\mu) \xrightarrow{d} N(0,\Sigma)
 \]
@@ -451,7 +458,7 @@ Let $\{X_{st}\}_{t \geq 1}$ be the $s^{th}$ Markov chain for which SIP holds.
 
 The multivariate spectral variance estimator (MSVE) despite having good statistical properties poses application limitations due to slow computation and high storage demands. Observe from equation \ref{eq:empirical_acf} and \ref{eq:sve}, the computation of spectral variance estimator has a complexity of $\mathcal{O}(b_n n p)$ where $n$ is the MCMC sample size, $p$ is the dimensionality and $b_n$ is the truncation point. To overcome this limitation for our experimental purposes, we used a fast Fourier transform based algorithm presented by \cite{heberle2017fast} for calculating the alternate formulation of MSVE given by Kyriakoulis (2005).\\
 
-Suppose $\{X_t\}_{t=1}^n$ is the Markov chain of $n$ samples where $\overline{X}_n = \dfrac{1}{n}\sum_{t=1}^{n}X_t$ is the MCMC average. Let $w_k$ denote the lag-window at lag-k, i.e. $w_k = w_n(k/b_n)$. The alternate formulation for MSVE is given by
+Suppose $\{X_t\}_{t=1}^n$ is the Markov chain of $n$ samples where $\overline{X}_n = n^{-1}\sum_{t=1}^{n}X_t$ is the MCMC average. Let $w_k$ denote the lag-window at lag-k, i.e. $w_k = w_n(k/b_n)$. The alternate formulation for MSVE is given by
 %
 \[
     \hat{\Sigma}_{SV} = \dfrac{1}{n}A^T T(w) A, \qquad \textrm{ where } A = \begin{pmatrix}
@@ -491,8 +498,7 @@ The algorithm has been implemented in the \texttt{R} package \texttt{mcmcse} for
 \[
 \hat{\Sigma}_{S,s} = \dfrac{1}{n}B^T T(w) B \qquad \textrm{ where } B = 
 \begin{pmatrix}
-    X_{s1} - \overline{\overline{X}} \; \dots \; X_{sn} - \overline{\overline{X}}
-\end{pmatrix}^T
+    X_{s1} - \overline{\overline{X}} \; \dots \; X_{sn} - \overline{\overline{X}}\end{pmatrix}^T
 \].
 
 % subsubsection fast_implementation (end)
@@ -916,7 +922,7 @@ Further,
 &= \dfrac{m-1}{m}\Var(\bar{X}_1)\,. \numberthis \label{eq:acf_4}
 \end{align*}
 %
-Additionally, the locally-centered autocovariance exhibits the following expectation
+Additionally, the locally-centered autocovariance exhibits the following expectation {\color{blue} + add small order term. Confirm with Priestly. }
  \begin{equation} \label{eq:priestly}
      \mathbb{E}[\hat{\Gamma}(k)] = \left(1- \dfrac{\abs{k}}{n}\right)\left(\Gamma(k) - \Var{(\bar{X})}
  \right)\,.
@@ -1194,6 +1200,153 @@ Thus, in \eqref{eq:G-SVE_full_decomp}, every term goes to 0 and $\hat{\Sigma}_{G
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{G-SVE Bias}
+
+\begin{proof}[Proof of theorem \ref{th:G-SVE_bias}]
+The convoluted end effect terms in theorem \ref{th:G-_expec} are all essentially $\mathcal{O}(1/n)$. We are interested in finding the asymptotic bias here. Therefore we can write the expectation of replicated autocovariance in form of equation \ref{eq:G-_expec_breakdown} as,
+\begin{align*}
+&\mathbb{E} \left[\hat{\Gamma}_{G-}(k) \right]\\
+&  = \left(1- \dfrac{|k|}{n}\right)\Gamma(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\overline{X}_1)}{m} \\
+& = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2  \numberthis \label{eq:G-_bias2}  \,.
+\end{align*}
+%
+% \begin{equation} \label{eq:G-_bias2}
+% \mathbb{E} \left[\hat{\Gamma}_{G-}(k) \right] = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2    \,.
+% \end{equation}
+%
+where both $O_1 \textrm{ and } O_2$ are the small order terms. By our assumptions, $\sum_{h=-\infty}^{\infty}\Gamma(h) < \infty$, so $O_1 = o(1/n) \text{ and } O_2 = o(1/n)$.  Consider the G-SVE estimator,
+\begin{align*}
+    &\mathbb{E} \left[\hat{\Sigma}_{G-SVE} - \Sigma \right]\\
+    &= \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Gamma}_{G-}(k) \right] - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
+    &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\Gamma(k) +O_1 + O_2\right]  - \sum_{k=-\infty}^{\inf}\Gamma(k)\\
+    &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k)\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)\left(O_1 + O_2\right)\right] \\ 
+    & = P_1 + o \left( \dfrac{1}{n} \right)\,
+\end{align*}
+%
+where 
+\begin{align*}
+P_1 & = \sum\limits_{k=-n+1}^{n-1}\left[w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k) \right] - \sum\limits_{k=-\infty}^{\infty}\Gamma(k)\,.
+% P_2 &= \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k }{b_n}\right)\left(O_1 + O_2\right)\right]\,.
+\end{align*}
+%
+We first solve for term $P_1$ by breaking it into three parts as in \cite{hannan2009multiple}. Note that notation $A = o(z)$ for matrix $A$  implies $A^{ij} = o(z)$ for each element of the matrix $A$. Consider,
+\begin{equation}
+\label{eq:P1_decomp}
+P_1 = -\sum_{|k|\geq n}\Gamma(k)  -  \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Gamma(k)- \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{n}\right)\right)\Gamma(k)\,.  
+\end{equation}
+%
+We deal with the three subterms of term $P_1$ individually. First,
+%    
+\begin{align*}
+ {-\sum_{|k|\geq n}\Gamma(k)} &\leq  \sum_{|k|\geq n} \abs{\dfrac{k}{n}}^q   \Gamma(k) = \dfrac{1}{b_n^q}\abs{\dfrac{b_n}{n}}^q \sum_{|k|\geq n}|k|^q  \Gamma(k) = o\left(\dfrac{1}{b_n^q}\right)\,, \numberthis \label{eq:P1_first}
+\end{align*}
+%
+since $\sum_{|k|\geq n}|k|^q \Gamma(k)  < \infty$. Next,
+%
+\begin{align*}
+ \sum_{k = -n+1}^{n-1}w\left(\dfrac{k}{n}\right)\dfrac{|k|}{n}\Gamma(k)   &\leq \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Gamma(k)  \,.
+\end{align*}
+For $q\geq 1$,
+\begin{align*}
+\dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Gamma(k) &\leq \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|^q  \Gamma(k) = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n} C\sum_{k = -n+1}^{n-1}|k|^q  \Gamma(k)  = o\left(\dfrac{1}{b_n^q}\right)\,.
+\end{align*}
+          
+For $q <1$,
+\begin{align*}
+   \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Gamma(k)  &\leq C\sum_{k =-n+1}^{n-1}\abs{\dfrac{k}{n}}^q  \Gamma(k)  = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n^q} C \sum_{k =-n+1}^{n-1}|k|^q \Gamma(k)  = o\left(\dfrac{1}{b_n^q}\right) \, .
+\end{align*}
+So,
+\begin{equation}
+\label{eq:P1_second}
+ \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Gamma(k) = o \left(\dfrac{1}{b_n^q} \right)
+\end{equation}
+Lastly, by our assumptions, for $x \to 0$
+\[
+\dfrac{1 - w(x)}{\abs{x}^q} = k_q + o(1)\,.
+\]
+For $x = k/b_n$, $\abs{k/b_n}^{-q}(1-w(k/b_n))$ converges boundedly to $k_q$ for each $k$.
+ % where $k_q$ is specific to the lag-window used. Taking the limiting value, we have
+     % \[
+     % \lim_{n \to \infty}\sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{b_n}\right)\right)\Gamma(k) = -\dfrac{k_q \Phi^{(q)}}{b_n^q}
+     % \]
+So,
+\begin{align*}
+     \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{k}{b_n}\right)\right)\Gamma(k) &= -\dfrac{1}{b_n^q}\sum_{k = -n+1}^{n-1}  \left(\dfrac{|k|}{b_n}\right)^{-q} {\left(1-w\left(\dfrac{|k|}{b_n}\right)\right)}|k|^q \Gamma(k) \\
+     & = -\dfrac{1}{b_n^q}\sum_{k = -n+1}^{n-1}   \left[k_q + o(1) \right]|k|^q \Gamma(k) \\
+     & = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right) \numberthis \label{eq:P1_third}\,.
+\end{align*}
+%
+ % Finally, we will solve for $P_2$. Note that $O_2$ is independent of $k$. We will write $O_1$ as $(\abs{k}/n)\mathcal{O}(1/n)$ and $O_2$ as $\mathcal{O}(1/n)$. We will find an upper bound and prove that it is $\mathcal{O}\left(n^{-1}\right)$:
+ % \begin{align*}
+ %     &  \sum_{k=-n+1}^{n-1}w\left(\dfrac{|k|}{b_n}\right)\left[ O_1 + O_2 \right]  \\
+ %     & \leq \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{|k|}{b_n}\right)O_1} + \abs{O_2}\sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{|k|}{b_n}\right)} \\
+ %     &= \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-n+1}^{n-1}\dfrac{\abs{k}}{n}\abs{w\left(\dfrac{|k|}{b_n}\right)} + \mathcal{O}\left(\dfrac{1}{n}\right)\\
+ %     % &= \mathcal{O}\left(\dfrac{1}{n}\right) 2\pi W_n \\
+ %     &= \mathcal{O}\left(\dfrac{1}{n}\right) = o\left(\dfrac{1}{b_n^q}\right) \,.
+ % \end{align*}
+  %
+%
+Using \eqref{eq:P1_first}, \eqref{eq:P1_second}, and \eqref{eq:P1_third} in \eqref{eq:P1_decomp}, we get
+\[
+\mathbb{E} \left[\hat{\Sigma}_{G-SVE} - \Sigma \right] = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right)\,,
+\]
+which completes the result.
+%
+ % We have shown that all, but one, terms are $o(1/b_n^q)$. Therefore, the limiting value of $b_n^q\mathbb{E}[\hat{\Sigma}_{G-} - \Sigma]$ is proved to be same as that of $b_n^q\mathbb{E}[\tilde{\Sigma} - \Sigma]$ in \cite{hannan2009multiple} with some extra $o(1)$ terms. This is quite intuitive as we are using a strongly consistent estimator $\bar{\bar{X}}$ for $\mu$ in our replicated autovariance estimator. Similar to theorem \ref{th:G-_expec}, the effect of estimating $\mu$ contributes only $o(1)$ terms. 
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Proof of Theorem \ref{th:G-SVE_bias}}
 
 % \begin{proof}[Proof of theorem \ref{th:G-SVE_bias}]
@@ -1205,16 +1358,16 @@ By \ref{eq:G-_expec_breakdown},
 & = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + o \left(n^{-1} \right)  \numberthis \label{eq:G-_bias2}  \,.
 \end{align*}
 %
-% \begin{equation} \label{eq:G-_bias2}
-% \mathbb{E} \left[\hat{\Gamma}_{G-}(k) \right] = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2    \,.
-% \end{equation}
+\begin{equation} \label{eq:G-_bias2}
+\mathbb{E} \left[\hat{\Gamma}_{G-}(k) \right] = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2    \,.
+\end{equation}
 %
-% where both $O_1 \textrm{ and } O_2$ are the small order terms. By our assumptions, $\sum_{h=-\infty}^{\infty}\Gamma(h) < \infty$, so $O_1 = o(1/n) \text{ and } O_2 = o(1/n)$.  
+where both $O_1 \textrm{ and } O_2$ are the small order terms. By our assumptions, $\sum_{h=-\infty}^{\infty}\Gamma(h) < \infty$, so $O_1 = o(1/n) \text{ and } O_2 = o(1/n)$.  
 Consider the G-SVE estimator,
 \begin{align*}
  \mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] & = \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Gamma}_{G}(k) \right] - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
     &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\Gamma(k) + o\left(n^{-1} \right)\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
-    % &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k)\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)  o\left(n^{-1}\right)\right] \\ 
+    &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k)\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)  o\left(n^{-1}\right)\right] \\ 
     & = P_1 + o \left( \dfrac{1}{n} \right)\,,
 \end{align*}
 %
