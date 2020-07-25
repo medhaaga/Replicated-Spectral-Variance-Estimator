@@ -8,14 +8,14 @@ log.density <- function(x, p, mu1, mu2, sd1, sd2){
 
 
 mh.mcmc <- function(start, p, mu1, mu2, sd1, sd2, N, h){
-  
+
   X <- rep(0, N)
   acc <- 0
   X[1] <- start
   for (i in 2:N){
     prop <- rnorm(1, mean = X[i-1], sd = 2)
     ratio <- log.density(prop, p, mu1, mu2, sd1, sd2) - log.density(X[i-1], p, mu1, mu2, sd1, sd2)
-    
+
     if(runif(1) < exp(ratio)){
       X[i] <- prop
       acc <- acc+1
@@ -91,32 +91,49 @@ dev.off()
 ########## ACF and G-ACF ####################
 #############################################
 
+m <- 2
+mc.chain.list <- list(as.matrix(chain1), as.matrix(chain2))
+
 ######### ncrop = 1e4###################
 
+####################################
+nsim <- 1e4
+########################################
+
+x <- list()
+for (i in 1:m)
+  x[[i]] <- as.matrix(mc.chain.list[[i]][1:nsim,])
+
+global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
+local.acf <- acf(x[[1]][, 1], type = "correlation", lag.max = lag.max, plot = FALSE)
+for (i in 2:m)
+  local.acf$acf <- local.acf$acf + acf(x[[i]][, 1], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
+local.acf$acf <- local.acf$acf/m
+
 pdf(file = "acf_n1e4.pdf", height = 4, width = 10)
-ncrop <- 1e4
-mc.chain.list <- list(as.matrix(chain1[1:ncrop]), as.matrix(chain2[1:ncrop]))
-
-acf1 <- combined_acf(mc.chain.list, chain=1, component = 1,type = "correlation")
-acf2 <- combined_acf(mc.chain.list, chain=2, component = 1,  type = "correlation")
-
-
 par(mfrow = c(1,2))
-plot((acf1[[1]][[1]]$acf + acf2[[1]][[1]]$acf)/2, type = "h", xlab = "Lag", ylab = "Autocorrelation", main = "", ylim = c(0,1))
-plot((acf1[[1]][[2]]$acf + acf2[[1]][[2]]$acf)/2, type = "h", xlab = "Lag", ylab = "Autocorrelation", main = "", ylim = c(0,1))
+plot(local.acf, type = "h", xlab = "Lag", ylab = "Autocorrelation", main = "", ylim = c(0,1))
+plot(global.acf, type = "h", xlab = "Lag", ylab = "Autocorrelation", main = "", ylim = c(0,1))
 dev.off()
 
 ################## ncrop = 1e5 #########################
 
-pdf(file = "acf_n1e5.pdf", height = 4, width = 10)
-ncrop <- 1e5
-mc.chain.list <- list(as.matrix(chain1[1:ncrop]), as.matrix(chain2[1:ncrop]))
+####################################
+nsim <- 1e5
+########################################
 
-acf1 <- combined_acf(mc.chain.list, chain=1, component = 1,  type = "correlation")
-acf2 <- combined_acf(mc.chain.list, chain=2, component = 1, type = "correlation")
+x <- list()
+for (i in 1:m)
+  x[[i]] <- as.matrix(mc.chain.list[[i]][1:nsim,])
 
+global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
+local.acf <- acf(x[[1]][, 1], type = "correlation", lag.max = lag.max, plot = FALSE)
+for (i in 2:m)
+  local.acf$acf <- local.acf$acf + acf(x[[i]][, 1], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
+local.acf$acf <- local.acf$acf/m
 
+pdf(file = "acf_n1e4.pdf", height = 4, width = 10)
 par(mfrow = c(1,2))
-plot((acf1[[1]][[1]]$acf + acf2[[1]][[1]]$acf)/2, type = "h", xlab = "Lag", ylab = "Autocorrelation", main = "", ylim = c(0,1))
-plot((acf1[[1]][[2]]$acf + acf2[[1]][[2]]$acf)/2, type = "h", xlab = "Lag", ylab = "Autocorrelation", main = "", ylim = c(0,1))
+plot(local.acf, type = "h", xlab = "Lag", ylab = "Autocorrelation", main = "", ylim = c(0,1))
+plot(global.acf, type = "h", xlab = "Lag", ylab = "Autocorrelation", main = "", ylim = c(0,1))
 dev.off()
