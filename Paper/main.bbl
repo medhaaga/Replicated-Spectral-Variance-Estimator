@@ -36,6 +36,11 @@ Gelman, A., Rubin, D.~B., et~al. (1992).
 \newblock Inference from iterative simulation using multiple sequences.
 \newblock {\em Statistical science}, 7(4):457--472.
 
+\bibitem[Geyer, 2011]{geyer2011introduction}
+Geyer, C. (2011).
+\newblock Introduction to markov chain monte carlo.
+\newblock {\em Handbook of markov chain monte carlo}, 20116022:45.
+
 \bibitem[Gjoka et~al., 2011]{gjoka2011practical}
 Gjoka, M., Kurant, M., Butts, C.~T., and Markopoulou, A. (2011).
 \newblock Practical recommendations on crawling online social networks.
