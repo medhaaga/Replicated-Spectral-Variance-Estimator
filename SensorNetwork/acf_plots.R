@@ -53,209 +53,89 @@ j.scale <- rep(0.5, 4)
 mc.chain.list <- list()
 
 for (k in 1:m){
-  temp <- MHwG.RAM(start[k,], aux[k,], jump.scale = j.scale,Ob, Os, Xb, Xs, Yb, Ys, n.sample = 1e4, n.burn = 0)
+  temp <- MHwG.RAM(start[k,], aux[k,], jump.scale = j.scale,Ob, Os, Xb, Xs, Yb, Ys, n.sample = 1e5+1, n.burn = 0)
   mc.chain.list[[k]] <- temp$x
   print(colMeans(temp$accept))
 }
 
 save(mc.chain.list, file = "Out/five_chains.Rdata")
 
-###############################################
-###############################################
-# Scatter plots
-###############################################
-###############################################
-nsim1 <- 5e3-1
-nsim2 <- 1e5-1
-min <- min(min(apply(mc.chain.list[[1]], 2, min)), min(apply(mc.chain.list[[2]], 2, min)))
-max <- max(max(apply(mc.chain.list[[1]], 2, max)), max(apply(mc.chain.list[[2]], 2, max)))
-pdf(file = "Out/scatter_plots.pdf")
-par(mfrow = c(4, 2))
+load(file = "Out/five_chains.Rdata")
 
-# X_1 for nsim1
-plot(mc.chain.list[[1]][1:nsim1, c(1, 2)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,1], mc.chain.list[[2]][1:nsim1,1]),
-     ylim = range(mc.chain.list[[1]][1:nsim1,2], mc.chain.list[[2]][1:nsim1,2]), xlab = "", ylab = "", main = "")
-points(mc.chain.list[[2]][1:nsim1,c(1,2)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,1], mc.chain.list[[2]][1:nsim1,1]),
-       ylim = range(mc.chain.list[[1]][1:nsim1,2], mc.chain.list[[2]][1:nsim1,2]), xlab = "", ylab = "", main = "", col = "red")
-title(expression(bold(paste("RAM: ", x[1]))))
-mtext(side = 1, text = expression(bold(x[11])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[12])), line = 1.9, cex = 1)
-abline(v = 0.5748, lty = 2, lwd = 1)
-abline(h = 0.9069, lty = 2, lwd = 1)
-
-#X_1 for nsim2
-plot(mc.chain.list[[1]][1:nsim2, c(1, 2)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim2,1], mc.chain.list[[2]][1:nsim2,1]),
-     ylim = range(mc.chain.list[[1]][1:nsim2,2], mc.chain.list[[2]][1:nsim2,2]), xlab = "", ylab = "", main = "")
-points(mc.chain.list[[2]][1:nsim2,c(1,2)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim2,1], mc.chain.list[[2]][1:nsim2,1]),
-       ylim = range(mc.chain.list[[1]][1:nsim2,2], mc.chain.list[[2]][1:nsim2,2]), xlab = "", ylab = "", main = "", col = "red")
-title(expression(bold(paste("RAM: ", x[1]))))
-mtext(side = 1, text = expression(bold(x[11])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[12])), line = 1.9, cex = 1)
-abline(v = 0.5748, lty = 2, lwd = 1)
-abline(h = 0.9069, lty = 2, lwd = 1)
-
-#X_2 for nsim1
-plot(mc.chain.list[[1]][1:nsim1, c(3, 4)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,3], mc.chain.list[[2]][1:nsim1,3]),
-     ylim = range(mc.chain.list[[1]][1:nsim1,4], mc.chain.list[[2]][1:nsim1,4]), xlab = "", ylab = "", main = "")
-points(mc.chain.list[[2]][1:nsim1,c(3,4)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,3], mc.chain.list[[2]][1:nsim1,3]),
-       ylim = range(mc.chain.list[[1]][1:nsim1,4], mc.chain.list[[2]][1:nsim1,4]), xlab = "", ylab = "", main = "", col = "red")
-title(expression(bold(paste("RAM: ", x[2]))))
-mtext(side = 1, text = expression(bold(x[21])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[22])), line = 1.9, cex = 1)
-abline(v = 0.0991, lty = 2, lwd = 1)
-abline(h = 0.3651, lty = 2, lwd = 1)
-
-#X_2 for nsim2
-
-plot(mc.chain.list[[1]][1:nsim1, c(3, 4)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,3], mc.chain.list[[2]][1:nsim1,3]),
-     ylim = range(mc.chain.list[[1]][1:nsim1,4], mc.chain.list[[2]][1:nsim1,4]), xlab = "", ylab = "", main = "")
-points(mc.chain.list[[2]][1:nsim1,c(3,4)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,3], mc.chain.list[[2]][1:nsim1,3]),
-       ylim = range(mc.chain.list[[1]][1:nsim1,4], mc.chain.list[[2]][1:nsim1,4]), xlab = "", ylab = "", main = "", col = "red")
-title(expression(bold(paste("RAM: ", x[2]))))
-mtext(side = 1, text = expression(bold(x[21])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[22])), line = 1.9, cex = 1)
-abline(v = 0.0991, lty = 2, lwd = 1)
-abline(h = 0.3651, lty = 2, lwd = 1)
-
-#X_3 for nsim1
-
-plot(mc.chain.list[[1]][1:nsim1, c(5, 6)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,5], mc.chain.list[[2]][1:nsim1,5]),
-     ylim = range(mc.chain.list[[1]][1:nsim1,6], mc.chain.list[[2]][1:nsim1,6]), xlab = "", ylab = "", main = "")
-points(mc.chain.list[[2]][1:nsim1,c(5,6)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,5], mc.chain.list[[2]][1:nsim1,5]),
-       ylim = range(mc.chain.list[[1]][1:nsim1,6], mc.chain.list[[2]][1:nsim1,6]), xlab = "", ylab = "", main = "", col = "red")
-title(expression(bold(paste("RAM: ", x[3]))))
-mtext(side = 1, text = expression(bold(x[31])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[32])), line = 1.9, cex = 1)
-abline(v = 0.2578, lty = 2, lwd = 1)
-abline(h = 0.1350, lty = 2, lwd = 1)
-
-
-#X_3 for nsim2
-
-plot(mc.chain.list[[1]][1:nsim2, c(5, 6)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim2,5], mc.chain.list[[2]][1:nsim2,5]),
-     ylim = range(mc.chain.list[[1]][1:nsim2,6], mc.chain.list[[2]][1:nsim2,6]), xlab = "", ylab = "", main = "")
-points(mc.chain.list[[2]][1:nsim2,c(5,6)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim2,5], mc.chain.list[[2]][1:nsim2,5]),
-       ylim = range(mc.chain.list[[1]][1:nsim2,6], mc.chain.list[[2]][1:nsim2,6]), xlab = "", ylab = "", main = "", col = "red")
-title(expression(bold(paste("RAM: ", x[3]))))
-mtext(side = 1, text = expression(bold(x[31])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[32])), line = 1.9, cex = 1)
-abline(v = 0.2578, lty = 2, lwd = 1)
-abline(h = 0.1350, lty = 2, lwd = 1)
-
-#X_4 for nsim1
-
-plot(mc.chain.list[[1]][1:nsim1, c(7, 8)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,7], mc.chain.list[[2]][1:nsim1,7]),
-     ylim = range(mc.chain.list[[1]][1:nsim1,8], mc.chain.list[[2]][1:nsim1,8]), xlab = "", ylab = "", main = "")
-points(mc.chain.list[[2]][1:nsim1,c(7,8)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,7], mc.chain.list[[2]][1:nsim1,7]),
-       ylim = range(mc.chain.list[[1]][1:nsim1,8], mc.chain.list[[2]][1:nsim1,8]), xlab = "", ylab = "", main = "", col = "red")
-title(expression(bold(paste("RAM: ", x[4]))))
-mtext(side = 1, text = expression(bold(x[41])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[42])), line = 1.9, cex = 1)
-abline(v = 0.8546, lty = 2, lwd = 1)
-abline(h = 0.0392, lty = 2, lwd = 1)
-
-#X_4 for nsim2
-
-plot(mc.chain.list[[1]][1:nsim1, c(7, 8)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,7], mc.chain.list[[2]][1:nsim1,7]),
-     ylim = range(mc.chain.list[[1]][1:nsim1,8], mc.chain.list[[2]][1:nsim1,8]), xlab = "", ylab = "", main = "")
-points(mc.chain.list[[2]][1:nsim1,c(7,8)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,7], mc.chain.list[[2]][1:nsim1,7]),
-       ylim = range(mc.chain.list[[1]][1:nsim1,8], mc.chain.list[[2]][1:nsim1,8]), xlab = "", ylab = "", main = "", col = "red")
-title(expression(bold(paste("RAM: ", x[4]))))
-mtext(side = 1, text = expression(bold(x[41])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[42])), line = 1.9, cex = 1)
-abline(v = 0.8546, lty = 2, lwd = 1)
-abline(h = 0.0392, lty = 2, lwd = 1)
-
-dev.off()
 #####################################################
 #####################################################
 ### ACF plots
 #####################################################
 #####################################################
+
 component <- 1
-########################################
-ncrop <- 1e3
-########################################
 
-x <- list()
-for (i in 1:m){
-  x[[i]] <- mc.chain.list[[i]][1:ncrop,]
-}
-
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
-for (i in 2:m)
-  local.acf$acf <- acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
-
-pdf(file = paste("Out/acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
-par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"))
-plot(global.acf, main = expression("Globally centered ACF"))
-dev.off()
 
 ########################################
 ncrop <- 5e3
 ########################################
-
 x <- list()
 for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
+chains.local.acf <- list()
+chains.local.acf[[1]] <- acf(x[[1]][, 1], type = "correlation", plot = FALSE)$acf
+avg.local.acf <- chains.local.acf[[1]]
 for (i in 2:m)
-  local.acf$acf <- acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
-
-pdf(file = paste("Out/acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
-par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"))
-plot(global.acf, main = expression("Globally centered ACF"))
-dev.off()
-
-########################################
-ncrop <- 1e4
-########################################
-
-x <- list()
-for (i in 1:m){
-  x[[i]] <- mc.chain.list[[i]][1:ncrop,]
+{
+  chains.local.acf[[i]] <- acf(x[[i]][, 1], type = "correlation", plot = FALSE, calc.ci = FALSE)$acf
+  avg.local.acf <- avg.local.acf + chains.local.acf[[i]]
 }
+avg.local.acf <- avg.local.acf/m
 
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
-for (i in 2:m)
-  local.acf$acf <- acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
+pdf(file = "Out/sensor-acf_n5e3.pdf", height = 5, width = 5)
 
-pdf(file = paste("Out/acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
-par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"))
-plot(global.acf, main = expression("Globally centered ACF"))
+plot(avg.local.acf, type = "l", col = "royalblue", xlab = "", ylab = "", main = "",
+     ylim = c(0,1), lwd = 2, yaxt = 'n', xaxt = 'n')
+for (i in 1:m)
+{
+  par(new = TRUE)
+  plot(chains.local.acf[[i]], type = "l", col = "lightblue", xlab = "", ylab = "", main = "", ylim = c(0,1), yaxt = 'n', xaxt = 'n')
+}
+par(new = TRUE)
+globalACF(x, type = "correlation", chains = 0, component = 1, graph = TRUE, leg = FALSE, col = "darkorange")$'G-ACF'
+
+legend("bottomleft", legend = c("G-ACF", "A-ACF"), col = c("darkorange", "royalblue"), lwd = 2)
 dev.off()
 
 
 ########################################
 ncrop <- 5e4
 ########################################
-
 x <- list()
 for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
+chains.local.acf <- list()
+chains.local.acf[[1]] <- acf(x[[1]][, 1], type = "correlation", plot = FALSE)$acf
+avg.local.acf <- chains.local.acf[[1]]
 for (i in 2:m)
-  local.acf$acf <- acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
+{
+  chains.local.acf[[i]] <- acf(x[[i]][, 1], type = "correlation", plot = FALSE, calc.ci = FALSE)$acf
+  avg.local.acf <- avg.local.acf + chains.local.acf[[i]]
+}
+avg.local.acf <- avg.local.acf/m
 
-pdf(file = paste("Out/acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
-par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"))
-plot(global.acf, main = expression("Globally centered ACF"))
+pdf(file = "Out/sensor-acf_n5e4.pdf", height = 5, width = 5)
+
+plot(avg.local.acf, type = "l", col = "royalblue", xlab = "", ylab = "", main = "",
+     ylim = c(0,1), lwd = 2, yaxt = 'n', xaxt = 'n')
+for (i in 1:m)
+{
+  par(new = TRUE)
+  plot(chains.local.acf[[i]], type = "l", col = "lightblue", xlab = "", ylab = "", main = "", ylim = c(0,1), yaxt = 'n', xaxt = 'n')
+}
+par(new = TRUE)
+globalACF(x, type = "correlation", chains = 0, component = 1, graph = TRUE, leg = FALSE, col = "darkorange")$'G-ACF'
+
+legend("bottomleft", legend = c("G-ACF", "A-ACF"), col = c("darkorange", "royalblue"), lwd = 2)
 dev.off()
 
 
@@ -268,14 +148,27 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
+chains.local.acf <- list()
+chains.local.acf[[1]] <- acf(x[[1]][, 1], type = "correlation", plot = FALSE)$acf
+avg.local.acf <- chains.local.acf[[1]]
 for (i in 2:m)
-  local.acf$acf <- acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
+{
+  chains.local.acf[[i]] <- acf(x[[i]][, 1], type = "correlation", plot = FALSE, calc.ci = FALSE)$acf
+  avg.local.acf <- avg.local.acf + chains.local.acf[[i]]
+}
+avg.local.acf <- avg.local.acf/m
 
-pdf(file = paste("Out/acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
-par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"))
-plot(global.acf, main = expression("Globally centered ACF"))
+pdf(file = "Out/sensor-acf_n1e5.pdf", height = 5, width = 5)
+globalACF(x, type = "correlation", chains = 0, component = 1, graph = TRUE, leg = FALSE, col = "darkorange")$'G-ACF'
+par(new = TRUE)
+
+plot(avg.local.acf, type = "l", col = "royalblue", xlab = "", ylab = "", main = "",
+     ylim = c(0,1), lwd = 2, yaxt = 'n', xaxt = 'n')
+for (i in 1:m)
+{
+  par(new = TRUE)
+  plot(chains.local.acf[[i]], type = "l", col = "lightblue", xlab = "", ylab = "", main = "", ylim = c(0,1), yaxt = 'n', xaxt = 'n')
+}
+legend("bottomleft", legend = c("G-ACF", "A-ACF"), col = c("darkorange", "royalblue"), lwd = 2)
 dev.off()
+
