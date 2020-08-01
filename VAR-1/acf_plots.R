@@ -25,7 +25,6 @@ phi <- dummy %*% phi %*% t(dummy)
 target <- target.sigma(phi, omega)
 truth <- true.sigma(phi, var = target)
 
-lag.max <- 150
 
 true.acf <- array(0, dim = c(p, p, 2*lag.max + 1))
 true.acf[,,lag.max+1] <- target
@@ -53,42 +52,11 @@ global.mean <- global.mean/m
 save(mc.chain.list, file = "Out/five_chains.Rdata")
 
 load(file = "Out/five_chains.Rdata")
-
-
-########################################3
-#########################################
-####  Scatter plots #####################
-#########################################
-#########################################
-
-
-nsim <- 5e2
-
-pdf(file = paste("Out/scatter_plot_", nsim, ".pdf", sep = ""), title = paste("Scatter plot, nsim = ", nsim))
-plot(mc.chain.list[[1]][1:nsim,], xlim = c(-(m/2)*sqrt(diag(target)[1]), (m/2)*sqrt(diag(target)[1])), ylim = c(-(m/2)*sqrt(diag(target)[2]), (m/2)*sqrt(diag(target)[2])), xlab = "X component", ylab = "Y component", main = "")
-points(mc.chain.list[[2]][1:nsim,], col = 2)
-points(mc.chain.list[[3]][1:nsim,], col = 3)
-points(mc.chain.list[[4]][1:nsim,], col = 4)
-points(mc.chain.list[[5]][1:nsim,], col = 5)
-dev.off()
-
-
-nsim <- 1e4
-
-
-pdf(file = paste("Out/scatter_plot_", nsim, ".pdf", sep = ""), title = paste("Scatter plot, nsim = ", nsim))
-plot(mc.chain.list[[1]][1:nsim,], xlim = c(-(m/2)*sqrt(diag(target)[1]), (m/2)*sqrt(diag(target)[1])), ylim = c(-(m/2)*sqrt(diag(target)[2]), (m/2)*sqrt(diag(target)[2])), xlab = "X component", ylab = "Y component", main = "")
-points(mc.chain.list[[2]][1:nsim,], col = 2)
-points(mc.chain.list[[3]][1:nsim,], col = 3)
-points(mc.chain.list[[4]][1:nsim,], col = 4)
-points(mc.chain.list[[5]][1:nsim,], col = 5)
-dev.off()
-
 #######################################################
 ############### ACF and G-ACF #########################
 #######################################################
 
-
+component <- 1
 ###############################
 ### ncrop = 1e3
 ##############################
@@ -99,13 +67,13 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
+global.acf <- globalACF(x, type = "correlation", component = 1, graph = FALSE)$'G-ACF'
+local.acf <- acf(x[[1]][, component], type = "correlation", plot = FALSE)
 for (i in 2:m)
-  local.acf$acf <- local.acf$acf + acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
+  local.acf$acf <- local.acf$acf + acf(x[[i]][, component], type = "correlation", plot = FALSE)$acf
 local.acf$acf <- local.acf$acf/m
 
-pdf(file = paste("Out/acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
+pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
 par(mfrow = c(1,2))
 plot(local.acf, main = expression("Locally centered ACF"))
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
@@ -123,13 +91,14 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
+global.acf <- globalACF(x, type = "correlation", component = 1, graph = FALSE)$'G-ACF'
+local.acf <- acf(x[[1]][, component], type = "correlation", plot = FALSE)
 for (i in 2:m)
-  local.acf$acf <- local.acf$acf + acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
+  local.acf$acf <- local.acf$acf + acf(x[[i]][, component], type = "correlation", plot = FALSE)$acf
 local.acf$acf <- local.acf$acf/m
 
-pdf(file = paste("Out/acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
+pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
+
 par(mfrow = c(1,2))
 plot(local.acf, main = expression("Locally centered ACF"))
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
@@ -147,13 +116,13 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
+global.acf <- globalACF(x, type = "correlation", component = 1, graph = FALSE)$'G-ACF'
+local.acf <- acf(x[[1]][, component], type = "correlation", plot = FALSE)
 for (i in 2:m)
-  local.acf$acf <- local.acf$acf + acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
+  local.acf$acf <- local.acf$acf + acf(x[[i]][, component], type = "correlation", plot = FALSE)$acf
 local.acf$acf <- local.acf$acf/m
 
-pdf(file = paste("Out/acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
+pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
 par(mfrow = c(1,2))
 plot(local.acf, main = expression("Locally centered ACF"))
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")

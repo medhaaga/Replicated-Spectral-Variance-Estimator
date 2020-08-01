@@ -6,7 +6,6 @@ library(RcppArmadillo)
 library(fftwtools)
 library(mcmcse)
 library(stats)
-library("RColorBrewer")
 sourceCpp("lag.cpp")
 source("functions.R")
 
@@ -54,13 +53,13 @@ for(i in floor(m/2):1){
 
 load(file = paste(paste("Out/run_data", m, min, max, sep = "_"), ".Rdata", sep = ""))
 
-pdf(file = paste(paste("Out/run_plots", m, sep = "_"), ".pdf", sep = ""), height = 3)
-plot(conv.pts,log(apply(asv.samp, 3, norm, type = "F")), type = "l", col = "coral", lwd = 2,
-     main = "", xlab = "Simulation size", ylab = "Variance", 
+pdf(file = "Out/var-frob.pdf", height = 5, width = 5)
+plot(conv.pts,log(apply(asv.samp, 3, norm, type = "F")), type = "l", col = "darkorange", lwd = 2,
+     main = "", xlab = "Simulation size", ylab = "Variance",
      ylim = range(c(log(apply(rsv.samp, 3, norm, type = "F"))), log(norm(truth, type = "F"))))
 lines(conv.pts, log(apply(rsv.samp, 3, norm, type = "F")), col="royalblue", lwd = 2)
-abline(h = log(norm(truth, type = "F")), col = "green")
-legend("bottomright", legend=c("ASV", "RSV"),col=c("coral", "royalblue"), lty=1, lwd = 2)
+abline(h = log(norm(truth, type = "F")), col = "green3", lwd = 2)
+legend("bottomright", legend=c("ASV", "RSV", "Truth"),col=c("darkorange", "royalblue", "green3"), lty=1, lwd = 2)
 dev.off()
 
 ###########################################################
@@ -69,81 +68,65 @@ dev.off()
 
 load(file = paste(paste("Out/run_data", m, min, max, sep = "_"), ".Rdata", sep = ""))
 
-mean.asv <- rep(0, length(conv.pts))
-mean.rsv <- rep(0, length(conv.pts))
-lower.asv <- rep(0, length(conv.pts))
-lower.rsv <- rep(0, length(conv.pts))
-upper.asv <- rep(0, length(conv.pts))
-upper.rsv <- rep(0, length(conv.pts))
-for (i in 1:length(conv.pts)){
-  asv <- confidence_interval(ess.asv.samp[[i]], .9)
-  rsv <- confidence_interval(ess.rsv.samp[[i]], .9)
-  mean.asv[i] <- asv[1]
-  mean.rsv[i] <- rsv[1]
-  lower.asv[i] <- asv[2]
-  lower.rsv[i] <- rsv[2]
-  upper.asv[i] <- asv[3]
-  upper.rsv[i] <- rsv[3]
-}
+ind <- seq(1, length(conv.pts), by = 2)
 
-pdf(file = ("Out/run_plot_ess.pdf"))
-plot(conv.pts, mean.asv, type = "l", main = "", xlab = "Simulation size", col = "coral",
-     ylab = "ESS/mn", ylim = range(c(mean.asv, mean.rsv)), lwd = 2)
-segments(x0 = conv.pts, y0 = lower.asv, x1 = conv.pts, y1 = upper.asv, col = "coral")
-lines(conv.pts, mean.rsv, type = "l", col = "royalblue", lwd = 2)
-segments(x0 = conv.pts, y0 = lower.rsv, x1 = conv.pts, y1 = upper.rsv, col = "royalblue")
-abline(h = (det(target)/det(truth))^(1/p), col = "green3", lwd = 2)
-legend("topright", legend=c("ASV", "RSV", "Truth"),col=c("coral", "royalblue", "green3"), lty=1, cex=1, lwd = 2)
+a <- lapply(ess.asv.samp, log)
+r <- lapply(ess.rsv.samp, log)
+se.a <- 2*Reduce("rbind", lapply(a, sd))/sqrt(length(a[[1]]))
+se.r <- 2*Reduce("rbind", lapply(r, sd))/sqrt(length(r[[1]]))
+a <- Reduce("rbind", lapply(a, mean))
+r <- Reduce("rbind", lapply(r, mean))
+
+pdf(file = "Out/var-ess.pdf", height = 5, width = 5)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd=2)
+lines(conv.pts, r, col = "royalblue", lwd=2)
+segments(x0 = conv.pts[ind], y0 = (a - se.a)[ind], y1 = (a + se.a)[ind], col = adjustcolor("darkorange", alpha.f = .50))
+segments(x0 = conv.pts[ind], y0 = (r - se.r)[ind], y1 = (r + se.r)[ind], col = adjustcolor("royalblue", alpha.f = .50))
+abline(h = log((det(target)/det(truth))^(1/p)), col = "green3", lwd = 2)
+legend("topright", legend=c("A-SVE", "G-SVE", "Truth"),col=c("darkorange", "royalblue", "green3"), lty=1, cex=1, lwd = 2)
 dev.off()
 
-##########################################
-########### Scatter plots ################
-##########################################
 
-master.chain <- array(0, dim = c(5e4,p,m))
+########################################3
+#########################################
+####  Scatter plots #####################
+#########################################
+#########################################
 
-for (k in 1:m){
-  master.chain[,,k] <- markov.chain(phi, omega, 5e4, start[k,])
-}
-
-pdf(file = "Out/scatter_plot.pdf", height = 4)
-
-par(mfrow = c(1,2))
+load(file = "Out/five_chains.Rdata")
 
 nsim <- 1e3
-plot(master.chain[1:nsim,,1], col = 1, xlim = range(master.chain[,1,]), 
-     ylim = range(master.chain[,2,]), xlab = "Component-1", ylab = "Component-2", main = "")
-for (k in 2:m) {points(master.chain[1:nsim,,k], col = k)}
 
-nsim <- 5e4
-plot(master.chain[1:nsim,,1], col = 1, xlim = range(master.chain[,1,]), 
-     ylim = range(master.chain[,2,]), xlab = "Component-1", ylab = "Component-2", main = "")
-for (k in 2:m) {points(master.chain[1:nsim,,k], col = k)}
+pdf(file = ("Out/var-sp_n1e3.pdf"), height = 5, width = 5)
+plot(mc.chain.list[[1]][1:nsim,], xlim = c(-(m/2)*sqrt(diag(target)[1]), (m/2)*sqrt(diag(target)[1])),
+     ylim = c(-(m/2)*sqrt(diag(target)[2]), (m/2)*sqrt(diag(target)[2])), xlab = "X component",
+     ylab = "Y component", main = "", col = "darkorange")
+points(mc.chain.list[[5]][1:nsim,], col = "royalblue")
+legend("bottomright", legend = c("Chain-1", "Chain-5"), col = c("darkorange", "royalblue"), pch = 19)
 dev.off()
 
 
-######################################################################
-############log-Frobenius norm density plots and coverage prob########
-#########################################################################
+nsim <- 1e5
 
+
+pdf(file = ("Out/var-sp_n1e4.pdf"), height = 5, width = 5)
+plot(mc.chain.list[[1]][1:nsim,], xlim = c(-(m/2)*sqrt(diag(target)[1]), (m/2)*sqrt(diag(target)[1])),
+     ylim = c(-(m/2)*sqrt(diag(target)[2]), (m/2)*sqrt(diag(target)[2])), xlab = "X component",
+     ylab = "Y component", main = "", col = "darkorange")
+points(mc.chain.list[[5]][1:nsim,], col = "royalblue")
+legend("bottomright", legend = c("Chain-1", "Chain-5"), col = c("darkorange", "royalblue"), pch = 19)
+dev.off()
+
+######################################################
+###################### coverage prob #################
+######################################################
 
 for (j in 1:length(check.pts)){
 
   nsim <- check.pts[j]
   load(file = paste(paste("Out/out", m, nsim, sep = "_"), ".Rdata", sep = ""))
-  
-  frob.asv <- density(log(apply(asv.samp, 3, norm, type = "F")))
-  frob.rsv <- density(log(apply(rsv.samp, 3, norm, type = "F")))
-  
-  pdf(file = paste(paste("Out/densities_n", nsim, sep = "_"), ".pdf", sep = ""))
-  plot(frob.asv, col = "coral", main = "", xlab = "log-Frobenius norm", ylab = "Density", lwd = 2,
-       ylim = c(0, max(frob.asv$y, frob.rsv$y)), xlim = range(frob.asv$x, frob.rsv$x, log(norm(truth, "F"))))
-  lines(frob.rsv, col="royalblue", lwd = 2)
-  abline(v = log(norm(truth, type = "F")), col = "green3", lwd = 2)
-  legend("topleft", legend=c("ASV", "RSV", "Truth"), col=c("coral", "royalblue", "green3"), lty=1, lwd = 2)
 
   print(paste("Coverage probabilities for nsim =  ", nsim, ", m = ", m, " are: "))
   print(paste("ASV : ", mean(asv.coverage), "RSV: ", mean(rsv.coverage)))
-  
-  dev.off()
+
 }
