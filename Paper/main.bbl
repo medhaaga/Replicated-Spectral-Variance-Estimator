@@ -5,6 +5,12 @@ Ahn, S., Chen, Y., and Welling, M. (2013).
 \newblock Distributed and adaptive darting monte carlo through regenerations.
 \newblock In {\em Artificial Intelligence and Statistics}, pages 108--116.
 
+\bibitem[Andrews, 1991]{andr:1991}
+Andrews, D.~W. (1991).
+\newblock Heteroskedasticity and autocorrelation consistent covariance matrix
+  estimation.
+\newblock {\em Econometrica}, 59:817--858.
+
 \bibitem[Box et~al., 2015]{box2015time}
 Box, G.~E., Jenkins, G.~M., Reinsel, G.~C., and Ljung, G.~M. (2015).
 \newblock {\em Time series analysis: forecasting and control}.
@@ -20,26 +26,16 @@ Cs{\"o}rgo, M. and R{\'e}v{\'e}sz, P. (2014).
 \newblock {\em Strong approximations in probability and statistics}.
 \newblock Academic Press.
 
-\bibitem[Flegal and Gong, 2015]{flegal2015relative}
-Flegal, J.~M. and Gong, L. (2015).
-\newblock Relative fixed-width stopping rules for markov chain monte carlo
-  simulations.
-\newblock {\em Statistica Sinica}, pages 655--675.
+\bibitem[Damerdji, 1991]{dame:1991}
+Damerdji, H. (1991).
+\newblock Strong consistency and other properties of the spectral variance
+  estimator.
+\newblock {\em Management Science}, 37:1424--1440.
 
 \bibitem[Gelman and Meng, 1991]{gelman1991note}
 Gelman, A. and Meng, X.-L. (1991).
 \newblock A note on bivariate distributions that are conditionally normal.
 \newblock {\em The American Statistician}, 45(2):125--126.
-
-\bibitem[Gelman et~al., 1992]{gelman1992inference}
-Gelman, A., Rubin, D.~B., et~al. (1992).
-\newblock Inference from iterative simulation using multiple sequences.
-\newblock {\em Statistical science}, 7(4):457--472.
-
-\bibitem[Geyer, 2011]{geyer2011introduction}
-Geyer, C. (2011).
-\newblock Introduction to markov chain monte carlo.
-\newblock {\em Handbook of markov chain monte carlo}, 20116022:45.
 
 \bibitem[Gjoka et~al., 2011]{gjoka2011practical}
 Gjoka, M., Kurant, M., Butts, C.~T., and Markopoulou, A. (2011).
@@ -47,18 +43,16 @@ Gjoka, M., Kurant, M., Butts, C.~T., and Markopoulou, A. (2011).
 \newblock {\em IEEE Journal on Selected Areas in Communications},
   29(9):1872--1892.
 
-\bibitem[Glynn et~al., 1992]{glynn1992asymptotic}
-Glynn, P.~W., Whitt, W., et~al. (1992).
-\newblock The asymptotic validity of sequential stopping rules for stochastic
-  simulations.
-\newblock {\em The Annals of Applied Probability}, 2(1):180--198.
-
-\bibitem[Gong and Flegal, 2016]{gong2016practical}
+\bibitem[Gong and Flegal, 2016]{gong:fleg:2016}
 Gong, L. and Flegal, J.~M. (2016).
-\newblock A practical sequential stopping rule for high-dimensional markov
-  chain monte carlo.
-\newblock {\em Journal of Computational and Graphical Statistics},
-  25(3):684--700.
+\newblock A practical sequential stopping rule for high-dimensional {M}arkov
+  chain {M}onte {C}arlo.
+\newblock {\em Journal of Computational and Graphical Statistics}, 25:684--700.
+
+\bibitem[Hannan, 1970]{hannan:1970}
+Hannan, E.~J. (1970).
+\newblock Multiple time series: {W}iley series in probability and mathematical
+  statistics.
 
 \bibitem[Hannan, 2009]{hannan2009multiple}
 Hannan, E.~J. (2009).
@@ -83,6 +77,11 @@ Jones, G.~L. et~al. (2004).
 \newblock On the markov chain central limit theorem.
 \newblock {\em Probability surveys}, 1(299-320):5--1.
 
+\bibitem[Kass et~al., 1998]{kass:carlin:gelman:neal:1998}
+Kass, R.~E., Carlin, B.~P., Gelman, A., and Neal, R.~M. (1998).
+\newblock {M}arkov chain {M}onte {C}arlo in practice: a roundtable discussion.
+\newblock {\em The American Statistician}, 52:93--100.
+
 \bibitem[Kuelbs and Philipp, 1980]{kuelbs1980almost}
 Kuelbs, J. and Philipp, W. (1980).
 \newblock Almost sure invariance principles for partial sums of mixing b-valued
@@ -94,6 +93,11 @@ Lan, S., Streets, J., and Shahbaba, B. (2014).
 \newblock Wormhole hamiltonian monte carlo.
 \newblock In {\em AAAI}, pages 1953--1959.
 
+\bibitem[Liu and Flegal, 2018]{liu:fleg:2018}
+Liu, Y. and Flegal, J.~M. (2018).
+\newblock Weighted batch means estimators in {M}arkov chain {M}onte {C}arlo.
+\newblock {\em Electronic Journal of Statistics}, 12:3397--3442.
+
 \bibitem[Ma and Genton, 2000]{ma2000highly}
 Ma, Y. and Genton, M.~G. (2000).
 \newblock Highly robust estimation of the autocovariance function.
@@ -102,6 +106,11 @@ Ma, Y. and Genton, M.~G. (2000).
 \bibitem[Martin et~al., 2011]{martin2011mcmcpack}
 Martin, A.~D., Quinn, K.~M., and Park, J.~H. (2011).
 \newblock Mcmcpack: Markov chain monte carlo in r.
+
+\bibitem[Meyn and Tweedie, 2009]{meyn:twee:2009}
+Meyn, S.~P. and Tweedie, R.~L. (2009).
+\newblock {\em Markov Chains and Stochastic Stability}.
+\newblock Cambridge University Press.
 
 \bibitem[Nilakanta et~al., 2019]{nilakanta2019ensuring}
 Nilakanta, H., Almquist, Z.~W., and Jones, G.~L. (2019).
@@ -155,8 +164,13 @@ Vats, D., Flegal, J.~M., and Jones, G.~L. (2018).
   {M}arkov chain {M}onte {C}arlo.
 \newblock {\em Bernoulli}, 24:1860--1909.
 
-\bibitem[Vats et~al., 2019]{vats2019multivariate}
-Vats, D., Flegal, J.~M., and Jones, G.~L. (2019).
+\bibitem[Vats et~al., 2019a]{vats:fleg:jon:2019}
+Vats, D., Flegal, J.~M., and Jones, G.~L. (2019a).
+\newblock Multivariate output analysis for {M}arkov chain {M}onte {C}arlo.
+\newblock {\em Biometrika}, 106:321--337.
+
+\bibitem[Vats et~al., 2019b]{vats2019multivariate}
+Vats, D., Flegal, J.~M., and Jones, G.~L. (2019b).
 \newblock Multivariate output analysis for markov chain monte carlo.
 \newblock {\em Biometrika}, 106(2):321--337.
 

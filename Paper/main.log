@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  29 JUL 2020 18:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  3 AUG 2020 14:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -389,7 +389,17 @@ subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
 \c@example=\count124
 \c@ass=\count125
 \c@remark=\count126
- (./main.aux)
+ (./main.aux
+
+LaTeX Warning: Label `subfig:var-frob' multiply defined.
+
+
+LaTeX Warning: Label `sub@subfig:var-frob' multiply defined.
+
+
+LaTeX Warning: Label `eq:G-_bias2' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
@@ -501,190 +511,296 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 66.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 148--149
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 151--152
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 153--154
-
- []
-
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 155--156
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--158
-
- []
-
-[3] <plots/gaussian-Targettrace_n1e4.pdf, id=153, 433.62pt x 361.35pt>
+{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
+<plots/gaussian-Targettrace_n1e4.pdf, id=146, 433.62pt x 361.35pt>
 File: plots/gaussian-Targettrace_n1e4.pdf Graphic file (type pdf)
 
 <use plots/gaussian-Targettrace_n1e4.pdf>
 Package pdftex.def Info: plots/gaussian-Targettrace_n1e4.pdf used on input line
- 172.
+ 186.
 (pdftex.def)             Requested size: 234.8775pt x 195.7326pt.
 
-<plots/gaussian-Targettrace_n1e5.pdf, id=154, 433.62pt x 361.35pt>
+<plots/gaussian-Targettrace_n1e5.pdf, id=147, 433.62pt x 361.35pt>
 File: plots/gaussian-Targettrace_n1e5.pdf Graphic file (type pdf)
 
 <use plots/gaussian-Targettrace_n1e5.pdf>
 Package pdftex.def Info: plots/gaussian-Targettrace_n1e5.pdf used on input line
- 178.
+ 192.
 (pdftex.def)             Requested size: 234.8775pt x 195.7326pt.
 
-Overfull \hbox (2.43332pt too wide) in paragraph at lines 170--182
+Overfull \hbox (2.43332pt too wide) in paragraph at lines 184--196
 []$[]$ $[]$ 
  []
 
-<plots/gaussian-acf_n1e4.pdf, id=155, 722.7pt x 289.08pt>
+<plots/gaussian-acf_n1e4.pdf, id=148, 722.7pt x 289.08pt>
 File: plots/gaussian-acf_n1e4.pdf Graphic file (type pdf)
 
 <use plots/gaussian-acf_n1e4.pdf>
-Package pdftex.def Info: plots/gaussian-acf_n1e4.pdf used on input line 189.
+Package pdftex.def Info: plots/gaussian-acf_n1e4.pdf used on input line 203.
 (pdftex.def)             Requested size: 422.77664pt x 169.1089pt.
 
-<plots/gaussian-acf_n1e5.pdf, id=156, 722.7pt x 289.08pt>
+<plots/gaussian-acf_n1e5.pdf, id=149, 722.7pt x 289.08pt>
 File: plots/gaussian-acf_n1e5.pdf Graphic file (type pdf)
 
 <use plots/gaussian-acf_n1e5.pdf>
-Package pdftex.def Info: plots/gaussian-acf_n1e5.pdf used on input line 195.
+Package pdftex.def Info: plots/gaussian-acf_n1e5.pdf used on input line 209.
 (pdftex.def)             Requested size: 422.77664pt x 169.1089pt.
- [4 <./plots/gaussian-Targettrace_n1e4.pdf> <./plots/gaussian-Targettrace_n1e5.
-pdf>] [5 <./plots/gaussian-acf_n1e4.pdf> <./plots/gaussian-acf_n1e5.pdf>] [6] [
-7]
-Underfull \hbox (badness 10000) in paragraph at lines 368--369
+ [3 <./plots/gaussian-Targettrace_n1e4.pdf> <./plots/gaussian-Targettrace_n1e5.
+pdf>] [4 <./plots/gaussian-acf_n1e4.pdf> <./plots/gaussian-acf_n1e5.pdf>] [5] [
+6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 382--383
 
  []
 
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 440--441
+
+Underfull \hbox (badness 10000) in paragraph at lines 454--455
 
  []
 
-[9] [10] [11]
+[8] [9] [10]
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no ¸ in font cmr10!
+ <plots/var-sp_n1e3.pdf, id=282, 361.35pt x 361.35pt>
+File: plots/var-sp_n1e3.pdf Graphic file (type pdf)
+
+<use plots/var-sp_n1e3.pdf>
+Package pdftex.def Info: plots/var-sp_n1e3.pdf used on input line 544.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
+
+<plots/var-sp_n1e4.pdf, id=283, 361.35pt x 361.35pt>
+File: plots/var-sp_n1e4.pdf Graphic file (type pdf)
+
+<use plots/var-sp_n1e4.pdf>
+Package pdftex.def Info: plots/var-sp_n1e4.pdf used on input line 550.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
 
 
-LaTeX Warning: Reference `subfig:var-sp_500' on page 12 undefined on input line
- 525.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: Reference `subfig:var-sp_50000' on page 12 undefined on input li
-ne 525.
+LaTeX Warning: Reference `subfig:var-sp_500' on page 11 undefined on input line
+ 559.
 
-<plots/acf,n=500.pdf, id=291, 578.16pt x 289.08pt>
-File: plots/acf,n=500.pdf Graphic file (type pdf)
- <use plots/acf,n=500.pdf>
-Package pdftex.def Info: plots/acf,n=500.pdf used on input line 548.
-(pdftex.def)             Requested size: 281.85587pt x 140.92703pt.
 
-<plots/acf,n=10000.pdf, id=292, 578.16pt x 289.08pt>
-File: plots/acf,n=10000.pdf Graphic file (type pdf)
+Underfull \hbox (badness 10000) in paragraph at lines 559--560
 
-<use plots/acf,n=10000.pdf>
-Package pdftex.def Info: plots/acf,n=10000.pdf used on input line 554.
-(pdftex.def)             Requested size: 281.85587pt x 140.92703pt.
- <plots/var-ess.pdf, id=293, 505.89pt x 505.89pt>
+ []
+
+<plots/var-acf_n1000.pdf, id=284, 722.7pt x 361.35pt>
+File: plots/var-acf_n1000.pdf Graphic file (type pdf)
+
+<use plots/var-acf_n1000.pdf>
+Package pdftex.def Info: plots/var-acf_n1000.pdf used on input line 564.
+(pdftex.def)             Requested size: 328.82901pt x 144.53743pt.
+
+<plots/var-acf_n10000.pdf, id=285, 722.7pt x 361.35pt>
+File: plots/var-acf_n10000.pdf Graphic file (type pdf)
+
+<use plots/var-acf_n10000.pdf>
+Package pdftex.def Info: plots/var-acf_n10000.pdf used on input line 570.
+(pdftex.def)             Requested size: 328.82901pt x 144.53743pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: Reference `var-acf' on page 11 undefined on input line 579.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 579--580
+
+ []
+
+[11] <plots/var-frob.pdf, id=293, 361.35pt x 361.35pt>
+File: plots/var-frob.pdf Graphic file (type pdf)
+
+<use plots/var-frob.pdf>
+Package pdftex.def Info: plots/var-frob.pdf used on input line 586.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
+ <plots/var-ess.pdf, id=294, 361.35pt x 361.35pt>
 File: plots/var-ess.pdf Graphic file (type pdf)
 
 <use plots/var-ess.pdf>
-Package pdftex.def Info: plots/var-ess.pdf used on input line 565.
-(pdftex.def)             Requested size: 164.41711pt x 164.42001pt.
- [12] [13 <./plots/acf,n=500.pdf> <./plots/acf,n=10000.pdf> <./plots/var-ess.pd
-f>] Excluding 'comment' comment.
-Excluding 'comment' comment.
+Package pdftex.def Info: plots/var-ess.pdf used on input line 592.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
 
-LaTeX Warning: Reference `fig:boom-sp' on page 14 undefined on input line 629.
-
-<plots/boom-acf,n=1000.pdf, id=328, 578.16pt x 289.08pt>
-File: plots/boom-acf,n=1000.pdf Graphic file (type pdf)
-
-<use plots/boom-acf,n=1000.pdf>
-Package pdftex.def Info: plots/boom-acf,n=1000.pdf used on input line 635.
-(pdftex.def)             Requested size: 300.6455pt x 150.32245pt.
-
-<plots/boom-acf,n=50000.pdf, id=329, 578.16pt x 289.08pt>
-File: plots/boom-acf,n=50000.pdf Graphic file (type pdf)
-
-<use plots/boom-acf,n=50000.pdf>
-Package pdftex.def Info: plots/boom-acf,n=50000.pdf used on input line 641.
-(pdftex.def)             Requested size: 300.6455pt x 150.32245pt.
- [14 <./plots/boom-acf,n=1000.pdf> <./plots/boom-acf,n=50000.pdf>]
-
-LaTeX Warning: Reference `fig:run_ess' on page 15 undefined on input line 671.
-
-<plots/boom-ess1.pdf, id=347, 505.89pt x 505.89pt>
-File: plots/boom-ess1.pdf Graphic file (type pdf)
- <use plots/boom-ess1.pdf>
-Package pdftex.def Info: plots/boom-ess1.pdf used on input line 678.
-(pdftex.def)             Requested size: 155.02158pt x 155.02568pt.
-
-Overfull \hbox (14.09364pt too wide) in paragraph at lines 678--679
- [][] 
- []
-
-<plots/boom-ess2.pdf, id=348, 505.89pt x 505.89pt>
-File: plots/boom-ess2.pdf Graphic file (type pdf)
- <use plots/boom-ess2.pdf>
-Package pdftex.def Info: plots/boom-ess2.pdf used on input line 684.
-(pdftex.def)             Requested size: 155.02158pt x 155.02568pt.
-
-Overfull \hbox (14.09364pt too wide) in paragraph at lines 684--685
- [][] 
- []
-
-
-LaTeX Warning: Reference `subfig:boom-pers_1_10_7' on page 15 undefined on inpu
-t line 693.
-
-
-LaTeX Warning: Reference `fig:boom-ess_1_10_7' on page 15 undefined on input li
-ne 693.
-
-[15 <./plots/boom-ess1.pdf> <./plots/boom-ess2.pdf>] [16]
-Underfull \hbox (badness 10000) in paragraph at lines 739--740
+Underfull \hbox (badness 10000) in paragraph at lines 600--601
 
  []
 
-<plots/sensor-trace.pdf, id=390, 505.89pt x 361.35pt>
-File: plots/sensor-trace.pdf Graphic file (type pdf)
 
-<use plots/sensor-trace.pdf>
-Package pdftex.def Info: plots/sensor-trace.pdf used on input line 743.
-(pdftex.def)             Requested size: 328.82707pt x 234.88023pt.
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[12 <./plots/var-sp_n1e3.pdf> <./plots/var-sp_n1e4.pdf>] [13 <./plots/var-acf_n
+1000.pdf> <./plots/var-acf_n10000.pdf>]
+<plots/boom-3d_density_plot_1_3_8.pdf, id=335, 361.35pt x 361.35pt>
+File: plots/boom-3d_density_plot_1_3_8.pdf Graphic file (type pdf)
+
+<use plots/boom-3d_density_plot_1_3_8.pdf>
+Package pdftex.def Info: plots/boom-3d_density_plot_1_3_8.pdf used on input lin
+e 642.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
+
+<plots/boom-3d_density_plot_1_10_7.pdf, id=336, 361.35pt x 361.35pt>
+File: plots/boom-3d_density_plot_1_10_7.pdf Graphic file (type pdf)
+
+<use plots/boom-3d_density_plot_1_10_7.pdf>
+Package pdftex.def Info: plots/boom-3d_density_plot_1_10_7.pdf used on input li
+ne 648.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
 
 
-LaTeX Warning: Reference `fig:sensoG-ACF' on page 17 undefined on input line 76
-7.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-[17 <./plots/sensor-trace.pdf>]
-Overfull \hbox (9.37782pt too wide) in paragraph at lines 897--897
+<plots/boom-sp_1_3_8.pdf, id=341, 361.35pt x 361.35pt>
+File: plots/boom-sp_1_3_8.pdf Graphic file (type pdf)
+
+<use plots/boom-sp_1_3_8.pdf>
+Package pdftex.def Info: plots/boom-sp_1_3_8.pdf used on input line 663.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
+
+<plots/boom-sp_1_10_7.pdf, id=342, 361.35pt x 361.35pt>
+File: plots/boom-sp_1_10_7.pdf Graphic file (type pdf)
+
+<use plots/boom-sp_1_10_7.pdf>
+Package pdftex.def Info: plots/boom-sp_1_10_7.pdf used on input line 669.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 678--679
+
+ []
+
+[14 <./plots/var-frob.pdf> <./plots/var-ess.pdf>]
+<plots/boom-acf_1_3_8_n1000.pdf, id=366, 722.7pt x 361.35pt>
+File: plots/boom-acf_1_3_8_n1000.pdf Graphic file (type pdf)
+
+<use plots/boom-acf_1_3_8_n1000.pdf>
+Package pdftex.def Info: plots/boom-acf_1_3_8_n1000.pdf used on input line 684.
+
+(pdftex.def)             Requested size: 375.80615pt x 144.53743pt.
+
+<plots/boom-acf_n_1_3_8_n1e+05.pdf, id=367, 722.7pt x 361.35pt>
+File: plots/boom-acf_n_1_3_8_n1e+05.pdf Graphic file (type pdf)
+
+<use plots/boom-acf_n_1_3_8_n1e+05.pdf>
+Package pdftex.def Info: plots/boom-acf_n_1_3_8_n1e+05.pdf used on input line 6
+90.
+(pdftex.def)             Requested size: 375.80615pt x 144.53743pt.
+
+<plots/boom-acf_1_10_7_n1000.pdf, id=368, 722.7pt x 361.35pt>
+File: plots/boom-acf_1_10_7_n1000.pdf Graphic file (type pdf)
+
+<use plots/boom-acf_1_10_7_n1000.pdf>
+Package pdftex.def Info: plots/boom-acf_1_10_7_n1000.pdf used on input line 700
+.
+(pdftex.def)             Requested size: 375.80615pt x 144.53743pt.
+
+<plots/boom-ess_1_3_8.pdf, id=369, 361.35pt x 361.35pt>
+File: plots/boom-ess_1_3_8.pdf Graphic file (type pdf)
+
+<use plots/boom-ess_1_3_8.pdf>
+Package pdftex.def Info: plots/boom-ess_1_3_8.pdf used on input line 712.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
+
+<plots/boom-ess_1_10_7.pdf, id=370, 361.35pt x 361.35pt>
+File: plots/boom-ess_1_10_7.pdf Graphic file (type pdf)
+
+<use plots/boom-ess_1_10_7.pdf>
+Package pdftex.def Info: plots/boom-ess_1_10_7.pdf used on input line 718.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 727--728
+
+ []
+
+[15 <./plots/boom-3d_density_plot_1_3_8.pdf> <./plots/boom-3d_density_plot_1_10
+_7.pdf>] [16 <./plots/boom-sp_1_3_8.pdf> <./plots/boom-sp_1_10_7.pdf>] [17 <./p
+lots/boom-acf_1_3_8_n1000.pdf> <./plots/boom-acf_n_1_3_8_n1e+05.pdf> <./plots/b
+oom-acf_1_10_7_n1000.pdf>] [18 <./plots/boom-ess_1_3_8.pdf> <./plots/boom-ess_1
+_10_7.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 781--782
+
+ []
+
+<plots/sensor-sp_loc1.pdf, id=463, 361.35pt x 361.35pt>
+File: plots/sensor-sp_loc1.pdf Graphic file (type pdf)
+
+<use plots/sensor-sp_loc1.pdf>
+Package pdftex.def Info: plots/sensor-sp_loc1.pdf used on input line 787.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
+
+<plots/sensor-trace_loc1.pdf, id=464, 505.89pt x 505.89pt>
+File: plots/sensor-trace_loc1.pdf Graphic file (type pdf)
+
+<use plots/sensor-trace_loc1.pdf>
+Package pdftex.def Info: plots/sensor-trace_loc1.pdf used on input line 793.
+(pdftex.def)             Requested size: 234.8775pt x 234.88132pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<plots/sensor-acf_n5e3.pdf, id=465, 361.35pt x 361.35pt>
+File: plots/sensor-acf_n5e3.pdf Graphic file (type pdf)
+
+<use plots/sensor-acf_n5e3.pdf>
+Package pdftex.def Info: plots/sensor-acf_n5e3.pdf used on input line 805.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
+
+<plots/sensor-acf_n5e4.pdf, id=466, 361.35pt x 361.35pt>
+File: plots/sensor-acf_n5e4.pdf Graphic file (type pdf)
+
+<use plots/sensor-acf_n5e4.pdf>
+Package pdftex.def Info: plots/sensor-acf_n5e4.pdf used on input line 811.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 820--821
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 822--823
+
+ []
+
+[19] <plots/sensor-frob.pdf, id=480, 361.35pt x 361.35pt>
+File: plots/sensor-frob.pdf Graphic file (type pdf)
+
+<use plots/sensor-frob.pdf>
+Package pdftex.def Info: plots/sensor-frob.pdf used on input line 830.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
+
+<plots/sensor-ess.pdf, id=481, 361.35pt x 361.35pt>
+File: plots/sensor-ess.pdf Graphic file (type pdf)
+ <use plots/sensor-ess.pdf>
+Package pdftex.def Info: plots/sensor-ess.pdf used on input line 836.
+(pdftex.def)             Requested size: 187.89914pt x 187.89757pt.
+
+[20 <./plots/sensor-sp_loc1.pdf> <./plots/sensor-trace_loc1.pdf>] [21 <./plots/
+sensor-acf_n5e3.pdf> <./plots/sensor-acf_n5e4.pdf>]
+Overfull \hbox (9.37782pt too wide) in paragraph at lines 972--972
 [] 
  []
 
-[18]
-Overfull \hbox (19.69678pt too wide) in paragraph at lines 930--930
+[22 <./plots/sensor-frob.pdf> <./plots/sensor-ess.pdf>]
+Overfull \hbox (19.69678pt too wide) in paragraph at lines 1005--1005
 [] 
  []
 
-[19] [20] [21]
-Overfull \hbox (0.85567pt too wide) in paragraph at lines 1067--1067
+[23] [24] [25]
+Overfull \hbox (0.85567pt too wide) in paragraph at lines 1142--1142
 [] 
  []
 
-[22] [23]
-Overfull \hbox (4.68176pt too wide) in paragraph at lines 1115--1119
+[26]
+Overfull \hbox (4.68176pt too wide) in paragraph at lines 1190--1194
 \OT1/cmr/m/n/10.95 Under our as-sump-tions, $\OML/cmm/m/it/10.95 b[] [] [] n=n 
 \OMS/cmsy/m/n/10.95 ! \OT1/cmr/m/n/10.95 0$ and $\OML/cmm/m/it/10.95  \OT1/cmr/
 m/n/10.95 (\OML/cmm/m/it/10.95 n\OT1/cmr/m/n/10.95 ) = \OML/cmm/m/it/10.95 o\OT
@@ -693,57 +809,56 @@ m/n/10.95 (\OML/cmm/m/it/10.95 n\OT1/cmr/m/n/10.95 ) = \OML/cmm/m/it/10.95 o\OT
 msy/m/n/10.95 !
  []
 
+[27]
 
-LaTeX Warning: Reference `ass:sve_consis' on page 24 undefined on input line 11
-46.
+LaTeX Warning: Reference `ass:sve_consis' on page 28 undefined on input line 12
+21.
 
-[24]
-Overfull \hbox (11.52263pt too wide) in paragraph at lines 1170--1170
+[28]
+Overfull \hbox (11.52263pt too wide) in paragraph at lines 1245--1245
 [] 
  []
 
-[25]
-Overfull \hbox (8.18376pt too wide) in paragraph at lines 1225--1225
-[] 
- []
-
-[26] [27] [28] [29] <plots/spatio-acf.pdf, id=555, 505.89pt x 505.89pt>
+[29] [30] [31] [32] [33] <plots/spatio-acf.pdf, id=707, 505.89pt x 505.89pt>
 File: plots/spatio-acf.pdf Graphic file (type pdf)
 
 <use plots/spatio-acf.pdf>
-Package pdftex.def Info: plots/spatio-acf.pdf used on input line 1535.
+Package pdftex.def Info: plots/spatio-acf.pdf used on input line 1455.
 (pdftex.def)             Requested size: 258.36668pt x 258.371pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-(./main.bbl [30] [31 <./plots/spatio-acf.pdf>] [32]
+[34] (./main.bbl [35 <./plots/spatio-acf.pdf>] [36]
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no ¸ in font cmr10!
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1579.
- [33]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1579.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1499.
+ [37]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1499.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1579.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1579.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1499.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1499.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 4F16A5302A10ABD7DD8A38225E088505;1413.
+(rerunfilecheck)             Checksum: DF825E66AC296962F21A93CB4EAF91D9;1492.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1579.
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1499.
  ) 
 Here is how much of TeX's memory you used:
- 10280 strings out of 493089
- 150876 string characters out of 6134842
- 285073 words of memory out of 5000000
- 13491 multiletter control sequences out of 15000+600000
+ 10396 strings out of 493089
+ 153882 string characters out of 6134842
+ 291963 words of memory out of 5000000
+ 13580 multiletter control sequences out of 15000+600000
  15052 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,17n,38p,1380b,598s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,17n,38p,1585b,508s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
@@ -763,10 +878,10 @@ exmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2015/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2015/texm
 f-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (33 pages, 1078260 bytes).
+Output written on main.pdf (37 pages, 3114660 bytes).
 PDF statistics:
- 688 PDF objects out of 1000 (max. 8388607)
- 574 compressed objects within 6 object streams
- 144 named destinations out of 1000 (max. 500000)
- 234 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 848 PDF objects out of 1000 (max. 8388607)
+ 702 compressed objects within 8 object streams
+ 158 named destinations out of 1000 (max. 500000)
+ 307 words of extra memory for PDF output out of 10000 (max. 10000000)
 
