@@ -1,5 +1,5 @@
 ################################################################
-##This code is responsible for simulating and storing R objects 
+##This code is responsible for simulating and storing R objects
 ##that are later used for plotting figures and making tables.
 ################################################################
 
@@ -26,23 +26,23 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
     start[m-i+1,] <- -2*i*sqrt(diag(truth))
   }
 
-  master.chain.rep <- list()
-  
-  for (i in 1:freq){
-    print(paste("Sampling percentage completion: ", i*100/freq))
-    chains <- array(0, dim = c(max(check.pts), p, m))
-    
-    for (j in 1:m){
-      chains[,,j] <- markov.chain(phi, omega, max(check.pts), start[j,])
-    }
-    master.chain.rep[[i]] <- chains
-  }
+  #master.chain.rep <- list()
+
+  #for (i in 1:freq){
+  #  print(paste("Sampling percentage completion: ", i*100/freq))
+   # chains <- array(0, dim = c(max(check.pts), p, m))
+
+  #  for (j in 1:m){
+   #   chains[,,j] <- markov.chain(phi, omega, max(check.pts), start[j,])
+  #  }
+   # master.chain.rep[[i]] <- chains
+  #}
 
   for (i in 1:length(check.pts)){
 
     nsim <- check.pts[i]
     critical <- ((nsim*m - 1)*p/(nsim*m  - p))*qf(.95, df1 = p, df2 = (nsim*m-p))
-    
+
     asv.samp <- array(0, dim = c(p,p,freq))
     rsv.samp <- array(0, dim = c(p,p,freq))
     asv.coverage <- rep(0,freq)
@@ -50,7 +50,12 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
 
     for (j in 1:freq){
       if(j %% (freq/10) == 0) print(paste("Percentage completion: ", round(j/freq*100, 2), "for nsim = ", nsim))
-      chain <- master.chain.rep[[j]][1:nsim,,]
+      #chain <- master.chain.rep[[j]][1:nsim,,]
+
+      chain <- array(0, dim = c(nsim, p, m))
+      for (k in 1:m)
+        chain[,,k] <- markov.chain(phi, omega, nsim, start[j,])
+
       sve <- array(0, dim = c(p,p,m))
       rsve <- array(0, dim = c(p,p,m))
       b <- rep(0,m)
@@ -88,40 +93,40 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
 convergence <- function(min, max, step, phi, omega, m, rep=100){
 
   p <- ncol(phi)
-  truth <- target.sigma(phi, omega)
-  start <- matrix(0, nrow = m, ncol = p)  #only depends on C
+  start <- matrix(0, nrow = m, ncol = p)
 
   for(i in floor(m/2):1){
     start[i,] <- 2*i*sqrt(diag(truth))
     start[m-i+1,] <- -2*i*sqrt(diag(truth))
   }
-  master.chain.rep <- array(0,dim = c(max, p, m, rep))
-
-  for (r in 1:rep){
-    for (k in 1:m){
-      master.chain.rep[,,k,r] <- markov.chain(phi, omega, max, start[k,])
-    }
-  }
 
   conv.pts <- seq(min, max, step)
   l <- length(conv.pts)
-  asv.samp <- array(0, dim = c(p,p,l))
-  rsv.samp <- array(0, dim = c(p,p,l))
-  ess.asv.samp <- list()
-  ess.rsv.samp <- list()
+  asv <- list()
+  rsv <- list()
+  ess.asv <- list()
+  ess.rsv <- list()
 
-  for (j in 1:l){
-    
-    nsim = conv.pts[j]
-    sve.rep <- array(0, dim = c(p, p, rep))
-    rsve.rep <- array(0, dim = c(p, p, rep))
-    lambda.rep <- array(0, dim = c(p,p,rep))
-    ess.asv.rep <- rep(0,rep)
-    ess.rsv.rep <- rep(0,rep)
+  for (r in 1:rep){
 
-    for (r in 1:rep){
-      
-      chain <- master.chain.rep[1:nsim,,,r]
+    print(paste("Sampling for rep =", r))
+
+    asv.samp <- array(0, dim = c(p, p, l))
+    rsv.samp <- array(0, dim = c(p, p, l))
+    ess.asv.samp <- rep(0, l)
+    ess.rsv.samp <- rep(0, l)
+
+    master.chain <- array(0, dim = c(max, p, m))
+
+    for (k in 1:m){
+      print(paste("Sampling chain - ", k))
+      master.chain[,,k] <- markov.chain(phi, omega, max, start[k,])
+    }
+
+    for (j in 1:l){
+
+      nsim <- conv.pts[j]
+      chain <- master.chain[1:nsim,,]
       sve <- array(0, dim = c(p,p,m))
       rsve <- array(0, dim = c(p,p,m))
       smpl.cov <- array(0, dim = c(p,p,m))
@@ -132,33 +137,34 @@ convergence <- function(min, max, step, phi, omega, m, rep=100){
         smpl.cov[,,k] <- cov(chain[,,k])
       }
 
-      b.avg <- mean(b)
+      b.avg <- ceiling(mean(b))
+
       global.mean <- apply(chain,2,mean)
 
       for (k in 1:m){
-        chain.cen.loc <- scale(chain[,,k], scale = FALSE)  ## locally cented chains
+        chain.cen.loc <- scale(chain[,,k], scale = FALSE)  ## X_st - bar(X)_s
         sve[,,k] <- mSVEfft(A = chain.cen.loc, b = b.avg)
-        chain.cen <- scale(chain[,,k], center = global.mean, scale =FALSE)   ## globally centered chains
+        chain.cen <- scale(chain[,,k], center = global.mean, scale =FALSE)
         rsve[,,k] <- mSVEfft(A = chain.cen, b = b.avg)
 
       }
 
-      sve.rep[,,r] <- apply(sve, c(1,2), mean)
-      rsve.rep[,,r] <- apply(rsve, c(1,2), mean)
-      lambda.rep[,,r] <- apply(smpl.cov, c(1,2), mean)
-      ess.asv.rep[r] <- (det(lambda.rep[,,r])/det(sve.rep[,,r]))^(1/p)
-      ess.rsv.rep[r] <- (det(lambda.rep[,,r])/det(rsve.rep[,,r]))^(1/p)
-      
+      asv.samp[,,j] <- apply(sve, c(1,2), mean)
+      rsv.samp[,,j] <- apply(rsve, c(1,2), mean)
+      lambda.rep <- apply(smpl.cov, c(1,2), mean)
+      ess.asv.samp[j] <- (det(lambda.rep)/det(asv.samp[,,j]))^(1/p)
+      ess.rsv.samp[j] <- (det(lambda.rep)/det(rsv.samp[,,j]))^(1/p)
+
     }
 
-    asv.samp[,,j] <- apply(sve.rep, c(1,2), mean)
-    rsv.samp[,,j] <- apply(rsve.rep, c(1,2), mean)
-    ess.asv.samp[[j]] <- ess.asv.rep
-    ess.rsv.samp[[j]] <- ess.rsv.rep
-    print(paste("Percentage completion: ", round(100*j/l, 2)))
-    
+    asv[[r]] <- asv.samp
+    rsv[[r]] <- rsv.samp
+    ess.asv[[r]] <- ess.asv.samp
+    ess.rsv[[r]] <- ess.rsv.samp
+
+    save(asv, rsv, ess.asv, ess.rsv,
+         file = paste("Out/conv_data_min", min, "_max", max, ".Rdata", sep = ""))
   }
-  save(asv.samp,rsv.samp, ess.asv.samp, ess.rsv.samp, file = paste(paste("Out/run_data", m, min, max, sep = "_"), ".Rdata", sep = ""))
 
 }
 
@@ -177,17 +183,17 @@ for (i in 1:(p-1)){
   }
 }
 
-phi <- diag(c(.9999, .001))
+phi <- diag(c(.999, .001))
 dummy <- matrix(1:p^2, nrow = p, ncol = p)
 dummy <- qr.Q(qr(dummy))
 phi <- dummy %*% phi %*% t(dummy)
 
-check.pts <- c(1e3, 5e3, 1e4, 5e4, 1e5)
+check.pts <- c(5e2, 1e3, 5e3, 1e4, 5e4, 1e5)
 freq <- 1e3
 rep <- 50
 c.prob <- .95
 min <- 5e2
-max <- 1e5
+max <- 5e4
 step <- 500
 conv.pts <- seq(min, max, step)
 
