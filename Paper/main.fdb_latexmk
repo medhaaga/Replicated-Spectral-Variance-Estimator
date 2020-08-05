@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex main"] 1596443736 "main.aux" "main.bbl" "main" 1596444607
+["bibtex main"] 1596629224 "main.aux" "main.bbl" "main" 1596630164
   "/usr/local/texlive/2015/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "main.aux" 1596444607 22251 7a8afa571db1d7b048664b3eab58e1a3 ""
+  "main.aux" 1596630163 21657 8f4953e11cb7ecddb7a788e183892c2a ""
   "main.bcf" 0 -1 0 ""
   "sample.bib" 1596431844 130998 b8066452edd637f7494e3961f5a4ff32 ""
   (generated)
-  "main.bbl"
   "main.blg"
-["pdflatex"] 1596444606 "main.tex" "main.pdf" "main" 1596444607
-  "./main.out" 1596444607 1492 df825e66ac296962f21a93cb4eaf91d9 ""
+  "main.bbl"
+["pdflatex"] 1596630163 "main.tex" "main.pdf" "main" 1596630164
+  "./main.out" 1596630163 1492 fcc9d35c601a377009a91cf578e7ce97 ""
   "./plots/boom-3d_density_plot_1_10_7.pdf" 1596410944 501931 449cde455083be7b772a9d426da0522c ""
   "./plots/boom-3d_density_plot_1_3_8.pdf" 1596410944 129169 774e746c2579ff59368210d9f4415c0b ""
   "./plots/boom-acf_1_10_7_n1000.pdf" 1596410944 5162 6b4309e7da7e19ee035ff6826fbd6a1d ""
@@ -141,10 +141,10 @@
   "/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1432479641 1764542 91654ba72bdb667e84ea24f076ae16d8 ""
   "/usr/local/texlive/2015/texmf-var/web2c/pdftex/pdflatex.fmt" 1432479681 3849859 39a7d258195bde2394e244961601fbc5 ""
   "/usr/local/texlive/2015/texmf.cnf" 1432479636 577 0d611272082f3cdb8e80e09a3c69cf07 ""
-  "main.aux" 1596444607 22251 7a8afa571db1d7b048664b3eab58e1a3 ""
-  "main.bbl" 1596443736 7435 2c6dafb65a51e8a3f4ace7da7d37f31e "bibtex main"
-  "main.out" 1596444607 1492 df825e66ac296962f21a93cb4eaf91d9 ""
-  "main.tex" 1596444606 113591 9fb38bb0eac0cde6125d2aed50da497a ""
+  "main.aux" 1596630163 21657 8f4953e11cb7ecddb7a788e183892c2a ""
+  "main.bbl" 1596629224 7435 2c6dafb65a51e8a3f4ace7da7d37f31e "bibtex main"
+  "main.out" 1596630163 1492 fcc9d35c601a377009a91cf578e7ce97 ""
+  "main.tex" 1596630163 111343 b7ad5f961fa84df3039cc735a3ff4723 ""
   "plots/boom-3d_density_plot_1_10_7.pdf" 1596410944 501931 449cde455083be7b772a9d426da0522c ""
   "plots/boom-3d_density_plot_1_3_8.pdf" 1596410944 129169 774e746c2579ff59368210d9f4415c0b ""
   "plots/boom-acf_1_10_7_n1000.pdf" 1596410944 5162 6b4309e7da7e19ee035ff6826fbd6a1d ""
@@ -173,6 +173,6 @@
   "plots/var-sp_n1e4.pdf" 1596410944 1136828 3e62a6df8279be3b8befa57c1ad750a0 ""
   (generated)
   "main.pdf"
-  "main.log"
   "main.aux"
   "main.out"
+  "main.log"

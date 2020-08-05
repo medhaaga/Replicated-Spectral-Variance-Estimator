@@ -130,18 +130,18 @@ A key quantity of interest that drives MCMC output analysis is the autocovarianc
 
 % Markov chain Monte Carlo (MCMC) is a sampling method used to obtain serially correlated realizations from a desired probability distribution when i.i.d. sampling is difficult. Due to this serial correlation in samples, a larger number of MCMC samples are required to make inferences about the target distribution as compared to the independent ones. Therefore, it becomes imperative for an MCMC practitioner to have an idea about the underlying dependence structure in the Markov chains. Autocovariance function (ACF) characterizes this dependence at a particular lag $k$. 
 
-Let $F$ be the target distribution with mean $\mu$ defined on the set $\X \subseteq \mathbb{R}^p$ equipped with a countably generated Borel $\sigma$-field $\mathcal{B}(\X)$. Let $\{X_t\}$ be an $F$-Harris ergodic stationary Markov chain \citep[see][for definitions]{meyn:twee:2009} employed to learn characteristics about $F$.
+Let $F$ be the target distribution with mean $\mu$ defined on the set $\X \subseteq \mathbb{R}^p$ equipped with a countably generated Borel $\sigma$-field $\mathcal{B}(\X)$. For $s = 1, \dots, m$, let $\{X_{st}; \; t \in \mathbb{Z}\}$ be the $s^{th}$ $F$-Harris ergodic stationary Markov chain \citep[see][for definitions]{meyn:twee:2009} employed to learn characteristics about $F$.
 % If $\bar{X} = n^{-1} \sum_{t=1}^{n}X_t$ , then with probability 1, $\bar{X} \to \mu$ as $n \to \infty$. \\
-The Markov chain is covariance stationary so that
-th ACvF at lag $k$ depends only on $k$ and is defined as 
+The process is covariance stationary so that
+the ACvF at lag $k$ depends only on $k$ and is defined as 
 %
 \[
-    \Gamma(k) = \Cov_F(X_1, X_{1+k})= \mathbb{E}_F \left[(X_1 - \mu)(X_{1+k} - \mu)^T \right]\,.
+    \Gamma(k) = \Cov_F(X_{s1}, X_{s\,1+k})= \mathbb{E}_F \left[(X_{s1} - \mu)(X_{s\,1+k} - \mu)^T \right]\,.
 \]
-Estimating $\Gamma(k)$ is critical to assessing the quality of the sampler and the quality of  sample statistics. The standard estimator is the sample autocovariance matrix at lag $k$
+Estimating $\Gamma(k)$ is critical to assessing the quality of the sampler and the quality of sample statistics. Let $\bar{X}_s = n^{-1} \sum_{t=1}^{n} X_{st}$ denote the Monte Carlo estimator of $\mu$ from the $s$th chain. The standard estimator is the sample autocovariance matrix at lag $k$ for the $s$th chain is
 %
 \begin{equation} \label{eq:empirical_acf}
-    \hat{\Gamma}(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}} \left(X_t - \bar{X} \right) \left(X_{t+\abs{k}} - \bar{X} \right)^T\,.
+    \hat{\Gamma}_s(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}} \left(X_{st} - \bar{X}_s \right) \left(X_{s t+\abs{k}} - \bar{X}_s \right)^T\,.
 \end{equation}
 %
 % It is a known fact that most of the Markov chains obtained from practical MCMC algorithms are not stationary. Regardless, Equation~\ref{eq:empirical_acf} provides the empirical estimator for ACF at a particular lag for the Markov chain with any initial distribution (\cite{geyer2011introduction}).\\
@@ -193,7 +193,7 @@ Two Markov chains are started at each mode.  Figure~\ref{fig:gaussian-trace} ind
    \caption{$n = 10^5$}
    \label{subfig:gauss-trace_1e5}
  \end{subfigure}
-    \caption{Target density and Density plot for two chains starting at different values for a Gaussian mixture model with mixture probability $= 0.7, \; \mu_1 = -5, \; \mu_2 = 5, \; \sigma_1 = 1, \textrm{ and } \sigma_2 = 0.5$. (a) $n = 10^4$; chains don't interact. (b) $n = 10^5$; chains interact.}
+    \caption{Target density and trace plots for two chains starting at different values.}
     \label{fig:gaussian-trace}
 \end{figure}
 
@@ -219,114 +219,73 @@ Two Markov chains are started at each mode.  Figure~\ref{fig:gaussian-trace} ind
 
 \section{Globally-centered autocovariance} \label{sec:G-ACF}
 
- Suppose we have $m$ replications of Markov chains for same target distribution and $\{X_{st}; \; t \in \mathbb{Z}\}$ denote the $s^{th}$ Markov chain. Let the sample mean of $s^{th}$ Markov chain be denoted by $\bar{X}_s$ and the global mean by $\bar{\bar{X}} = \sum_{s = 1}^{m}\bar{X}_s/m$. The global mean provides a better estimate for the expectation value when the number of simulation per chain are not sufficient for the convergence to kick in. The globally-centered autocovariance function (G-ACF) for the $s^{th}$ Markov chain is given by:
+Recall that we run $m$ independent $F$-ergodic Markov chains denoted by $\{X_{st}; \; t \in \mathbb{Z}\}$ for the $s^{th}$ chain. Let the sample mean of the $s^{th}$ Markov chain be $\bar{X}_s = n^{-1} \sum_{t=1}^{n} X_{st}$ and the global mean by $\bar{\bar{X}} = m^{-1}\sum_{s = 1}^{m}\bar{X}_s$. The global mean is naturally superior estimator of $\mu$ than $\bar{X}_s$. We define the globally-centered autocovariance function (G-ACvF) estimator for the $s^{th}$ Markov chain as
 %
 \[
 \hat{\Gamma}_{G,s}(k) = \dfrac{1}{n} \sum_{t=1}^{n-k}(X_{st}-\bar{\bar{X}})(X_{s(t+k)}-\bar{\bar{X}})^T,
 \]
-and the averaged globally-centered ACF over all $m$ chains is given by 
+In the event that all $m$ Markov chains have been run long enough that $\bar{X}_s \approx \bar{\bar{X}}$ are similar, then  $\hat{\Gamma}_{s} (k) \approx \hat{\Gamma}_{G,s}(k)$. However, for shorter runs or for slow mixing chains, $\Gamma(k)$ is more appropriately estimated by $\hat{\Gamma}_{G,s}$ as it utilizes information from all chains and accounts for disparity between estimates of $\mu$. We quantify the gains in  bias  for the G-ACvF estimator below.
+% If the starting points of these parallel Markov chains are sufficiently dispersed, G-ACF provides more realistic estimation of lag covariances. \cite{priestley1981spectral} shows that the empirical estimator in Equation \ref{eq:empirical_acf} is biased with the main bias term equal to $\abs{k}\Gamma(k)/n$, ignoring the small order terms arising due to estimation of $\mu$. Though, an unbiased estimator with a divisor of $n - \abs{k}$ instead of $n$ exists, the biased estimator is preferred for its lower mean square error for larger relative $k$  (\cite{priestley1981spectral})
+Let 
 \[
-\hat{\Gamma}_G(k) = \dfrac{1}{m}\sum_{s=1}^m \hat{\Gamma}_{G,s}(k)\;.
+\Phi^{(q)} = \sum_{ k= -\infty}^{\infty}\abs{k}^q \Gamma(k)\,,
 \]
-If the starting points of these parallel Markov chains are sufficiently dispersed, G-ACF provides more realistic estimation of lag covariances. \cite{priestley1981spectral} shows that the empirical estimator in Equation \ref{eq:empirical_acf} is biased with the main bias term equal to $\abs{k}\Gamma(k)/n$, ignoring the small order terms arising due to estimation of $\mu$. Though, an unbiased estimator with a divisor of $n - \abs{k}$ instead of $n$ exists, the biased estimator is preferred for its lower mean square error for larger relative $k$  (\cite{priestley1981spectral})
+and let $\Phi^{(1)}$ be denoted by $\Phi$.  The proof of the following theorem is available in Appendix~\ref{appendix:bias}.
 
-% \subsection{Theoretical results} % (fold)
-% \label{sub:theoretical_results}
-
-% subsection theoretical_results (end)
-
-The bias for G-ACF is similar to the bias of sample autocovariance estimator in case of single chain except for a few small order terms that shall be later addressed in theorem \ref{th:G-_expec}. Before getting to the bias results for $\hat{\Gamma}_{RAV}(k)$ for any lag $k$, we introduce an additional notation. For $q \geq 1$, we define
+\begin{theorem} \label{th:G-_expec} Let $\E_F \|X_{11}\|^{2 + \delta} < \infty$ for some $\delta > 0$. Let $P$ be a  polynomially ergodic Markov chain of order $\xi > (2 + \epsilon)/(1 + 2/\delta)$ for some $\epsilon > 0$. Then,
 \[
-\Phi^{(q)} = \sum\limits_{-\infty}^{\infty}\abs{k}^q \|\Gamma(k)\|
-\]
-We denote $\Phi^{(1)} \textrm{ by } \Phi$. 
-
-The proof of the following theorem is available in Appendix~\ref{appendix:bias}.
-
-{\color{blue} Fix the proof for this.}
-\begin{theorem} \label{th:G-_expec} Under stationarity,
-\[
-   \mathbb{E} \left[\hat{\Gamma}_{G,s}(k) \right] = \left(1- \dfrac{|k|}{n}\right) \left(\Gamma(k) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2}\right)  + o \left(n^{-2} \right)\,,
+   \mathbb{E}_F\left[\hat{\Gamma}_{G,s}(k) \right] = \left(1- \dfrac{|k|}{n}\right) \left(\Gamma(k) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2}\right)  + o \left(n^{-2} \right)\,,
 \]
 and consequently,
 \[
-\mathbb{E} \left[\hat{\Gamma}_{G,s}(k) - \hat{\Gamma}(k)_s \right] = -\dfrac{\abs{k}}{n}\Gamma(k) - \dfrac{1}{m}\left(1- \dfrac{|k|}{n}\right)\left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right) + o\left(n^{-2} \right)\,. 
+\mathbb{E}_F\left[\hat{\Gamma}_{G,s}(k) - \hat{\Gamma}_s(k) \right] = -\dfrac{\abs{k}}{n}\Gamma(k) - \dfrac{1}{m}\left(1- \dfrac{|k|}{n}\right)\left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right) + o\left(n^{-2} \right)\,. 
 \]
-   % \[
-   % \mathbb{E} \left[\hat{\Gamma}_{G}(k) \right] = \left(1- \dfrac{|k|}{n}\right)\left(\Gamma(k) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2}\right)  + \dfrac{2(m-1)}{m}\dfrac{\abs{k}}{n^2} \left(\Sigma - \sum_{h=0}^{n-1}\Gamma(h)\right) + o(n^{-2})
-   % \]
 \end{theorem}
 
-% \begin{proof}
-
-%  We know that $\hat{\Gamma}_s(k)$ is asymptotically unbiased with a $o(1)$ bias term that remains fixed for any $k$. The bias term is given by \cite{priestley1981spectral} as 
- 
-%  \begin{equation} \label{eq:priestly}
-%      \mathbb{E}[\hat{\Gamma}(k)] = \left(1- \dfrac{\abs{k}}{n}\right)\left(\Gamma(k) - \Var{(\bar{X})}
-%  \right)
-%  \end{equation}
-
-% As a consequence, if $\Var(\bar{X})$ is finite, then $\Var(\bar{X}) \to 0 \textrm{ as } n \to \infty$. We can break $\hat{\Gamma}_{G-}$ into four parts for all $k \geq 1$ as:
-%  \[
-%  \hat{\Gamma}_{G} =  \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Gamma}_s(k) - \dfrac{1}{mn}\sum_{s=1}^{m}\sum_{t=1}^{|k|}A_{st}^T - \dfrac{1}{mn}\sum_{s=1}^{m}\sum_{t=n-|k|+1}^{n}A_{st} + \dfrac{n-|k|}{mn}\sum_{s=1}^{m}(\bar{X}_s - \bar{\bar{X}})(\bar{X}_s - \bar{\bar{X}})^T\,,
-%  \]
-% %
-% where $A_{st} = (X_{st}-\bar{X}_s)(\bar{X}_s - \bar{\bar{X}})^T$\\
-% The expectation value of the first term is given by equation \ref{eq:priestly} and \ref{eq:song} while the other three terms contribute $o(1)$ terms. The complete proof evaluating the expectation values of last three terms can be found in Appendix subsection \ref{appendix:bias}.
-% \end{proof}
-
-% \begin{remark} \label{rmrk:exp_G-f_minus_acf}
-% Using theorem \ref{th:G_expec} and equation \ref{eq:priestly},
-% \[
-% \mathbb{E} \left[\hat{\Gamma}_{G}(k) - \hat{\Gamma}(k) \right] = \dfrac{\abs{k}}{n}\left(1 - \dfrac{1}{m}\right)\left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right) + \dfrac{2(m-1)}{m}\dfrac{\abs{k}}{n^2} \left(\Sigma - \sum_{h=0}^{n-1}\Gamma(h)\right) + o(n^{-2})
-% \]
-% We know that the sample autocovariance $\hat{\Gamma}(k)$ underestimates the truth due to a negative bias of $\abs{k}\Gamma(k)/n$ for finite $n$. However, in practice, it is preferred to overestimate the autocovariance for finite $n$ than to underestimate it in order to have a more realistic idea about the correlation in a Markov chain at a particular lag.  Note that the RHS in the above expression is positive. As a consequence, G-ACF will counter this negative bias and give more reliable estimates for ACF. 
-
-% \end{remark}
+\begin{remark}
+Polynomial ergodicity and the moment conditions are required to ensure $\Phi$ and $\Sigma$ are finite. The above result can be stated more generally for $\alpha$-mixing processes, but we limit our attention to Markov chains. 
+\end{remark}
 
 
-When $m = 1$, $\hat{\Gamma}_G(k)$ corresponds to $\hat{\Gamma}(k)$, the expectation of which can be found in \cite{priestley1981spectral}. Theorem~\ref{th:G-_expec} implies that the globally-centered autocovariances are asymptotically unbiased and exhibit reduced bias in finite samples compared to locally-centered autocovariances. The consequences of this are particularly pertinent for the diagonals of $\Gamma$. Special interest is also in the lag-0 autocovariance, that is, the variance of the target distribution. 
-
-
+When $m = 1$, $\hat{\Gamma}_{G,s}(k) = \hat{\Gamma}_{s}(k)
+$ the bias results for which can be found in \cite{priestley1981spectral}. Since lag-covariances are typically positive in MCMC, Theorem~\ref{th:G-_expec} implies that the G-ACvF estimators are asymptotically unbiased and exhibit reduced bias in finite samples compared to locally-centered ACvF estimators. The consequences of this are particularly pertinent for the diagonals of $\Gamma(k)$.
+ % Special interest is also in the lag-0 autocovariance, that is, the variance of the target distribution. 
 \begin{remark} \label{rem:lag0_expectation}
+The variance of the target distribution is the lag covariance at lag 0 and is of particular interest. The bias of the estimator reduces by a factor of $m$:
 \[
 \mathbb{E} \left[\hat{\Gamma}_{G}(0) \right] = \Gamma(0) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2} + o(n^{-2})
 \]
-
 \end{remark}
 
-% \subsection{Autocorrelation} % (fold)
-% \label{sub:autocorrelation}
 
-% subsection autocorrelation (end)
-%{\color{blue}  Autocovariances will be used implictly in SVE estimators. But they are explicitly important in ACF plots via autocorrelations. 
 
-%Notation in the appendix is $\Gamma^{ii}_{G,s}$
-%}
-Lag-0 autocovariance are particularly useful in calculating the autocorrelations.The variance of $i^{th}$ component given by $\Gamma^{ii}(0)$. For any component $i$, the autocorrelation is
+A first use of the ACvFs in MCMC is in constructing ACF plots. Let the target variance of $i${th} component be $\Gamma^{ii}(0)$. For any component $i$, the autocorrelation is defined as
 \[
 \rho^{ii}(k) = \dfrac{\Gamma^{ii}(k)}{\Gamma^{ii}(0)}\,,
 \]
-and is instrumental in visualizing the serial correlation in components of the Markov chain. The typical estimate of the autocorrelation is constructed from  locally-centered autocovariance estimates which as was demonstrated in Section~\ref{sec:intro} can significantly underestimate the autocorrelation. Instead, we calculate the globally-centered autocorrelation using the formula
+and is instrumental in visualizing the serial correlation in components of the Markov chain. The typical estimate of the autocorrelation is constructed from $\hat{\Gamma}_s(k)$. Instead, we advocate for using G-ACvF estimates so that,
 \[
 \hat{\rho}_{G,s}^{(i)}(k) = \dfrac{ \hat{\Gamma}^{(i)}_{G,s} (k)}{\hat{\Gamma}^{(i)}_{G,s} (0)}.
 \]
-Despite using similar centering in both numerator and denominator, the globally-centered autocorrelation is far greater than locally-centered autocorrelation for each component as is evident from Figure~\ref{fig:gauss:acf}. 
+The globally-centered autocorrelation provides a far more realistic assessment of the correlation structure of marginal components of the chain  as evidenced in Figure~\ref{fig:gauss:acf}. 
 
-% \begin{proof}
-%  The proof is in Appendix subsection \ref{appendix:bias}.
-% \end{proof}
+We end this section by noting that we can obtain an average G-ACvF and G-ACF over all $m$ chains
+\[
+\hat{\Gamma}_G(k) = \dfrac{1}{m}\sum_{s=1}^m \hat{\Gamma}_{G,s}(k) \quad \text{ and } \quad \hat{\rho}^{(i)}_G(k) = \dfrac{1}{m}\sum_{s=1}^m \hat{\rho}^{(i)}_{G,s}(k)\,.
+\]
+The averaged estimators present a measure of the overall correlation structure induced by the Markov transition $P$. 
 
+\section{Variance estimators for multiple Markov chains} \label{sec:variance_est}
 
-\section{Variance Estimators for multiple Markov chains} \label{sec:variance_est}
-
-Let $g:\chi \longrightarrow \mathbb{R}^d$ be an F-integrable function. We are interested in the expected value
+A critical use of autocovariances is in the assessment of Monte Carlo variability of estimators.  Let $g:\X \longrightarrow \mathbb{R}^d$ be an $F$-integrable function so that we are interested in estimating
 %
 \[
-\mu_g = \mathbb{E}_F[g(X)] = \int_{\chi}g(x)F(dx)\;.
+\mu_g = \mathbb{E}_F[g(X)] = \int_{\X}g(x)F(dx)\;.
 \]
  
-Let $Y$ denote the random variable $g(X)$ where $X \sim F$. Since we have $m$ chains of $n$ samples each, let us make following notations: (1) $Y_{st} = g(X_{st})$ for $t \in \{1, 2, ..., n\}$ and $s \in \{1, 2, ..., m\}$; (2) $\bar{Y}_s = \sum_{t=1}^{n}g(X_{st})/n$; and (3) $\bar{\bar{Y}} = \sum_{s=1}^{m}\bar{Y}_s/m$. To assess the reliability of our simulations, we are interested in Monte Carlo error, i.e. $\bar{Y_s} - \mu$ for the $s^{th}$ chain. The sampling distribution for Monte Carlo error is available via Markov chain CLT (\cite{jones2004markov}) if there exists a positive definite matrix $\Sigma$ such that
+Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for all $s = 1, \dots, m$ and set $\bar{Y}_s = n^{-1}\sum_{t=1}^{n}Y_{st}$  and  $\bar{\bar{Y}} = m^{-1}\sum_{s=1}^{m}\bar{Y}_s$. 
+
+To assess the reliability of simulations, we are interested in Monte Carlo error, i.e. $\bar{Y_s} - \mu$ for the $s^{th}$ chain. The sampling distribution for Monte Carlo error is available via Markov chain CLT (\cite{jones2004markov}) if there exists a positive definite matrix $\Sigma$ such that
 %
 {\color{blue} }
 \[

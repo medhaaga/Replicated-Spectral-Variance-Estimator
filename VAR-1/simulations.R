@@ -39,7 +39,7 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
   }
 
   for (j in 1:freq){
-    if(j %% (freq/10) == 0) print(paste("Percentage completion: ", round(j/freq*100, 2)))
+    if(j %% (freq/1000) == 0) print(paste("Percentage completion: ", round(j/freq*100, 2)))
 
     master.chain <- array(0, dim = c(max(check.pts), p, m))
     for (k in 1:m)
@@ -63,9 +63,9 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
       global.mean <- apply(chains, 2, mean)
 
       for (k in 1:m){
-        chain.cen.loc <- scale(chain[,,k], scale = FALSE)  ## X_st - bar(X)_s
+        chain.cen.loc <- scale(chains[,,k], scale = FALSE)  ## X_st - bar(X)_s
         sve[,,k] <- mSVEfft(A = chain.cen.loc, b = b.avg)
-        chain.cen <- scale(chain[,,k], center = global.mean, scale =FALSE)
+        chain.cen <- scale(chains[,,k], center = global.mean, scale =FALSE)
         rsve[,,k] <- mSVEfft(A = chain.cen, b = b.avg)
       }
       asv.samples[[i]][,,j] <- apply(sve, c(1,2), mean)
