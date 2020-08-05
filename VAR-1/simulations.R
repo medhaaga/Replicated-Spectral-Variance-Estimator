@@ -18,54 +18,49 @@ sourceCpp("lag.cpp")
 create.output <- function(phi, omega, m, check.pts, freq, c.prob){
 
   p <- ncol(phi)
-  truth <- target.sigma(phi, omega)
+  target <- target.sigma(phi, omega)
   start <- matrix(0, nrow = m, ncol = p)  #only depends on C
 
   for(i in floor(m/2):1){
-    start[i,] <- 2*i*sqrt(diag(truth))
-    start[m-i+1,] <- -2*i*sqrt(diag(truth))
+    start[i,] <- 2*i*sqrt(diag(target))
+    start[m-i+1,] <- -2*i*sqrt(diag(target))
   }
 
-  #master.chain.rep <- list()
-
-  #for (i in 1:freq){
-  #  print(paste("Sampling percentage completion: ", i*100/freq))
-   # chains <- array(0, dim = c(max(check.pts), p, m))
-
-  #  for (j in 1:m){
-   #   chains[,,j] <- markov.chain(phi, omega, max(check.pts), start[j,])
-  #  }
-   # master.chain.rep[[i]] <- chains
-  #}
+  asv.samples <- list()
+  gsv.samples <- list()
+  asv.coverage <- list()
+  gsv.coverage <- list()
 
   for (i in 1:length(check.pts)){
+    asv.samples[[i]] <- array(0, dim = c(p,p,freq))
+    gsv.samples[[i]] <- array(0, dim = c(p,p,freq))
+    asv.coverage[[i]] <- rep(0, freq)
+    gsv.coverage[[i]] <- rep(0, freq)
+  }
 
-    nsim <- check.pts[i]
-    critical <- ((nsim*m - 1)*p/(nsim*m  - p))*qf(.95, df1 = p, df2 = (nsim*m-p))
+  for (j in 1:freq){
+    if(j %% (freq/10) == 0) print(paste("Percentage completion: ", round(j/freq*100, 2)))
 
-    asv.samp <- array(0, dim = c(p,p,freq))
-    rsv.samp <- array(0, dim = c(p,p,freq))
-    asv.coverage <- rep(0,freq)
-    rsv.coverage <- rep(0,freq)
+    master.chain <- array(0, dim = c(max(check.pts), p, m))
+    for (k in 1:m)
+      master.chain[,,k] <- markov.chain(phi, omega, max(check.pts), start[k,])
 
-    for (j in 1:freq){
-      if(j %% (freq/10) == 0) print(paste("Percentage completion: ", round(j/freq*100, 2), "for nsim = ", nsim))
-      #chain <- master.chain.rep[[j]][1:nsim,,]
-
-      chain <- array(0, dim = c(nsim, p, m))
-      for (k in 1:m)
-        chain[,,k] <- markov.chain(phi, omega, nsim, start[j,])
+    for (i in 1:length(check.pts))
+    {
+      nsim <- check.pts[i]
+      critical <- ((nsim*m - 1)*p/(nsim*m  - p))*qf(.95, df1 = p, df2 = (nsim*m-p))
+      chains <- master.chain[1:nsim,,]
 
       sve <- array(0, dim = c(p,p,m))
       rsve <- array(0, dim = c(p,p,m))
       b <- rep(0,m)
 
       for (k in 1:m){
-        b[k] <- batchSize(chain[,,k], method = "bartlett")
+        b[k] <- batchSize(chains[,,k], method = "bartlett")
       }
 
       b.avg <- ceiling(mean(b))
-      global.mean <- apply(chain, 2, mean)
+      global.mean <- apply(chains, 2, mean)
 
       for (k in 1:m){
         chain.cen.loc <- scale(chain[,,k], scale = FALSE)  ## X_st - bar(X)_s
@@ -73,17 +68,17 @@ create.output <- function(phi, omega, m, check.pts, freq, c.prob){
         chain.cen <- scale(chain[,,k], center = global.mean, scale =FALSE)
         rsve[,,k] <- mSVEfft(A = chain.cen, b = b.avg)
       }
+      asv.samples[[i]][,,j] <- apply(sve, c(1,2), mean)
+      gsv.samples[[i]][,,j] <- apply(rsve, c(1,2), mean)
 
-      asv.samp[,,j] <- apply(sve, c(1,2), mean)
-      rsv.samp[,,j] <- apply(rsve, c(1,2), mean)
-
-      chi.sq.asv <- t2.stat(global.mean, rep(0,p), asv.samp[,,j], nsim*m)
-      chi.sq.rsv <- t2.stat(global.mean, rep(0,p), rsv.samp[,,j], nsim*m)
-      if (chi.sq.asv <= critical) {asv.coverage[j]=1}
-      if (chi.sq.rsv <= critical) {rsv.coverage[j]=1}
+      chi.sq.asv <- t2.stat(global.mean, rep(0,p), asv.samples[[i]][,,j], nsim*m)
+      chi.sq.gsv <- t2.stat(global.mean, rep(0,p), gsv.samples[[i]][,,j], nsim*m)
+      if (chi.sq.asv <= critical) {asv.coverage[[i]][j]=1}
+      if (chi.sq.gsv <= critical) {gsv.coverage[[i]][j]=1}
     }
-    save(asv.samp,rsv.samp,asv.coverage,rsv.coverage, file = paste(paste("Out/out", m, nsim, sep = "_"),".Rdata", sep = ""))
   }
+  save(asv.samples, gsv.samples, asv.coverage, gsv.coverage, file = paste("Out/out_check.pts_freq", freq, ".Rdata", sep = ""))
+
 }
 
 ##################################################
@@ -94,10 +89,11 @@ convergence <- function(min, max, step, phi, omega, m, rep=100){
 
   p <- ncol(phi)
   start <- matrix(0, nrow = m, ncol = p)
+  target <- target.sigma(phi, omega)
 
   for(i in floor(m/2):1){
-    start[i,] <- 2*i*sqrt(diag(truth))
-    start[m-i+1,] <- -2*i*sqrt(diag(truth))
+    start[i,] <- 2*i*sqrt(diag(target))
+    start[m-i+1,] <- -2*i*sqrt(diag(target))
   }
 
   conv.pts <- seq(min, max, step)
@@ -189,7 +185,7 @@ dummy <- qr.Q(qr(dummy))
 phi <- dummy %*% phi %*% t(dummy)
 
 check.pts <- c(5e2, 1e3, 5e3, 1e4, 5e4, 1e5)
-freq <- 1e3
+freq <- 1000
 rep <- 50
 c.prob <- .95
 min <- 5e2
