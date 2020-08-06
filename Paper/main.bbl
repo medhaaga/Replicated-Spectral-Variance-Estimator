@@ -16,6 +16,12 @@ Box, G.~E., Jenkins, G.~M., Reinsel, G.~C., and Ljung, G.~M. (2015).
 \newblock {\em Time series analysis: forecasting and control}.
 \newblock John Wiley \& Sons.
 
+\bibitem[Chen and Seila, 1987]{chen:seila:1987}
+Chen, D.-F.~R. and Seila, A.~F. (1987).
+\newblock Multivariate inference in stationary simulation using batch means.
+\newblock In {\em Proceedings of the 19th conference on Winter simulation},
+  pages 302--304. ACM.
+
 \bibitem[Chib, 1998]{chib1998estimation}
 Chib, S. (1998).
 \newblock Estimation and comparison of multiple change-point models.
@@ -31,6 +37,18 @@ Damerdji, H. (1991).
 \newblock Strong consistency and other properties of the spectral variance
   estimator.
 \newblock {\em Management Science}, 37:1424--1440.
+
+\bibitem[Flegal et~al., 2008]{fleg:hara:jone:2008}
+Flegal, J.~M., Haran, M., and Jones, G.~L. (2008).
+\newblock {M}arkov chain {M}onte {C}arlo: {C}an we trust the third significant
+  figure?
+\newblock {\em Statistical Science}, 23:250--260.
+
+\bibitem[Flegal and Jones, 2010]{fleg:jone:2010}
+Flegal, J.~M. and Jones, G.~L. (2010).
+\newblock Batch means and spectral variance estimators in {M}arkov chain
+  {M}onte {C}arlo.
+\newblock {\em The Annals of Statistics}, 38:1034--1070.
 
 \bibitem[Gelman and Meng, 1991]{gelman1991note}
 Gelman, A. and Meng, X.-L. (1991).
@@ -48,6 +66,11 @@ Gong, L. and Flegal, J.~M. (2016).
 \newblock A practical sequential stopping rule for high-dimensional {M}arkov
   chain {M}onte {C}arlo.
 \newblock {\em Journal of Computational and Graphical Statistics}, 25:684--700.
+
+\bibitem[Gupta and Vats, 2020]{gupta:vats:2020}
+Gupta, K. and Vats, D. (2020).
+\newblock Estimating {M}onte {C}arlo variance from multiple {M}arkov chains.
+\newblock {\em arXiv preprint arXiv:2007.04229}.
 
 \bibitem[Hannan, 1970]{hannan:1970}
 Hannan, E.~J. (1970).
@@ -71,11 +94,6 @@ Ihler, A.~T., Fisher, J.~W., Moses, R.~L., and Willsky, A.~S. (2005).
   networks.
 \newblock {\em IEEE Journal on Selected Areas in Communications},
   23(4):809--819.
-
-\bibitem[Jones et~al., 2004]{jones2004markov}
-Jones, G.~L. et~al. (2004).
-\newblock On the markov chain central limit theorem.
-\newblock {\em Probability surveys}, 1(299-320):5--1.
 
 \bibitem[Kass et~al., 1998]{kass:carlin:gelman:neal:1998}
 Kass, R.~E., Carlin, B.~P., Gelman, A., and Neal, R.~M. (1998).
@@ -136,6 +154,11 @@ Resnick, M.~D., Bearman, P.~S., Blum, R.~W., Bauman, K.~E., Harris, K.~M.,
   longitudinal study on adolescent health.
 \newblock {\em Jama}, 278(10):823--832.
 
+\bibitem[Roy, 2019]{roy:2019}
+Roy, V. (2019).
+\newblock Convergence diagnostics for {M}arkov chain {M}onte {C}arlo.
+\newblock {\em Annual Review of Statistics and Its Application}, 7.
+
 \bibitem[Song and Schmeiser, 1995]{song1995optimal}
 Song, W.~T. and Schmeiser, B.~W. (1995).
 \newblock Optimal mean-squared-error batch sizes.
@@ -173,6 +196,12 @@ Vats, D., Flegal, J.~M., and Jones, G.~L. (2019a).
 Vats, D., Flegal, J.~M., and Jones, G.~L. (2019b).
 \newblock Multivariate output analysis for markov chain monte carlo.
 \newblock {\em Biometrika}, 106(2):321--337.
+
+\bibitem[Vats et~al., 2020]{vats:rob:fle:jon:2020}
+Vats, D., Robertson, N., Flegal, J.~M., and Jones, G.~L. (2020).
+\newblock Analyzing {M}arkov chain {M}onte {C}arlo output.
+\newblock {\em Wiley Interdisciplinary Reviews: Computational Statistics},
+  12:e1501.
 
 \bibitem[Wilks, 1932]{wilks1932certain}
 Wilks, S.~S. (1932).

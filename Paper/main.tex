@@ -277,20 +277,30 @@ The averaged estimators present a measure of the overall correlation structure i
 
 \section{Variance estimators for multiple Markov chains} \label{sec:variance_est}
 
-A critical use of autocovariances is in the assessment of Monte Carlo variability of estimators.  Let $g:\X \longrightarrow \mathbb{R}^d$ be an $F$-integrable function so that we are interested in estimating
+A critical use of autocovariances is in the assessment of Monte Carlo variability of estimators.  Let $g:\X \longrightarrow \mathbb{R}^p$ be an $F$-integrable function so that interest is in estimating
 %
 \[
 \mu_g = \mathbb{E}_F[g(X)] = \int_{\X}g(x)F(dx)\;.
 \]
  
-Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for all $s = 1, \dots, m$ and set $\bar{Y}_s = n^{-1}\sum_{t=1}^{n}Y_{st}$  and  $\bar{\bar{Y}} = m^{-1}\sum_{s=1}^{m}\bar{Y}_s$. 
+Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for all $s = 1, \dots, m$ and set $\bar{Y}_s = n^{-1}\sum_{t=1}^{n}Y_{st}$  and  $\bar{\bar{Y}} = m^{-1}\sum_{s=1}^{m}\bar{Y}_s$. By Birkhoff's ergodic theorem,  $\bar{\bar{Y}} \to \mu_g$ as $n \to \infty$ with probability 1.
 
-To assess the reliability of simulations, we are interested in Monte Carlo error, i.e. $\bar{Y_s} - \mu$ for the $s^{th}$ chain. The sampling distribution for Monte Carlo error is available via Markov chain CLT (\cite{jones2004markov}) if there exists a positive definite matrix $\Sigma$ such that
+Reliability of $\bar{\bar{Y}}$ is assessed by its Monte Carlo variability via an asymptotic sampling distribution \citep{fleg:hara:jone:2008,roy:2019,vats:rob:fle:jon:2020}. 
+% To assess the reliability of simulations, we are interested in Monte Carlo error, i.e. $\bar{Y_s} - \mu$ for the $s^{th}$ chain. 
+% The sampling distribution for Monte Carlo error is available via Markov chain CLT (\cite{jones2004markov})
+ A Markov chain central limit theorem (CLT) holds if there exists a $p \times p$ positive-definite matrix $\Sigma$ such that
 %
-{\color{blue} }
-\[
-\sqrt{n}(\bar{X}_s-\mu) \xrightarrow{d} N(0,\Sigma)
-\]
+\begin{equation}
+\label{eq:CLT}
+  \sqrt{mn}(\bar{\bar{Y}} - \mu) \xrightarrow{d} N(0,\Sigma)\,
+\end{equation}
+where
+\begin{equation}
+\label{eq:sigma}
+  \Sigma = \sum_{k = -\infty}^{\infty} \Cov_F \left( Y_{11}, Y_{1(1+k)} \right)
+\end{equation}
+%
+The goal in output analysis for MCMC is to estimate $\Sigma$in order to assess variability in $\bar{\bar{Y}}$. There is a rich literature of estimators of $\Sigma$ available for single-chain MCMC implementations. The most common are spectral variance estimators (SVE) \citep{andr:1991,vats:fleg:jon:2018} and batch means estimators \cite{chen:seila:1987,vats:fleg:jon:2019}. Recently, \cite{gupta:vats:2020} constructed a replicated batch means estimator for estimating $\Sigma$ from multiple parallel chains. Batch means estimators are computationally more efficient than SVE, SVE estimators are more reliable \citep{fleg:jone:2010}. Here, we utilize G-ACvF estimators to construct globally-centered SV estimator (G-SVE) of $\Sigma$. Using the methods of \cite{heberle2017fast}, we also provide an efficient algorithm for obtaining the G-SV estimator. 
 
  Given m parallel Markov chains, we have $m$ i.i.d. samples of $\bar{X}_s$, $s \in \{1,..., m\}$. The Markov Chain standard error (MCSE) is given by $\Sigma/mn$. We are interested in consistent estimates of $\Sigma$ for two reasons. Firstly, to construct asymptotically valid confidence intervals and secondly, to determine when to stop the simulations. For this purpose, we use the class of Multivariate Spectral Variance Estimators (MSVE). The most common practice would be to combine the spectral variance estimates from $m$ chains by averaging over them. We call this technique average spectral variance estimator (A-SVE) and denote it by $\hat{\Sigma}_A$. Let $\hat{\Sigma}_{SV,s}$ denote the SVE for the $s^{th}$ chain, then the A-SVE is given by
 
