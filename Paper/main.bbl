@@ -5,6 +5,11 @@ Ahn, S., Chen, Y., and Welling, M. (2013).
 \newblock Distributed and adaptive darting monte carlo through regenerations.
 \newblock In {\em Artificial Intelligence and Statistics}, pages 108--116.
 
+\bibitem[Anderson, 1971]{ande:1971}
+Anderson, T.~W. (1971).
+\newblock {\em The {S}tatistical {A}nalysis of {T}ime Series.}
+\newblock John Wiley \& Son, New York.
+
 \bibitem[Andrews, 1991]{andr:1991}
 Andrews, D.~W. (1991).
 \newblock Heteroskedasticity and autocorrelation consistent covariance matrix
@@ -61,6 +66,12 @@ Gjoka, M., Kurant, M., Butts, C.~T., and Markopoulou, A. (2011).
 \newblock {\em IEEE Journal on Selected Areas in Communications},
   29(9):1872--1892.
 
+\bibitem[Glynn and Whitt, 1992]{glyn:whit:1992}
+Glynn, P.~W. and Whitt, W. (1992).
+\newblock The asymptotic validity of sequential stopping rules for stochastic
+  simulations.
+\newblock {\em The Annals of Applied Probability}, 2:180--198.
+
 \bibitem[Gong and Flegal, 2016]{gong:fleg:2016}
 Gong, L. and Flegal, J.~M. (2016).
 \newblock A practical sequential stopping rule for high-dimensional {M}arkov
@@ -100,11 +111,11 @@ Kass, R.~E., Carlin, B.~P., Gelman, A., and Neal, R.~M. (1998).
 \newblock {M}arkov chain {M}onte {C}arlo in practice: a roundtable discussion.
 \newblock {\em The American Statistician}, 52:93--100.
 
-\bibitem[Kuelbs and Philipp, 1980]{kuelbs1980almost}
-Kuelbs, J. and Philipp, W. (1980).
-\newblock Almost sure invariance principles for partial sums of mixing b-valued
-  random variables.
-\newblock {\em The Annals of Probability}, pages 1003--1036.
+\bibitem[Kuelbs, 1976]{kuel:1976}
+Kuelbs, J. (1976).
+\newblock A strong convergence theorem for {B}anach space valued random
+  variables.
+\newblock {\em The Annals of Probability}, 4:744--771.
 
 \bibitem[Lan et~al., 2014]{lan2014wormhole}
 Lan, S., Streets, J., and Shahbaba, B. (2014).
@@ -163,12 +174,6 @@ Roy, V. (2019).
 Song, W.~T. and Schmeiser, B.~W. (1995).
 \newblock Optimal mean-squared-error batch sizes.
 \newblock {\em Management Science}, 41(1):110--123.
-
-\bibitem[Strassen, 1964]{stra:1964}
-Strassen, V. (1964).
-\newblock An invariance principle for the law of the iterated logarithm.
-\newblock {\em Zeitschrift f{\"u}r Wahrscheinlichkeitstheorie und Verwandte
-  Gebiete}, 3:211--226.
 
 \bibitem[Tak et~al., 2018]{tak2018repelling}
 Tak, H., Meng, X.-L., and van Dyk, D.~A. (2018).

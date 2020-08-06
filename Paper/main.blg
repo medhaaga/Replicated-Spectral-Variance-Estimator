@@ -7,10 +7,6 @@ Repeated entry---line 4136 of file sample.bib
  : @article{vats:fleg:jon:2018
  :                            ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 4145 of file sample.bib
- : @article{stra:1964
- :                   ,
-I'm skipping whatever remains of this entry
 Repeated entry---line 4172 of file sample.bib
  : @book{zeid:2013
  :                ,
@@ -19,45 +15,45 @@ Warning--empty journal in hannan:1970
 Warning--empty journal in martin2011mcmcpack
 Warning--there's a number but no series in priestley1981spectral
 Warning--empty publisher in priestley1981spectral
-You've used 39 entries,
+You've used 40 entries,
             1935 wiz_defined-function locations,
-            722 strings with 10212 characters,
-and the built_in function-call counts, 15643 in all, are:
-= -- 1562
-> -- 575
+            728 strings with 10267 characters,
+and the built_in function-call counts, 15796 in all, are:
+= -- 1571
+> -- 582
 < -- 31
-+ -- 199
-- -- 188
-* -- 1298
-:= -- 2677
-add.period$ -- 116
-call.type$ -- 39
-change.case$ -- 282
-chr.to.int$ -- 38
-cite$ -- 43
-duplicate$ -- 602
-empty$ -- 1121
-format.name$ -- 251
-if$ -- 3078
++ -- 205
+- -- 190
+* -- 1314
+:= -- 2720
+add.period$ -- 119
+call.type$ -- 40
+change.case$ -- 287
+chr.to.int$ -- 39
+cite$ -- 44
+duplicate$ -- 605
+empty$ -- 1135
+format.name$ -- 254
+if$ -- 3093
 int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 45
-newline$ -- 196
-num.names$ -- 117
-pop$ -- 247
+missing$ -- 47
+newline$ -- 201
+num.names$ -- 120
+pop$ -- 252
 preamble$ -- 1
-purify$ -- 288
+purify$ -- 294
 quote$ -- 0
-skip$ -- 473
+skip$ -- 468
 stack$ -- 0
-substring$ -- 1220
-swap$ -- 88
-text.length$ -- 7
+substring$ -- 1221
+swap$ -- 78
+text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 222
+type$ -- 226
 warning$ -- 4
-while$ -- 136
+while$ -- 137
 width$ -- 0
-write$ -- 497
-(There were 3 error messages)
+write$ -- 510
+(There were 2 error messages)

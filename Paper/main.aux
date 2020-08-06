@@ -54,23 +54,23 @@
 \citation{gupta:vats:2020}
 \citation{fleg:jone:2010}
 \citation{heberle2017fast}
-\citation{vats:fleg:jon:2018}
-\citation{hannan2009multiple}
 \newlabel{eq:sigma}{{3}{7}{Variance estimators for multiple Markov chains}{equation.3.3}{}}
+\newlabel{eq:sve}{{4}{7}{Variance estimators for multiple Markov chains}{equation.3.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Globally-centered spectral variance estimators}{7}{subsection.3.1}}
 \newlabel{sub:globally_centered_spectral_variance_estimators}{{3.1}{7}{Globally-centered spectral variance estimators}{subsection.3.1}{}}
-\newlabel{eq:sve}{{4}{7}{Globally-centered spectral variance estimators}{equation.3.4}{}}
-\citation{kuelbs1980almost}
-\citation{stra:1964}
+\newlabel{ass:lag_window}{{1}{7}{}{ass.1}{}}
+\citation{ande:1971}
+\citation{glyn:whit:1992}
+\citation{kuel:1976,vats:fleg:jon:2018}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.1}Theoretical results}{8}{subsubsection.3.1.1}}
 \newlabel{sec:G-SVE}{{3.1.1}{8}{Theoretical results}{subsubsection.3.1.1}{}}
-\newlabel{ass:sip}{{1}{8}{Strong Invariance Principle (SIP)}{ass.1}{}}
-\newlabel{th:consistency}{{2}{8}{}{theorem.2}{}}
+\newlabel{thm:kuelbs}{{2}{8}{\cite {kuel:1976,vats:fleg:jon:2018}}{theorem.2}{}}
+\newlabel{th:consistency}{{3}{8}{}{theorem.3}{}}
 \newlabel{ass:bias}{{2}{8}{}{ass.2}{}}
 \citation{heberle2017fast}
 \citation{heberle2017fast}
-\newlabel{th:G-SVE_bias}{{3}{9}{}{theorem.3}{}}
-\newlabel{th:G-SVE_variance}{{4}{9}{}{theorem.4}{}}
+\newlabel{th:G-SVE_bias}{{4}{9}{}{theorem.4}{}}
+\newlabel{th:G-SVE_variance}{{5}{9}{}{theorem.5}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.2}Fast implementation}{9}{subsubsection.3.1.2}}
 \newlabel{ssub:fast_implementation}{{3.1.2}{9}{Fast implementation}{subsubsection.3.1.2}{}}
 \citation{wilks1932certain}
@@ -79,9 +79,9 @@
 \@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces Herberle's Algorithm\relax }}{10}{algocf.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Effective sample size}{10}{section.4}}
 \newlabel{sec:ess}{{4}{10}{Effective sample size}{section.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Examples}{10}{section.5}}
+\newlabel{sec:examples}{{5}{10}{Examples}{section.5}{}}
 \citation{10.2307/1427459}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Examples}{11}{section.5}}
-\newlabel{sec:examples}{{5}{11}{Examples}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Vector Autoregressive Process}{11}{subsection.5.1}}
 \newlabel{ex:var}{{5.1}{11}{Vector Autoregressive Process}{subsection.5.1}{}}
 \newlabel{subfig:var-sp_1000}{{3a}{12}{$n = 1000$\relax }{figure.caption.4}{}}
@@ -90,13 +90,13 @@
 \newlabel{sub@subfig:var-sp_10000}{{b}{12}{$n = 10000$\relax }{figure.caption.4}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Scatter plot of two out of five slowly mixing Markov chains starting from opposite sides of known mean. Sample size of $1000$ (left) and $10000$ (right).\relax }}{12}{figure.caption.4}}
 \newlabel{fig:var-sp}{{3}{12}{Scatter plot of two out of five slowly mixing Markov chains starting from opposite sides of known mean. Sample size of $1000$ (left) and $10000$ (right).\relax }{figure.caption.4}{}}
+\citation{gelman1991note}
 \newlabel{subfig:var-acf_n1e3}{{4a}{13}{$n = 10^3$\relax }{figure.caption.5}{}}
 \newlabel{sub@subfig:var-acf_n1e3}{{a}{13}{$n = 10^3$\relax }{figure.caption.5}{}}
 \newlabel{subfig:var-acf_n1e5}{{4b}{13}{$n = 10^4$\relax }{figure.caption.5}{}}
 \newlabel{sub@subfig:var-acf_n1e5}{{b}{13}{$n = 10^4$\relax }{figure.caption.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Autocorrelation plot for ACF and G-ACF for first chain out of two parallel Markov chains. First column corresponds to ACF calculated using arithmetic mean of first Markov chain and the second column corresponds to the one calculated using global mean of two Markov chains.(a): $n = 10^3$, not converged yet; (b): $n = 10^4$, converged\relax }}{13}{figure.caption.5}}
 \newlabel{fig:var-acf}{{4}{13}{Autocorrelation plot for ACF and G-ACF for first chain out of two parallel Markov chains. First column corresponds to ACF calculated using arithmetic mean of first Markov chain and the second column corresponds to the one calculated using global mean of two Markov chains.(a): $n = 10^3$, not converged yet; (b): $n = 10^4$, converged\relax }{figure.caption.5}{}}
-\citation{gelman1991note}
 \newlabel{subfig:var-frob}{{5a}{14}{log-Frobenius norm\relax }{figure.caption.6}{}}
 \newlabel{sub@subfig:var-frob}{{a}{14}{log-Frobenius norm\relax }{figure.caption.6}{}}
 \newlabel{subfig:var-frob}{{5b}{14}{$\log (\hat {ESS}/mn)$\relax }{figure.caption.6}{}}
@@ -133,6 +133,7 @@
 \citation{tak2018repelling}
 \citation{lan2014wormhole}
 \citation{tak2018repelling}
+\citation{ahn2013distributed}
 \newlabel{subfig:boom-ess1}{{10a}{18}{$A = 1, \; B = 3, \; C = 8$\relax }{figure.caption.12}{}}
 \newlabel{sub@subfig:boom-ess1}{{a}{18}{$A = 1, \; B = 3, \; C = 8$\relax }{figure.caption.12}{}}
 \newlabel{subfig:boom-ess2}{{10b}{18}{$A = 1, \; B=10, \; C = 7 $\relax }{figure.caption.12}{}}
@@ -140,7 +141,6 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Running plot for $\mathaccentV {hat}05E{\text  {ESS}}/mn$ using ASV and G-SVE for $m = 2$.\relax }}{18}{figure.caption.12}}
 \newlabel{fig:boom-ess}{{10}{18}{Running plot for $\hat {\text {ESS}}/mn$ using ASV and G-SVE for $m = 2$.\relax }{figure.caption.12}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Sensor Network Localization}{18}{subsection.5.3}}
-\citation{ahn2013distributed}
 \citation{tak2018repelling}
 \citation{tak2018repelling}
 \newlabel{ex:sensor_post}{{5}{19}{Sensor Network Localization}{equation.5.5}{}}
@@ -219,43 +219,44 @@
 \bibstyle{apalike}
 \bibdata{sample}
 \bibcite{ahn2013distributed}{{1}{2013}{{Ahn et~al.}}{{}}}
-\bibcite{andr:1991}{{2}{1991}{{Andrews}}{{}}}
-\bibcite{box2015time}{{3}{2015}{{Box et~al.}}{{}}}
-\bibcite{chen:seila:1987}{{4}{1987}{{Chen and Seila}}{{}}}
-\bibcite{chib1998estimation}{{5}{1998}{{Chib}}{{}}}
-\bibcite{csorgo2014strong}{{6}{2014}{{Cs{\"o}rgo and R{\'e}v{\'e}sz}}{{}}}
+\bibcite{ande:1971}{{2}{1971}{{Anderson}}{{}}}
+\bibcite{andr:1991}{{3}{1991}{{Andrews}}{{}}}
+\bibcite{box2015time}{{4}{2015}{{Box et~al.}}{{}}}
+\bibcite{chen:seila:1987}{{5}{1987}{{Chen and Seila}}{{}}}
+\bibcite{chib1998estimation}{{6}{1998}{{Chib}}{{}}}
 \@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces ACF and G-ACF for the first component of the first chain.\relax }}{35}{figure.caption.37}}
 \newlabel{fig:spatio-acf_G-fl}{{14}{35}{ACF and G-ACF for the first component of the first chain.\relax }{figure.caption.37}{}}
-\bibcite{dame:1991}{{7}{1991}{{Damerdji}}{{}}}
-\bibcite{fleg:hara:jone:2008}{{8}{2008}{{Flegal et~al.}}{{}}}
-\bibcite{fleg:jone:2010}{{9}{2010}{{Flegal and Jones}}{{}}}
-\bibcite{gelman1991note}{{10}{1991}{{Gelman and Meng}}{{}}}
-\bibcite{gjoka2011practical}{{11}{2011}{{Gjoka et~al.}}{{}}}
-\bibcite{gong:fleg:2016}{{12}{2016}{{Gong and Flegal}}{{}}}
-\bibcite{gupta:vats:2020}{{13}{2020}{{Gupta and Vats}}{{}}}
-\bibcite{hannan:1970}{{14}{1970}{{Hannan}}{{}}}
-\bibcite{hannan2009multiple}{{15}{2009}{{Hannan}}{{}}}
-\bibcite{heberle2017fast}{{16}{2017}{{Heberle and Sattarhoff}}{{}}}
-\bibcite{ihler2005nonparametric}{{17}{2005}{{Ihler et~al.}}{{}}}
-\bibcite{kass:carlin:gelman:neal:1998}{{18}{1998}{{Kass et~al.}}{{}}}
-\bibcite{kuelbs1980almost}{{19}{1980}{{Kuelbs and Philipp}}{{}}}
-\bibcite{lan2014wormhole}{{20}{2014}{{Lan et~al.}}{{}}}
-\bibcite{liu:fleg:2018}{{21}{2018}{{Liu and Flegal}}{{}}}
-\bibcite{ma2000highly}{{22}{2000}{{Ma and Genton}}{{}}}
-\bibcite{martin2011mcmcpack}{{23}{2011}{{Martin et~al.}}{{}}}
-\bibcite{meyn:twee:2009}{{24}{2009}{{Meyn and Tweedie}}{{}}}
-\bibcite{nilakanta2019ensuring}{{25}{2019}{{Nilakanta et~al.}}{{}}}
-\bibcite{priestley1981spectral}{{26}{1981}{{Priestley}}{{}}}
-\bibcite{quenouille1947notes}{{27}{1947}{{Quenouille}}{{}}}
-\bibcite{resnick1997protecting}{{28}{1997}{{Resnick et~al.}}{{}}}
-\bibcite{roy:2019}{{29}{2019}{{Roy}}{{}}}
-\bibcite{song1995optimal}{{30}{1995}{{Song and Schmeiser}}{{}}}
-\bibcite{stra:1964}{{31}{1964}{{Strassen}}{{}}}
-\bibcite{tak2018repelling}{{32}{2018}{{Tak et~al.}}{{}}}
-\bibcite{10.2307/1427459}{{33}{1990}{{Tjøstheim}}{{}}}
-\bibcite{vats:fleg:jon:2018}{{34}{2018}{{Vats et~al.}}{{}}}
-\bibcite{vats:fleg:jon:2019}{{35}{2019a}{{Vats et~al.}}{{}}}
-\bibcite{vats2019multivariate}{{36}{2019b}{{Vats et~al.}}{{}}}
-\bibcite{vats:rob:fle:jon:2020}{{37}{2020}{{Vats et~al.}}{{}}}
-\bibcite{wilks1932certain}{{38}{1932}{{Wilks}}{{}}}
-\bibcite{zeid:2013}{{39}{2013}{{Zeidler}}{{}}}
+\bibcite{csorgo2014strong}{{7}{2014}{{Cs{\"o}rgo and R{\'e}v{\'e}sz}}{{}}}
+\bibcite{dame:1991}{{8}{1991}{{Damerdji}}{{}}}
+\bibcite{fleg:hara:jone:2008}{{9}{2008}{{Flegal et~al.}}{{}}}
+\bibcite{fleg:jone:2010}{{10}{2010}{{Flegal and Jones}}{{}}}
+\bibcite{gelman1991note}{{11}{1991}{{Gelman and Meng}}{{}}}
+\bibcite{gjoka2011practical}{{12}{2011}{{Gjoka et~al.}}{{}}}
+\bibcite{glyn:whit:1992}{{13}{1992}{{Glynn and Whitt}}{{}}}
+\bibcite{gong:fleg:2016}{{14}{2016}{{Gong and Flegal}}{{}}}
+\bibcite{gupta:vats:2020}{{15}{2020}{{Gupta and Vats}}{{}}}
+\bibcite{hannan:1970}{{16}{1970}{{Hannan}}{{}}}
+\bibcite{hannan2009multiple}{{17}{2009}{{Hannan}}{{}}}
+\bibcite{heberle2017fast}{{18}{2017}{{Heberle and Sattarhoff}}{{}}}
+\bibcite{ihler2005nonparametric}{{19}{2005}{{Ihler et~al.}}{{}}}
+\bibcite{kass:carlin:gelman:neal:1998}{{20}{1998}{{Kass et~al.}}{{}}}
+\bibcite{kuel:1976}{{21}{1976}{{Kuelbs}}{{}}}
+\bibcite{lan2014wormhole}{{22}{2014}{{Lan et~al.}}{{}}}
+\bibcite{liu:fleg:2018}{{23}{2018}{{Liu and Flegal}}{{}}}
+\bibcite{ma2000highly}{{24}{2000}{{Ma and Genton}}{{}}}
+\bibcite{martin2011mcmcpack}{{25}{2011}{{Martin et~al.}}{{}}}
+\bibcite{meyn:twee:2009}{{26}{2009}{{Meyn and Tweedie}}{{}}}
+\bibcite{nilakanta2019ensuring}{{27}{2019}{{Nilakanta et~al.}}{{}}}
+\bibcite{priestley1981spectral}{{28}{1981}{{Priestley}}{{}}}
+\bibcite{quenouille1947notes}{{29}{1947}{{Quenouille}}{{}}}
+\bibcite{resnick1997protecting}{{30}{1997}{{Resnick et~al.}}{{}}}
+\bibcite{roy:2019}{{31}{2019}{{Roy}}{{}}}
+\bibcite{song1995optimal}{{32}{1995}{{Song and Schmeiser}}{{}}}
+\bibcite{tak2018repelling}{{33}{2018}{{Tak et~al.}}{{}}}
+\bibcite{10.2307/1427459}{{34}{1990}{{Tjøstheim}}{{}}}
+\bibcite{vats:fleg:jon:2018}{{35}{2018}{{Vats et~al.}}{{}}}
+\bibcite{vats:fleg:jon:2019}{{36}{2019a}{{Vats et~al.}}{{}}}
+\bibcite{vats2019multivariate}{{37}{2019b}{{Vats et~al.}}{{}}}
+\bibcite{vats:rob:fle:jon:2020}{{38}{2020}{{Vats et~al.}}{{}}}
+\bibcite{wilks1932certain}{{39}{1932}{{Wilks}}{{}}}
+\bibcite{zeid:2013}{{40}{2013}{{Zeidler}}{{}}}
