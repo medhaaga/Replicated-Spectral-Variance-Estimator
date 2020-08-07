@@ -24,64 +24,71 @@ for (i in 1:(p-1)){
   }
 }
 
-phi <- diag(c(.9999, .001))
+phi <- diag(c(.999, .001))
 dummy <- matrix(1:p^2, nrow = p, ncol = p)
 dummy <- qr.Q(qr(dummy))
 phi <- dummy %*% phi %*% t(dummy)
 
 ############3Simuation settings###########
 
+target <- target.sigma(phi, omega)
 truth <- true.sigma(phi, var = target)
-check.pts <- c(1e3, 5e3, 1e4, 5e4, 1e5)
+check.pts <- c(5e2, 1e3, 5e3, 1e4, 5e4, 1e5)
 rep <- 50
+freq <- 1000
 min <- 5e2
-max <- 1e5
+max <- 5e4
 step <- 500
 conv.pts <- seq(min, max, step)
-
-start <- matrix(0, nrow = m, ncol = p)  #only depends on C
-
-for(i in floor(m/2):1){
-  start[i,] <- 2*i*sqrt(diag(target))
-  start[m-i+1,] <- -2*i*sqrt(diag(target))
-}
 
 ###########################################################
 ############## log Frobenius norm running plots ###########
 ###########################################################
 
 
-load(file = paste(paste("Out/run_data", m, min, max, sep = "_"), ".Rdata", sep = ""))
+
+pdf(file = paste("Out/sensor-frob.pdf", sep = ""), height = 5, width = 5)
+dev.off()
+
+
+load(file = paste("Out/conv_data_min", min, "_max", max, ".Rdata", sep = ""))
+
+a <- lapply(asv, function(x) log(apply(x, 3, norm, "F") ) )
+r <- lapply(rsv, function(x) log(apply(x, 3, norm, "F") ) )
+a <- Reduce("rbind", a)
+r <- Reduce("rbind", r)
+
+se.a <- apply(a, 2, sd)/sqrt(length(asv))
+se.r <- apply(r, 2, sd)/sqrt(length(rsv))
+
+a <- colMeans(a)
+r <- colMeans(r)
 
 pdf(file = "Out/var-frob.pdf", height = 5, width = 5)
-plot(conv.pts,log(apply(asv.samp, 3, norm, type = "F")), type = "l", col = "darkorange", lwd = 2,
-     main = "", xlab = "Simulation size", ylab = "Variance",
-     ylim = range(c(log(apply(rsv.samp, 3, norm, type = "F"))), log(norm(truth, type = "F"))))
-lines(conv.pts, log(apply(rsv.samp, 3, norm, type = "F")), col="royalblue", lwd = 2)
-abline(h = log(norm(truth, type = "F")), col = "green3", lwd = 2)
-legend("bottomright", legend=c("ASV", "RSV", "Truth"),col=c("darkorange", "royalblue", "green3"), lty=1, lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
+lines(conv.pts, r, col="royalblue", lwd = 2)
+segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
+segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
+legend("bottomright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, lwd = 2)
 dev.off()
 
 ###########################################################
 ######### Effective Sample Size running plot##############
 ##########################################################
 
-load(file = paste(paste("Out/run_data", m, min, max, sep = "_"), ".Rdata", sep = ""))
-
-ind <- seq(1, length(conv.pts), by = 2)
-
-a <- lapply(ess.asv.samp, log)
-r <- lapply(ess.rsv.samp, log)
-se.a <- 2*Reduce("rbind", lapply(a, sd))/sqrt(length(a[[1]]))
-se.r <- 2*Reduce("rbind", lapply(r, sd))/sqrt(length(r[[1]]))
-a <- Reduce("rbind", lapply(a, mean))
-r <- Reduce("rbind", lapply(r, mean))
+a <- lapply(ess.asv, log)
+r <- lapply(ess.rsv, log)
+se.a <- 2*apply(Reduce("rbind", a), 2, sd)/sqrt(length(a))
+se.r <- 2*apply(Reduce("rbind", r), 2, sd)/sqrt(length(r))
+a <- Reduce("+", a)/length(ess.asv)
+r <- Reduce("+", r)/length(ess.rsv)
 
 pdf(file = "Out/var-ess.pdf", height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd=2)
-lines(conv.pts, r, col = "royalblue", lwd=2)
-segments(x0 = conv.pts[ind], y0 = (a - se.a)[ind], y1 = (a + se.a)[ind], col = adjustcolor("darkorange", alpha.f = .50))
-segments(x0 = conv.pts[ind], y0 = (r - se.r)[ind], y1 = (r + se.r)[ind], col = adjustcolor("royalblue", alpha.f = .50))
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r, log(minESS(p)/(m*conv.pts))), lwd = 2)
+lines(conv.pts, r, col = "royalblue", lwd = 2)
+segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
+segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
+lines(conv.pts, log(minESS(p)/(m*conv.pts)), col = "pink", lwd=2)
 abline(h = log((det(target)/det(truth))^(1/p)), col = "green3", lwd = 2)
 legend("topright", legend=c("A-SVE", "G-SVE", "Truth"),col=c("darkorange", "royalblue", "green3"), lty=1, cex=1, lwd = 2)
 dev.off()
@@ -100,9 +107,9 @@ nsim <- 1e3
 pdf(file = ("Out/var-sp_n1e3.pdf"), height = 5, width = 5)
 plot(mc.chain.list[[1]][1:nsim,], xlim = c(-(m/2)*sqrt(diag(target)[1]), (m/2)*sqrt(diag(target)[1])),
      ylim = c(-(m/2)*sqrt(diag(target)[2]), (m/2)*sqrt(diag(target)[2])), xlab = "X component",
-     ylab = "Y component", main = "", col = "darkorange")
-points(mc.chain.list[[5]][1:nsim,], col = "royalblue")
-legend("bottomright", legend = c("Chain-1", "Chain-5"), col = c("darkorange", "royalblue"), pch = 19)
+     ylab = "Y component", main = "", col = "dodgerblue4")
+points(mc.chain.list[[5]][1:nsim,], col = "steelblue1")
+legend("bottomright", legend = c("Chain-1", "Chain-5"), col = c("dodgerblue4", "steelblue1"), pch = 19)
 dev.off()
 
 
@@ -112,21 +119,21 @@ nsim <- 1e5
 pdf(file = ("Out/var-sp_n1e4.pdf"), height = 5, width = 5)
 plot(mc.chain.list[[1]][1:nsim,], xlim = c(-(m/2)*sqrt(diag(target)[1]), (m/2)*sqrt(diag(target)[1])),
      ylim = c(-(m/2)*sqrt(diag(target)[2]), (m/2)*sqrt(diag(target)[2])), xlab = "X component",
-     ylab = "Y component", main = "", col = "darkorange")
-points(mc.chain.list[[5]][1:nsim,], col = "royalblue")
-legend("bottomright", legend = c("Chain-1", "Chain-5"), col = c("darkorange", "royalblue"), pch = 19)
+     ylab = "Y component", main = "", col = "dodgerblue4")
+points(mc.chain.list[[5]][1:nsim,], col = "steelblue1")
+legend("bottomright", legend = c("Chain-1", "Chain-5"), col = c("dodgerblue4", "steelblue1"), pch = 19)
 dev.off()
 
 ######################################################
 ###################### coverage prob #################
 ######################################################
 
+load(file = paste("Out/out_check.pts_freq", freq, ".Rdata", sep = ""))
+
 for (j in 1:length(check.pts)){
 
   nsim <- check.pts[j]
-  load(file = paste(paste("Out/out", m, nsim, sep = "_"), ".Rdata", sep = ""))
-
-  print(paste("Coverage probabilities for nsim =  ", nsim, ", m = ", m, " are: "))
-  print(paste("ASV : ", mean(asv.coverage), "RSV: ", mean(rsv.coverage)))
+  print(paste("Coverage probabilities for nsim =  ", nsim))
+  print(paste("ASV : ", mean(asv.coverage[[j]]), "GSV: ", mean(gsv.coverage[[j]])))
 
 }
