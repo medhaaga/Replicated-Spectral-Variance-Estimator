@@ -45,12 +45,6 @@ conv.pts <- seq(min, max, step)
 ############## log Frobenius norm running plots ###########
 ###########################################################
 
-
-
-pdf(file = paste("Out/sensor-frob.pdf", sep = ""), height = 5, width = 5)
-dev.off()
-
-
 load(file = paste("Out/conv_data_min", min, "_max", max, ".Rdata", sep = ""))
 
 a <- lapply(asv, function(x) log(apply(x, 3, norm, "F") ) )
@@ -69,7 +63,8 @@ plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation 
 lines(conv.pts, r, col="royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
-legend("bottomright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, lwd = 2)
+abline(h = log(norm(truth, type = "F")), col = "green3", lwd = 2)
+legend("bottomright", legend=c("A-SVE", "G-SVE", "Truth"),col=c("darkorange", "royalblue", "green3"), lty=1, lwd = 2)
 dev.off()
 
 ###########################################################
@@ -84,11 +79,10 @@ a <- Reduce("+", a)/length(ess.asv)
 r <- Reduce("+", r)/length(ess.rsv)
 
 pdf(file = "Out/var-ess.pdf", height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r, log(minESS(p)/(m*conv.pts))), lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd = 2)
 lines(conv.pts, r, col = "royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
-lines(conv.pts, log(minESS(p)/(m*conv.pts)), col = "pink", lwd=2)
 abline(h = log((det(target)/det(truth))^(1/p)), col = "green3", lwd = 2)
 legend("topright", legend=c("A-SVE", "G-SVE", "Truth"),col=c("darkorange", "royalblue", "green3"), lty=1, cex=1, lwd = 2)
 dev.off()
