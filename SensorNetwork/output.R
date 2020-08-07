@@ -101,11 +101,10 @@ se.r <- 2*apply(Reduce("rbind", r), 2, sd)/sqrt(length(r))
 a <- Reduce("+", a)/length(ess.asv)
 r <- Reduce("+", r)/length(ess.rsv)
 
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r, log(minESS(p, alpha = .1, eps = .1)/(m*conv.pts))), lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd = 2)
 lines(conv.pts, r, col = "royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
-lines(conv.pts, log(minESS(p, alpha = .1, eps = 0.1)/(m*conv.pts)), col = "green3", lwd=2)
 legend("topright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, cex=1.2, lwd=2)
 dev.off()
 
