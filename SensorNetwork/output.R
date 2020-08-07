@@ -7,6 +7,7 @@ library(RcppArmadillo)
 library(fftwtools)
 library(mcmcse)
 library(stats)
+library(plotly)
 sourceCpp("lag.cpp")
 source("functions.R")
 
@@ -67,8 +68,6 @@ load(file = paste("Out/conv_data_m", m, "_min", min, "_max", max, ".Rdata", sep 
 ########################################
 ########################################
 
-ind <- seq(1,length(conv.pts), by = 2)
-
 a <- lapply(asv, function(x) log(apply(x, 3, norm, "F") ) )
 r <- lapply(rsv, function(x) log(apply(x, 3, norm, "F") ) )
 a <- Reduce("rbind", a)
@@ -102,11 +101,11 @@ se.r <- 2*apply(Reduce("rbind", r), 2, sd)/sqrt(length(r))
 a <- Reduce("+", a)/length(ess.asv)
 r <- Reduce("+", r)/length(ess.rsv)
 
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r, log(minESS(p, alpha = .1, eps = .1)/(m*conv.pts))), lwd = 2)
 lines(conv.pts, r, col = "royalblue", lwd = 2)
-segments(x0 = conv.pts[ind], y0 = (a - se.a)[ind], y1 = (a + se.a)[ind], col = adjustcolor("darkorange", alpha.f = .50))
-segments(x0 = conv.pts[ind], y0 = (r - se.r)[ind], y1 = (r + se.r)[ind], col = adjustcolor("royalblue", alpha.f = .50))
-
+segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
+segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
+lines(conv.pts, log(minESS(p, alpha = .1, eps = 0.1)/(m*conv.pts)), col = "green3", lwd=2)
 legend("topright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, cex=1.2, lwd=2)
 dev.off()
 
@@ -122,25 +121,17 @@ nsim1 = 1e5
 
 ### Scatter plot - Location-1
 
-pdf(file = "Out/sensor-sp_loc1.pdf", height = 5, width = 5)
-plot(mc.chain.list[[1]][1:nsim1, c(1, 2)], pch = 1, xlim = range(mc.chain.list[[1]][1:nsim1,1], mc.chain.list[[5]][1:nsim1,1]),
-     ylim = range(mc.chain.list[[1]][1:nsim1,2], mc.chain.list[[5]][1:nsim1,2]), xlab = "", ylab = "", main = "")
-
-mtext(side = 1, text = expression(bold(x[11])), line = 1.6, cex = 1)
-mtext(side = 2, text = expression(bold(x[12])), line = 1.9, cex = 1)
-abline(v = 0.5748, lty = 2, lwd = 1)
-abline(h = 0.9069, lty = 2, lwd = 1)
+df <- as.data.frame(mc.chain.list[[1]][,c(1,2)])
+names(df) <- c("X", "Y")
+fig <- ggplot(df, aes(X, Y)) + geom_density_2d_filled() + theme_minimal() + scale_fill_brewer(palette="Blues") + theme(legend.position="none") + xlim(-0.25,0.75)
+pdf("Out/sensor-contour_loc1.pdf", height = 5, width = 5)
+print(fig)
 dev.off()
 
 ### Trace plot - Location-1
 
-pdf(file = "Out/sensor-trace_loc1.pdf", height = 7, width = 7)
-par(mfrow = c(2,1))
-plot.ts(mc.chain.list[[1]][1:nsim1,1], ylim = range(mc.chain.list[[1]][,1], mc.chain.list[[5]][,1]), ylab = expression(x[11]), col = "darkorange")
+pdf(file = "Out/sensor-trace_loc1.pdf", height = 5, width = 5)
+plot.ts(mc.chain.list[[1]][1:nsim1,1], ylim = range(mc.chain.list[[1]][,1], mc.chain.list[[5]][,1]), ylab = expression(x[11]), col = rgb(8, 69, 148, maxColorValue = 255))
 par(new = TRUE)
-plot.ts(mc.chain.list[[5]][1:nsim1,1], ylim = range(mc.chain.list[[1]][,1], mc.chain.list[[5]][,1]), yaxt='n', xaxt='n', ylab = "", col = "royalblue")
-
-plot.ts(mc.chain.list[[1]][1:nsim1,2], ylim = range(mc.chain.list[[1]][,2], mc.chain.list[[5]][,2]), ylab = expression(x[12]), col = "darkorange")
-par(new = TRUE)
-plot.ts(mc.chain.list[[5]][1:nsim1,2], ylim = range(mc.chain.list[[1]][,2], mc.chain.list[[5]][,2]), yaxt='n', xaxt='n', ylab = "", col = "royalblue")
+plot.ts(mc.chain.list[[5]][1:nsim1,1], ylim = range(mc.chain.list[[1]][,1], mc.chain.list[[5]][,1]), yaxt='n', xaxt='n', ylab = "", col = rgb(107, 174, 214, maxColorValue = 255))
 dev.off()
