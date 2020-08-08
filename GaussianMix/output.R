@@ -92,48 +92,37 @@ dev.off()
 #############################################
 
 m <- 2
+lag.max <- 50
 mc.chain.list <- list(as.matrix(chain1), as.matrix(chain2))
 
-######### ncrop = 1e4###################
-
 ####################################
-nsim <- 1e4
+nsim1 <- 1e4
+nsim2 <- 5e4
 ########################################
 
 x <- list()
-for (i in 1:m)
-  x[[i]] <- as.matrix(mc.chain.list[[i]][1:nsim,])
+y <- list()
+for (i in 1:m){
+  x[[i]] <- as.matrix(mc.chain.list[[i]][1:nsim1,])
+  y[[i]] <- as.matrix(mc.chain.list[[i]][1:nsim2,])
+}
 
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, 1], type = "correlation", lag.max = lag.max, plot = FALSE)
-for (i in 2:m)
-  local.acf$acf <- local.acf$acf + acf(x[[i]][, 1], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
+local.acf1 <- acf(x[[1]], type = "correlation", lag.max = lag.max, plot = FALSE)
+local.acf2 <- acf(y[[1]], type = "correlation", lag.max = lag.max, plot = FALSE)
+global.acf1 <- globalACF(x, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, graph = FALSE)[[1]]
+global.acf2 <- globalACF(y, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, graph = FALSE)[[1]]
 
-pdf(file = "acf_n1e4.pdf", height = 4, width = 10)
+pdf(file = "gaussion-acf_hist.pdf", width = 10, height= 4)
 par(mfrow = c(1,2))
-plot(local.acf, type = "h", xlab = "Lag", ylab = "Autocorrelation", main = "", ylim = c(0,1))
-plot(global.acf, type = "h", xlab = "Lag", ylab = "Autocorrelation", main = "", ylim = c(0,1))
+plot(as.matrix(local.acf1$acf), type = 'h', ylab = "Autocorrelation", xlab = "Lag")
+lines(as.matrix(local.acf2$acf), type = 'l', col = "steelblue1", lwd = 2)
+plot(as.matrix(global.acf1$acf), type = 'h', ylim = c(min(local.acf1$acf), 1), ylab = "Autocorrelation", xlab = "Lag")
+lines(as.matrix(global.acf2$acf), type = 'l', col = "steelblue1", lwd = 2)
 dev.off()
 
-################## ncrop = 1e5 #########################
-
-####################################
-nsim <- 1e5
-########################################
-
-x <- list()
-for (i in 1:m)
-  x[[i]] <- as.matrix(mc.chain.list[[i]][1:nsim,])
-
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, 1], type = "correlation", lag.max = lag.max, plot = FALSE)
-for (i in 2:m)
-  local.acf$acf <- local.acf$acf + acf(x[[i]][, 1], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
-
-pdf(file = "acf_n1e4.pdf", height = 4, width = 10)
+pdf(file = "gaussian-acf_1e4.pdf", width = 10, height= 4)
 par(mfrow = c(1,2))
-plot(local.acf, type = "h", xlab = "Lag", ylab = "Autocorrelation", main = "", ylim = c(0,1))
-plot(global.acf, type = "h", xlab = "Lag", ylab = "Autocorrelation", main = "", ylim = c(0,1))
+l <- globalACF(x, chains = 0, component = 1, lag.max = lag.max, mean = "local", type = "correlation", col = "royalblue", leg = FALSE)
+g <- globalACF(x, chains = 0, component = 1, lag.max = lag.max, mean = "global", type = "correlation", col = "darkorange", leg = FALSE)
 dev.off()
+

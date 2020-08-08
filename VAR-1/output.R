@@ -59,7 +59,7 @@ a <- colMeans(a)
 r <- colMeans(r)
 
 pdf(file = "Out/var-frob.pdf", height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a, log(norm(truth, type = "F")))), lwd = 2)
 lines(conv.pts, r, col="royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
@@ -70,6 +70,8 @@ dev.off()
 ###########################################################
 ######### Effective Sample Size running plot##############
 ##########################################################
+
+load(file = paste("Out/conv_data_min", min, "_max", max, ".Rdata", sep = ""))
 
 a <- lapply(ess.asv, log)
 r <- lapply(ess.rsv, log)
