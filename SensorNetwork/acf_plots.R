@@ -79,29 +79,11 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-chains.local.acf <- list()
-chains.local.acf[[1]] <- acf(x[[1]][, 1], type = "correlation", plot = FALSE)$acf
-avg.local.acf <- chains.local.acf[[1]]
-for (i in 2:m)
-{
-  chains.local.acf[[i]] <- acf(x[[i]][, 1], type = "correlation", plot = FALSE, calc.ci = FALSE)$acf
-  avg.local.acf <- avg.local.acf + chains.local.acf[[i]]
-}
-avg.local.acf <- avg.local.acf/m
 
 pdf(file = "Out/sensor-acf_n5e3.pdf", height = 5, width = 5)
-
-plot(avg.local.acf, type = "l", col = "royalblue", xlab = "", ylab = "", main = "",
-     ylim = c(0,1), lwd = 2, yaxt = 'n', xaxt = 'n')
-for (i in 1:m)
-{
-  par(new = TRUE)
-  plot(chains.local.acf[[i]], type = "l", col = "lightblue", xlab = "", ylab = "", main = "", ylim = c(0,1), yaxt = 'n', xaxt = 'n')
-}
+globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
 par(new = TRUE)
-globalACF(x, type = "correlation", chains = 0, component = 1, graph = TRUE, leg = FALSE, col = "darkorange")$'G-ACF'
-
-legend("bottomleft", legend = c("G-ACF", "A-ACF"), col = c("darkorange", "royalblue"), lwd = 2)
+globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
 dev.off()
 
 
@@ -113,62 +95,11 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-chains.local.acf <- list()
-chains.local.acf[[1]] <- acf(x[[1]][, 1], type = "correlation", plot = FALSE)$acf
-avg.local.acf <- chains.local.acf[[1]]
-for (i in 2:m)
-{
-  chains.local.acf[[i]] <- acf(x[[i]][, 1], type = "correlation", plot = FALSE, calc.ci = FALSE)$acf
-  avg.local.acf <- avg.local.acf + chains.local.acf[[i]]
-}
-avg.local.acf <- avg.local.acf/m
 
 pdf(file = "Out/sensor-acf_n5e4.pdf", height = 5, width = 5)
-
-plot(avg.local.acf, type = "l", col = "royalblue", xlab = "", ylab = "", main = "",
-     ylim = c(0,1), lwd = 2, yaxt = 'n', xaxt = 'n')
-for (i in 1:m)
-{
-  par(new = TRUE)
-  plot(chains.local.acf[[i]], type = "l", col = "lightblue", xlab = "", ylab = "", main = "", ylim = c(0,1), yaxt = 'n', xaxt = 'n')
-}
+globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
 par(new = TRUE)
-globalACF(x, type = "correlation", chains = 0, component = 1, graph = TRUE, leg = FALSE, col = "darkorange")$'G-ACF'
-
-legend("bottomleft", legend = c("G-ACF", "A-ACF"), col = c("darkorange", "royalblue"), lwd = 2)
+globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
 dev.off()
 
-
-########################################
-ncrop <- 1e5
-########################################
-
-x <- list()
-for (i in 1:m){
-  x[[i]] <- mc.chain.list[[i]][1:ncrop,]
-}
-
-chains.local.acf <- list()
-chains.local.acf[[1]] <- acf(x[[1]][, 1], type = "correlation", plot = FALSE)$acf
-avg.local.acf <- chains.local.acf[[1]]
-for (i in 2:m)
-{
-  chains.local.acf[[i]] <- acf(x[[i]][, 1], type = "correlation", plot = FALSE, calc.ci = FALSE)$acf
-  avg.local.acf <- avg.local.acf + chains.local.acf[[i]]
-}
-avg.local.acf <- avg.local.acf/m
-
-pdf(file = "Out/sensor-acf_n1e5.pdf", height = 5, width = 5)
-globalACF(x, type = "correlation", chains = 0, component = 1, graph = TRUE, leg = FALSE, col = "darkorange")$'G-ACF'
-par(new = TRUE)
-
-plot(avg.local.acf, type = "l", col = "royalblue", xlab = "", ylab = "", main = "",
-     ylim = c(0,1), lwd = 2, yaxt = 'n', xaxt = 'n')
-for (i in 1:m)
-{
-  par(new = TRUE)
-  plot(chains.local.acf[[i]], type = "l", col = "lightblue", xlab = "", ylab = "", main = "", ylim = c(0,1), yaxt = 'n', xaxt = 'n')
-}
-legend("bottomleft", legend = c("G-ACF", "A-ACF"), col = c("darkorange", "royalblue"), lwd = 2)
-dev.off()
 
