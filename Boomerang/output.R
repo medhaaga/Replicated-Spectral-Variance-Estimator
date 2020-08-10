@@ -35,16 +35,16 @@ C2 <- 7
 
 #### Setting-1
 
-pdf(file = paste(paste("Out/", A1, B1, C1, "/3d_density_plot", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
+pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-3d_density_plot", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
 samples <- perspective(A1, B1, C1, 100)
-persp(samples$x, samples$y, samples$z, main="", col = "white", shade = .5, theta = -45, phi = 0, xlab = "x", ylab = "y", zlab = "Density")
+persp(samples$x, samples$y, samples$z, main="", col = "steelblue1", r = 10, shade = .5, theta = -45, phi = 0, xlab = "x", ylab = "y", zlab = "Density")
 dev.off()
 
 #### Setting-2
 
-pdf(file = paste(paste("Out/", A2, B2, C2, "/3d_density_plot", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
-samples <- perspective(A2, B2, C2, 200)
-persp(samples$x, samples$y, samples$z, main="", col = "white", shade = .5, theta = -45, phi = 0, xlab = "x", ylab = "y", zlab = "Density")
+pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-3d_density_plot", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
+samples <- perspective(A2, B2, C2, 100)
+persp(samples$x, samples$y, samples$z, main="", col = "steelblue1", r=10, shade = .5, theta = -45, phi = 0, xlab = "x", ylab = "y", zlab = "Density")
 dev.off()
 
 
@@ -117,23 +117,48 @@ max <- 1e5
 step <- 5e2
 conv.pts <- seq(min, max, step)
 
+
+##### two chains ######
+
+m <- 2
+load(file = paste(paste("Out/", A1, B1, C1, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
+
+a <- lapply(asv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
+r <- lapply(rsv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
+a <- Reduce("rbind", a)
+r <- Reduce("rbind", r)
+
+se.a <- apply(a, 2, sd)/sqrt(10)
+se.r <- apply(r, 2, sd)/sqrt(10)
+
+a <- colMeans(a)
+r <- colMeans(r)
+
+pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-frob", A1, B1, C1, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
+lines(conv.pts, r, col="royalblue", lwd = 2)
+segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
+segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
+legend("bottomright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, lwd = 2)
+dev.off()
+
 ##### five chains ######
 
 m <- 5
 load(file = paste(paste("Out/", A1, B1, C1, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
-a <- lapply(asv, function(x) log(apply(x, 3, norm, "F") ) )
-r <- lapply(rsv, function(x) log(apply(x, 3, norm, "F") ) )
+a <- lapply(asv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
+r <- lapply(rsv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
 a <- Reduce("rbind", a)
 r <- Reduce("rbind", r)
 
-se.a <- apply(a, 2, sd)/sqrt(length(asv))
-se.r <- apply(r, 2, sd)/sqrt(length(rsv))
+se.a <- apply(a, 2, sd)/sqrt(10)
+se.r <- apply(r, 2, sd)/sqrt(10)
 
 a <- colMeans(a)
 r <- colMeans(r)
 
-pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-frob", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
+pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-frob", A1, B1, C1, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
 plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
 lines(conv.pts, r, col="royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
@@ -150,23 +175,47 @@ max <- 5e4
 step <- 5e2
 conv.pts <- seq(min, max, step)
 
+#### two chains ######
+
+m <- 2
+load(file = paste(paste("Out/", A2, B2, C2, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
+
+a <- lapply(asv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
+r <- lapply(rsv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
+a <- Reduce("rbind", a)
+r <- Reduce("rbind", r)
+
+se.a <- apply(a, 2, sd)/sqrt(10)
+se.r <- apply(r, 2, sd)/sqrt(10)
+
+a <- colMeans(a)
+r <- colMeans(r)
+
+pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-frob", A2, B2, C2, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
+lines(conv.pts, r, col="royalblue", lwd = 2)
+segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
+segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
+legend("bottomright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, lwd = 2)
+dev.off()
+
 ##### five chains ######
 
 m <- 5
 load(file = paste(paste("Out/", A2, B2, C2, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
-a <- lapply(asv, function(x) log(apply(x, 3, norm, "F") ) )
-r <- lapply(rsv, function(x) log(apply(x, 3, norm, "F") ) )
+a <- lapply(asv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
+r <- lapply(rsv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
 a <- Reduce("rbind", a)
 r <- Reduce("rbind", r)
 
-se.a <- apply(a, 2, sd)/sqrt(length(asv))
-se.r <- apply(r, 2, sd)/sqrt(length(rsv))
+se.a <- apply(a, 2, sd)/sqrt(10)
+se.r <- apply(r, 2, sd)/sqrt(10)
 
 a <- colMeans(a)
 r <- colMeans(r)
 
-pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-frob", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
+pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-frob", A2, B2, C2, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
 plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
 lines(conv.pts, r, col="royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
@@ -191,19 +240,39 @@ max <- 1e5
 step <- 5e2
 conv.pts <- seq(min, max, step)
 
+#### two chains
+
+m <- 2
+load(file = paste(paste("Out/", A1, B1, C1, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
+
+a <- lapply(ess.asv[(1:10)], log)
+r <- lapply(ess.rsv[(1:10)], log)
+se.a <- 2*apply(Reduce("rbind", a), 2, sd)/sqrt(length(a))
+se.r <- 2*apply(Reduce("rbind", r), 2, sd)/sqrt(length(r))
+a <- Reduce("+", a)/length(a)
+r <- Reduce("+", r)/length(r)
+
+pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-ess", A1, B1, C1, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd=2)
+lines(conv.pts, r, col = "royalblue", lwd=2)
+segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
+segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
+legend("topright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, cex=1, lwd = 2)
+dev.off()
+
 #### five chains
 
 m <- 5
 load(file = paste(paste("Out/", A1, B1, C1, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
-a <- lapply(ess.asv, log)
-r <- lapply(ess.rsv, log)
+a <- lapply(ess.asv[(1:10)], log)
+r <- lapply(ess.rsv[(1:10)], log)
 se.a <- 2*apply(Reduce("rbind", a), 2, sd)/sqrt(length(a))
 se.r <- 2*apply(Reduce("rbind", r), 2, sd)/sqrt(length(r))
-a <- Reduce("+", a)/length(ess.asv)
-r <- Reduce("+", r)/length(ess.rsv)
+a <- Reduce("+", a)/length(a)
+r <- Reduce("+", r)/length(r)
 
-pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-ess", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
+pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-ess", A1, B1, C1, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
 plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd=2)
 lines(conv.pts, r, col = "royalblue", lwd=2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
@@ -222,6 +291,26 @@ max <- 5e4
 step <- 5e2
 conv.pts <- seq(min, max, step)
 
+#### two chains
+
+m <- 2
+load(file = paste(paste("Out/", A2, B2, C2, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
+
+a <- lapply(ess.asv, log)
+r <- lapply(ess.rsv, log)
+se.a <- 2*apply(Reduce("rbind", a), 2, sd)/sqrt(length(a))
+se.r <- 2*apply(Reduce("rbind", r), 2, sd)/sqrt(length(r))
+a <- Reduce("+", a)/length(ess.asv)
+r <- Reduce("+", r)/length(ess.rsv)
+
+pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-ess", A2, B2, C2, "m" ,sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd=2)
+lines(conv.pts, r, col = "royalblue", lwd=2)
+segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
+segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
+legend("topright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, cex=1, lwd = 2)
+dev.off()
+
 #### five chains
 
 m <- 5
@@ -234,7 +323,7 @@ se.r <- 2*apply(Reduce("rbind", r), 2, sd)/sqrt(length(r))
 a <- Reduce("+", a)/length(ess.asv)
 r <- Reduce("+", r)/length(ess.rsv)
 
-pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-ess", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
+pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-ess", A2, B2, C2, "m" ,sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
 plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd=2)
 lines(conv.pts, r, col = "royalblue", lwd=2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
@@ -260,11 +349,11 @@ m <- 2
 load(file = paste(paste("Out/", A1, B1, C1, "/out_check.pts_m", sep = "_"), m, "_freq", freq, ".Rdata", sep=""))
 
 for (j in 1:length(check.pts)){
-  
+
   nsim <- check.pts[j]
   print(paste("Coverage probabilities for nsim =  ", nsim))
   print(paste("ASV : ", mean(asv.coverage[[j]]), "GSV: ", mean(gsv.coverage[[j]])))
-  
+
 }
 
 
@@ -274,11 +363,11 @@ m <- 5
 load(file = paste(paste("Out/", A1, B1, C1, "/out_check.pts_m", sep = "_"), m, "_freq", freq, ".Rdata", sep=""))
 
 for (j in 1:length(check.pts)){
-  
+
   nsim <- check.pts[j]
   print(paste("Coverage probabilities for nsim =  ", nsim))
   print(paste("ASV : ", mean(asv.coverage[[j]]), "GSV: ", mean(gsv.coverage[[j]])))
-  
+
 }
 
 
@@ -296,11 +385,11 @@ m <- 2
 load(file = paste(paste("Out/", A2, B2, C2, "/out_check.pts_m", sep = "_"), m, "_freq", freq, ".Rdata", sep=""))
 
 for (j in 1:length(check.pts)){
-  
+
   nsim <- check.pts[j]
   print(paste("Coverage probabilities for nsim =  ", nsim))
   print(paste("ASV : ", mean(asv.coverage[[j]]), "GSV: ", mean(gsv.coverage[[j]])))
-  
+
 }
 
 
@@ -310,9 +399,10 @@ m <- 5
 load(file = paste(paste("Out/", A2, B2, C2, "/out_check.pts_m", sep = "_"), m, "_freq", freq, ".Rdata", sep=""))
 
 for (j in 1:length(check.pts)){
-  
+
   nsim <- check.pts[j]
   print(paste("Coverage probabilities for nsim =  ", nsim))
   print(paste("ASV : ", mean(asv.coverage[[j]]), "GSV: ", mean(gsv.coverage[[j]])))
-  
+
 }
+

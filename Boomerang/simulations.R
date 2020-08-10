@@ -194,6 +194,12 @@ create.output(A, B, C, m, check.pts, freq, c.prob)
 t2 <- Sys.time()
 print(t2-t1)
 
+print("Carrying out simulations for running plots of ASV and RSV in the range(1e3, 1e5")
+t1 <- Sys.time()
+convergence(min, max, step, A, B, C, m, rep)
+t2 <- Sys.time()
+print(t2-t1)
+
 #### Five chains
 
 m = 5
@@ -223,7 +229,7 @@ m = 2
 
 check.pts <- c(1e3, 2e3, 5e3, 1e4, 2e4, 5e4)
 freq <- 1e3  
-rep <- 50
+rep <- 10
 c.prob <- .95
 min <- 5e2
 max <- 5e4
@@ -232,6 +238,12 @@ conv.pts <- seq(min, max, step)
 
 t1 <- Sys.time()
 create.output(A, B, C, m, check.pts, freq, c.prob)
+t2 <- Sys.time()
+print(t2-t1)
+
+print("Carrying out simulations for running plots of ASV and RSV in the range(1e3, 1e5")
+t1 <- Sys.time()
+convergence(min, max, step, A, B, C, m, rep)
 t2 <- Sys.time()
 print(t2-t1)
 

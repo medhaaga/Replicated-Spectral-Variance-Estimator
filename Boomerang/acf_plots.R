@@ -26,7 +26,7 @@ for (i in 1:m){
 }
 global.mean <- global.mean/m
 component <- 1
-
+lag.max <- 50
 
 ####################################
 nsim <- 1000
@@ -37,17 +37,13 @@ for (i in 1:m)
   x[[i]] <- mc.chain.list[[i]][1:nsim,]
 
 
-global.acf <- globalACF(x, type = "correlation", component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", plot = FALSE)
-for (i in 2:m)
-  local.acf$acf <- local.acf$acf + acf(x[[i]][, component], type = "correlation", plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
+global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$"avg_ACF"
+local.acf <- globalACF(x, type = "correlation", lag.max = lag.max, mean = "local", component = 1, graph = FALSE)$"avg_ACF"
 
-pdf(file = paste(paste("Out/", A, B, C, "/boom-acf", A, B, C, "n", sep = "_"),  nsim, ".pdf", sep = ""), width = 10, height = 5)
+pdf(file = paste(paste("Out/", A, B, C, "/boom-acf", A, B, C, "n", sep = "_"),  nsim, ".pdf", sep = ""), width = 10, height = 4)
 par(mfrow = c(1,2))
-plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("A-ACF"))
-plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("G-ACF"))
-
+plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = "")
+plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = "")
 dev.off()
 
 
@@ -56,22 +52,21 @@ dev.off()
 nsim <- 1e5
 ########################################
 
+
 x <- list()
 for (i in 1:m)
   x[[i]] <- mc.chain.list[[i]][1:nsim,]
 
 
-global.acf <- globalACF(x, type = "correlation", component = 1 , graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", plot = FALSE)
-for (i in 2:m)
-  local.acf$acf <- local.acf$acf + acf(x[[i]][, component], type = "correlation", plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
+global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$"avg_ACF"
+local.acf <- globalACF(x, type = "correlation", lag.max = lag.max, mean = "local", component = 1, graph = FALSE)$"avg_ACF"
 
-pdf(file = paste(paste("Out/", A, B, C, "/boom-acf_n", A, B, C, "n", sep = "_"), nsim, ".pdf", sep = ""), width = 10, height = 5)
+pdf(file = paste(paste("Out/", A, B, C, "/boom-acf", A, B, C, "n", sep = "_"),  nsim, ".pdf", sep = ""), width = 10, height = 4)
 par(mfrow = c(1,2))
-plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("A-ACF"))
-plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("G-ACF"))
+plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = "")
+plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = "")
 dev.off()
+
 
 #####################################
 #### Setting-2
@@ -93,27 +88,22 @@ for (i in 1:m){
   chain <- markov.chain(A, B, C, 1e5, start[i,])
   mc.chain.list[[i]] = chain
 }
-component <- 1
-
 
 ####################################
 nsim <- 1000
 ########################################
+
 
 x <- list()
 for (i in 1:m)
   x[[i]] <- mc.chain.list[[i]][1:nsim,]
 
 
-global.acf <- globalACF(x, type = "correlation", component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", plot = FALSE)
-for (i in 2:m)
-  local.acf$acf <- local.acf$acf + acf(x[[i]][, component], type = "correlation", plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
+global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$"avg_ACF"
+local.acf <- globalACF(x, type = "correlation", lag.max = lag.max, mean = "local", component = 1, graph = FALSE)$"avg_ACF"
 
-pdf(file = paste(paste("Out/", A, B, C, "/boom-acf", A, B, C, "n", sep = "_"),  nsim, ".pdf", sep = ""), width = 10, height = 5)
+pdf(file = paste(paste("Out/", A, B, C, "/boom-acf", A, B, C, "n", sep = "_"),  nsim, ".pdf", sep = ""), width = 10, height = 4)
 par(mfrow = c(1,2))
-plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("A-ACF"))
-plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = expression("G-ACF"))
-
+plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = "")
+plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = "")
 dev.off()

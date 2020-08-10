@@ -15,7 +15,6 @@ for (i in 1:m)
 save(mc.chain.list, file = "Out/two_chains.Rdata")
 
 load(file = "Out/two_chains.Rdata")
-lag.max <- 150
 
 ###########################################
 ###########################################
@@ -23,26 +22,20 @@ lag.max <- 150
 ##########################################
 ###########################################
 
-
+component <- 2
 ### ncrop = 1e3
 
 ncrop <- 1e3
 x <- list()
+
 for (i in 1:m){
-  x[[i]] <- mc.chain.list[[i]][1:ncrop,]
+  x[[i]] <- as.matrix(mc.chain.list[[i]][1:ncrop,])
 }
 
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
-
-for (i in 2:m)
-  local.acf$acf <- local.acf$acf + acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
-
-pdf(file = paste("Out/acf_n", ncrop, ".pdf", sep = ""), width = 8, height = 4)
+pdf(file = paste("Out/poisson-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-plot(local.acf, main = expression(paste("Old ACF for chain 1")), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[1]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[1]]$acf), max(true.acf[1,1,]))))
-plot(global.acf, main = expression(paste("New ACF for chain 1")), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[2]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[2]]$acf), max(true.acf[1,1,]))))
+globalACF(x, chains=0, component = component, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
+globalACF(x, chains=0, component = component, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
 dev.off()
 
 ### ncrop = 1e4
@@ -51,40 +44,17 @@ dev.off()
 ncrop <- 1e4
 x <- list()
 for (i in 1:m){
-  x[[i]] <- mc.chain.list[[i]][1:ncrop,]
+  x[[i]] <- as.matrix(mc.chain.list[[i]][1:ncrop,])
 }
 
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
-
-for (i in 2:m)
-  local.acf$acf <- local.acf$acf + acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
-
-pdf(file = paste("Out/acf_n", ncrop, ".pdf", sep = ""), width = 8, height = 4)
+pdf(file = paste("Out/poisson-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-plot(local.acf, main = expression(paste("Old ACF for chain 1")), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[1]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[1]]$acf), max(true.acf[1,1,]))))
-plot(global.acf, main = expression(paste("New ACF for chain 1")), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[2]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[2]]$acf), max(true.acf[1,1,]))))
+globalACF(x, chains=0, component = component, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
+globalACF(x, chains=0, component = component, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
 dev.off()
 
-### ncrop = 1e5
-
-
-ncrop <- 1e5
-x <- list()
-for (i in 1:m){
-  x[[i]] <- mc.chain.list[[i]][1:ncrop,]
-}
-
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$'G-ACF'
-local.acf <- acf(x[[1]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)
-
-for (i in 2:m)
-  local.acf$acf <- local.acf$acf + acf(x[[i]][, component], type = "correlation", lag.max = lag.max, plot = FALSE)$acf
-local.acf$acf <- local.acf$acf/m
-
-pdf(file = paste("Out/acf_n", ncrop, ".pdf", sep = ""), width = 8, height = 4)
-par(mfrow = c(1,2))
-plot(local.acf, main = expression(paste("Old ACF for chain 1")), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[1]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[1]]$acf), max(true.acf[1,1,]))))
-plot(global.acf, main = expression(paste("New ACF for chain 1")), xlim = range(0, lag.max), ylim =  c(0,1))#c(min(min(acf.list[[1]][[2]]$acf), min(true.acf[1,1,])), max(max(acf.list[[1]][[2]]$acf), max(true.acf[1,1,]))))
+n <- 1e5
+pdf(file = paste("Out/poisson-trace_n", n, ".pdf", sep = ""), height = 5, width = 7)
+plot.ts(mc.chain.list[[1]][1:n,component], col = "steelblue1", xlab = "Time", ylab = "Component-2", main = "")
+lines(1:n, mc.chain.list[[2]][1:n, component], col = "dodgerblue4", xlab = "Time", ylab = "Component-2", main = "")
 dev.off()

@@ -129,8 +129,14 @@ dev.off()
 
 ### Trace plot - Location-1
 
-pdf(file = "Out/sensor-trace_loc1.pdf", height = 5, width = 5)
+pdf(file = "Out/sensor-trace_loc1.pdf", height = 5, width = 10)
+par(mfrow = c(1,2))
 plot.ts(mc.chain.list[[1]][1:nsim1,1], ylim = range(mc.chain.list[[1]][,1], mc.chain.list[[5]][,1]), ylab = expression(x[11]), col = rgb(8, 69, 148, maxColorValue = 255))
 par(new = TRUE)
 plot.ts(mc.chain.list[[5]][1:nsim1,1], ylim = range(mc.chain.list[[1]][,1], mc.chain.list[[5]][,1]), yaxt='n', xaxt='n', ylab = "", col = rgb(107, 174, 214, maxColorValue = 255))
+
+plot.ts(mc.chain.list[[1]][1:nsim1,2], ylim = range(mc.chain.list[[1]][,2], mc.chain.list[[5]][,2]), ylab = expression(x[12]), col = rgb(8, 69, 148, maxColorValue = 255))
+par(new = TRUE)
+plot.ts(mc.chain.list[[5]][1:nsim1,2], ylim = range(mc.chain.list[[1]][,2], mc.chain.list[[5]][,2]), yaxt='n', xaxt='n', ylab = "", col = rgb(107, 174, 214, maxColorValue = 255))
+
 dev.off()
