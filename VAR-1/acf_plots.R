@@ -74,7 +74,7 @@ for (i in 1:m){
 global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), graph = FALSE, avg = FALSE)[[1]]
 local.acf <- acf(x[[2]][, component], lag.max = lag.max, type = "correlation", plot = FALSE)
 
-pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
+pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
 plot(local.acf, main = expression("Locally centered ACF"))
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
@@ -95,7 +95,7 @@ for (i in 1:m){
 global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), graph = FALSE, avg = FALSE)[[1]]
 local.acf <- acf(x[[2]][, component], lag.max = lag.max, type = "correlation", plot = FALSE)
 
-pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
+pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
 plot(local.acf, main = expression("Locally centered ACF"))
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")

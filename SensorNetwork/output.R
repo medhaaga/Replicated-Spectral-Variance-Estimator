@@ -110,7 +110,7 @@ dev.off()
 
 ###############################################
 ###############################################
-# Scatter plots
+# Trace plots
 ###############################################
 ###############################################
 
@@ -118,18 +118,9 @@ dev.off()
 load(file = "Out/five_chains.Rdata")
 nsim1 = 1e5
 
-### Scatter plot - Location-1
-
-df <- as.data.frame(mc.chain.list[[1]][,c(1,2)])
-names(df) <- c("X", "Y")
-fig <- ggplot(df, aes(X, Y)) + geom_density_2d_filled() + theme_minimal() + scale_fill_brewer(palette="Blues") + theme(legend.position="none") + xlim(-0.25,0.75)
-pdf("Out/sensor-contour_loc1.pdf", height = 5, width = 5)
-print(fig)
-dev.off()
-
 ### Trace plot - Location-1
 
-pdf(file = "Out/sensor-trace_loc1.pdf", height = 5, width = 10)
+pdf(file = "Out/sensor-trace_loc1.pdf", height = 4, width = 10)
 par(mfrow = c(1,2))
 plot.ts(mc.chain.list[[1]][1:nsim1,1], ylim = range(mc.chain.list[[1]][,1], mc.chain.list[[5]][,1]), ylab = expression(x[11]), col = rgb(8, 69, 148, maxColorValue = 255))
 par(new = TRUE)

@@ -80,7 +80,7 @@ for (i in 1:m){
 }
 
 
-pdf(file = "Out/sensor-acf_n5e3.pdf", height = 5, width = 5)
+pdf(file = "Out/sensor-acf_n5e3.pdf", height = 4, width = 4)
 globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
 par(new = TRUE)
 globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
@@ -96,7 +96,7 @@ for (i in 1:m){
 }
 
 
-pdf(file = "Out/sensor-acf_n5e4.pdf", height = 5, width = 5)
+pdf(file = "Out/sensor-acf_n5e4.pdf", height = 4, width = 4)
 globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
 par(new = TRUE)
 globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")

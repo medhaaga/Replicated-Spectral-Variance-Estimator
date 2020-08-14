@@ -54,7 +54,12 @@ globalACF(x, chains=0, component = component, mean = "global", type = "correlati
 dev.off()
 
 n <- 1e5
-pdf(file = paste("Out/poisson-trace_n", n, ".pdf", sep = ""), height = 5, width = 7)
-plot.ts(mc.chain.list[[1]][1:n,component], col = "steelblue1", xlab = "Time", ylab = "Component-2", main = "")
-lines(1:n, mc.chain.list[[2]][1:n, component], col = "dodgerblue4", xlab = "Time", ylab = "Component-2", main = "")
+pdf(file = paste("Out/poisson-trace_n", n, ".pdf", sep = ""), height = 4, width = 10)
+par(mfrow = c(1,2))
+plot.ts(mc.chain.list[[1]][1:n,2], col = "steelblue1", xlab = "Time", ylab = "Component-2", main = "")
+lines(1:n, mc.chain.list[[2]][1:n, 2], col = "dodgerblue4", xlab = "Time", ylab = "Component-2", main = "")
+
+plot.ts(mc.chain.list[[1]][1:n,3], col = "steelblue1", xlab = "Time", ylab = "Component-3", main = "")
+lines(1:n, mc.chain.list[[2]][1:n,3], col = "dodgerblue4", xlab = "Time", ylab = "Component-3", main = "")
+
 dev.off()

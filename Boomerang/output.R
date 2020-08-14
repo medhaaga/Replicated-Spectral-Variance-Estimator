@@ -12,6 +12,7 @@ library(RcppArmadillo)
 library(fftwtools)
 library(mcmcse)
 library(stats)
+library(RColorBrewer)
 sourceCpp("lag.cpp")
 source("functions.R")
 
@@ -35,27 +36,6 @@ C2 <- 7
 
 #### Setting-1
 
-pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-3d_density_plot", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
-samples <- perspective(A1, B1, C1, 100)
-persp(samples$x, samples$y, samples$z, main="", col = "steelblue1", r = 10, shade = .5, theta = -45, phi = 0, xlab = "x", ylab = "y", zlab = "Density")
-dev.off()
-
-#### Setting-2
-
-pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-3d_density_plot", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
-samples <- perspective(A2, B2, C2, 100)
-persp(samples$x, samples$y, samples$z, main="", col = "steelblue1", r=10, shade = .5, theta = -45, phi = 0, xlab = "x", ylab = "y", zlab = "Density")
-dev.off()
-
-
-########################################################
-########################################################
-####### Scatter plots for both simulation settings######
-########################################################
-########################################################
-
-########### Setting-1 ##############
-
 set.seed(1)  # use seed for reproducible results
 m <- 2
 
@@ -70,14 +50,14 @@ chain <- array(0, dim = c(1e3, p, m))
 chain[,,1] <- markov.chain(A1, B1, C1, 1e3, start[1,])
 chain[,,2] <- markov.chain(A1, B1, C1, 1e3, start[2,])
 
-pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-sp", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
-plot(chain[,,1], col = 'dodgerblue4', xlim = range(chain[,1,]), ylim = range(chain[,2,]), xlab = "X-component", ylab = "Y-component", main = "")
-points(chain[,,2], col = "steelblue1")
-legend("topright", legend=c("chain-1", "chain-2"),col=c("dodgerblue4", "steelblue1"), pch=1, cex=1.2)
+pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-2d_density_plot", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
+samples <- perspective(A1, B1, C1, 100)
+contour2D(x=samples$x, y=samples$y, z=samples$z, colkey = FALSE, xlim=c(0,10), ylim=c(0,10))
+points(rbind(chain[,,1], chain[,,2]), cex=.2, col = c(rep("black",1e3), rep("darkorange",1e3)))
 dev.off()
 
 
-########### Setting-2 ##############
+#### Setting-2
 
 set.seed(1)  # use seed for reproducible results
 m <- 2
@@ -85,19 +65,21 @@ m <- 2
 start <- matrix(0, nrow = m, ncol = 2)  #only depends on C
 
 for(i in 1:floor(m/2)){
-  start[i,] <- c(0, C2*(2^(2-i)))
-  start[m-i+1,] <- c(C2*(2^(2-i)), 0)
+  start[i,] <- c(0, C1*(2^(2-i)))
+  start[m-i+1,] <- c(C1*(2^(2-i)), 0)
 }
 
 chain <- array(0, dim = c(1e3, p, m))
 chain[,,1] <- markov.chain(A2, B2, C2, 1e3, start[1,])
 chain[,,2] <- markov.chain(A2, B2, C2, 1e3, start[2,])
 
-pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-sp", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
-plot(chain[,,1], col = 'dodgerblue4', xlim = range(chain[,1,]), ylim = range(chain[,2,]), xlab = "X-component", ylab = "Y-component", main = "")
-points(chain[,,2], col = "steelblue1")
-legend("topright", legend=c("chain-1", "chain-2"),col=c("dodgerblue4", "steelblue1"), pch=1, cex=1.2)
+pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-2d_density_plot", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
+samples <- perspective(A2, B2, C2, 100)
+contour2D(x=samples$x, y=samples$y, z=samples$z, colkey = FALSE, xlim=c(0,10), ylim=c(0,10))
+points(rbind(chain[,,1], chain[,,2]), cex=.2, col = c(rep("black",1e3), rep("darkorange",1e3)))
 dev.off()
+
+
 
 
 ###################################################################
