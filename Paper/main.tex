@@ -123,30 +123,29 @@ Autocovariances are the fundamental quantity in many features of Markov chain Mo
 
 \section{Introduction} \label{sec:intro}
 
-The power of the modern personal computer has made it easy to run parallel Markov chain Monte Carlo (MCMC) implementations. This is particularly useful for slow mixing or multi-modal target distributions, where the starting points of the chains are spread over the state-space in order to more accurately capture characteristics of the target distribution. Output from $m$ parallel chains are then summarized, visually and quantitatively, to assess the empirical mixing properties of the chains and the quality of Monte Carlo estimators.
+The power of the modern personal computer has made it easy to run parallel Markov chain Monte Carlo (MCMC) implementations. This is particularly useful for slow mixing or multi-modal target distributions, where the starting points of the chains are spread over the state-space in order to capture characteristics of the target distribution more accurately. The output from $m$ parallel chains is then summarized, visually and quantitatively, to assess the empirical mixing properties of the chains and the quality of Monte Carlo estimators.
 
 A key quantity of interest that drives MCMC output analysis is the autocovariance function (ACvF). From their use in autocorrelation plots to assessing Monte Carlo variability of estimates, to determining when to stop MCMC simulation, autocovariances drive many visual and quantitative inferences users make from MCMC output. However, tools on estimating ACvF are largely constructed for output from one MCMC chain. {\color{blue} a little bit more here}.
-
 
 % Markov chain Monte Carlo (MCMC) is a sampling method used to obtain serially correlated realizations from a desired probability distribution when i.i.d. sampling is difficult. Due to this serial correlation in samples, a larger number of MCMC samples are required to make inferences about the target distribution as compared to the independent ones. Therefore, it becomes imperative for an MCMC practitioner to have an idea about the underlying dependence structure in the Markov chains. Autocovariance function (ACF) characterizes this dependence at a particular lag $k$. 
 
 Let $F$ be the target distribution with mean $\mu$ defined on the set $\X \subseteq \mathbb{R}^p$ equipped with a countably generated Borel $\sigma$-field $\mathcal{B}(\X)$. For $s = 1, \dots, m$, let $\{X_{st}; \; t \in \mathbb{Z}\}$ be the $s^{th}$ $F$-Harris ergodic stationary Markov chain \citep[see][for definitions]{meyn:twee:2009} employed to learn characteristics about $F$.
-% If $\bar{X} = n^{-1} \sum_{t=1}^{n}X_t$ , then with probability 1, $\bar{X} \to \mu$ as $n \to \infty$. \\
+% If $\bar{X} = n^{-1} \sum_{t=1}^{n}X_t$ , then with probability 1, $\bar{X} \to \mu_g$ as $n \to \infty$. \\
 The process is covariance stationary so that
 the ACvF at lag $k$ depends only on $k$ and is defined as 
 %
 \[
-    \Gamma(k) = \Cov_F(X_{s1}, X_{s\,1+k})= \mathbb{E}_F \left[(X_{s1} - \mu)(X_{s\,1+k} - \mu)^T \right]\,.
+    \Upsilon(k) = \Cov_F(X_{s1}, X_{s\,1+k})= \mathbb{E}_F \left[(X_{s1} - \mu)(X_{s\,1+k} - \mu)^T \right]\,.
 \]
-Estimating $\Gamma(k)$ is critical to assessing the quality of the sampler and the quality of sample statistics. Let $\bar{X}_s = n^{-1} \sum_{t=1}^{n} X_{st}$ denote the Monte Carlo estimator of $\mu$ from the $s$th chain. The standard estimator is the sample autocovariance matrix at lag $k$ for the $s$th chain is
+Estimating $\Gamma(k)$ is critical to assessing the quality of the sampler and the quality of sample statistics. Let $\bar{X}_s = n^{-1} \sum_{t=1}^{n} X_{st}$ denote the Monte Carlo estimator of $\mu$ from the $s$th chain. The standard estimator for $\Gamma(k)$ is the sample autocovariance matrix at lag $k$. For the $s$th chain, it is given by
 %
-\begin{equation} \label{eq:empirical_acf}
-    \hat{\Gamma}_s(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}} \left(X_{st} - \bar{X}_s \right) \left(X_{s t+\abs{k}} - \bar{X}_s \right)^T\,.
+\begin{equation} \label{eq:empirical_ACvF}
+    \hat{\Gamma}_s(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}} \left(X_{st} - \bar{X}_s \right) \left(X_{s\, t+\abs{k}} - \bar{X}_s \right)^T\,.
 \end{equation}
 %
-% It is a known fact that most of the Markov chains obtained from practical MCMC algorithms are not stationary. Regardless, Equation~\ref{eq:empirical_acf} provides the empirical estimator for ACF at a particular lag for the Markov chain with any initial distribution (\cite{geyer2011introduction}).\\
+% It is a known fact that most of the Markov chains obtained from practical MCMC algorithms are not stationary. Regardless, Equation~\ref{eq:empirical_ACvF} provides the empirical estimator for ACF at a particular lag for the Markov chain with any initial distribution (\cite{geyer2011introduction}).\\
 
-% Calculation of exact ACF has been done for simple stationary stochastic models like autoregressive (AR) models (under assumption of stationarity), moving average (MA) (\cite{quenouille1947notes}), and autoregressive-moving-average (ARMA) (\cite{box2015time}) models. However, for most of the complex sampling algorithms (including MCMC), we rely on sample estimators for ACF. Unfortunately, the estimator given in Equation~\ref{eq:empirical_acf} has been observed to have a some drawbacks. Firstly, it is not immune to outliers (see \cite{ma2000highly}) and secondly, it is usually non-informative in case of slowly mixing Markov chains. 
+% Calculation of exact ACF has been done for simple stationary stochastic models like autoregressive (AR) models (under assumption of stationarity), moving average (MA) (\cite{quenouille1947notes}), and autoregressive-moving-average (ARMA) (\cite{box2015time}) models. However, for most of the complex sampling algorithms (including MCMC), we rely on sample estimators for ACF. Unfortunately, the estimator given in Equation~\ref{eq:empirical_ACvF} has been observed to have a some drawbacks. Firstly, it is not immune to outliers (see \cite{ma2000highly}) and secondly, it is usually non-informative in case of slowly mixing Markov chains. 
 For single-chain MCMC runs, the estimator $\hat{\Gamma}(k)$ is used to construct autocorrelation (ACF) plots, to estimate the long-run variance of Monte Carlo estimators \cite{hannan:1970,dame:1991}, and to estimate effective sample size for an estimation problem \cite{kass:carlin:gelman:neal:1998,gong:fleg:2016,vats:fleg:jon:2019}. 
 
 However, there is no unified approach to constructing estimators of $\Gamma(k)$ for multiple-chain implementations. Specifically, parallel MCMC chains are often spread across the state space so as to adequately capture high density areas. For slow mixing Markov chains and multi-modal targets, the chains take time to traverse the space so that estimates of $\mu$ can be vastly different. The sample ACvF from each chain is typically underestimated yielding false sense of security about the quality of process.
@@ -154,11 +153,13 @@ However, there is no unified approach to constructing estimators of $\Gamma(k)$ 
 % We address the second issue in this paper by using multiple representative samples of the target distribution via parallel Markov chains. This approach is especially relevant to MCMC wherein multiple chain sampling is computationally possible and statistically desirable for making informative inferences. Our goal is to pool in the information from all the Markov chains while estimating the autocovariances. 
 
  % A commonly faced problem with the MCMC models is the slow mixing property. Especially in case of multi modal target distributions, it has been observed that the Markov chains tend to get \textit{stuck} in a particular mode for a long time. In such situations, single chain empirical ACF will severely underestimate the autocovariance. 
- We propose a globally-centered ACvF (G-ACvF) that centers the Markov chain around the overall mean vector from all $m$ chains. We show that the bias under stationarity for G-ACvF is lower than $\hat{\Gamma}(k)$ and through various examples empirically demonstrate improved estimation. We employ the G-ACvF estimators to construct autocorrelation plots which leads to remarkably improvements. A demonstrative example is at the end of this Section. 
+ We propose a globally-centered ACvF (G-ACvF) that centers the Markov chain around the overall mean vector from all $m$ chains. We show that the bias under stationarity for G-ACvF is lower than $\hat{\Gamma}(k)$, and through various examples, empirically demonstrate improved estimation. We employ the G-ACvF estimators to construct autocorrelation plots, which leads to remarkable improvements. A demonstrative example is at the end of this Section. 
+
 
 % We will further study the impact of G-ACF in calculation of two important applications of ACF (1) asymptotic variance of Markov chain average and (2) effective sample size (ESS).
  
-ACvFs are required to estimate the log-run variance of Monte Carlo averages. Specifically, spectral variance estimators are used to estimate $\Sigma = \sum_{k=-\infty}^{\infty} \Gamma(k)$. We replace $\hat{\Gamma}(k)$ with G-ACvF in spectral variance estimators and show strong consistency of this estimator under weak conditions. In the spirit of \cite{andr:1991}, we also obtain large-sample bias and variance of the resulting estimator of $\Sigma$. Spectral variance estimators can be slow to prohibitively expensive to calculate \citep{liu:fleg:2018}. We relieve the computational burden, we adapt the fast algorithm of \cite{heberle2017fast} for G-ACvFs that dramatically reduces computation time. The globally-centered spectral variance estimators in employed in the computation of effective sample size and safeguards against early termination of the MCMC process and improved reliability of estimators.
+ACvFs are required to estimate the long-run variance of Monte Carlo averages. Specifically, spectral variance estimators are used to estimate $\Sigma = \sum_{k=-\infty}^{\infty} \Gamma(k)$. We replace $\hat{\Gamma}(k)$ with G-ACvF in spectral variance estimators (SVE) and show strong consistency of this estimator under weak conditions. In the spirit of \cite{andr:1991}, we also obtain large-sample bias and variance of the resulting estimator of $\Sigma$. Spectral variance estimators can be slow to prohibitively expensive to calculate \citep{liu:fleg:2018}. To relieve the computational burden, we adapt the fast algorithm of \cite{heberle2017fast} for G-ACvFs that dramatically reduces computation time. The globally-centered spectral variance estimator (G-SVE) is employed in the computation of effective sample size through the estimator given by \cite{vats2019multivariate}. We will show that using G-SVE for estimating $\Sigma$ safeguards us against early termination of the MCMC process and improves the reliability of estimators. 
+
 
 % Let $g: \X \to \mathbb{R}^d$ be an F-integrable function and suppose we are interested in estimating the expected value $\mu_g = \mathbb{E}_F[g(X)]$. We know that $\sum_{t=1}^{n}g(X_t)/n$ converges to $\mu_g$ as $n \to \infty$ almost surely. MCMC ensures asymptotic convergence, however this is not practically very useful where the number of samples is finite and the Markov chain mixes slowly. 
 % One of the important criteria to determine the quality of estimation is the Monte Carlo aymptotic covariance matrix which is given by an infinite summation of autocovariance matrices for all lags. For a slowly mixing Markov chain, underestimated autocovariances will deliver underestimated asymptotic variance. There are many techniques for estimating it like batch means (BM), overlapping bath means (OBM), and spectral variance estimator (SVE). Due to its nice statistical properties, we will only focus on SVE in this paper. SVE involves a truncated and weighted sum of autocovariances. We propose a version of SVE that uses our globally centered autocovariances. We call this globally-centered SVE (G-SVE).
@@ -173,12 +174,12 @@ ACvFs are required to estimate the log-run variance of Monte Carlo averages. Spe
 % subsection demonstrative_example (end)
 % \begin{example}[Demonstrative example]
 
-We demonstrate the striking difference in estimation of $\Gamma(k)$ via ACF plots. Consider a random-walk Metropolis-Hastings sampler for a univariate mixture of Gaussians target density. That is, $F$ is the distribution with density
+We demonstrate the striking difference in estimation of $\Gamma(k)$ via autocorrelation function (ACrF) plots. Consider a random-walk Metropolis-Hastings sampler for a univariate mixture of Gaussians target density. Let the target density be 
 \[
 f(x) = 0.7\,f(x; -5, 1) + 0.3\,f(x; 5, 0.5)\,,
 \]
 where $f(x; a,b)$ is the density of a normal distribution with mean $a$ and variance $b$. 
-Two Markov chains are started at each mode.  Figure~\ref{fig:gaussian-trace} indicates that in the first $10^4$ samples, the chains do not jump modes so that both Markov chains yield different estimates of the population mean, $\mu$. At $10^5$ sample size, both Markov chains have traversed the state space reasonably and yield similar estimates of $\mu$. We make two points here: first, for small sample size, we observe that the locally-centered ACF gives misleading estimates   whereas G-ACF accounts for the discrepancy in sample means. This is evident from the ACF plots  in Figure~\ref{subfig:gauss-acf-1e4}. Second, for a large sample size, the estimates from G-ACF as well as ACF are equivalent in Figure \ref{subfig:gauss-trace_1e5}.
+Two Markov chains are started at each mode. Let $n$ denote the number of samples for each chain. Figure~\ref{fig:gaussian-trace} indicates that in the first $10^4$ samples, the chains do not jump modes so that both Markov chains yield different estimates of the population mean, $\mu$. At $10^5$ sample size, both Markov chains have traversed the state space reasonably and yield similar estimates of $\mu$. We make two points here: first, for small sample size, we observe that the locally-centered ACF gives misleading estimates whereas G-ACF accounts for the discrepancy in sample means between two chains. This is evident from the ACF plots  in Figure~\ref{subfig:gauss-acf}. Second, for a large sample size, the estimates from G-ACrF as well as ACrF are equivalent. Therefore, G-ACF can be used in any situation with a promise of estimates that are at least as good as empirical ACF estimators.  
 
 \begin{figure}[htbp]
     \begin{subfigure}{.5\textwidth}
@@ -197,50 +198,54 @@ Two Markov chains are started at each mode.  Figure~\ref{fig:gaussian-trace} ind
     \label{fig:gaussian-trace}
 \end{figure}
 
+
+
 \begin{figure}[htbp]
-\begin{subfigure}{\textwidth}
+\centering
+\begin{subfigure}{.9\textwidth}
    \centering
-   \includegraphics[width=.9\linewidth]{plots/gaussian-acf_n1e4.pdf}
+   \includegraphics[width=.9\textwidth]{plots/gaussian-acf_hist.pdf}
+   \caption{$n-10^4$ (histogram) and $n = 5 \times 10^5$ (blue line)}
+   \label{subfig:gauss-acf_1e4_1e5}
+\end{subfigure}
+\begin{subfigure}{.9\textwidth}
+   \centering
+   \includegraphics[width=.9\textwidth]{plots/gaussian-acf_1e4.pdf} 
    \caption{$n = 10^4$}
-   \label{subfig:gauss-acf-1e4}
- \end{subfigure}\\
- \begin{subfigure}{\textwidth}
-   \centering
-   \includegraphics[width=.9\linewidth]{plots/gaussian-acf_n1e5.pdf} 
-   \caption{$n = 10^5$}
-   \label{subfig:gauss-acf-1e5}
- \end{subfigure}
- \caption{Autocorrelation plot for locally-centered ACF (left) and globally centered ACF (right) averaged over all chains. (a) $n = 10^4$, not converged yet; (b) $n =  10^5$, converged}
- \label{fig:gauss:acf}
+   \label{subfig:gauss-acf_1e4}
+\end{subfigure}
+\caption{ACF plots for locally-centered ACF (left) and globally centered ACF (right). (a) The histogram plots the estimates for $n = 10^4$ and the blue line plot the estimates for $n = 5 \times 10^4$ for chain-1. (b) $n = 10^4$; the dotted lines are ACF for each chain and the thick solid line is the ACF averaged over both chains.}
+\label{fig:gaussian-acf}
 \end{figure}
-
-
 
 
 \section{Globally-centered autocovariance} \label{sec:G-ACF}
 
 Recall that we run $m$ independent $F$-ergodic Markov chains denoted by $\{X_{st}; \; t \in \mathbb{Z}\}$ for the $s^{th}$ chain. Let the sample mean of the $s^{th}$ Markov chain be $\bar{X}_s = n^{-1} \sum_{t=1}^{n} X_{st}$ and the global mean by $\bar{\bar{X}} = m^{-1}\sum_{s = 1}^{m}\bar{X}_s$. The global mean is naturally superior estimator of $\mu$ than $\bar{X}_s$. We define the globally-centered autocovariance function (G-ACvF) estimator for the $s^{th}$ Markov chain as
 %
-\[
-\hat{\Gamma}_{G,s}(k) = \dfrac{1}{n} \sum_{t=1}^{n-k}(X_{st}-\bar{\bar{X}})(X_{s(t+k)}-\bar{\bar{X}})^T,
-\]
+\begin{equation} \label{eq:G-ACvF}
+    \hat{\Gamma}_{G,s}(k) = \dfrac{1}{n} \sum_{t=1}^{n-k}(X_{st}-\bar{\bar{X}})(X_{s(t+k)}-\bar{\bar{X}})^T,
+\end{equation}
+
 In the event that all $m$ Markov chains have been run long enough that $\bar{X}_s \approx \bar{\bar{X}}$ are similar, then  $\hat{\Gamma}_{s} (k) \approx \hat{\Gamma}_{G,s}(k)$. However, for shorter runs or for slow mixing chains, $\Gamma(k)$ is more appropriately estimated by $\hat{\Gamma}_{G,s}$ as it utilizes information from all chains and accounts for disparity between estimates of $\mu$. We quantify the gains in  bias  for the G-ACvF estimator below.
-% If the starting points of these parallel Markov chains are sufficiently dispersed, G-ACF provides more realistic estimation of lag covariances. \cite{priestley1981spectral} shows that the empirical estimator in Equation \ref{eq:empirical_acf} is biased with the main bias term equal to $\abs{k}\Gamma(k)/n$, ignoring the small order terms arising due to estimation of $\mu$. Though, an unbiased estimator with a divisor of $n - \abs{k}$ instead of $n$ exists, the biased estimator is preferred for its lower mean square error for larger relative $k$  (\cite{priestley1981spectral})
+% If the starting points of these parallel Markov chains are sufficiently dispersed, G-ACF provides more realistic estimation of lag covariances. \cite{priestley1981spectral} shows that the empirical estimator in Equation \ref{eq:empirical_ACvF} is biased with the main bias term equal to $\abs{k}\Gamma(k)/n$, ignoring the small order terms arising due to estimation of $\mu$. Though, an unbiased estimator with a divisor of $n - \abs{k}$ instead of $n$ exists, the biased estimator is preferred for its lower mean square error for larger relative $k$  (\cite{priestley1981spectral})
 Let 
 \[
 \Phi^{(q)} = \sum_{ k= -\infty}^{\infty}\abs{k}^q \Gamma(k)\,,
 \]
 and let $\Phi^{(1)}$ be denoted by $\Phi$.  The proof of the following theorem is available in Appendix~\ref{appendix:bias}.
 
-\begin{theorem} \label{th:G-_expec} Let $\E_F \|X_{11}\|^{2 + \delta} < \infty$ for some $\delta > 0$. Let $P$ be a  polynomially ergodic Markov chain of order $\xi > (2 + \epsilon)/(1 + 2/\delta)$ for some $\epsilon > 0$. Then,
+\begin{theorem} \label{th:G-ACF_bias} Let $\E_F \|X_{11}\|^{2 + \delta} < \infty$ for some $\delta > 0$. Let $P$ be a  polynomially ergodic Markov chain of order $\xi > (2 + \epsilon)/(1 + 2/\delta)$ for some $\epsilon > 0$. Then,
 \[
    \mathbb{E}_F\left[\hat{\Gamma}_{G,s}(k) \right] = \left(1- \dfrac{|k|}{n}\right) \left(\Gamma(k) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2}\right)  + o \left(n^{-2} \right)\,,
 \]
 and consequently,
 \[
-\mathbb{E}_F\left[\hat{\Gamma}_{G,s}(k) - \hat{\Gamma}_s(k) \right] = -\dfrac{\abs{k}}{n}\Gamma(k) - \dfrac{1}{m}\left(1- \dfrac{|k|}{n}\right)\left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right) + o\left(n^{-2} \right)\,. 
+\mathbb{E}_F\left[\hat{\Gamma}_{G,s}(k) - \hat{\Gamma}_s(k) \right] =  \left(1- \dfrac{|k|}{n}\right)\left(1- \dfrac{1}{m}\right)\left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right) + o\left(n^{-2} \right)\,. 
 \]
 \end{theorem}
+
+{\color{orange}MA: I corrected the RHS for the abover equation. Or did you mean to write $\mathbb{E}_F\left[\hat{\Gamma}_{G,s}(k) - \Gamma(k) \right]as LHS?$} 
 
 \begin{remark}
 Polynomial ergodicity and the moment conditions are required to ensure $\Phi$ and $\Sigma$ are finite. The above result can be stated more generally for $\alpha$-mixing processes, but we limit our attention to Markov chains. 
@@ -248,7 +253,7 @@ Polynomial ergodicity and the moment conditions are required to ensure $\Phi$ an
 
 
 When $m = 1$, $\hat{\Gamma}_{G,s}(k) = \hat{\Gamma}_{s}(k)
-$ the bias results for which can be found in \cite{priestley1981spectral}. Since lag-covariances are typically positive in MCMC, Theorem~\ref{th:G-_expec} implies that the G-ACvF estimators are asymptotically unbiased and exhibit reduced bias in finite samples compared to locally-centered ACvF estimators. The consequences of this are particularly pertinent for the diagonals of $\Gamma(k)$.
+$ the bias results for which can be found in \cite{priestley1981spectral}. Since lag-covariances are typically positive in MCMC, Theorem~\ref{th:G-ACF_bias} implies that the G-ACvF estimators are asymptotically unbiased and exhibit reduced bias in finite samples compared to locally-centered ACvF estimators. The consequences of this are particularly pertinent for the diagonals of $\Gamma(k)$.
  % Special interest is also in the lag-0 autocovariance, that is, the variance of the target distribution. 
 \begin{remark} \label{rem:lag0_expectation}
 The variance of the target distribution is the lag covariance at lag 0 and is of particular interest. The bias of the estimator reduces by a factor of $m$:
@@ -267,7 +272,7 @@ and is instrumental in visualizing the serial correlation in components of the M
 \[
 \hat{\rho}_{G,s}^{(i)}(k) = \dfrac{ \hat{\Gamma}^{(i)}_{G,s} (k)}{\hat{\Gamma}^{(i)}_{G,s} (0)}.
 \]
-The globally-centered autocorrelation provides a far more realistic assessment of the correlation structure of marginal components of the chain  as evidenced in Figure~\ref{fig:gauss:acf}. 
+The globally-centered autocorrelation provides a far more realistic assessment of the correlation structure of marginal components of the chain  as evidenced in Figure~\ref{fig:gaussian:acf}. 
 
 We end this section by noting that we can obtain an average G-ACvF and G-ACF over all $m$ chains
 \[
@@ -283,7 +288,7 @@ A critical use of autocovariances is in the assessment of Monte Carlo variabilit
 \mu_g = \mathbb{E}_F[g(X)] = \int_{\X}g(x)F(dx)\;.
 \]
  
-Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for all $s = 1, \dots, m$ and set $\bar{Y}_s = n^{-1}\sum_{t=1}^{n}Y_{st}$  and  $\bar{\bar{Y}} = m^{-1}\sum_{s=1}^{m}\bar{Y}_s$. By Birkhoff's ergodic theorem,  $\bar{\bar{Y}} \to \mu_g$ as $n \to \infty$ with probability 1.
+Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for all $s = 1, \dots, m$. Let $\bar{Y}_s = n^{-1}\sum_{t=1}^{n}Y_{st}$  and  $\bar{\bar{Y}} = m^{-1}\sum_{s=1}^{m}\bar{Y}_s$. By Birkhoff's ergodic theorem,  $\bar{\bar{Y}} \to \mu_g$ as $n \to \infty$ with probability 1.
 
 Reliability of $\bar{\bar{Y}}$ is assessed by its Monte Carlo variability via an asymptotic sampling distribution \citep{fleg:hara:jone:2008,roy:2019,vats:rob:fle:jon:2020}. 
 % To assess the reliability of simulations, we are interested in Monte Carlo error, i.e. $\bar{Y_s} - \mu$ for the $s^{th}$ chain. 
@@ -292,25 +297,26 @@ Reliability of $\bar{\bar{Y}}$ is assessed by its Monte Carlo variability via an
 %
 \begin{equation}
 \label{eq:CLT}
-  \sqrt{mn}(\bar{\bar{Y}} - \mu) \xrightarrow{d} N(0,\Sigma)\,
+  \sqrt{mn}(\bar{\bar{Y}} - \mu_g) \xrightarrow{d} N(0,\Sigma)\,
 \end{equation}
 where
 \begin{equation}
 \label{eq:sigma}
-  \Sigma = \sum_{k = -\infty}^{\infty} \Cov_F \left( Y_{11}, Y_{1(1+k)} \right)
+  \Sigma = \sum_{k = -\infty}^{\infty} \Cov_F \left( Y_{11}, Y_{1(1+k)} \right) := \sum_{k = -\infty}^{\infty}\Upsilon (k)
 \end{equation}
 %
-The goal in output analysis for MCMC is to estimate $\Sigma$in order to assess variability in $\bar{\bar{Y}}$. There is a rich literature of estimators of $\Sigma$ available for single-chain MCMC implementations. The most common are spectral variance estimators (SVE) \citep{andr:1991,vats:fleg:jon:2018} and batch means estimators \cite{chen:seila:1987,vats:fleg:jon:2019}. Recently, \cite{gupta:vats:2020} constructed a replicated batch means estimator for estimating $\Sigma$ from multiple parallel chains. Batch means estimators are computationally more efficient than SVE, SVE estimators are more reliable \citep{fleg:jone:2010}. Here, we utilize G-ACvF estimators to construct globally-centered SV estimator (G-SVE) of $\Sigma$. Using the methods of \cite{heberle2017fast}, we also provide an efficient algorithm for obtaining the G-SV estimator. 
+The goal in output analysis for MCMC is to estimate $\Sigma$ in order to assess variability in $\bar{\bar{Y}}$. There is a rich literature on estimators of $\Sigma$ available for single-chain MCMC implementations. The most common are spectral variance estimators (SVE) \citep{andr:1991,vats:fleg:jon:2018} and batch means estimators \citep{chen:seila:1987,vats:fleg:jon:2019}. Recently, \cite{gupta:vats:2020} constructed a replicated batch means estimator for estimating $\Sigma$ from multiple parallel chains. Batch means estimators are computationally more efficient than SVE, whereas SVE estimators are more reliable \citep{fleg:jone:2010}. Here, we utilize G-ACvF estimators to construct globally-centered SV estimator (G-SVE) of $\Sigma$. Using the methods of \cite{heberle2017fast}, we also provide an efficient algorithm for obtaining the G-SV estimator. 
 
-SV estimators are constructed as weighted and truncated sums of estimated lag covariances. Let $w: \mathbb{R} \to [-z,z]$ be a lag window function and let $b_n \in \mathbb{N}$ be a truncation point. The SV estimator of $\Sigma$ from a single chain is
+SV estimators are constructed as weighted and truncated sums of estimated lag covariances. The locally and globally centered empirical estimators for $\Upsilon(k)$, $\hat{\Upsilon}_s(k)$ and $\hat{\Upsilon}_{G,s}(k)$, can be defined in a similar way as $\hat{\Gamma}_s$ and $\hat{\Gamma}_{G,s}$ in Equation~\ref{eq:empirical_ACvF},\ref{eq:G-ACvF} for the Markov chain $\{Y_{st}\}_{t \geq 1}$ for all $s$. Let $w: \mathbb{R} \to [-c,c]$ be a lag window function and $b_n \in \mathbb{N}$ be a truncation point. The SV estimator of $\Sigma$ from a single chain is
 %
-{\color{blue} DV: limits should be $-n +1$ and $n - 1$.}
+
 \begin{equation} \label{eq:sve}
-    \hat{\Sigma}_{SV,s} = \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Gamma}_s(k)
+    \hat{\Sigma}_{s} = \sum_{k=-n+1}^{n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Upsilon}_s(k)
 \end{equation}
+
 An overall estimate of $\Sigma$ from all $m$ chains is the average SV estimator (ASV):
 \[
-\hat{\Sigma}_A = \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{SV,s}\;.
+\hat{\Sigma}_A = \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{s}\;.
 \]
 %  We propose a globally-centered spectral variance estimator (G-SVE) wherein we use G-ACF to estimate the autocovariance. Strong consistency for MSVE has been addressed by \cite{vats:fleg:jon:2018}. Bias and variance calculations for a variant of SVE with known mean is done by \cite{hannan2009multiple}. In this paper, we will address the asymptotic properties (strong consistency), bias and variance calculations for G-SVE. 
 
@@ -319,17 +325,11 @@ An overall estimate of $\Sigma$ from all $m$ chains is the average SV estimator 
 
 % subsection globally_centered_spectral_variance_estimators (end)
 
-% Recall from Equation \ref{eq:empirical_acf} that $\hat{\Gamma}(k)$ is the empirical autocovariance function given by 
+% Recall from Equation \ref{eq:empirical_ACvF} that $\hat{\Gamma}(k)$ is the empirical autocovariance function given by 
 
 % \begin{equation}
 %     \hat{\Gamma}(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}}(X_t - \bar{X})(X_{t + \abs{k}} - \bar{X})^T
 % \end{equation}
-{\color{blue} DV: There are some issues.
-\begin{itemize}
-  \item $|w_n| < z$ or $|w_n| < c$?
-  \item Need new notation for $\Gamma(k)$ since $\Gamma(k)$ is for the $X$ and we need a new notation for $Y$. This change needs to be made for this whole section and the appendix!
-\end{itemize}
-}
 
 We define the globally-centered SV estimator as the weighted and truncated sum of G-ACvFs
 %
@@ -337,35 +337,38 @@ We define the globally-centered SV estimator as the weighted and truncated sum o
 % Consider the globally-centered SV estimator (G-SVE) for the $s$th chain using G-ACF:
 %
 \begin{align*}
-    \hat{\Sigma}_{G} &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Gamma}_{G}(k)\,.
+    \hat{\Sigma}_{G} &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Upsilon}_{G}(k)\,.
 \end{align*}
 % and the combined G-SVE is
 % \[
 % \hat{\Sigma}_{G} =  \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{G,s}\,.
 % \]
-For $\hat{\Sigma}_{G}$ to accurately estimate $\Sigma$, conditions need to be imposed on the weight function, $w_n$.
-
-{\color{blue}DV: Did we discuss that $W_n$ should be define as an infinite sum and should be $W$?}
-
+For $\hat{\Sigma}_{G}$ to accurately estimate $\Sigma$, conditions need to be imposed on the weight function, $w$. 
 %
 
 \begin{ass}
 \label{ass:lag_window}
-The lag window $w(x)$ is a continuous, even function with $w(0)=1, \abs{w(x)} < c$, $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $W_n < \infty$ where
-\[
-W_n = \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\,.
-\]
+The lag window $w(x)$ is a continuous at $0$ and at all but finite number of points. It is bounded and even function with $w(0)=1, \; \abs{w(x)} < c$, \; $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $W = \sum_{k = -\infty}^{\infty} w(k/b_n)$ is finite.
 \end{ass}
 % We will consider a range of lag windows $w(x)$; where $w(x)$ is a continuous, even function with $w(0)=1, \abs{w(x)} < c$, $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $W_n < \infty$. 
-Assumption~\ref{ass:lag_window} is standard \citep[see]{ande:1971} and is satisfied by most lag windows. We will use the popular Bartlett lag window in our simulations. {\color{blue}DV: write the Bartlett lag window}. 
+Assumption~\ref{ass:lag_window} is standard \citep[see]{ande:1971} and is satisfied by most lag windows. We will use the popular Bartlett lag window in our simulations. The function $w(.)$ is given by
+\[
+w(x) = \begin{cases}
+\left(1 - \abs{x}\right) & \textrm{for } \abs{x} \leq 1 \\
+0 & \textrm{otherwise}\,.
+\end{cases}
+\]
+
+In relation to lag window, we are interested in $w(k/b_n)$ for lag-$k$. Therefore, zero weightage is given to autocovariances for lag greater than the truncation point $b_n$. This is true for Bartlett but not true for the quadratic spectral lag window in \cite{andr:1991} for example.
 
 \subsubsection{Theoretical results} \label{sec:G-SVE}
 
 We will present three main results for the G-SV estimator. First, we provide conditions for strong consistency. Strong consistency is particularly important to demonstrate for MCMC as it is required to ensure sequential stopping rules yield correct coverage at termination \citep{glyn:whit:1992}. A critical assumption is that of a strong invariance principle below. Let $B(n)$ denotes a standard $p$-dimensional Brownian motion.
 
+
 \begin{theorem}[\cite{kuel:1976,vats:fleg:jon:2018}]
   \label{thm:kuelbs}
-Let $\E_F\|Y_{11}\|^{2+ \delta} < \infty$ for $\delta > 0$ and let $P$ be a polynomially ergodic Markov chain of order $\xi > (q + 1 + \epsilon)/(1 + 2/\delta)$ for $q \geq 1$. Then there exists a $p \times p$ lower triangular matrix $L$ such that $LL^T = \Sigma$, a non-negative function $\psi(n) = n^{1/2 - \lambda}$ for some $\lambda > 0$, a finite random variable $D$, and a sufficiently rich probability space $\Omega$ such that for almost all $w \in \Omega$ such that for all $n > n_0$, with probability 1,
+Let $\E_F\|Y_{11}\|^{2+ \delta} < \infty$ for $\delta > 0$ and let $P$ be a polynomially ergodic Markov chain of order $\xi > (q + 1 + \epsilon)/(1 + 2/\delta)$ for $q \geq 1$. Then there exists a $p \times p$ lower triangular matrix $L$ such that $LL^T = \Sigma$, a non-negative function $\psi(n) = n^{1/2 - \lambda}$ for some $\lambda > 0$, a finite random variable $D$, and a sufficiently rich probability space $\Omega$ such that for almost all $\omega \in \Omega$ such that for all $n > n_0$, with probability 1,
 \[
 \left\|\sum_{t=1}^{n}Y_t - n\mu_g - LB(n)\right\| < D\psi(n)\,.
 \]
@@ -402,31 +405,28 @@ Let $\E_F\|Y_{11}\|^{2+ \delta} < \infty$ for $\delta > 0$ and let $P$ be a poly
 
 
 % We are interested in the finding the bias for G-SVE estimator as a function of $n$. 
-{\color{blue} Move these two sub-assumptions into the theorem 4 below.}
-\begin{ass} \label{ass:bias}
-    Let $\Gamma_s(k)$ be the lag-k autocovariance for $s^{th}$ Markov chain and $w(x)$ be the lag window. We assume that there exists a $q \geq 0$ such that for all $s$
-    \begin{enumerate} [a.]
-        \item $\sum\limits_{-\infty}^{\infty}\abs{k}^q \|\Gamma_s(k)\| < \infty$ {\color{blue} DV: This assumption is satisfied by the polynomial ergodicity, so can remove it.}
-        \item $\lim _{x \to 0}\dfrac{1 - w(x)}{\abs{x}^q} = k_q < \infty$ 
-        \item $\dfrac{b_n^q}{n} \to 0$ as $n \to \infty$
-    \end{enumerate}
+%\begin{ass} \label{ass:bias}
+    % Let $\Gamma_s(k)$ be the lag-k autocovariance for $s^{th}$ Markov chain and $w(x)$ be the lag window. We assume that there exists a $q \geq 0$ such that for all $s$
+    % \begin{enumerate} [a.]
+    %     \item $\sum\limits_{-\infty}^{\infty}\abs{k}^q \|\Gamma_s(k)\| < \infty$ {\color{blue} DV: This assumption is satisfied by the polynomial ergodicity, so can remove it.}
+    %     \item $\lim _{x \to 0}\dfrac{1 - w(x)}{\abs{x}^q} = k_q < \infty$ 
+%        \item $\dfrac{b_n^q}{n} \to 0$ as $n \to \infty$
+%   \end{enumerate}
     
     % If $k_q$ is finite for some $q_o$, then it is zero for $q < q_0$. $q$ is taken to be the largest number satisfying the first two conditions above.
-\end{ass}
+%\end{ass}
 
 
 \begin{theorem}\label{th:G-SVE_bias}
-Let assumptions of Theorem~\ref{thm:kuelbs} hold with $q$ such that {\color{blue}......} Let the Assumption~\ref{ass:bias} hold. Then
+Let the assumptions of Theorem~\ref{thm:kuelbs} hold with $q$ such that $\lim _{x \to 0}{1 - w(x)}/\abs{x}^q = k_q < \infty$ and $b_n^q/n \to 0$ as $n \to \infty$. Then
 \[
- \lim_{n \to \infty}b_n^q\mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = -k_q\Phi^{(q)}
+ \lim_{n \to \infty}b_n^q\mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = -k_q\Phi^{(q)}\,.
  \]
 \end{theorem}
 
 \begin{theorem} \label{th:G-SVE_variance}
- Let assumptions of Theorem~\ref{thm:kuelbs} hold and let $\E[D^4] < \infty$  and  $\E \|Y_{11}\|^4 < \infty$, then $b_n^{-1}{n}\Var \left(\hat{\Sigma}_{G}^{ij} \right) = [\Sigma_{ii}\Sigma_{jj} + \Sigma_{ij}^2]\int_{-\infty}^{\infty}w(x)^2dx  + o(1)$.
+ Let the assumptions of Theorem~\ref{thm:kuelbs} hold and let $\E[D^4] < \infty$  and  $\E \|Y_{11}\|^4 < \infty$, then $b_n^{-1}{n}\Var \left(\hat{\Sigma}_{G}^{ij} \right) = [\Sigma_{ii}\Sigma_{jj} + \Sigma_{ij}^2]\int_{-\infty}^{\infty}w(x)^2dx  + o(1)$.
 \end{theorem}
-
-{\color{blue} I have not looked at it after here. }
 
 % \begin{proof}
 % Recall that $\tilde{\Sigma}$ is the averaged pseudo spectral variance estimator which uses the unobserved mean. Further, let $\tilde{\Sigma}^{ij}$ be the $(i,j)^{th}$ element of this matrix. We will prove that the variance of $\hat{\Sigma}_{G} \textrm{ and } \tilde{\Sigma}$ are equivalent for large sample sizes. The proof is in Appendix subsection \ref{appendix:variance}
@@ -435,177 +435,161 @@ Let assumptions of Theorem~\ref{thm:kuelbs} hold with $q$ such that {\color{blue
 \subsubsection{Fast implementation} % (fold)
 \label{ssub:fast_implementation}
 
-The multivariate spectral variance estimator (MSVE) despite having good statistical properties poses application limitations due to slow computation and high storage demands. Observe from equation \ref{eq:empirical_acf} and \ref{eq:sve}, the computation of spectral variance estimator has a complexity of $\mathcal{O}(b_n n p)$ where $n$ is the MCMC sample size, $p$ is the dimensionality and $b_n$ is the truncation point. To overcome this limitation for our experimental purposes, we used a fast Fourier transform based algorithm presented by \cite{heberle2017fast} for calculating the alternate formulation of MSVE given by Kyriakoulis (2005).\\
+The SV estimator, despite good statistical properties, poses application limitations due to slow computation. From equation \ref{eq:empirical_ACvF} and \ref{eq:sve}, the computation of the SV estimator has a complexity of $\mathcal{O}(n^2 p^2)$ in general, and for Bartlett (and other truncated lag windows) $\mathcal{O}(b_n n p^2)$. In MCMC typically, $n$ is large, for highly-correlated processes, $b
+_n$ is large, and for high-dimensional target distributions, $p$ could also be large. 
 
-Suppose $\{X_t\}_{t=1}^n$ is the Markov chain of $n$ samples where $\overline{X}_n = n^{-1}\sum_{t=1}^{n}X_t$ is the MCMC average. Let $w_k$ denote the lag-window at lag-k, i.e. $w_k = w_n(k/b_n)$. The alternate formulation for MSVE is given by
+To overcome this limitation, we adapt the  fast Fourier transform based algorithm of \cite{heberle2017fast} for our purposes. Suppose $w_k = w(k/b_n)$ and let $T(w)$ be the $n \times n$ Toeplitz matrix of weights with the first column being $(1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1})^T$. Notice an alternate formulation of SVE for the $s^{th}$ chain $\{Y_{st};\, t \in 1, ..., n\}$ i
 %
-\[
-    \hat{\Sigma}_{SV} = \dfrac{1}{n}A^T T(w) A, \qquad \textrm{ where } A = \begin{pmatrix}
-    X_1 - \overline{X}_n  & \dots & X_n - \overline{X}_n
+\begin{equation} \label{eq:kyriakoulis}
+    \hat{\Sigma}_s = \dfrac{1}{n}A_s^T T(w) A_s, \qquad \textrm{ where } A_s = \begin{pmatrix}
+    Y_{s1} - \bar{Y}_s  & \dots & Y_{sn} - \bar{Y}_s
 \end{pmatrix}^T
-\]
+\end{equation}
 
-and $T(w)$ is the $n \times n$ Toeplitz matrix of weights with the first column being $(1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1})^T$
-%  $w = 
-% \begin{pmatrix}
-%     1 & w_1 & w_2 & \dots w_{n-1}
-% \end{pmatrix}^T$.
-$T(w)$ is an $n \times n$ matrix which can be difficult to store. Therefore, \cite{heberle2017fast} computed $T(w)A$ directly using an FFT based algorithm. The algorithm requires embedding $T(w)$ in a $2n \times 2n$ circulation matrix $C(w^*)$. We write the spectral decomposition of $C(w^*)$ as $V\Lambda V^*$. A is extrapolated into a $2n \times p$ matrix $A^*$ such that
+
+For computational efficiency, \cite{heberle2017fast} computed $T(w)A_s$ directly using an FFT based algorithm. The algorithm requires embedding $T(w)$ in a $2n \times 2n$ circulation matrix $C(w^*)$. We write the spectral decomposition of $C(w^*)$ as $V\Lambda V^*$ where the eigenvalues of $C(w^*)$ are given by the DFT of the first column of $C(w^*)$. $A_s$ is extrapolated into a $2n \times p$ matrix $A_s^*$ by appending $n$ rows of $0$ vector to write Equation~\ref{eq:kyriakoulis} in the following form
 \[
-    \hat{\Sigma}_{SV} = \dfrac{1}{n} A^T T(w) A = \dfrac{1}{n} A^T (C(w^*) A^*)_{1:n, :} = \dfrac{1}{n} A^T (V \Lambda V^* A^*)_{1:n, :}).
+    \hat{\Sigma}_s = \dfrac{1}{n} A_s^T T(w) A_s = \dfrac{1}{n} A_s^T (C(w^*) A_s^*)_{1:n, :} = \dfrac{1}{n} A_s^T (V \Lambda V^* A_s^*)_{1:n, :}).
 \]
-The complete algorithm is as follows
+Here $M_{1:r, \, 1:c}$ denotes the matrix truncation up to first $r$ rows and $c$ columns. For our purpose, we center the chain $\{Y_{st}; \; t \in \mathbb{Z}\}$ around $\bar{\bar{Y}}$ instead of $\bar{Y}_s$ in Equation \ref{eq:kyriakoulis} for all $s \in \{1, ..., m\}$. Herberle's algorithm is then applied on the formulation
 
+\[
+\hat{\Sigma}_{G,s} = \dfrac{1}{n}B_s^T T(w) B_s \qquad \textrm{ where } B_s = 
+\begin{pmatrix}
+    Y_{s1} - \bar{\bar{Y}} \; \dots \; Y_{sn} - \bar{\bar{Y}}\end{pmatrix}^T.
+\]
+The complete algorithm leads to a tremendous reduction in time and storage requirements with a computational complexity of $\mathcal{O}(p n \log n)$. $B_s^*$ is constructed from $B_s$ in the similar way as $A_s^*$. In Algorithm~\ref{algo:herberle}, we use $v^{(i)}$ to denote the $i^{th}$ element of vector $v$ and $M_{(j)}$ to denote the $j^{th}$ column of matrix $M$. The algorithm is the following.
 
-\begin{algorithm}[htbp]
+\begin{algorithm}[htbp] 
 \DontPrintSemicolon
 \SetAlgoLined
-Construct $C(w^*) \textrm{ and } A^*$ from the MCMC samples.\\ Compute the DFT of the first column of $C(w^*)$. This gives the eigenvalues of $C(w^*)$.\;
+Construct $C(w^*) \textrm{ and } B_s^*$ from $\{Y_{st};\, t = 1, ...,\, n\}$.\\ 
+Compute $\Lambda$ by DFT of $C(w^*)_{(1)}$\;
 \For{$j = 1, 2, ..., p$}    
     { 
-    Calculate $V^*A_j^*$ by FFT of $A_j$\;
-    Multiply the $i^{th}$ entry of the vector $V^* A_j^*$ with the eigenvalue $\lambda_i$ for all $i = 1, 2, ..., 2n$ in order to construct $\Lambda V^* A_j^*$.\;
-    Determine $C(w^*)A^* = V \Lambda V^* A_j^*$ by inverse FFT of $\Lambda V^* A_j^*$.\;
+    Calculate $V^*B_s^{*_{(j)}}$ by FFT of $B^*_{s(j)}$.\;
+    Multiply $V^* B_{s(j)}^{*^{(i)}}$ with the eigenvalue $\lambda_i$ for all $i = 1, ..., 2n$ to construct $\Lambda V^* B_{s(j)}^*$.\;
+    Calculate $C(w^*)B^*_{s(j)} = V \Lambda V^* B_{s(j)}^*$ by inverse FFT of $\Lambda V^* B_{s(j)}^*$.\;
     }
- Select the first $n$ rows of $C(w^*)A^*$ to form $T(w)A$.\;
- Premultiply by $A^T$ and divide by $n$.
+ Select the first $n$ rows of $C(w^*)B^*_s$ to form $T(w)B_s$.\;
+ Premultiply by $B_s^T$ and divide by $n$.
  \caption{Herberle's Algorithm}
+ \label{algo:herberle}
 \end{algorithm}
-
-The algorithm has been implemented in the \texttt{R} package \texttt{mcmcse} for fast implementation of spectral variance estimators. We do a slight variation in the alternate formulation of SVE proposed by Kyriakoulis (2005) by centering the chain $\{X_{st}; \; t \in \mathbb{Z}\}$ around $\overline{\overline{X}}$ instead of $\overline{X}_s$ for all $s \in \{1, ..., m\}$. Herberle's algorithm is then applied on the formulation
-
-\[
-\hat{\Sigma}_{S,s} = \dfrac{1}{n}B^T T(w) B \qquad \textrm{ where } B = 
-\begin{pmatrix}
-    X_{s1} - \overline{\overline{X}} \; \dots \; X_{sn} - \overline{\overline{X}}\end{pmatrix}^T
-\].
 
 % subsubsection fast_implementation (end)
 
 \section{Effective sample size} \label{sec:ess}
 
-Estimating the MCSE is crucial for determining when to terminate the simulations. The existing stopping rules rely on the strong consistency of the estimator of $\Sigma$. The determinant of Monte Carlo standard error is called generalized variance in  \cite{wilks1932certain} and gives a metric for volume of confidence interval. 
-
-We will use the multivariate effective sample size (m-ESS) by \cite{vats2019multivariate} to understand the effectiveness of simulations so far. m-ESS requires a strongly consistent estimator of $\Sigma$. G-SVE better captures the MCSE by considering the global sample mean across the Markov chains; which might otherwise get lost when considering a single localized slowly mixing Markov chain. We therefore define our ESS estimator as
+An important method of quantifying the simulation efforts is to simulate until a desired effective sample size (ESS) is obtained. The key motivation behind using ESS as a termination criteria is to stop the simulations when the variance of Monte Carlo average is small relative to the inherent variance in $g$ with respect to $F$ by a pre-specified factor. \cite{wilks:1932} suggests the determinant of a covariance matrix as a viable metric to understand the variance of a multivariate process and calls it \textit{generalized variance}. For a $p$-dimensional stationary Markov chain, let $\Lambda := \Var_F(Y_1))$. \cite{vats2019multivariate} use the ratio of generalized variances to give the following formulation for multivariate ESS (m-ESS):
 
 \[
-\text{ESS} = mn\left(\dfrac{\abs{\Lambda_{mn}}}{\abs{\hat{\Sigma}_{G}}}\right)^{1/p}
+\textrm{ESS} = n \left(\dfrac{\abs{\Lambda}}{\abs{\Sigma}}\right)^{1/p}\, .
 \]
 
-where $\Lambda_{mn}$ is the sample covariance of $mn$ samples. When there is no correlation in Markov chain $\hat{\Sigma}_{G} = \Lambda_{mn}$ and therefore, ESS = $n$. 
+The simulation process is stopped once the ESS is greater than a pre-specified lower-bound $W_{p}$ which is function of dimension $p$ (see \cite{vats2019multivariate} for details). For a multi-modal target distribution, the single chain estimators for $\Sigma$ underestimate the true generalized variance; giving an unrealistic assurance of high ESS for a given $n$. 
+
+In our setting of $m$ parallel chains of $n$ samples each, define
+
+\[
+\hat{\Lambda}_{mn} = \dfrac{1}{m(n-1)}\sum_{s=1}^{m}\sum_{t=1}^{n}(Y_{st} - \bar{Y}_s)(Y_{st} - \bar{Y}_s)^T\, .
+\]
+We estimate the m-ESS by using the strongly consistent average G-SV estimator $\hat{\Sigma}_G$ for $\Sigma$ as
+
+\[
+\widehat{\textrm{ESS}}_G = mn\left(\dfrac{\abs{\hat{\Lambda}_{mn}}}{\abs{\hat{\Sigma}_{G}}}\right)^{1/p}\, .
+\]
+
+For the sake of comparison, $\widehat{\textrm{ESS}}_A$ is constructed similarly using $\hat{\Sigma}_A$ instead of $\hat{\Sigma}_G$ to estimate $\Sigma$. We refrain from using the globally centered version of sample covariance matrix, i.e. $\hat{\Upsilon}(0)$ to estimate $\Lambda$ in both $\widehat{\textrm{ESS}}_A \textrm{ and } \widehat{\textrm{ESS}}_G $. This is because in practice, it is preferred to underestimate the ESS than do otherwise. Both $\hat{\Upsilon}(0)$ and $\hat{\Lambda}_{mn}$ converge to $\Lambda$; however $\abs{\hat{\Lambda}_{mn}}$ shall underestimate $\abs{\Lambda}$ in the beginning. We will compare $\widehat{\textrm{ESS}}_G$ to $\widehat{\textrm{ESS}}_A$ in the following Section.
+
+% {\color{blue} Define $\Lambda_{mn}$ explicitly. Also first define what ESS is in truth, and then explain why we are not using $\hat{\Upsilon}_G(0)$. Also explain why ESS is critical since simulation is terminated when ESS $>$ M. Also do a "backslash text" for ESS, so that it looks like $\widehat{\text{ESS}}_G$}.
 
 \section{Examples} \label{sec:examples}
 
-In this section we consider three different target distributions and sample multiple Markov chains using MCMC to analyse the performance of our globally-centered estimators experimentally. We will make the following comparisons - (1) A-ACF and G-ACF; (2) A-SVE and G-SVE; (3) estimates of $ESS/mn$ using A-SVE and G-SVE. In all the examples we consider the function $g(x) = x$, which implies the Markov chain $\{Y_t\}$ and $\{X_t\}$ are the same. There are only a handful of MCMC chains where the true autocovariance and asymptotic variance are known. To compare the globally and locally-centered estimators when the truth is known, we use a slowly mixing vector autoregressive process of order 1 (VAR(1)). A distinct advantage of our estimators is observed when the target distribution is multi-modal. For this purpose we use a bivariate bi-modal probability distribution introduced by \cite{gelman1991note}. Through this example, we will also show that in case of nicely mixing Markov chains, these estimators give almost equivalent results. Lastly, we consider a real-life example of finding unknown locations of sensors using noisy distance data. The posterior distribution is this case is marginally bimodal in all dimensions. All the examples have been selected to display some kind of \textit{sticky} nature in the Markov chains. In such scenario, we successfully show that our globally-centered estimators yield better results as compared to the classical single-chain estimators for autocovariance, asymptotic variance, and effective sample size.
+In this section we consider three different target distributions and sample multiple Markov chains using MCMC methods to experimentally analyse the performance of our globally-centered estimators. We will make the following three comparisons - (1) A-ACF vs G-ACF through ACrF plots; (2) A-SVE vs G-SVE; (3) $\widehat{\textrm{ESS}}_G$ vs $\widehat{\textrm{ESS}}_A$. The quality of estimation of $\Sigma$ is studied by coverage probabilities for a $95 \%$ confidence interval in cases where the true mean $\mu$ is known. The convergence of local and global estimators as $n$ increases is studied through two types of running plots (1) logarithm of Frobenius norm of estimated $\Sigma$ denoted by $\|M\|_F$ for a matrix $M$, and (2) logarithm of estimated ESS/$mn$. In all the examples we consider the function $g(x) = x$, which implies the Markov chain $\{Y_t\}$ and $\{X_t\}$ are the same.
+
+% There are only a handful of MCMC chains where the true autocovariance and asymptotic variance are known. To compare the globally and locally-centered estimators when the truth is known, we use a slowly mixing vector autoregressive process of order 1 (VAR(1)). A distinct advantage of our estimators is observed when the target distribution is multi-modal. For this purpose we use a bivariate bi-modal probability distribution introduced by \cite{gelman1991note}. Through this example, we will also show that in case of nicely mixing Markov chains, these estimators give almost equivalent results. Lastly, we consider a real-life example of finding unknown locations of sensors using noisy distance data. The posterior distribution is this case is marginally bimodal in all dimensions. All the examples have been selected to display some kind of \textit{sticky} nature in the Markov chains. In such scenario, we successfully show that our globally-centered estimators yield better results as compared to the classical single-chain estimators for autocovariance, asymptotic variance, and effective sample size.
 
 
 \subsection{Vector Autoregressive Process} \label{ex:var}
 
-We examine the vector autoregressive process of order 1 (VAR(1)) where the true autocovariance in known in closed form. We want to deliberately make the Markov chains explore the sample space slowly. Consider a p-dimensional VAR(1) process $\{X_t\}_{t \geq 1}$ such that
+There are only a handful of MCMC methods where the true autocovariance and asymptotic variance are known in closed form. To compare the globally and locally-centered estimators when the truth is known, we use a slowly mixing vector autoregressive process of order 1 (VAR(1)). We want to deliberately make the Markov chains explore the sample space slowly. Consider a $p$-dimensional VAR(1) process $\{X_t\}_{t \geq 1}$ such that
 %
 \[
 X_t = \Phi X_{t-1} + \epsilon_t
 \]
 
-where $X_t \in \mathbb{R}^p$, $\Phi $ is a $p \times p $ matrix, $ \epsilon_t \overset{i.i.d.}{\sim} N(0, \Omega)$, and $\Omega$ is a positive definite $p \times p$ matrix. The invariant distribution for this Markov chain is $N(0, \Psi)$ where $\Vec{\Psi} = (I_{p^2} - \Phi \otimes \Phi)\Vec{\Omega}$. The lag-k autocovariance can be calculated easily for $k >0$ as
-%
-\begin{align*}
-    \Gamma(k) &= \Phi^k\Psi\\
-    \Gamma(-k) &= \Psi(\Phi^T)^k
-\end{align*}
+where $X_t \in \mathbb{R}^p$, $\Phi $ is a $p \times p $ matrix, $ \epsilon_t \overset{i.i.d.}{\sim} N(0, \Omega)$, and $\Omega$ is a positive definite $p \times p$ matrix. The invariant distribution for this Markov chain is $N(0, \Psi)$ where $\mathcal{N}(.,.)$ stands for the Gaussian distribution. The lag-k autocovariance $\Gamma(k)$ can be calculated for $k >0$ as $\Gamma(k) = \Phi^k\Psi \textrm{ and } \Gamma(-k) = \Psi(\Phi^T)^k$. The Markov chain is geometrically ergodic when the spectral norm of $\Phi$ is less than 1 (\cite{10.2307/1427459}). The CLT holds for the invariant distribution, therefore, $\Sigma$ exists and is known in closed form.\\
 
-The Markov chain is geometrically ergodic when the spectral norm of $\Phi$ is less than 1 (\cite{10.2307/1427459}). The CLT holds for the invariant distribution, therefore, $\Sigma$ exists and is given by
-%
-\[
-\Sigma = (1 - \Phi)^{-1}\Psi + \Psi(1 - \Phi^T)^{-1} - \Psi
-\]
-
-
- \begin{figure}[h]
-     \centering
-     \begin{subfigure}[h]{0.4\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{plots/var-sp_n1e3.pdf}
-          \caption{$n = 1000$}
-          \label{subfig:var-sp_1000}
-      \end{subfigure}
-      \begin{subfigure}[h]{0.4\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{plots/var-sp_n1e4.pdf}
-          \caption{$n = 10000$}
-          \label{subfig:var-sp_10000}
-      \end{subfigure}
-     \caption{Scatter plot of two out of five slowly mixing Markov chains starting from opposite sides of known mean.  Sample size of $1000$ (left) and $10000$ (right).}
-     \label{fig:var-sp}
- \end{figure}
-
-
-Let $\phi_{max}$ be the largest absolute eigenvalue of $\Phi$ such that $\abs{\phi_{max}} < 1$. The larger it is, the slower the Markov chain mixes. For our case, we require a slowly mixing VAR(1) process. We consider a bivariate example with $\phi_{max} = 0.9999$. We run five parallel Markov chains with their starting points evenly distributed about the center of invariant distribution. There is very high correlation between the two components in the target distribution for the chosen value of $\Phi$ and $\Omega$. As a result, it takes a long time for the Markov chain to explore the sample space significantly. Let $\sigma_{ij}$ denote the $ij^{th}$ element of $\Sigma$. We sample five parallel chains and plot the first and fifth chain in Figure \ref{subfig:var-sp_500} for two different simulation sizes. The first chain starts at $(\sigma_{11}/2, \sigma_{22}/2)$ and the fifth chains starts from $(-\sigma_{11}/2, -\sigma_{22}/2)$. For a sample size of $1000$, the chains have not moved enough from their starting points. Whereas, for a $n = 10,000$, the chains seem to have explored the sample space fairly well.\\
+Let $\phi_{\max}$ be the largest absolute eigenvalue of $\Phi$ such that $\abs{\phi_{\max}} < 1$. The larger it is, the slower the Markov chain mixes. For our case, we require a slowly mixing VAR(1) process. We consider a bivariate example with $\phi_{\max} = 0.999$. We run five parallel deterministically initialized Markov chains with their starting points evenly distributed in the sample space. The correlation between the two components in the target distribution is very high for the chosen value of $\Phi$ and $\Omega$. As a result, it takes a long time for the Markov chain to explore the sample space significantly. \\
 
 \begin{figure}[h]
  \begin{subfigure}[h]{\textwidth}
    \centering
-   \includegraphics[width=.7\linewidth, height = 2in]{plots/var-acf_n1000.pdf}
+   \includegraphics[width=.7\linewidth]{plots/var-acf_n1000.pdf}
    \caption{$n = 10^3$}
    \label{subfig:var-acf_n1e3}
 \end{subfigure}\\
 \begin{subfigure}[h]{\textwidth}
   \centering
-  \includegraphics[width=.7\linewidth, height = 2in]{plots/var-acf_n10000.pdf} 
+  \includegraphics[width=.7\linewidth]{plots/var-acf_n10000.pdf} 
   \caption{$n = 10^4$}
-  \label{subfig:var-acf_n1e5}
+  \label{subfig:var-acf_n1e4}
 \end{subfigure}
 
-\caption{Autocorrelation plot for ACF and G-ACF for first chain out of two parallel Markov chains. First column corresponds to ACF calculated using arithmetic mean of first Markov chain and the second column corresponds to the one calculated using global mean of two Markov chains.(a): $n = 10^3$, not converged yet; (b): $n =  10^4$, converged}
+\caption{VAR(1). ACF (left) and G-ACF (right) for the second chain for $m=5$. (a): $n = 10^3$, not converged yet; (b): $n =  10^4$, converged. The red line marks the true ACF.}
 \label{fig:var-acf}
 \end{figure}
 
-The locally and globally-centered autocorrelations averaged over all the chains have been shown in Figure~\ref{var-acf} for two different simulation sizes where the true ACrF is shown in red. When the individual chains have not explored well, the local sample mean is closer to the samples and possibly far away from the true mean. As a consequence, the empirical ACrF estimator severely underestimate the known true autocorrelations. When the starting values are nicely dispersed, the global mean provides a more reliable estimate of actual mean and hence, G-ACrF is closer to reality. In subfigure~\ref{subfig:var-acf_n1e5}, the convergence property of sample means has kicked in for each chain. Therefore, both the estimators provide equivalent results. \\
+The locally and globally-centered autocorrelations for the second chain have been shown in Figure~\ref{fig:var-acf} for two different simulation sizes where the true ACF is shown by the red line. When the individual chains have not explored well, the local sample means have not converged to $\mu$. As a consequence, the single chain empirical ACF estimator severely underestimate the truth. Due to sufficiently dispersed starting values, G-ACF is closer to reality. In subfigure~\ref{subfig:var-acf_n1e4}, the convergence property of sample means has kicked in for each chain. Therefore, both the estimators provide equivalent results. Note that G-ACF reveals the true nature of ACF for almost ten times lesser chain length $n$.\\
 
 
-\begin{figure}[htbp]
+\begin{figure}[h]
     \centering
     \begin{subfigure}{0.4\textwidth}
       \centering
       \includegraphics[width = \textwidth]{plots/var-frob.pdf}
-      \caption{log-Frobenius norm}
+      \caption{$log(\|\hat{\Sigma}\|_F)$}
       \label{subfig:var-frob}
     \end{subfigure}
     \begin{subfigure}{0.4\textwidth}
       \centering
       \includegraphics[width = \textwidth]{plots/var-ess.pdf}
-      \caption{$\log(\hat{ESS}/mn)$}
-      \label{subfig:var-frob}
+      \caption{$\log(\widehat{\textrm{ESS}}/mn)$}
+      \label{subfig:var-ess}
     \end{subfigure}
-    \caption{(a) Running plot for logarithm of Frobenius norm of A-SVE and G-SVE from $n = 500$ to $n = 10^5$. (b) Running plot for logarithm of $\hat{ESS}/mn$ calculated using A-SVE and G-SVE from $n=500$ to $n=10^5$.}
+    \caption{VAR(1). (a) Running plot for logarithm of Frobenius norm of A-SVE and G-SVE from $n = 500$ to $n = 10^5$. (b) Running plot for logarithm of $\widehat{\textrm{ESS}}/mn$ calculated using A-SVE and G-SVE from $n=500$ to $n=10^5$.}
     \label{fig:var-frob_n_ess}
 \end{figure}
 
-The quality of estimation of $\Sigma$ and $ESS/mn$ has been studied through two running plots - (a) convergence of $\log(\|\hat{\Sigma}_A\|_F)$ and $\log(\|\hat{\Sigma}_G\|_F)$ as $n$ increases and (b) convergence of $\log(\hat{ESS}_A/mn)$ and $\log(\hat{ESS}_G/mn)$ as $n$ increases. In practice, it is preferred to slightly overestimate both the values than to underestimate. In Figure~\ref{fig:var-frob_n_ess}, both the running plots are shown along with the green horizontal line which marks the truth. We run the simulations for 50 replications for each value of $n$ and plot the average as well as the $95\%$ confidence interval. We run the simulations for a maximum sample size of $10^5$ until when, it can be seen that $\|\hat{\Sigma}_G\|_F$ and $\|\hat{\Sigma}_A\|_F$ have not converged. However, the globally-centered estimator is always closer to reality. Before actual convergence, it can be observed that $\hat{ESS}_G/mn$ overestimates the effective sample size but it is preferred to sample more as compared to premature stopping of the sampling process.\\
+The quality of estimation of $\Sigma$ and $\text{ESS}/mn$ has been studied through convergence of - (a) $\log(\|\hat{\Sigma}_A\|_F)$ and $\log(\|\hat{\Sigma}_G\|_F)$ as $n$ increases and (b) $\log(\widehat{\textrm{ESS}}_A/mn)$ and $\log(\widehat{\textrm{ESS}}_G/mn)$ as $n$ increases. In practice, it is preferred to slightly overestimate the variance and underestimate the ESS than do otherwise. In Figure~\ref{fig:var-frob_n_ess}, both the running plots are shown along with the green horizontal line which marks the truth. We run the simulations for 50 replications for each value of $n$ and plot the average as well as standard errors. We run the simulations for a maximum chain length of $5 \times 10^4$ when the estimators seem to have almost converged. From Figure~\ref{subfig:var-frob}, it can be seen that for first $10000$ samples, A-SV estimates can be absurdly small giving false confidence in single chain estimates whereas G-SV gives a better understanding of reality. Similar comparative argument can can given for ESS.
 
 
 \begin{table}[h]
     \centering
     \begin{tabular}{|c|c|c|}
+    \hline
     n & A-SVE & G-SVE\\
     \hline
-    1000 & 0.526 & 0.975\\
-    5000 & 0.622 & 0.963\\
-    10,000 & 0.694 & 0.953\\
-    50,000 & 0.864 & 0.944\\
-    100,000 & 0.901 & 0.943\\
+    1000 & 0.71 & 0.956\\
+    5000 & 0.843 & 0.937\\
+    10,000 & 0.885 & 0.924\\
+    50,000 & 0.928 & 0.945\\
+    100,000 & 0.944 & 0.952\\
+    \hline
     \end{tabular}
-    \caption{Coverage probabilities for a $95$ percent confidence interval of global mean constructed using $A-SVE/mn$ and $G-SVE/mn$ as variance estimates around the known mean.}
+    \caption{VAR(1). Coverage probabilities for a $95$ percent confidence interval of global mean constructed using A-SVE and G-SVE as variance estimates around the known mean.}
     \label{tab:var-coverage}
 \end{table}
 
 
-We also report the coverage probabilities for a $95\%$ confidence interval constructed using $\hat{\Sigma}_A$ and $\hat{\Sigma}_G$ because the true mean is known here. Table~\ref{tab:var-coverage} shows that for each sample size, the globally-centered SV estimator for variance gives better coverage than A-SVE. At $n=10^5$, the convergence nature starts appearing and both the estimators give good coverage probability.
+We also report the coverage probabilities for a $95\%$ confidence interval constructed using $\hat{\Sigma}_A$ and $\hat{\Sigma}_G$ because the true mean is known here. Table~\ref{tab:var-coverage} shows that for each sample size, the globally-centered SV estimator for variance gives better coverage than A-SVE. At $n=10^5$, both the estimators have converged and give equivalently good coverage probability.
 
 
 \subsection{Boomerang Distribution} \label{ex:boomerang}
 
-Our estimators perform exceptionally better than the classical single-chain estimators in case of multimodal target distribution. To that end, we will use a bivariate bi-modal distribution introduced by \cite{gelman1991note} which has Gaussian conditional distributions in both directions. This allows us to sample parallel Markov chains using the Gibbs sampler. Let $x$ and $y$ be two random variable that are jointly distributed as 
+
+Our globally-centered estimators perform exceptionally better than the single-chain estimators in case of multimodal target distribution. To that end, we will use a bivariate bi-modal distribution introduced by \cite{gelman1991note} which has Gaussian conditional distributions in both directions. This allows us to sample parallel Markov chains using the Gibbs sampler. Let $x$ and $y$ be two random variable that are jointly distributed as 
 %
 \[
 f(x, y) \propto \exp\left(-\dfrac{1}{2} \left[Ax^2y^2 + x^2 + y^2 -2Bxy  -2C_1x - 2C_2y  \right]\right)
@@ -621,191 +605,171 @@ The conditional distribution of $x$ given $y$ and vice versa is a normal distrib
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[h]{.4\textwidth}
+    \begin{subfigure}[h]{.45\textwidth}
         \centering
-        \includegraphics[width = \textwidth]{plots/boom-3d_density_plot_1_3_8.pdf}
-        \caption{$A = 1, B = 3, C = 8$}
-        \label{subfig:boom-pers_1_3_8}
+        \includegraphics[width = \textwidth]{plots/boom-2d_density_plot_1_3_8.pdf}
+        \caption{Setting-1}
+        \label{subfig:boom-2D_1_3_8}
     \end{subfigure}
-    \begin{subfigure}[h]{.4\textwidth}
+    \begin{subfigure}[h]{.45\textwidth}
         \centering
-        \includegraphics[width = \textwidth]{plots/boom-3d_density_plot_1_10_7.pdf}
-        \caption{$A = 1, B = 10, C = 7$}
-        \label{subfig:boom-pers_1_10_7}
+        \includegraphics[width = \textwidth]{plots/boom-2d_density_plot_1_10_7.pdf}
+        \caption{Setting-2}
+        \label{subfig:boom-2D_1_10_7}
     \end{subfigure}
-    \caption{Perspective plots of the target distribution for two different parameterizations.}
-   \label{fig:3d_plot}
+    \caption{Boomerang. Contour plots of the target distribution for both settings. Overlayed scatter plot for two chains (in different colors) starting near each mode.}
+   \label{fig:boom-2D}
 \end{figure}
 
 
-We report results for two different bi-modal settings (parameterizations) in this example. Firstly, we use a carefully chosen parameterization of $A = 1,\; B = 3,\; C = 8$ wherein the two modes are well-separated with a very low connection (Setting-1, Figure~\ref{subfig:boom-pers_1_3_8}). Secondly, to examine the performance of G-SVE for a nicely mixing Markov chain, we use the parametrization of $A = 1, \; B = 10, \; C=7$ wherein the two model are closer and well-connected (Setting-2, Figure~\ref{subfig:boom-pers_1_10_7}). We sample five parallel chains with starting points dispersed uniformly in the first quadrant. Finding the actual mean of this distribution in closed form is difficult. Therefore, we use numerical integration with fine tuning to calculate it. To visualize the sticky nature of Markov chains in Setting-1, we show a scatter plot of two Markov chains starting near the two modes in Figure~\ref{fig:boom-sp}. Figure~\ref{fig:boom-sp} shows the scatter plot for both settings for $n=1000$. For the first thousand samples, both the chains are oblivious of the existence of another mode in setting-1. Whereas in setting-2, the chains have mixed fairly well even for $n=1000$.
+We report results for two different bi-modal parameter settings in this example. Firstly, we use a carefully chosen parameterization of $A = 1,\; B = 3,\; C = 8$ wherein the two modes are well-separated with a very low connection (Setting-1, Figure~\ref{subfig:boom-2D_1_3_8}). Secondly, to examine the performance of G-SVE for a nicely mixing Markov chain, we use the parametrization of $A = 1, \; B = 10, \; C=7$ wherein the two modes are closer and well-connected (Setting-2, Figure~\ref{subfig:boom-2D_1_10_7}). We will make another point through this example. For a fast mixing Markov chain, the globally-centered and locally-centered estimators give equivalent results. Therefore, it is a better practice to globally center the chains in any situation. We sample five parallel deterministically initialized chains with starting points dispersed uniformly in the first quadrant. Finding the actual mean of this distribution in closed form is difficult. Therefore, we use numerical integration with fine tuning to calculate it.
+
+ To visualize the sticky nature of Markov chains in Setting-1, we show a scatter plot of two Markov chains starting near the two modes for $n = 1000$ in Figure~\ref{fig:boom-2D}. For the first thousand samples, both the chains are oblivious of the existence of another mode in setting-1. Whereas in setting-2, the chains have mixed fairly well for just $n=1000$.
+ 
+ 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = .9\textwidth]{plots/boom-acf_1_3_8.pdf}
+    \caption{Boomerang (setting-I). A-ACF (left) and G-ACF (right) of component-1 for $n=1000$ (histogram) and $n=10000$ (blue line) }
+    \label{fig:boom-acf_1_3_8}
+\end{figure}
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[h]{0.4\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/boom-sp_1_3_8.pdf}
-      \caption{$A = 1,\; B = 3, \; C = 8$}
-      \label{subfig:boom-sp_1_3_8}
-    \end{subfigure}
-    \begin{subfigure}[h]{0.4\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/boom-sp_1_10_7.pdf}
-      \caption{$A = 1, \; B = 10, \; C = 7$}
-      \label{subfig:boom-sp_1_10_7}
-    \end{subfigure}
-    \caption{Scatter plots for Setting-1 (left) and Setting-2 (right) at a sample size $n = 1000$.}
-    \label{fig:boom-sp}
+    \includegraphics[width = 0.9\textwidth ]{plots/boom-acf_1_10_7_n1000.pdf}
+    \caption{Boomerang. A-ACF (left) and G-ACF (right) of component-1 for $n=1000$}
+    \label{fig:boom-acf_1_10_7}
 \end{figure}
 
-%
- In Figure \ref{subfig:boom-acf_1_3_8_n1e3}, the autocorrelations are severely underestimated by A-ACF because the chains have not jumped modes. Whereas, in Figure \ref{subfig:boom-acf_1_3_8_n1e5}, both ACF and G-ACF give almost indistinguishable results indicating that A-ACF and G-ACF have converged. We can observe in Figure~\ref{fig:boom-acf_1_10_7_n1e3} that A-ACF and G-ACF give similar results for simulation setting-2. The Markov chains explore both the modes in 1000 iterations only. Therefore, the global and local means do not differ significantly.\\
  
-\begin{figure}[htbp]
-    \centering
-    \begin{subfigure}[h]{.8\textwidth}
-      \centering
-      \includegraphics[width = \textwidth, height = 2in]{plots/boom-acf_1_3_8_n1000.pdf}
-      \caption{$n = 1000$}
-      \label{subfig:boom-acf_1_3_8_n1e3}
-    \end{subfigure}
-    \begin{subfigure}[h]{.8\textwidth}
-      \centering
-      \includegraphics[width = \textwidth, height = 2in]{plots/boom-acf_n_1_3_8_n1e+05.pdf}
-      \caption{$n = 100000$}
-      \label{subfig:boom-acf_1_3_8_n1e5}
-    \end{subfigure}
-    \caption{A-ACF and G-ACF of component-1 at two different sample size for simulation setting-1.  }
-    \label{fig:boom-acf}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width = 0.8\textwidth, height = 2in ]{plots/boom-acf_1_10_7_n1000.pdf}
-    \caption{A-ACF and G-ACF of component-1 for simulation setting-2}
-    \label{fig:boom-acf_1_10_7_n1e3}
-\end{figure}
+ In Figure \ref{fig:boom-acf_1_3_8}, the autocorrelations are severely underestimated by A-ACF for $n=1000$ because the chains have not jumped modes. Whereas, for $n=10000$, both ACF and G-ACF give almost indistinguishable results indicating that A-ACF and G-ACF have converged to the truth. We can observe in Figure~\ref{fig:boom-acf_1_10_7} that A-ACF and G-ACF give similar results for just $n=1000$ under simulation setting-2.
 
 
-
-\begin{figure}[htbp]
+\begin{figure}[h]
     \centering
     
     \begin{subfigure}[h]{.4\textwidth}
       \centering
-      \includegraphics[width = \textwidth]{plots/boom-ess_1_3_8.pdf}
-      \caption{$A = 1, \; B = 3, \; C = 8$}
+      \includegraphics[width = \textwidth]{plots/boom-ess_1_3_8_m5.pdf}
+      \caption{Setting-1}
       \label{subfig:boom-ess1}
     \end{subfigure} \hspace{1cm}
     \begin{subfigure}[h]{.4\textwidth}
       \centering
-      \includegraphics[width = \textwidth]{plots/boom-ess_1_10_7.pdf}
-      \caption{$A = 1, \; B=10, \; C = 7 $}
+      \includegraphics[width = \textwidth]{plots/boom-ess_1_10_7_m5.pdf}
+      \caption{Setting-2}
       \label{subfig:boom-ess2}
     \end{subfigure}
-    \caption{Running plot for $\hat{\text{ESS}}/mn$ using ASV and G-SVE  for $m = 2$.}
+    \caption{Boomerang. Running plot for $\log \hat{\text{ESS}}_A/mn$ and $\log \hat{\text{ESS}}_G/mn$ for $m = 5$.}
     \label{fig:boom-ess}
 \end{figure}
 
 
-A good estimate of ESS is crucial to determine when to stop the simulations. We can see in Figure \ref{fig:boom-ess} that for the first few thousand samples, A-SVE gives misleadingly higher estimates of $ESS/mn$ than G-SVE. This can cause us to stop the sampling before each chain jumps to the other mode. As a consequence, each chain will correspond to a uni-modal target distribution. Whereas, as expected, the ESS estimates for setting-2 are almost same.\\
 
+\begin{figure}[h]
+    \centering
+    
+    \begin{subfigure}[h]{.4\textwidth}
+      \centering
+      \includegraphics[width = \textwidth]{plots/boom-frob_1_3_8_m5.pdf}
+      \caption{Setting-1}
+      \label{subfig:boom-frob1}
+    \end{subfigure} \hspace{1cm}
+    \begin{subfigure}[h]{.4\textwidth}
+      \centering
+      \includegraphics[width = \textwidth]{plots/boom-frob_1_10_7_m5.pdf}
+      \caption{Setting-2}
+      \label{subfig:boom-frob2}
+    \end{subfigure}
+    \caption{Boomerang. Running plot for $\log \|\hat{\Sigma}_A\|_F$ and $\log \|\hat{\Sigma}_G\|_F$ for $m = 5$.}
+    \label{fig:boom-frob}
+\end{figure}
 
-\begin{table}[htbp]
+The convergence of $\log \widehat{\textrm{ESS}}_G/mn$ and $\log \widehat{\textrm{ESS}}_A/mn$ as $n$ increases can be seen in Figure~\ref{fig:boom-ess}. We can see that in the beginning, A-SVE gives misleadingly higher estimates of ESS$/mn$ than G-SVE. This can cause us to stop the sampling before each chain jumps to the other mode. As a consequence, each chain will correspond to a uni-modal target distribution. Whereas, as expected, the ESS estimates for setting-2 are almost same. Similarly, $\|\hat{\Sigma}_G\|_F$ reaches the convergence point in less than half the time as $\|\hat{\Sigma}_G\|_F$; as evidenced in Figure~\ref{subfig:boom-frob1}. No significant difference can be observed for setting-2 (Figure~\ref{subfig:boom-frob2}).
+
+\begin{table}[h]
+\parbox{.45\linewidth}{
 \centering
-    \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
-    % \toprule
-    \hline
-         \multicolumn{5}{|c|}{Setting-1} & \multicolumn{5}{|c|}{Setting-2}\\
-        \hline
-        $n$ & \multicolumn{2}{|c|}{$m = 2$} & \multicolumn{2}{|c|}{$m=5$} & $n$ & \multicolumn{2}{|c|}{$m = 2$} & \multicolumn{2}{|c|}{$m=5$}\\
-        \hline
-        & A-SVE & G-SVE & A-SVE & G-SVE & & A-SVE & G-SVE & A-SVE & G-SVE\\
-        \hline
-        $1000$ & 0.800 & 0.877 & 0.145 & 0.268 & 1000 & 0.873 & 0.884 & 0.875 & 0.898  \\
-        $5000$ & 0.633 &  0.727 & 0.436 & 0.650 & 2000 & 0.881 & 0.888 & 0.897 & 0.914    \\
-        $10000$  & 0.585 & 0.690 &  0.552 & 0.750 & 5000 & 0.902 & 0.908 & 0.919 & 0.929\\
-        $50000$  & 0.778 & 0.815 & 0.805 & 0.872 & 10000 & 0.923 & 0.927 & 0.925 & 0.926\\
-        $100000$ & 0.851 & 0.867 & 0.863 & 0.897 & 50000 & 0.951 & 0.952 & 0.939 & 0.939\\ \hline
-    % \bottomrule
-    \end{tabular}
-    \caption{Boomerang. Coverage probabilities for $m=2$ and $m=5$ for both the simulation settings. }
-    \label{table:boom-coverage}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+ $n$ & \multicolumn{2}{|c|}{$m = 2$} & \multicolumn{2}{|c|}{$m=5$}\\
+ \hline
+ & A-SVE & G-SVE & A-SVE & G-SVE \\
+ \hline
+ 5000 & 0.595 &  0.7 & 0.402 &  0.64\\
+ 10000 & 0.563 &  0.665 & 0.59 &  0.739\\
+ 50000 & 0.775 &  0.814 & 0.807 &  0.864\\
+ 100000 & 0.847 &  0.864 & 0.884 &  0.902\\
+\hline
+\end{tabular}
+\caption{Setting-1}
+\label{tab:boom-coverage_1}
+}
+\hfill
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+ \hline
+ $n$ & \multicolumn{2}{|c|}{$m = 2$} & \multicolumn{2}{|c|}{$m=5$}\\
+ \hline
+ & A-SVE & G-SVE & A-SVE & G-SVE \\
+ \hline
+ 1000 &  0.856 &  0.868 & 0.895 &  0.9100\\
+ 5000 & 0.921 &  0.925 & 0.91 &  0.915\\
+ 10000 & 0.928 &  0.93 & 0.919 &  0.926\\
+ 50000 & 0.943 &  0.944 & 0.951 &  0.952\\
+\hline
+\end{tabular}
+\caption{Setting-2}
+\label{tab:boom-coverage_2}
+}
 \end{table}
 
-
-Since a numerical approximation of the true mean is available, we construct $95\%$ confidence interval using A-SVE and G-SVE. We report the coverage probabilities for a 1000 replications at different sample sizes. For both the simulation settings, we provide coverage probabilities for $m=2$ and $m=5$. Table \ref{table:boom-coverage} reports all the results. In setting-1, it can be observed that G-SVE gives consistently higher coverage probability than A-SVE. Whereas for setting-2, the results are almost similar.
+Using the numerical approximation of the true mean, we construct the $95\%$ confidence interval using A-SVE and G-SVE. We report the coverage probabilities for a 1000 replications at different sample sizes $n$. For both the simulation settings, we provide coverage probabilities for $m=2$ and $m=5$. Table \ref{tab:boom-coverage_1}, \ref{tab:boom-coverage_2} reports all these results. In setting-1, it can be observed that G-SVE gives higher coverage probability than A-SVE for all values of $n$. Whereas for setting-2, the results are almost similar indicating the equivalence of A-SVE and G-SVE.
 
 
 
 \subsection{Sensor Network Localization}
 
-For our third example, we consider a real-life problem of sensor locations previously discussed by \cite{ihler2005nonparametric}. The goal is to identify unknown sensor locations using noisy distance data. This problem is specifically interesting in our case because the joint posterior distribution for missing sensor locations is multi-modal. 
+For our third example, we consider a real-life example of sensor locations previously discussed by \cite{ihler2005nonparametric}. The goal is to identify unknown sensor locations using noisy distance data. This problem is specifically interesting in our case because the marginal posterior distribution for missing sensor locations is multi-modal for all locations. 
 
-\cite{tak2018repelling} modified the simulation settings of \cite{lan2014wormhole} to include only six sensor locations (four unknown and two unknown) out of eleven locations (eight known and three unknown). Following \cite{tak2018repelling}, we assume that there are six sensors scattered on a planar region where $x_i = (x_{i1}, x_{i2})^T$ denote the $2d$ coordinates of $i^{th}$ sensor. Let $y_{ij} = (y_{ji})$ denote the distance between the sensors $x_i$ and $x_j$. The distance between $x_i$ and $x_j$ is observed with probability $\pi (x_i, x_j) = \exp{\|x_i - x_j\|^2 / 2R^2}$ and with a Gaussian measurement error of $\sigma^2$. Let $z_{ij}$ denote the indicator variable which is equal to 1 when the distance between $x_i$ and $x_j$ is observed. The probability model is then,
+Following \cite{tak2018repelling}, we assume that there are six sensors scattered on a planar region where $x_i = (x_{i1}, x_{i2})^T$ denote the $2d$ coordinates of $i^{th}$ sensor. Let $y_{ij} = (y_{ji})$ denote the distance between the sensors $x_i$ and $x_j$. The distance between $x_i$ and $x_j$ is observed with probability $\pi (x_i, x_j) = \exp{\|x_i - x_j\|^2 / 2R^2}$ and with a Gaussian measurement error of $\sigma^2$. Let $z_{ij}$ denote the indicator variable which is equal to 1 when the distance between $x_i$ and $x_j$ is observed. The probability model is then,
 %
 \begin{align*}
     z_{ij} \mid x_1, ..., x_6 & \sim \text{Bernoulli}\left(\exp\left(\dfrac{-\|x_i - x_j\|^2}{2R^2}\right)\right)\\
     y_{ij} \mid w_{ij} = 1, x_1, ..., x_6 &\sim N(\|x_i - x_j\|^2, \sigma^2)
 \end{align*}
 %
-\cite{ahn2013distributed} suggested the value of $R = 0.3$ and $\sigma = 0.02$. We use a Gaussian prior for the unknown locations with  mean equal to $(0,0)$ and covariance matrix equal to $100 I_2$. $y_{ij}$ is specified only if $w_{ij} = 1$. The likelihood function is then,
-%
-\begin{multline*}
-    L(x_1, x_2, x_3, x_4) \propto \\
-\prod_{j>i} \left[ \left(\exp\left(\dfrac{-\|x_i - x_j\|^2}{2 \times 0.3^2}\right)\right)^{w_{ij}} \left(1 - \exp\left(\dfrac{-\|x_i - x_j\|^2}{2 \times 0.3^2}\right)\right)^{1 - w_{ij}} \exp \left(-\dfrac{y_{ij} - \|x_i - x_j\|^2}{2 \times 0.02^2}\right)\right]    
-\end{multline*}
-
-The full posterior distribution with Gaussian prior is given by,
-\begin{equation} \label{ex:sensor_post}
-    \pi (x_1, x_2, x_3, x_4 | y, w) \propto 
-    L(x_1, x_2, x_3, x_4) \times \exp \left(- \dfrac{\sum_{i = 1}^{4} x_i^Tx_i}{2 \times 0.02^2}\right) 
-\end{equation}
-
-where $y = (y_{ij}, j>i)$ and $w = (w_{ij}, j>i)$. We follow the Markov chain structure as described by \cite{tak2018repelling} and sample from the four bivariate conditionals for each sensor location using a Gibbs sampler. In their paper on Repelling Attractive Metropolis (RAM) algorithms, \cite{tak2018repelling} compare the performance of three different sampling techniques namely - Metropolis, RAM and Tempered Transitions (TT). RAM is shown to improve the acceptance rate by a factor of at least 5.5 over Metropolis using the same jumping scale. RAM algorithm supplies Markov chains with higher jumping frequency between the modes of a multimodal target distribution.\\
+\cite{ahn2013distributed} suggested the value of $R = 0.3$ and $\sigma = 0.02$. We use a Gaussian prior for the unknown locations with  mean equal to $(0,0)$ and covariance matrix equal to $100 I_2$. $y_{ij}$ is specified only if $w_{ij} = 1$. We follow the Markov chain structure as described by \cite{tak2018repelling} and sample from the four bivariate conditionals for each sensor location using a Gibbs sampler. In their paper on Repelling Attractive Metropolis (RAM) algorithms, \cite{tak2018repelling} compare the performance of different sampling techniques and show that RAM improves the acceptance rate by a factor of at least 5.5 over Metropolis using the same jumping scale. RAM algorithm supplies Markov chains with higher jumping frequency between the modes.
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[h]{0.4\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/sensor-sp_loc1.pdf}
-      \caption{Location-1; $n=10^5$}
-      \label{subfig:sensor-sp_loc1}
-    \end{subfigure}
-    \begin{subfigure}[h]{0.5\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/sensor-trace_loc1.pdf}
-      \caption{$x_{11}$ and $x_{12}$; $n=10^5$}
-      \label{subfig:sensor-trace_loc1}
-    \end{subfigure}
-    \caption{Sensor Network. (a) Scatter plot ($x_{12} \textrm{ vs } x_{11}$) for a Markov chain of length $n=10^5$; (b) Trace plots  of $x_{11}$ and $x_{12}$ for two chains started near the two modes.}
-    \label{fig:sensor-sp_n_tarce}
+    \includegraphics[width = .9\textwidth]{sensor-trace_loc1.pdf}
+    \caption{Sensor Network. Trace plot of two chains for x (left) and y (right) coordinate of sensor location-1.}
+    \label{fig:sensor-trace}
 \end{figure}
 
- \begin{figure}[h]
-     \centering
-     \begin{subfigure}[h]{.4\textwidth}
-       \centering
-       \includegraphics[width = \textwidth]{plots/sensor-acf_n5e3.pdf}
-       \caption{$n = 5 \times 10^3$}
-       \label{subfig:sensor-acf_n5e3}
-     \end{subfigure}
-     \begin{subfigure}[h]{.4\textwidth}
-       \centering
-       \includegraphics[width = \textwidth]{plots/sensor-acf_n5e4.pdf}
-       \caption{$n = 5 \times 10^4$}
-       \label{subfig:sensor-acf_n5e4}
-     \end{subfigure}
-     \caption{A-ACF and G-ACF for component-1 at two different sample size. The locally (light blue) and globally (light orange) centered ACF for individual chain has been plotted.}
-     \label{fig:sensor-acf}
- \end{figure}
+This is an 8-dimensional estimation problem where the components corresponds to x and y coordinates of four unknown sensor locations. We will use the RAM algorithm with a jumping scale equal to $0.5$ to sample five parallel Markov chains with well-separated starting points. The total simulation size for each chain is fixed at $100,000$. Since the truth about actual mean and asymptotic variance is not known in this case, we are not interested in coverage probabilities.\\
 
+To illustrate the \textit{sticky} nature of the Markov chains, we plot the evolution of two chains (starting near different modes) with time. Figure~\ref{fig:sensor-trace} shows the trace plot of x and y coordinate of sensor location-1. It is evident that the marginal posterior for both the components is bimodal. Similarly, the other three locations also have a bimodal marginal distribution in each component.  Observe that each chain explores one particular mode for a long time before jumping to another mode. \\
 
-We will use the RAM algorithm with a jumping scale equal to $0.5$ to sample five parallel Markov chains with well-separated starting points. The total simulation size for each chain is fixed at $100,000$. We sample five chains starting from dispersed starting values. Since the truth about actual mean and asymptotic variance is not known in this case, we are not interested in coverage probabilities. Instead, we will focus on a comparative study of local and global estimators in terms of - (1) autocorrelations, (2) log Frobenius norm of estimated $\Sigma$, and (3) log of estimated $ESS/mn$.\\
-
-Figure~\ref{subfig:sensor-sp_loc1} shows the scatter plot of location-1 for a single Markov chain. Similarly, the other three locations also have a bimodal marginal distribution in each component. To illustrate the \textit{sticky} nature of the Markov chains obtained from RAM sampling method, we plot the evolution of two chains (starting near different modes) with time. Observe that each chain explores one particular mode for a long time before jumping to another mode. \\
-
-Figure~\ref{fig:sensor-acf} plots the locally and globally centered ACrF estimators for individual chains as well as the average over all the chains. The thick lines represent the averaged estimator and the thin lines correspond to single chains. Figure~\ref{fig:sensor-fron_n_ess} presents the running plot of log Frobenius norm of A-ACF and G-ACF along with $95\%$ confidence interval calculated using $50$ replications for each value of $n$ (x-axis). In both the plots, G-SVE and $\hat{ESS}_G/mn$ prove to be drastically better than the classical single-chain estimators. 
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[h]{.45\textwidth}
+      \centering
+      \includegraphics[width = \textwidth]{plots/sensor-acf_n5e3.pdf}
+      \caption{$n = 5 \times 10^3$}
+      \label{subfig:sensor-acf_5e3}
+    \end{subfigure}
+    \begin{subfigure}[h]{.45\textwidth}
+      \centering
+      \includegraphics[width = \textwidth]{plots/sensor-acf_n5e4.pdf}
+      \caption{$n = 5 \times 10^4$}
+      \label{subfig:sensor-acf_5e4}
+    \end{subfigure}
+    \caption{Sensor Network. ACrF (orange) and G-ACrF (blue) for individual chains (dotted lines) and average over all chains (thick solid line).}
+    \label{fig:sensor-acf}
+\end{figure}
 
 \begin{figure}
     \centering
@@ -818,25 +782,39 @@ Figure~\ref{fig:sensor-acf} plots the locally and globally centered ACrF estimat
     \begin{subfigure}[h]{0.4\textwidth}
       \centering
       \includegraphics[width = \textwidth]{plots/sensor-ess.pdf}
-      \caption{$\log(\hat{ESS}/mn)$}
+      \caption{$\log(\widehat{\textrm{ESS}}/mn)$}
       \label{subfig:sensor-ess}
     \end{subfigure}
-    \caption{Sensor Network. Running plot for log of Frobenius norm of estimated $\Sigma$ (left) and log of estimated $ESS/mn$ (right) calculated using A-SVE and G-SVE.}
-    \label{fig:sensor-fron_n_ess}
+    \caption{Sensor Network. Running plot for $\log \|{\Sigma}\|_F$ (left) and $\log {\textrm{ESS}}/mn$ (right) estimated using A-SVE and G-SVE along with standard errors for 10 replications.}
+    \label{fig:sensor-frob_n_ess}
 \end{figure}
+
+Figure~\ref{fig:sensor-acf} plots the locally and globally centered ACF estimators for individual chains  as well as the average over all the chains. The thick solid line plots the averaged estimator and the thin dotted lines correspond to ACF calculated using single chains. Figure~\ref{fig:sensor-frob_n_ess} presents the running plot of $\log \|{\Sigma}\|_F$ and $\log \textrm{ESS}/mn$ estimated using A-SVE and G-SVE along with standard errors from $10$ replications for each value of $n$. In both the plots, G-SVE and $\widehat{\textrm{ESS}}_G/mn$ reach the convergence value faster.
+
  
 \section{Discussion} \label{sec:discussion}
 
-Calculation of exact ACF has been done for simple stationary stochastic models like autoregressive (AR) models (under assumption of stationarity), moving average (MA) (\cite{quenouille1947notes}), and autoregressive-moving-average (ARMA) (\cite{box2015time}) models. However, for most of the complex sampling algorithms (including MCMC), we rely on sample estimators for ACF. Unfortunately, the estimator given in Equation~\ref{eq:empirical_acf} has been observed to have a some drawbacks. Firstly, it is not immune to outliers (see \cite{ma2000highly}) and secondly, it is usually non-informative in case of slowly mixing Markov chains. 
 
-\appendix
+In case of slowly mixing Markov chains or multimodal target distributions, the traditional single chain empirical estimator for ACvF can excruciatingly underestimate the truth. This will have serious impact on estimation of lag covariances, large sample variance of Monte Carlo averages, and determining when to stop the simulation process. It has been concluded in the paper that all of this can be significantly avoided by sampling multiple chains starting from dispersed points and pooling in the information from all chains to build consistent estimators for $\Gamma(k)$, $\Sigma$, and ESS. We have derived the bias of G-ACvF. We have shown that not only G-ACvF is asymptotically unbiased but also counters the negative bias of single chain ACF estimator by an amount proportional to the number of chains $m$. We have also proved the strong consistency of G-SVE and derived its limiting bias and variance results. Although the asymptotic results for G-SVE match those for SVE in \cite{andr:1991}, finite sample advantages are observed in terms of better coverage probability and faster convergence to truth.  
+
+
+
+% Calculation of exact ACF has been done for simple stationary stochastic models like autoregressive (AR) models (under assumption of stationarity), moving average (MA) (\cite{quenouille1947notes}), and autoregressive-moving-average (ARMA) (\cite{box2015time}) models. We have already shown the impact of G-ACF for VAR(1) model where the truth is known. This gives us sufficient reason to believe that similar advantage will be observed for all the other models mentioned above in case of slowly mixing chains. Comparison to truth will reveal similar behavior However, for most of the complex sampling algorithms (including MCMC), we rely on sample estimators for ACF. 
+
+For the purpose of experimentation in Section~\ref{sec:examples}, Bartlett lag window has been used throughout. Lag window comparisons done by \cite{andr:1991} reveal that quadratic spectral (QS) lag window gives consistently better coverage probabilities for any confidence interval. However, SVE gives poor coverage probability for all lag windows when the amount of autocorrelation is high in the Markov chain. Recently, \textit{lugsail} lag window has been proposed by \cite{vats2018lugsail} to deal with this issue by deliberately accentuating the autocovariance at smaller lags. We have refrained from doing lag window comparisons for G-SVE in our examples but we believe it can help improve the estimation quality significantly.
+%
+
+Another class of estimators for asymptotic variance of Monte Carlo averages are the multivariate initial sequence (mIS) estimators \citep{dai:jon:2017}. Similar to SV estimator, lag-covariances form the fundamental part of mIS estimators. In case of multi-modal target distributions, single chain mIS estimator will suffer from the same drawbacks as SVE. In this paper, we have chiefly focused on the usage of G-ACvF for estimating autocovariances in SVE; however the argument for a similar usage in mIS is straightforward.  Following \cite{dai:jon:2017}, generalised variance estimates obtained from mIS consistently overestimate $\abs{\Sigma}$. From Theorem~\ref{th:G-ACF_bias}, one can prove that, on average, the eigenvalues of $\hat{\Gamma}_{G,s}(k)$ are greater than the eigenvalues of $\hat{\Gamma}_s(k)$. This supplies readers with sufficient motivation to believe that the generalized variance for mIS constructed from $\hat{\Gamma}_G(k)$ not only consistently overestimates $\abs{\Sigma}$ but also upper-bounds the mIS from empirical single chain estimator of $\Gamma(k)$ for finite samples. An valuable line of research would be to prove these observations and carry out the theoretical analysis of mIS estimators using G-ACvF. 
+%
+
+The choice of starting vector is crucial for multiple chain sampling. In case the chains are started very near to each other, all the chains will explore nearly the same neighborhood in the state space. As a consequence, the G-ACvF will be equivalent to A-ACvF, and no significant improvement will be observed in estimation quality. We have used a deterministic initialization method in our examples using our prior knowledge about the location of modes in the target distribution. Comparing existing initialization methods {\color{orange} MA: maybe cite a few} and developing new ones could be an interesting direction for future research.  
 
 \section{Appendix}  \label{sec:appendix}
 \subsection{Preliminaries} \label{apdx:preliminaries}
 
 \begin{lemma}
 \label{lemma: brownian}
-(\cite{csorgo2014strong}). Suppose Assumption \ref{ass:sip} holds, then for all $\epsilon > 0$ and for almost all sample paths, there exists $n_{0}\left(\epsilon\right)$ such that $\forall n\geq n_{0}$ and $\forall i = 1, ..., p$
+(\cite{csorgo2014strong}). Suppose the conditions of Theorem~\ref{thm:kuelbs} hold, then for all $\epsilon > 0$ and for almost all sample paths, there exists $n_{0}\left(\epsilon\right)$ such that $\forall n\geq n_{0}$ and $\forall i = 1, ..., p$
 
 \[
 \sup_{0\leq t \leq n-b_n}\sup_{0 \leq s \leq b_n} \left| B^{\left(i\right)}\left(t+s\right) - B^{\left(i\right)}\left(t\right) \right| < \left(1+ \epsilon\right)\left(2b_n\left(\log\dfrac{n}{b_n} + \log\; \log\; n\right)\right)^{1/2} ,
@@ -878,7 +856,7 @@ Calculation of exact ACF has been done for simple stationary stochastic models l
 
 % \section{Proof of Theorems} \label{appendix:A}
 
-\subsection{Proof of Theorem~\ref{th:G-_expec}} 
+\subsection{Proof of Theorem~\ref{th:G-ACF_bias}} 
 \label{appendix:bias}
 
 % \begin{proof}
@@ -930,7 +908,7 @@ We can break $\hat{\Gamma}_{G,s}$ into four parts for all $k \geq 1$ as:
 % &= \mathbb{E}\left[\sum_{s=1}^{m}\bar{X}_{s}\bar{X}_{s}^{T} - m\bar{\bar{X}}\bar{\bar{X}}^{T}\right]\\
 % &= m\left(\mathbb{E}\left[\bar{X}_{1}\bar{X}_{1}^{T}\right] - \mathbb{E}\left[\bar{\bar{X}}\bar{\bar{X}}^{T}\right]\right)\\
 % &= m\left(\Var(\bar{X}_{1}) + \mu\mu^{T} - \Var(\bar{\bar{X}}) - \mu\mu^{T}\right)\\
-% &= (m-1)\Var(\overline{X_1})\,.
+% &= (m-1)\Var(\bar{X_1})\,.
 % \end{align*}
 % \end{proof}
 
@@ -943,7 +921,7 @@ We can break $\hat{\Gamma}_{G,s}$ into four parts for all $k \geq 1$ as:
     &= \hat{\Gamma}_s(k) - \dfrac{1}{n} \sum_{t=1}^{|k|}A_{st}^T - \dfrac{1}{n}\sum_{t=n-|k|+1}^{n}A_{st} + \dfrac{n-|k|}{n}  \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\,, \numberthis \label{eq:acf_breakdown}
 \end{align*}
 %
-where $A_{st} = (X_{st}-\bar{X}_s)(\bar{X}_s - \bar{\bar{X}})^T$. We will study the expectations of the each of the above terms. Without loss of generality, consider $A_{11}$,
+where $A_{st} = (X_{st}-\bar{X}_s)(\bar{X}_s - \bar{\bar{X}})^T$. Under the assumption of stationarity, we will study the expectations of the each of the above terms. Without loss of generality, consider $A_{11}$,
 \begin{align*}
     &\E \left[A_{11} \right]\\
      &= \mathbb{E} \left[ \left(X_{11} - \bar{X}_1 \right) \left(\bar{X}_1 - \bar{\bar{X}} \right)^T \right]\\
@@ -985,7 +963,7 @@ Using \eqref{eq:priestly}, \eqref{eq:acf_2}, \eqref{eq:acf_3}, and \eqref{eq:acf
     & \E \left[\hat{\Gamma}_{G,s}(k) \right] \\
     &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - \dfrac{1}{n} \left(\sum\limits_{t=1}^{|k|}\mathbb{E}[A_{1t}^T] + \sum\limits_{t=n-|k|+1}^{n}\mathbb{E}[A_{1t}]\right) + \left(1- \dfrac{|k|}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
     &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - \dfrac{|k|}{n}\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h) + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T - 2 \Var(\bar{X}_1)\right) + \left(1- \dfrac{|k|}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
-    &= \left(1- \dfrac{|k|}{n}\right)\Gamma(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\overline{X}_1)}{m}\,.
+    &= \left(1- \dfrac{|k|}{n}\right)\Gamma(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\bar{X}_1)}{m}\,.
 \end{align*}
 %
 
@@ -1010,7 +988,7 @@ We observe that both $O_1 \textrm{ and } O_2$ are small order terms that converg
 %
 \begin{align*}
 & \E \left[ \hat{\Gamma}_{G,s}^{ii}\right]\\
-& = \mathbb{E}\left[\hat{\Gamma}^{ii}_{s}(k)\right] - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1} \left[\Gamma^{ii}(h)^T + \Gamma^{ii}(h) \right] \right) - \left(2-\dfrac{1}{m}\right) \Var(\overline{X}_1)^{ii}\right] - \dfrac{\Var(\overline{X}_1)^{ii}}{m}\,.
+& = \mathbb{E}\left[\hat{\Gamma}^{ii}_{s}(k)\right] - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1} \left[\Gamma^{ii}(h)^T + \Gamma^{ii}(h) \right] \right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)^{ii}\right] - \dfrac{\Var(\bar{X}_1)^{ii}}{m}\,.
 \end{align*}
 In the presence of positive correlation, the leftover term is positive.
 
@@ -1036,10 +1014,10 @@ In the presence of positive correlation, the leftover term is positive.
 \subsection{Strong consistency argument} \label{appendix:strong_consis}
 
 
-Consider pseudo spectral variance estimators for the $s$th chain, denoted by $\tilde{\Sigma}_s$ which uses data centered around the unobserved actual mean $\mu$:
+Consider pseudo autocovariance and spectral variance estimators for the $s$th chain, denoted by $\tilde{\Upsilon}_s(k)$ and $\tilde{\Sigma}_s$ that use data centered around the unobserved actual mean $\mu$:
 \begin{align*}
-    \tilde{\Gamma}_s(k) &= \dfrac{1}{n}\sum_{t=1}^{n-|k|}(X_{st}-\mu)(X_{s(t+k)}-\mu)^T \\ 
-    \tilde{\Sigma}_s &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\tilde{\Gamma}_s(k) \,.
+    \tilde{\Upsilon}_s(k) &= \dfrac{1}{n}\sum_{t=1}^{n-|k|}(Y_{st}-\mu_g)(Y_{s(t+k)}-\mu_g)^T \\ 
+    \tilde{\Sigma}_s &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\tilde{\Upsilon}_s(k) \,.
 \end{align*}
 %
 The average pseudo spectral variance estimator is
@@ -1049,9 +1027,9 @@ The average pseudo spectral variance estimator is
 
 Further, let
 \begin{align*}
-  M_1 & = \dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{\sum\limits_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum\limits_{t=1}^{n-|k|}\dfrac{1}{n}\left[ \left(X_{st}-\mu \right)_i   \left(\mu-\bar{\bar{X}} \right)_j +    \left(\mu-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)}-\mu \right)_j \right]\right\}\,, \\ 
+  M_1 & = \dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{\sum\limits_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum\limits_{t=1}^{n-|k|}\dfrac{1}{n}\left[ \left(Y_{st}-\mu_g \right)_i   \left(\mu_g-\bar{\bar{Y}} \right)_j +    \left(\mu_g-\bar{\bar{Y}} \right)_i  \left(Y_{s(t+k)}-\mu_g \right)_j \right]\right\}\,, \\ 
   %
-M_2 &= \left(\mu-\bar{\bar{X}} \right)_i   \left(\mu-\bar{\bar{X}} \right)_j\sum\limits_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\,.
+M_2 &= \left(\mu_g-\bar{\bar{Y}} \right)_i   \left(\mu_g-\bar{\bar{Y}} \right)_j\sum\limits_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\,.
 \end{align*}
 
 
@@ -1071,12 +1049,12 @@ where
 \begin{proof}
 The proof follows from standard algebraic calculations and is presented here for completeness. Consider,
 \begin{align*}
-\hat{\Sigma}_{G}^{ij} &= \dfrac{1}{m}\sum_{s=1}^{m} \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|} \left(X_{st}-\bar{\bar{X}} \right)_i \left(X_{s(t+k)}-\bar{\bar{X}} \right)_j\\
-% &= \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|} \left[  \left\{\left(X_{st}-\mu \right)_i + \left(\mu-\bar{\bar{X}} \right)_i \right \}  \left\{ \left(X_{s(t+k)}-\mu \right)_j + \left(\mu-\bar{\bar{X}} \right)_j \right \} \right]\\
-&= \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left[ \left(X_{st}-\mu \right)_i  \left(X_{s(t+k)}-\mu \right)_j+  \left(X_{st} - \mu \right)_i    \left(\mu - \bar{\bar{X}} \right)_j \right. \\  
-& \quad + \left. \left(\mu-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)}-\mu \right)_j + \left(\mu-\bar{\bar{X}} \right)_i  \left(\mu-\bar{\bar{X}}  \right)_j  \right]\\
-& = \tilde{\Sigma}^{ij} + \left[(\mu-\bar{\bar{X}})_i(\mu-\bar{\bar{X}})_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right] \\ 
-& \quad  + \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-|k|}  \left[\dfrac{1}{n} \left(X_{st} - \mu \right)_i \left(\mu - \bar{\bar{X}} \right)_j + \dfrac{1}{n} \left(\mu-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)}-\mu \right)_j \right] \\ 
+\hat{\Sigma}_{G}^{ij} &= \dfrac{1}{m}\sum_{s=1}^{m} \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|} \left(Y_{st}-\bar{\bar{Y}} \right)_i \left(Y_{s(t+k)}-\bar{\bar{Y}} \right)_j\\
+% &= \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|} \left[  \left\{\left(X_{st}-\mu_g \right)_i + \left(\mu_g-\bar{\bar{X}} \right)_i \right \}  \left\{ \left(X_{s(t+k)}-\mu_g \right)_j + \left(\mu_g-\bar{\bar{X}} \right)_j \right \} \right]\\
+&= \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left[ \left(Y_{st}-\mu_g \right)_i  \left(Y_{s(t+k)}-\mu_g \right)_j+  \left(Y_{st} - \mu_g \right)_i    \left(\mu_g - \bar{\bar{Y}} \right)_j \right. \\  
+& \quad + \left. \left(\mu_g-\bar{\bar{Y}} \right)_i  \left(Y_{s(t+k)}-\mu_g \right)_j + \left(\mu_g-\bar{\bar{Y}} \right)_i  \left(\mu_g-\bar{\bar{Y}}  \right)_j  \right]\\
+& = \tilde{\Sigma}^{ij} + \left[(\mu_g-\bar{\bar{Y}})_i(\mu_g-\bar{\bar{Y}})_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right] \\ 
+& \quad  + \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-|k|}  \left[\dfrac{1}{n} \left(Y_{st} - \mu_g \right)_i \left(\mu_g - \bar{\bar{Y}} \right)_j + \dfrac{1}{n} \left(\mu_g-\bar{\bar{Y}} \right)_i  \left(Y_{s(t+k)}-\mu_g \right)_j \right] \\ 
 & = \tilde{\Sigma}^{ij} + M_1 + M_2\,.
 \end{align*}
 
@@ -1087,9 +1065,9 @@ Consequently
 %
 We first present a result which will be useful to use later. For any Markov chain $s$, 
 \begin{align*}
-  \|\bar{X}_s - \mu\|_{\infty} & \leq \|\bar{X}_s - \mu\| = \dfrac{1}{mn}\left\|\sum_{t=1}^{n}X_{st} - n\mu\right\| \\
-  % &= \dfrac{1}{n}  \left \|\sum_{t=1}^{n}X_{st} - n\mu \pm L B(n) \right\|\\
-  & \leq \dfrac{1}{n}\left\|\sum_{t=1}^{n}X_{st} - n \mu - L B(n)\right\| + \dfrac{\left\|L B(n)\right\|}{n}\\
+  \|\bar{Y}_s - \mu_g\|_{\infty} & \leq \|\bar{Y}_s - \mu_g\| = \dfrac{1}{mn}\left\|\sum_{t=1}^{n}Y_{st} - n\mu_g\right\| \\
+  % &= \dfrac{1}{n}  \left \|\sum_{t=1}^{n}X_{st} - n\mu_g \pm L B(n) \right\|\\
+  & \leq \dfrac{1}{n}\left\|\sum_{t=1}^{n}Y_{st} - n \mu_g - L B(n)\right\| + \dfrac{\left\|L B(n)\right\|}{n}\\
   &< \dfrac{D\psi(n)}{n} + \dfrac{\|L B(n)\|}{n}\\
   &< \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| \left(\sum\limits_{i=1}^{p}|B^{(i)}(n)|^2\right)^{1/2}\\
   & \leq \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}\,. \numberthis \label{eq:xbars_bound}
@@ -1099,12 +1077,12 @@ We first present a result which will be useful to use later. For any Markov chai
  Similarly,
  \begin{equation}
 \label{eq:xbarbar_bound}
-   \| \bar{\bar{X}} - \mu\|_{\infty} \leq \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}\,.
+   \| \bar{\bar{Y}} - \mu_g\|_{\infty} \leq \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}\,.
 \end{equation}
 %  \begin{align*}
-%   \| \bar{\bar{X}} - \mu\|_{\infty} & \leq \|\bar{\bar{X}} - \mu\| = \dfrac{1}{n}\left\|\sum_{s=1}^{m} \left(\sum_{t=1}^{n}X_{st} - n\mu \right)\right\| \\
-%   &\leq \dfrac{1}{m}\sum_{s=1}^{m}\dfrac{1}{n}  \left \| \sum_{t=1}^{n}X_{st} - n\mu \pm L B(n) \right\|\\
-%   & \leq \dfrac{1}{m} \sum_{s=1}^{m} \dfrac{1}{n}\left\| \sum_{t=1}^{n}X_{st} - n \mu - L B(n)\right\| + \dfrac{\left\|L B(n)\right\|}{n}\\
+%   \| \bar{\bar{X}} - \mu_g\|_{\infty} & \leq \|\bar{\bar{X}} - \mu_g\| = \dfrac{1}{n}\left\|\sum_{s=1}^{m} \left(\sum_{t=1}^{n}X_{st} - n\mu_g \right)\right\| \\
+%   &\leq \dfrac{1}{m}\sum_{s=1}^{m}\dfrac{1}{n}  \left \| \sum_{t=1}^{n}X_{st} - n\mu_g \pm L B(n) \right\|\\
+%   & \leq \dfrac{1}{m} \sum_{s=1}^{m} \dfrac{1}{n}\left\| \sum_{t=1}^{n}X_{st} - n \mu_g - L B(n)\right\| + \dfrac{\left\|L B(n)\right\|}{n}\\
 %   &< \dfrac{D\psi(n)}{n} + \dfrac{\|L B(n)\|}{n}\\
 %   &< \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| \left(\sum\limits_{i=1}^{p}|B^{(i)}(k)|^2\right)^{1/2}\\
 %   & \leq \dfrac{D\psi(n)}{n} + \dfrac{1}{n}\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}\,. \numberthis \label{eq:xbarbar_bound}
@@ -1114,23 +1092,23 @@ We first present a result which will be useful to use later. For any Markov chai
 Now consider,
 \begin{align*}
 & |M_1| \\ 
-   % & = \left|\dfrac{1}{m}\sum _{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-|k|} \dfrac{1}{n}\left[ \left(X_{st} - \mu \right)_i  \left(\mu-\bar{\bar{X}} \right)_j + \left(\mu-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)} - \mu \right)_j\right]\right\}\right| \\
-   % & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}{\left|\sum\limits_{t=1}^{n-|k|} \left(X_{st} - \mu \right)_i  \left(\mu - \bar{\bar{X}} \right)_j\right|} + \dfrac{1}{n}{\left|\sum_{t=1}^{n-|k|} \left(\mu-\bar{\bar{X}} \right)_i\left(X_{s(t+k)} - \mu \right)_j\right|} \right]\right\}\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}\left|\sum_{t=1}^{n-|k|}(X_{st}- \mu)_i\right|\left|(\mu-\bar{\bar{X}})_j\right|+ \dfrac{1}{n}\left|(\mu-\bar{\bar{X}})_i\right|\left|\sum_{t=1}^{n-|k|}(X_{j(t+k)}-\mu)_j\right|\right]\right\}\\
-    & \leq \dfrac{\|(\bar{\bar{X}} - \mu)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t=1}^{n-|k|}(X_{st}-\mu)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t=1}^{n-|k|}(X_{s(t+k)}-\mu)\right\|_{\infty} \right]\\
-    &\leq \dfrac{\|(\bar{\bar{X}} - \mu)\|_{\infty}}{m} \\
-    & \quad \times \sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t=n-|k|+1}^{n}(X_{st} - \mu) - n(\bar{X}_s - \mu) \right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t=1}^{|k|}(X_{st} - \mu) - n(\bar{X}_s - \mu)\right\|_{\infty} \right]\\
-    &\leq \dfrac{\|(\bar{\bar{X}} - \mu)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t=n-|k|+1}^{n}(X_{st} - \mu)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t=1}^{|k|}(X_{st} - \mu)\right\|_{\infty} + 2\|\bar{X}_s - \mu\|_{\infty} \right]\\
-    & \leq \dfrac{\|(\bar{\bar{X}} - \mu)\|_{\infty}}{m} \sum\limits_{s=1}^{m}\sum_{k=-b_n + 1}^{b_n-1}   \dfrac{1}{n}\left[\left\|\sum_{t=n-|k|+1}^{n}(X_{st} - \mu)\right\|_{\infty} + \left\|\sum_{t=1}^{|k|}(X_{st} - \mu)\right\|_{\infty} \right]\\
-    & \; \;+ 2(2b_n - 1)\|\bar{\bar{X}} - \mu\|_{\infty}\|\bar{X}_1 - \mu\|_{\infty}\,.
+   % & = \left|\dfrac{1}{m}\sum _{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-|k|} \dfrac{1}{n}\left[ \left(X_{st} - \mu_g \right)_i  \left(\mu_g-\bar{\bar{X}} \right)_j + \left(\mu_g-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)} - \mu_g \right)_j\right]\right\}\right| \\
+   % & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}{\left|\sum\limits_{t=1}^{n-|k|} \left(X_{st} - \mu_g \right)_i  \left(\mu_g - \bar{\bar{X}} \right)_j\right|} + \dfrac{1}{n}{\left|\sum_{t=1}^{n-|k|} \left(\mu_g-\bar{\bar{X}} \right)_i\left(X_{s(t+k)} - \mu_g \right)_j\right|} \right]\right\}\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}\left|\sum_{t=1}^{n-|k|}(Y_{st}- \mu_g)_i\right|\left|(\mu_g-\bar{\bar{Y}})_j\right|+ \dfrac{1}{n}\left|(\mu_g-\bar{\bar{Y}})_i\right|\left|\sum_{t=1}^{n-|k|}(Y_{j(t+k)}-\mu_g)_j\right|\right]\right\}\\
+    & \leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t=1}^{n-|k|}(Y_{st}-\mu_g)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t=1}^{n-|k|}(Y_{s(t+k)}-\mu_g)\right\|_{\infty} \right]\\
+    &\leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \\
+    & \quad \times \sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t=n-|k|+1}^{n}(Y_{st} - \mu_g) - n(\bar{Y}_s - \mu_g) \right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t=1}^{|k|}(Y_{st} - \mu_g) - n(\bar{Y}_s - \mu_g)\right\|_{\infty} \right]\\
+    &\leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t=n-|k|+1}^{n}(Y_{st} - \mu_g)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t=1}^{|k|}(Y_{st} - \mu_g)\right\|_{\infty} + 2\|\bar{Y}_s - \mu_g\|_{\infty} \right]\\
+    & \leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum\limits_{s=1}^{m}\sum_{k=-b_n + 1}^{b_n-1}   \dfrac{1}{n}\left[\left\|\sum_{t=n-|k|+1}^{n}(Y_{st} - \mu_g)\right\|_{\infty} + \left\|\sum_{t=1}^{|k|}(Y_{st} - \mu_g)\right\|_{\infty} \right]\\
+    & \; \;+ 2(2b_n - 1)\|\bar{\bar{Y}} - \mu_g\|_{\infty}\|\bar{Y}_1 - \mu_g\|_{\infty}\,.
 \end{align*}
 %
 Using SIP on summation of $k$ terms, we obtain the following upper bound for $|M_1|$
 \begin{align*}
 |M_1|
-    & < 2\|(\bar{\bar{X}} - \mu)\|_{\infty} \left[\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] \right]  + 2(2b_n - 1) \|\bar{X}_1 - \mu\|_{\infty} \\
-    &\leq 2(2b_n - 1)\|(\bar{\bar{X}} - \mu)\|_{\infty} \left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n} + \|\bar{X}_1 - \mu\|_{\infty}  \right]\\
-    % & \quad  + 2(2b_n - 1)\|\bar{\bar{X}} - \mu\|_{\infty}\\
+    & < 2\|(\bar{\bar{Y}} - \mu_g)\|_{\infty} \left[\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] \right]  + 2(2b_n - 1) \|\bar{Y}_1 - \mu_g\|_{\infty} \\
+    &\leq 2(2b_n - 1)\|(\bar{\bar{Y}} - \mu_g)\|_{\infty} \left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n} + \|\bar{Y}_1 - \mu_g\|_{\infty}  \right]\\
+    % & \quad  + 2(2b_n - 1)\|\bar{\bar{X}} - \mu_g\|_{\infty}\\
     & \leq 4(2b_n - 1)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2  \quad \text{(by \eqref{eq:xbars_bound} and \eqref{eq:xbarbar_bound})}\,. \numberthis \label{eq:strong_consis_term-1}
 \end{align*}
 %
@@ -1143,11 +1121,11 @@ Using SIP on summation of $k$ terms, we obtain the following upper bound for $|M
 % Using the bound on $\psi(n)$ given by \cite{stra:1964}, equation (\ref{eq:strong_consis_term-1}) becomes $\mathcal{O}\left(b_n \log \log n/n\right)$ which converges to 0 as $n \to \infty$. Now we will show that $M_2 \xrightarrow{a.s.} 0$ as $n\to \infty$
 For $M_2$,
 \begin{align*}
-   |M_2| & = \left|\dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{ \left(\mu - \bar{\bar{X}} \right)_i  \left(\mu - \bar{\bar{X}} \right)_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right\}\right|\\
-    & \leq\|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right] < \|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
-    % &= b_n\|\bar{\bar{X}} - \mu\|_{\infty}^2\left[\dfrac{1}{b_n}\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
-    & \leq b_n\|\bar{\bar{X}} - \mu\|_{\infty}^2 \int_{-\infty}^{\infty}|w(x)|dx \\
-    % & \leq Cb_n\|\bar{\bar{X}} - \mu \|^2 \\ 
+   |M_2| & = \left|\dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{ \left(\mu_g - \bar{\bar{Y}} \right)_i  \left(\mu_g - \bar{\bar{Y}} \right)_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right\}\right|\\
+    & \leq\|\bar{\bar{Y}} - \mu_g\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right] < \|\bar{\bar{Y}} - \mu_g\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
+    % &= b_n\|\bar{\bar{X}} - \mu_g\|_{\infty}^2\left[\dfrac{1}{b_n}\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
+    & \leq b_n\|\bar{\bar{Y}} - \mu_g\|_{\infty}^2 \int_{-\infty}^{\infty}|w(x)|dx \\
+    % & \leq Cb_n\|\bar{\bar{X}} - \mu_g \|^2 \\ 
     & \leq Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2 \quad \text{ (by \eqref{eq:xbarbar_bound})} \numberthis \label{eq:strong_consis_term-2} \,.
 \end{align*}
 %
@@ -1174,7 +1152,7 @@ where
 \end{align*}
 Under our assumptions, 
 $b_n\log \log n /n \to 0$ and $\psi(n) = o(\sqrt{n \log \log n})$. Consequently, 
-$b_n \psi^2(n)/n^2 \to 0$, $\psi^2(n)/n^2 \to 0$, ${b_n\psi(n)\sqrt{n\log \log n}/n^2} \to 0$, and $\psi(n) \sqrt{n \log \log n}/n^2 \to 0$. Thus, $g_1(n), g_2(n)$ and $g_3(n) \to 0$ as $n \to \infty$. 
+$b_n \psi^2(n)/n^2 \to 0$, $\psi^2(n)/n^2 \to 0$, ${b_n\psi(n)\sqrt{n\log \log n}/n^2} \to 0$, and $\psi(n) \sqrt{n \log \log n}/n^2 \to 0$. Thus, $g_1(n), g_2(n)$ and $g_3(n) \to 0$ as $n \to \infty$. {\color{orange} MA: Should we add a footnote here telling why $\phi(n)=o(\sqrt{n \log \log n})?$ It was earlier stated explicitly in Assumption-1 which is not Theorem-1.}
 
 \end{proof}
 % \begin{lemma} \label{lemma:pseudo_consis}
@@ -1185,16 +1163,16 @@ $b_n \psi^2(n)/n^2 \to 0$, $\psi^2(n)/n^2 \to 0$, ${b_n\psi(n)\sqrt{n\log \log n
 We have the following decomposition,
 \begin{align*}
 \tilde{\Sigma}^{ij}
-    % & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(X_{st} - \mu \right)_i  \left(X_{s(t + k)} - \mu \right)_j\\
-    & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(X_{st} \pm \bar{X}_s - \mu \right)_i  \left(X_{s(t + k)} \pm \bar{X}_s - \mu \right)_j\\
-    & = \hat{\Sigma}_{SV}^{ij} + \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i   \left(\bar{X}_s - \mu \right)_j + \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right]\\
-    & \quad + \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{X}_s - \mu \right)_i  \left(\bar{X}_s - \mu \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\\
+    % & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(X_{st} - \mu_g \right)_i  \left(X_{s(t + k)} - \mu_g \right)_j\\
+    & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(Y_{st} \pm \bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t + k)} \pm \bar{Y}_s - \mu_g \right)_j\\
+    & = \hat{\Sigma}_{SV}^{ij} + \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(Y_{st} - \bar{Y}_s \right)_i   \left(\bar{Y}_s - \mu_g \right)_j + \left(\bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t+k)} - \bar{Y}_s \right)_j\right]\\
+    & \quad + \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{Y}_s - \mu_g \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\\
     & = \hat{\Sigma}_{SV}^{ij} + N_1 + N_2 \,,
 \end{align*}
 where
 \begin{align*}
-N_1 & = \dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t=1}^{n-|k|}  \left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j + \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right]\\
-N_2 & = \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{X}_s - \mu \right)_i  \left(\bar{X}_s - \mu \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\,.
+N_1 & = \dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t=1}^{n-|k|}  \left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j + \left(\bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t+k)} - \bar{Y}_s \right)_j\right]\\
+N_2 & = \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{Y}_s - \mu_g \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\,.
 \end{align*}
 %
 Using the above and  Lemma~\ref{lemma:G-SVE_breakdown}, 
@@ -1202,29 +1180,29 @@ Using the above and  Lemma~\ref{lemma:G-SVE_breakdown},
 \left|\hat{\Sigma}_{G}^{ij} - \Sigma^{ij} \right| & = \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} + N_1 + N_2 + M_1 + M_2 \right|  \leq \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} \right| +  \left| N_1 \right| +  \left|N_2 \right| + \left| M_1 + M_2 \right| \numberthis \label{eq:G-SVE_full_decomp}
 \end{align*}
 %
-By Assumption~\ref{ass:sve_consis}, the first term goes to 0 with probability 1 and by Lemma~\ref{lemma:G-SVE_breakdown}, the third term goes to 0 with probability 1 as $n \to \infty$. It is left to show that $|N_1| \to 0$ and $|N_2| \to 0$ with probability 1
+By the strong consistency of single-chain SV estimator, the first term goes to 0 with probability 1 and by Lemma~\ref{lemma:G-SVE_breakdown}, the third term goes to 0 with probability 1 as $n \to \infty$. It is left to show that $|N_1| \to 0$ and $|N_2| \to 0$ with probability 1
 %
 \begin{align*}
-|N_1| & = \left|\dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t=1}^{n-|k|}  \left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j + \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right] \right|\\
-& \leq \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j \right] \right| \\ 
-& \quad + \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(\bar{X}_s - \mu \right)_i  \left(X_{s(t+k)} - \bar{X}_s \right)_j\right] \right|
+|N_1| & = \left|\dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t=1}^{n-|k|}  \left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j + \left(\bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t+k)} - \bar{Y}_s \right)_j\right] \right|\\
+& \leq \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right] \right| \\ 
+& \quad + \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(\bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t+k)} - \bar{Y}_s \right)_j\right] \right|
 \end{align*}
 %
 We will show that the first term goes to 0 and the proof for the second term is similar. Consider
 \begin{align*}
-    & \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j \right] \right| \\
-    % & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right)  \right|\dfrac{  \left| \left(\bar{X}_s - \mu \right)_j \right| }{n} \left[ \left|  \sum_{t=1}^{|k|} \left(\bar{X}_s - X_{st} \right)_i  \right| \right]\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left| w\left(\dfrac{k}{b_n}\right) \right| \dfrac{ \left|  \left(\bar{X}_s - \mu \right)_j \right| }{n} \left[ \left|\sum_{t=1}^{|k|} \left(\mu - X_{st} \right)_i \right| + \abs{k} \left|\left(\bar{X}_s - \mu \right)_i \right|\right]\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{X}_s - \mu\|_{\infty}}{n} \left\|\sum_{t=1}^{|k|} \left(\mu - X_{st} \right) + \abs{k} \left(\bar{X}_s - \mu \right)\right\|_{\infty}\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{X}_s - \mu\|_{\infty}}{n} \left(\left\|\sum_{t=1}^{|k|}  \left(X_{st} - \mu \right)\right\|_{\infty} + \abs{k}\|\bar{X}_s - \mu\|_{\infty} \right)\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\dfrac{\|\bar{X}_s - \mu\|_{\infty}}{n} \left\|\sum_{t=1}^{|k|} \left(X_{st} - \mu\right) \right\| + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n} \left \|\bar{X}_s - \mu \right \|_{\infty}^2\,.
+    & \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right] \right| \\
+    % & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right)  \right|\dfrac{  \left| \left(\bar{X}_s - \mu_g \right)_j \right| }{n} \left[ \left|  \sum_{t=1}^{|k|} \left(\bar{X}_s - X_{st} \right)_i  \right| \right]\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left| w\left(\dfrac{k}{b_n}\right) \right| \dfrac{ \left|  \left(\bar{Y}_s - \mu_g \right)_j \right| }{n} \left[ \left|\sum_{t=1}^{|k|} \left(\mu_g - Y_{st} \right)_i \right| + \abs{k} \left|\left(\bar{Y}_s - \mu_g \right)_i \right|\right]\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left\|\sum_{t=1}^{|k|} \left(\mu_g - Y_{st} \right) + \abs{k} \left(\bar{Y}_s - \mu_g \right)\right\|_{\infty}\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left(\left\|\sum_{t=1}^{|k|}  \left(Y_{st} - \mu_g \right)\right\|_{\infty} + \abs{k}\|\bar{Y}_s - \mu_g\|_{\infty} \right)\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left\|\sum_{t=1}^{|k|} \left(Y_{st} - \mu_g\right) \right\| + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n} \left \|\bar{Y}_s - \mu_g \right \|_{\infty}^2\,.
 \end{align*}
 
 Using SIP on the summation of $k$ terms,
 \begin{align*}
-    & \left|\dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(X_{st} - \bar{X}_s \right)_i  \left(\bar{X}_s - \mu \right)_j \right] \right|\\
-   &  < \dfrac{1}{m}\sum\limits_{s=1}^{m}\|\bar{X}_s - \mu\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{X}_s - \mu\|_{\infty}^2\\
-   &  < \dfrac{(2b_n-1)}{m}\sum\limits_{s=1}^{m}\|\bar{X}_s - \mu\|_{\infty}\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{X}_s - \mu\|_{\infty}^2 \\
+    & \left|\dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right] \right|\\
+   &  < \dfrac{1}{m}\sum\limits_{s=1}^{m}\|\bar{Y}_s - \mu_g\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{Y}_s - \mu_g\|_{\infty}^2\\
+   &  < \dfrac{(2b_n-1)}{m}\sum\limits_{s=1}^{m}\|\bar{Y}_s - \mu_g\|_{\infty}\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{Y}_s - \mu_g\|_{\infty}^2 \\
    &  \leq   \left(2b_n - 1 + \dfrac{b_n^2}{n} - \dfrac{b_n}{n}\right)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2  \to 0\,. \quad  \text{(by \eqref{eq:xbars_bound})}
 \end{align*}
 %
@@ -1242,10 +1220,10 @@ Similarly, the second part of $N_1 \to 0$ with probability 1.
 Following the steps in \eqref{eq:strong_consis_term-2}, 
 \begin{align*}
     |N_2| & \leq Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2  \to 0\,.
-    % \left|\dfrac{1}{m} \sum_{s=1}^{m} \left(\bar{X}_s - \mu \right)_i \left(\bar{X}_s - \mu \right)_j\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right|\\
-    % & < \dfrac{1}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2 \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
-    % & = \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2\, \dfrac{1}{b_n} \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
-    % & \leq \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu\|_{\infty}^2 \int_{-\infty}^{\infty} \abs{w(x)}dx\,.
+    % \left|\dfrac{1}{m} \sum_{s=1}^{m} \left(\bar{X}_s - \mu_g \right)_i \left(\bar{X}_s - \mu_g \right)_j\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right|\\
+    % & < \dfrac{1}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu_g\|_{\infty}^2 \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
+    % & = \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu_g\|_{\infty}^2\, \dfrac{1}{b_n} \sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\\
+    % & \leq \dfrac{b_n}{m}\sum_{s=1}^{m} \|\bar{X}_s - \mu_g\|_{\infty}^2 \int_{-\infty}^{\infty} \abs{w(x)}dx\,.
 \end{align*}
 Thus, in \eqref{eq:G-SVE_full_decomp}, every term goes to 0 and $\hat{\Sigma}_{G}^{ij} \to \Sigma^{ij}$ with probability 1 as $n \to \infty$. 
 \end{proof}
@@ -1255,28 +1233,29 @@ Thus, in \eqref{eq:G-SVE_full_decomp}, every term goes to 0 and $\hat{\Sigma}_{G
 % \begin{proof}[Proof of theorem \ref{th:G-SVE_bias}]
 % The convoluted end effect terms in theorem \ref{th:G-_expec} are all essentially $\mathcal{O}(1/n)$. We are interested in finding the asymptotic bias here. Therefore we can write the expectation of replicated autocovariance in form of 
 By Equation~\ref{eq:G-ACF_expec_breakdown},
-\begin{align*}
-\mathbb{E} \left[\hat{\Gamma}_{G}(k) \right]
-% &  = \left(1- \dfrac{|k|}{n}\right)\Gamma(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\overline{X}_1)}{m} \\
-& = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + \mathcal{O} \left(n^{-1} \right)  \numberthis \label{eq:G-_bias2}  \,.
-\end{align*}
+%\begin{align*}
+%\mathbb{E} \left[\hat{\Upsilon}_{G}(k) \right]
+% &  = \left(1- \dfrac{|k|}{n}\right)\Upsilon(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Upsilon(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Upsilon(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\bar{X}_1)}{m} \\
+% & = \left(1 - \dfrac{\abs{k}}{n}\right)\Upsilon(k) + \mathcal{O} \left(n^{-1} \right)  \numberthis \label{eq:G-_bias2}  \,.
+% \end{align*}
 %
-\begin{equation} \label{eq:G-_bias2}
-\mathbb{E} \left[\hat{\Gamma}_{G-}(k) \right] = \left(1 - \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2    \,.
-\end{equation}
+
+\[
+\mathbb{E} \left[\hat{\Upsilon}_{G}(k) \right] = \left(1 - \dfrac{\abs{k}}{n}\right)\Upsilon(k) + O_1 + O_2    \,.
+\]
 %
-where both $O_1 \textrm{ and } O_2$ are the small order terms. By our assumptions, $\sum_{h=-\infty}^{\infty}\Gamma(h) < \infty$, so $O_1 = n^{-1}\abs{k} \mathcal{O}(n^{-1}) \text{ and } O_2 = \mathcal{O}(n^{-1})$.  
+where both $O_1 \textrm{ and } O_2$ are the small order terms where $O_1 = n^{-1}\abs{k} \mathcal{O}(n^{-1}) \text{ and } O_2 = \mathcal{O}(n^{-1})$. By our assumptions, $\sum_{h=-\infty}^{\infty}\Upsilon(h) < \infty$.  
 Consider the G-SVE estimator,
 \begin{align*}
- \mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] & = \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Gamma}_{G}(k) \right] - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
-    &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\Gamma(k) + O_1 + O_2 \right]  - \sum_{k=-\infty}^{\infty}\Gamma(k)\\
-    &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k)\right]  - \sum_{k=-\infty}^{\infty}\Gamma(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)  (O_1 + O_2) \right] \\ 
+ \mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] & = \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Upsilon}_{G}(k) \right] - \sum_{k=-\infty}^{\infty}\Upsilon(k)\\
+    &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\Upsilon(k) + O_1 + O_2 \right]  - \sum_{k=-\infty}^{\infty}\Upsilon(k)\\
+    &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Upsilon(k)\right]  - \sum_{k=-\infty}^{\infty}\Upsilon(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)  (O_1 + O_2) \right] \\ 
     & = P_1 + P_2\,,
 \end{align*}
 %
 where 
 \begin{align*}
-    P_1 &= \sum\limits_{k=-n+1}^{n-1}\left[w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Gamma(k) \right] - \sum\limits_{k=-\infty}^{\infty}\Gamma(k) \textrm{ and }\\   
+    P_1 &= \sum\limits_{k=-n+1}^{n-1}\left[w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Upsilon(k) \right] - \sum\limits_{k=-\infty}^{\infty}\Upsilon(k) \textrm{ and }\\   
     P_2 &= \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k }{b_n}\right)\left(O_1 + O_2\right)\right]\,.
 \end{align*}
 
@@ -1284,33 +1263,33 @@ where
 Similar to \cite{hannan2009multiple}, we break $P_1$ into three parts. Note that notation $A = o(z)$ for matrix $A$  implies $A^{ij} = o(z)$ for every $(i,j)$th element of the matrix $A$. Consider,
 \begin{equation}
 \label{eq:P1_decomp}
-P_1 = -\sum_{|k|\geq n}\Gamma(k)  -  \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Gamma(k)- \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{n}\right)\right)\Gamma(k)\,.  
+P_1 = -\sum_{|k|\geq n}\Upsilon(k)  -  \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Upsilon(k)- \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{n}\right)\right)\Upsilon(k)\,.  
 \end{equation}
 %
 We deal with the three subterms of term $P_1$ individually. First,
 %    
 \begin{align*}
- {-\sum_{|k|\geq n}\Gamma(k)} &\leq  \sum_{|k|\geq n} \abs{\dfrac{k}{n}}^q   \Gamma(k) = \dfrac{1}{b_n^q}\abs{\dfrac{b_n}{n}}^q \sum_{|k|\geq n}|k|^q  \Gamma(k) = o\left(\dfrac{1}{b_n^q}\right)\,, \numberthis \label{eq:P1_first}
+ {-\sum_{|k|\geq n}\Upsilon(k)} &\leq  \sum_{|k|\geq n} \abs{\dfrac{k}{n}}^q   \Upsilon(k) = \dfrac{1}{b_n^q}\abs{\dfrac{b_n}{n}}^q \sum_{|k|\geq n}|k|^q  \Upsilon(k) = o\left(\dfrac{1}{b_n^q}\right)\,, \numberthis \label{eq:P1_first}
 \end{align*}
 %
-since $\sum_{|k|\geq n}|k|^q \Gamma(k)  < \infty$. Next,
+since $\sum_{|k|\geq n}|k|^q \Upsilon(k)  < \infty$. Next,
 %
 \begin{align*}
- \sum_{k = -n+1}^{n-1}w\left(\dfrac{k}{n}\right)\dfrac{|k|}{n}\Gamma(k)   &\leq \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Gamma(k)  \,.
+ \sum_{k = -n+1}^{n-1}w\left(\dfrac{k}{n}\right)\dfrac{|k|}{n}\Upsilon(k)   &\leq \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Upsilon(k)  \,.
 \end{align*}
 For $q\geq 1$,
 \begin{align*}
-\dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Gamma(k) &\leq \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|^q  \Gamma(k) = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n} C\sum_{k = -n+1}^{n-1}|k|^q  \Gamma(k)  = o\left(\dfrac{1}{b_n^q}\right)\,.
+\dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Upsilon(k) &\leq \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|^q  \Upsilon(k) = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n} C\sum_{k = -n+1}^{n-1}|k|^q  \Upsilon(k)  = o\left(\dfrac{1}{b_n^q}\right)\,.
 \end{align*}
           
 For $q <1$,
 \begin{align*}
-   \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Gamma(k)  &\leq C\sum_{k =-n+1}^{n-1}\abs{\dfrac{k}{n}}^q  \Gamma(k)  = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n^q} C \sum_{k =-n+1}^{n-1}|k|^q \Gamma(k)  = o\left(\dfrac{1}{b_n^q}\right) \, .
+   \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Upsilon(k)  &\leq C\sum_{k =-n+1}^{n-1}\abs{\dfrac{k}{n}}^q  \Upsilon(k)  = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n^q} C \sum_{k =-n+1}^{n-1}|k|^q \Upsilon(k)  = o\left(\dfrac{1}{b_n^q}\right) \, .
 \end{align*}
 So,
 \begin{equation}
 \label{eq:P1_second}
- \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Gamma(k) = o \left(\dfrac{1}{b_n^q} \right)
+ \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Upsilon(k) = o \left(\dfrac{1}{b_n^q} \right)
 \end{equation}
 Lastly, by our assumptions, for $x \to 0$
 \[
@@ -1319,11 +1298,11 @@ Lastly, by our assumptions, for $x \to 0$
 For $x = k/b_n$, $\abs{k/b_n}^{-q}(1-w(k/b_n))$ converges boundedly to $k_q$ for each $k$.
  % where $k_q$ is specific to the lag-window used. Taking the limiting value, we have
      % \[
-     % \lim_{n \to \infty}\sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{b_n}\right)\right)\Gamma(k) = -\dfrac{k_q \Phi^{(q)}}{b_n^q}
+     % \lim_{n \to \infty}\sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{b_n}\right)\right)\Upsilon(k) = -\dfrac{k_q \Phi^{(q)}}{b_n^q}
      % \]
 So,
 \begin{align*}
-     \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{k}{b_n}\right)\right)\Gamma(k) &= -\dfrac{1}{b_n^q}\sum_{k = -n+1}^{n-1}  \left(\dfrac{|k|}{b_n}\right)^{-q} {\left(1-w\left(\dfrac{|k|}{b_n}\right)\right)}|k|^q \Gamma(k) \\
+     \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{k}{b_n}\right)\right)\Upsilon(k) &= -\dfrac{1}{b_n^q}\sum_{k = -n+1}^{n-1}  \left(\dfrac{|k|}{b_n}\right)^{-q} {\left(1-w\left(\dfrac{|k|}{b_n}\right)\right)}|k|^q \Upsilon(k) \\
      & = -\dfrac{1}{b_n^q}\sum_{k = -n+1}^{n-1}   \left[k_q + o(1) \right]|k|^q \Gamma(k) \\
      & = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right) \numberthis \label{eq:P1_third}\,.
 \end{align*}
@@ -1344,7 +1323,7 @@ Using \eqref{eq:P1_first}, \eqref{eq:P1_second}, and \eqref{eq:P1_third} in \eqr
 \]
 which completes the result.
 %
- % We have shown that all, but one, terms are $o(1/b_n^q)$. Therefore, the limiting value of $b_n^q\mathbb{E}[\hat{\Sigma}_{G-} - \Sigma]$ is proved to be same as that of $b_n^q\mathbb{E}[\tilde{\Sigma} - \Sigma]$ in \cite{hannan2009multiple} with some extra $o(1)$ terms. This is quite intuitive as we are using a strongly consistent estimator $\bar{\bar{X}}$ for $\mu$ in our replicated autovariance estimator. Similar to theorem \ref{th:G-_expec}, the effect of estimating $\mu$ contributes only $o(1)$ terms. 
+ % We have shown that all, but one, terms are $o(1/b_n^q)$. Therefore, the limiting value of $b_n^q\mathbb{E}[\hat{\Sigma}_{G-} - \Sigma]$ is proved to be same as that of $b_n^q\mathbb{E}[\tilde{\Sigma} - \Sigma]$ in \cite{hannan2009multiple} with some extra $o(1)$ terms. This is quite intuitive as we are using a strongly consistent estimator $\bar{\bar{X}}$ for $\mu_g$ in our replicated autovariance estimator. Similar to theorem \ref{th:G-_expec}, the effect of estimating $\mu_g$ contributes only $o(1)$ terms. 
 % \end{proof}
 
 \subsection{Proof of Theorem~\ref{th:G-SVE_variance}}
@@ -1366,15 +1345,15 @@ Further, we have defined $g_1(n), g_2(n), g_3(n)$ such that as $n \to \infty$,
 We have shown from the proof of strong consistency that,
 \begin{align*}
  &\left| \hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right|\\
- & \leq \dfrac{1}{m} \sum_{s=1}^m \left| \sum_{k=-b_n+1}^{b_n-1} w \left(\dfrac{k}{b_n} \right) \sum_{t=1}^{n-|k|}   \left[ \left( \dfrac{(X_{st} - \mu)_i(\mu-\bar{\bar{X}})_j}{n}\right)+ \left(\dfrac{(\mu-\bar{\bar{X}})_i(X_{s(t+k)}-\mu)_j}{n}\right) \right] \right.\\
-& \quad \quad  \left. + (\mu-\bar{\bar{X}})(\mu-\bar{\bar{X}})^T\sum_{k=-b_n+1}^{b_n-1}\left(\dfrac{n-|k|}{n}\right)w\left(\dfrac{k}{n}\right) \right|  < D^2g_1(n) + Dg_2(n) + g_3(n)\,.
+ & \leq \dfrac{1}{m} \sum_{s=1}^m \left| \sum_{k=-b_n+1}^{b_n-1} w \left(\dfrac{k}{b_n} \right) \sum_{t=1}^{n-|k|}   \left[ \left( \dfrac{(Y_{st} - \mu_g)_i(\mu_g-\bar{\bar{Y}})_j}{n}\right)+ \left(\dfrac{(\mu_g-\bar{\bar{Y}})_i(Y_{s(t+k)}-\mu_g)_j}{n}\right) \right] \right.\\
+& \quad \quad  \left. + (\mu_g-\bar{\bar{Y}})(\mu_g-\bar{\bar{Y}})^T\sum_{k=-b_n+1}^{b_n-1}\left(\dfrac{n-|k|}{n}\right)w\left(\dfrac{k}{n}\right) \right|  < D^2g_1(n) + Dg_2(n) + g_3(n)\,.
 \end{align*}
 
 By \eqref{eq:G-SVE_asv_consis}, there exists an $N_0$ such that
 \begin{align*}
 \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 &= \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) + \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(n > N_0)\\
 & \leq \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) +  \left(D^2g_1(n) + Dg_2(n) + g_3(n) \right)^2 I(n > N_0)\\
-& := g_n^*(X_{11}, \dots, X_{1n}, \dots, X_{m1}, \dots, X_{mn})\,.
+& := g_n^*(X_{11}, \dots, Y_{1n}, \dots, Y_{m1}, \dots, Y_{mn})\,.
 \end{align*}
 But since by assumption $\E D^4 <\infty$ and the fourth moment is finite,
 \[
@@ -1417,30 +1396,50 @@ Plugging (\ref{eq:hannan_var}) into variance of $\hat{\Sigma}_{G}$ gives the res
 % \end{proof}
 
 \section{Additional Examples}
-We present two additional examples illustrating the difference between the ACF and G-ACF plots.
+We present two additional real-world examples to illustrate the advantage of global autocorrelation estimator using ACF plots. For both the examples, we use a pre-established Markov chain structure and implement our estimator on the Markov chains obtained.
 % We have established that estimating autocovariance is crucial to estimate the Markov chain standard error.  In this section we will use two real-life datsets to exemplify the better performance of our replicated autocovariance estimator for multiple Markov chains. R packages already exist to create Markov chains for these examples. However, when these chains are started from different points, we will observe that they do not represent the target distribution well for finite samples. The traditional empirical ACF estimator fails in these cases, whereas our estimator shows promising results. We will not engage into full error analysis for these examples due to computational restrictions posed by high dimensional sample space. 
 \subsection{Bayesian Poisson Change Point Model}
 
 % \cite{pollins1996global} theorizes a cyclical pattern in the number of international conflicts. Four core theories by \cite{gilpin1981war}, \cite{wallerstein1983three}, \cite{goldstein1988long}, and \cite{modelski1988seapower} put different weights on the role of global economic and political order in explaining this cyclical pattern. See \cite{martin2011mcmcpack} for detailed discussion on the effect of these theories on the cyclic behavior of international disputes.\\
 
-Consider the militarized interstate dispute (MID) data of \cite{martin2011mcmcpack} which describes the annual number of military conflicts in the United States. In order to detect the number and timings of the cyclic phases in international conflicts, we fit the following Bayesian Poisson change-point model:
-% The Poisson change-point model in \texttt{MCMCpoissonChange} uses conjugate priors and can be written as:
+Consider the militarized interstate dispute (MID) data of \cite{martin2011mcmcpack} which describes the annual number of military conflicts in the United States. In order to detect the number and timings of the cyclic phases in international conflicts, we fit a Bayesian Poisson change-point model. Following \cite{martin2011mcmcpack}, we will use \texttt{MCMCpoissonChange} from \texttt{MCMCpack} to fit the model with six change-points which samples the latent states based on the algorithm in \cite{chib1998estimation}. The Poisson change-point model in \texttt{MCMCpoissonChange} uses conjugate priors and is the following:
 %
 \begin{align*}
     y_t &\sim \text{Poisson}(\lambda_i), \qquad i = 1, ..., k\\
     \lambda_i &\sim \text{Gamma}(c_o, d_o), \qquad i = 1,..., k\\
     p_{ii} &\sim \text{Beta}(\alpha, \beta), \qquad i = 1,..., k
 \end{align*}
-Following \cite{martin2011mcmcpack}, we will use \texttt{MCMCpoissonChange} from \texttt{MCMCpack} to fit the model with $k = 7$ which samples the latent states based on the algorithm in \cite{chib1998estimation}. 
+
 % The results of model comparison by \cite{martin2011mcmcpack} showed that the ratio of maximum likelihood for six change-point model is favored over the alternatives. We will use this information and present the ACF results for a six change-points model only. We will use the hyperparameters values $c_o = 13 \textrm{ and } d_o = 1$ because the mean of MID is around 13. \\
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width = 0.55\textwidth]{plots/spatio-acf.pdf}
-    \caption{ACF and G-ACF for the first component of the first chain.}
-    \label{fig:spatio-acf_G-fl}
+    \includegraphics[width = 0.9\textwidth]{plots/poisson-trace_n1e+05.pdf}
+    \caption{Trace plot for second (left) and third (right) component of two chains started from random points.The two colors denote the two different chains.}
+    \label{fig:poisson-trace}
 \end{figure}
-We run two parallel Markov chains from randomly chosen starting points and present the resulting ACF and G-ACF in Figure \ref{fig:spatio-acf_G-fl}. The early G-ACF estimates are far closer to the G-ACF and ACF estimates at $10^5$.
+
+This is a 7-dimensional estimation problem wherein the marginal distribution of majority of components display a multimodal nature. Figure~\ref{fig:poisson-trace} shows the evolution of two chains started from random points with time for the second component. We will report the ACF plots for component-2. Similar behavior is observed for ACF plots of other components as well.\\
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[h]{.8\textwidth}
+      \centering
+      \includegraphics[width = \textwidth]{plots/poisson-acf_n1000.pdf}
+      \caption{$n = 1000$}
+      \label{subfig:poisson-acf_n1e3}
+    \end{subfigure}
+    \begin{subfigure}[h]{.8\textwidth}
+      \centering
+      \includegraphics[width = \textwidth]{plots/poisson-acf_n10000.pdf}
+      \caption{$n = 10000$}
+      \label{subfig:poisson-acf_n1e4}
+    \end{subfigure}
+    \caption{Poisson change point. ACF (left) and G-ACF (right) for individual chains and average over $m$ chains for two chain lengths.}
+    \label{fig:poisson-acf}
+\end{figure}
+
+Figure~\ref{fig:poisson-acf} demonstrates a striking advantage of G-ACF in estimating the true autocorrelations. G-ACF gives a more realistic and accurate estimation of autocorrelations in almost ten times lesser chain length.
 
  % it is evident that the chains have not explored the sample space well. Hence for $10^3$ samples ACF severely underestimates the autocorrelations whereas G-ACF gives more realistic estimates. For a large sample size of $10^5$, the Markov chains have mixed properly and therefore, both the estimators are approximately alike.
 
@@ -1448,9 +1447,27 @@ We run two parallel Markov chains from randomly chosen starting points and prese
 
 % \cite{handcock2008statnet} implemented an exponential-family random graph modelling (ERGM) on network data in the package . 
 
-The \texttt{faux.magnolia.high} dataset available in the \texttt{ergm} \texttt{R} package represents a simulated within school friendship network based on Ad-Health data (\cite{resnick1997protecting}). The school communities represented by the network data are located in the southern United States. Each node represents a student and each edge represents a friendship between the nodes it connects. 
+The \texttt{faux.magnolia.high} dataset available in the \texttt{ergm} \texttt{R} package represents a simulated within school friendship network based on Ad-Health data (\cite{resnick1997protecting}). The school communities represented by the network data are located in the southern United States. Each node represents a student and each edge represents a friendship between the nodes it connects.
 
-The goal is to draw each node uniformly from the network by using a network crawler. \cite{nilakanta2019ensuring} modified the data by removing 1,022 out of 1,461 nodes to obtain a well-connected graph. This resulting social network has 439 nodes and 573 edges. We use a Metropolis-Hastings algorithm with a simple random-walk  proposal suggested by \cite{gjoka2011practical}. The stationary distribution for this algorithm is a uniform distribution over the nodes. 
+The goal is to draw nodes uniformly from the network by using a network crawler. \cite{nilakanta2019ensuring} modified the data by removing 1,022 out of 1,461 nodes to obtain a well-connected graph. This resulting social network has 439 nodes and 573 edges. We use a Metropolis-Hastings algorithm with a simple random-walk  proposal suggested by \cite{gjoka2011practical}. Each node is associated with five features namely - degree of connection, cluster coefficient, grade, binary sex indicator (1 for female, 0 for male), and binary race indicator (1 for white, 0 for others).\\
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[h]{.8\textwidth}
+      \centering
+      \includegraphics[width = \textwidth]{plots/magnolia-acf_n100.pdf}
+      \caption{$n = 100$}
+      \label{subfig:magnolia-acf_n1e3}
+    \end{subfigure}
+    \begin{subfigure}[h]{.8\textwidth}
+      \centering
+      \includegraphics[width = \textwidth]{plots/magnolia-acf_n1000.pdf}
+      \caption{$n = 1000$}
+      \label{subfig:magnolia-acf_n1e4}
+    \end{subfigure}
+    \caption{Network crawling. ACF (left) and G-ACF (right) for individual chains and average over $m$ chains for two chain lengths.}
+    \label{fig:magnolia-acf}
+\end{figure}
 % , i.e. $\lambda(i) = 1/n$ for all $i \in V$.  The Metropolis-Hastings transition kernel for this method is
 
 % Let $V$ denote the non-empty set of countable nodes, $E \subseteq V \times V$ denote the set of edges, and $G = (V,E)$ denote the network. We are interested in exploring all the nodes uniformly, i.e. sample from a uniform distribution over $V$. Let $\lambda$ denote a uniform distribution over $V$  let $h: V \to \mathbb{R}^p$ map each node to certain features of interest. If $X \sim \lambda$, we wish to calculate the expected value of $h(X)$ with respect to $\lambda$ given by
@@ -1471,9 +1488,10 @@ The goal is to draw each node uniformly from the network by using a network craw
 %         \end{cases}
 % \]
 
-% Table (blah) shows the population parameters we are interested in estimating using MCMC methods.  The G-e and sex parameters are estimated as proportion of whites and females in the sample respectively. 
+% Table (blah) shows the population parameters we are interested in estimating using MCMC methods.  The race and sex parameters are estimated as proportion of whites and females in the sample respectively. 
 
-We start two parallel Markov chains from two students belonging to different {\color{red}G-es ???} and study its impacts on the average features of their immediate social group. 
+We believe that the students from different races engage in a "selective networking" which might cause formation of clusters in the network wherein students within a cluster engage more with each other than with the students outside it. We sample two parallel Markov chains starting from two students belonging to different races and study its impacts on the average features of their immediate social group. Figure~\ref{fig:magnolia-acf} shows the ACF and G-ACF plots for the third feature at two different simulation sizes. As evident, G-ACF displays a clear advantage over ACF in just $n=100$ samples.
+
 % It is hypothesized that students from certain communities tend to engage more with students of same or other marginally represented communities. We believe that this "selective networking" might cause formation of clusters in the network wherein students within a cluster engage more with each other than with the students outside it. Given that the graph is well-connected, the Markov chains will eventually explore all the nodes. 
 
 

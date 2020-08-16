@@ -16,11 +16,6 @@ Andrews, D.~W. (1991).
   estimation.
 \newblock {\em Econometrica}, 59:817--858.
 
-\bibitem[Box et~al., 2015]{box2015time}
-Box, G.~E., Jenkins, G.~M., Reinsel, G.~C., and Ljung, G.~M. (2015).
-\newblock {\em Time series analysis: forecasting and control}.
-\newblock John Wiley \& Sons.
-
 \bibitem[Chen and Seila, 1987]{chen:seila:1987}
 Chen, D.-F.~R. and Seila, A.~F. (1987).
 \newblock Multivariate inference in stationary simulation using batch means.
@@ -36,6 +31,12 @@ Chib, S. (1998).
 Cs{\"o}rgo, M. and R{\'e}v{\'e}sz, P. (2014).
 \newblock {\em Strong approximations in probability and statistics}.
 \newblock Academic Press.
+
+\bibitem[Dai and Jones, 2017]{dai:jon:2017}
+Dai, N. and Jones, G.~L. (2017).
+\newblock Multivariate initial sequence estimators in {M}arkov chain {M}onte
+  {C}arlo.
+\newblock {\em Journal of Multivariate Analysis}, 159:184--199.
 
 \bibitem[Damerdji, 1991]{dame:1991}
 Damerdji, H. (1991).
@@ -117,20 +118,10 @@ Kuelbs, J. (1976).
   variables.
 \newblock {\em The Annals of Probability}, 4:744--771.
 
-\bibitem[Lan et~al., 2014]{lan2014wormhole}
-Lan, S., Streets, J., and Shahbaba, B. (2014).
-\newblock Wormhole hamiltonian monte carlo.
-\newblock In {\em AAAI}, pages 1953--1959.
-
 \bibitem[Liu and Flegal, 2018]{liu:fleg:2018}
 Liu, Y. and Flegal, J.~M. (2018).
 \newblock Weighted batch means estimators in {M}arkov chain {M}onte {C}arlo.
 \newblock {\em Electronic Journal of Statistics}, 12:3397--3442.
-
-\bibitem[Ma and Genton, 2000]{ma2000highly}
-Ma, Y. and Genton, M.~G. (2000).
-\newblock Highly robust estimation of the autocovariance function.
-\newblock {\em Journal of time series analysis}, 21(6):663--684.
 
 \bibitem[Martin et~al., 2011]{martin2011mcmcpack}
 Martin, A.~D., Quinn, K.~M., and Park, J.~H. (2011).
@@ -151,12 +142,6 @@ Priestley, M.~B. (1981).
 \newblock {\em Spectral analysis and time series: probability and mathematical
   statistics}.
 \newblock Number 04; QA280, P7.
-
-\bibitem[Quenouille, 1947]{quenouille1947notes}
-Quenouille, M.~H. (1947).
-\newblock Notes on the calculation of autocorrelations of linear autoregressive
-  schemes.
-\newblock {\em Biometrika}, 34(3/4):365--367.
 
 \bibitem[Resnick et~al., 1997]{resnick1997protecting}
 Resnick, M.~D., Bearman, P.~S., Blum, R.~W., Bauman, K.~E., Harris, K.~M.,
@@ -186,6 +171,11 @@ Tjøstheim, D. (1990).
 \newblock Non-linear time series and markov chains.
 \newblock {\em Advances in Applied Probability}, 22(3):587--611.
 
+\bibitem[Vats and Flegal, 2018]{vats2018lugsail}
+Vats, D. and Flegal, J.~M. (2018).
+\newblock Lugsail lag windows and their application to mcmc.
+\newblock {\em arXiv preprint arXiv:1809.04541}.
+
 \bibitem[Vats et~al., 2018]{vats:fleg:jon:2018}
 Vats, D., Flegal, J.~M., and Jones, G.~L. (2018).
 \newblock Strong consistency of multivariate spectral variance estimators in
@@ -208,7 +198,7 @@ Vats, D., Robertson, N., Flegal, J.~M., and Jones, G.~L. (2020).
 \newblock {\em Wiley Interdisciplinary Reviews: Computational Statistics},
   12:e1501.
 
-\bibitem[Wilks, 1932]{wilks1932certain}
+\bibitem[Wilks, 1932]{wilks:1932}
 Wilks, S.~S. (1932).
 \newblock Certain generalizations in the analysis of variance.
 \newblock {\em Biometrika}, pages 471--494.

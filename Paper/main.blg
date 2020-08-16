@@ -15,45 +15,45 @@ Warning--empty journal in hannan:1970
 Warning--empty journal in martin2011mcmcpack
 Warning--there's a number but no series in priestley1981spectral
 Warning--empty publisher in priestley1981spectral
-You've used 40 entries,
+You've used 38 entries,
             1935 wiz_defined-function locations,
-            728 strings with 10267 characters,
-and the built_in function-call counts, 15796 in all, are:
-= -- 1571
-> -- 582
-< -- 31
-+ -- 205
-- -- 190
-* -- 1314
-:= -- 2720
-add.period$ -- 119
-call.type$ -- 40
-change.case$ -- 287
-chr.to.int$ -- 39
-cite$ -- 44
-duplicate$ -- 605
-empty$ -- 1135
-format.name$ -- 254
-if$ -- 3093
+            714 strings with 10013 characters,
+and the built_in function-call counts, 14782 in all, are:
+= -- 1469
+> -- 547
+< -- 30
++ -- 193
+- -- 178
+* -- 1231
+:= -- 2563
+add.period$ -- 113
+call.type$ -- 38
+change.case$ -- 272
+chr.to.int$ -- 37
+cite$ -- 42
+duplicate$ -- 561
+empty$ -- 1056
+format.name$ -- 242
+if$ -- 2880
 int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 47
-newline$ -- 201
-num.names$ -- 120
-pop$ -- 252
+missing$ -- 44
+newline$ -- 191
+num.names$ -- 114
+pop$ -- 231
 preamble$ -- 1
-purify$ -- 294
+purify$ -- 278
 quote$ -- 0
-skip$ -- 468
+skip$ -- 435
 stack$ -- 0
-substring$ -- 1221
-swap$ -- 78
-text.length$ -- 6
+substring$ -- 1132
+swap$ -- 65
+text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 226
+type$ -- 216
 warning$ -- 4
-while$ -- 137
+while$ -- 128
 width$ -- 0
-write$ -- 510
+write$ -- 484
 (There were 2 error messages)
