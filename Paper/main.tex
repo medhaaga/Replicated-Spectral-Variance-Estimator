@@ -14,6 +14,7 @@
 \usepackage{subcaption}
 \DeclareMathOperator{\Tr}{Tr}
 \newcommand{\dd}[1]{\mathrm{d}#1}
+\newcommand{\ds}{\displaystyle}
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\Var}{\text{Var}}
 \newcommand{\Cov}{\text{Cov}}
@@ -135,13 +136,14 @@ The process is covariance stationary so that
 the ACvF at lag $k$ depends only on $k$ and is defined as 
 %
 \[
-    \Upsilon(k) = \Cov_F(X_{s1}, X_{s\,1+k})= \mathbb{E}_F \left[(X_{s1} - \mu)(X_{s\,1+k} - \mu)^T \right]\,.
+    \Gamma(k) = \Cov_F(X_{s1}, X_{s\,1+k})= \mathbb{E}_F \left[(X_{s1} - \mu)(X_{s\,1+k} - \mu)^T \right]\,.
 \]
 Estimating $\Gamma(k)$ is critical to assessing the quality of the sampler and the quality of sample statistics. Let $\bar{X}_s = n^{-1} \sum_{t=1}^{n} X_{st}$ denote the Monte Carlo estimator of $\mu$ from the $s$th chain. The standard estimator for $\Gamma(k)$ is the sample autocovariance matrix at lag $k$. For the $s$th chain, it is given by
 %
 \begin{equation} \label{eq:empirical_ACvF}
     \hat{\Gamma}_s(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}} \left(X_{st} - \bar{X}_s \right) \left(X_{s\, t+\abs{k}} - \bar{X}_s \right)^T\,.
 \end{equation}
+{\color{red} We need to figure out how we want to define autocovariance: with or without absolute value.}
 %
 % It is a known fact that most of the Markov chains obtained from practical MCMC algorithms are not stationary. Regardless, Equation~\ref{eq:empirical_ACvF} provides the empirical estimator for ACF at a particular lag for the Markov chain with any initial distribution (\cite{geyer2011introduction}).\\
 
@@ -283,17 +285,14 @@ The averaged estimators present a measure of the overall correlation structure i
 \section{Variance estimators for multiple Markov chains} \label{sec:variance_est}
 
 A critical use of autocovariances is in the assessment of Monte Carlo variability of estimators.  Let $g:\X \longrightarrow \mathbb{R}^p$ be an $F$-integrable function so that interest is in estimating
-%
-\[
-\mu_g = \mathbb{E}_F[g(X)] = \int_{\X}g(x)F(dx)\;.
-\]
- 
+$\mu_g = \mathbb{E}_F[g(X)]$.
+% \[
+% \mu_g = \mathbb{E}_F[g(X)] = \int_{\X}g(x)F(dx)\;.
+% \]
+ % 
 Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for all $s = 1, \dots, m$. Let $\bar{Y}_s = n^{-1}\sum_{t=1}^{n}Y_{st}$  and  $\bar{\bar{Y}} = m^{-1}\sum_{s=1}^{m}\bar{Y}_s$. By Birkhoff's ergodic theorem,  $\bar{\bar{Y}} \to \mu_g$ as $n \to \infty$ with probability 1.
 
-Reliability of $\bar{\bar{Y}}$ is assessed by its Monte Carlo variability via an asymptotic sampling distribution \citep{fleg:hara:jone:2008,roy:2019,vats:rob:fle:jon:2020}. 
-% To assess the reliability of simulations, we are interested in Monte Carlo error, i.e. $\bar{Y_s} - \mu$ for the $s^{th}$ chain. 
-% The sampling distribution for Monte Carlo error is available via Markov chain CLT (\cite{jones2004markov})
- A Markov chain central limit theorem (CLT) holds if there exists a $p \times p$ positive-definite matrix $\Sigma$ such that
+An asymptotic sampling distribution may be available via a Markov chain central limit theorem (CLT) if there exists a $p \times p$ positive-definite matrix $\Sigma$ such that
 %
 \begin{equation}
 \label{eq:CLT}
@@ -305,19 +304,23 @@ where
   \Sigma = \sum_{k = -\infty}^{\infty} \Cov_F \left( Y_{11}, Y_{1(1+k)} \right) := \sum_{k = -\infty}^{\infty}\Upsilon (k)
 \end{equation}
 %
-The goal in output analysis for MCMC is to estimate $\Sigma$ in order to assess variability in $\bar{\bar{Y}}$. There is a rich literature on estimators of $\Sigma$ available for single-chain MCMC implementations. The most common are spectral variance estimators (SVE) \citep{andr:1991,vats:fleg:jon:2018} and batch means estimators \citep{chen:seila:1987,vats:fleg:jon:2019}. Recently, \cite{gupta:vats:2020} constructed a replicated batch means estimator for estimating $\Sigma$ from multiple parallel chains. Batch means estimators are computationally more efficient than SVE, whereas SVE estimators are more reliable \citep{fleg:jone:2010}. Here, we utilize G-ACvF estimators to construct globally-centered SV estimator (G-SVE) of $\Sigma$. Using the methods of \cite{heberle2017fast}, we also provide an efficient algorithm for obtaining the G-SV estimator. 
+The goal in output analysis for MCMC is to estimate $\Sigma$ in order to assess variability in $\bar{\bar{Y}}$ \citep{fleg:hara:jone:2008,roy:2019,vats:rob:fle:jon:2020}. There is a rich literature on estimating $\Sigma$ for single-chain MCMC implementations. The most common are spectral variance (SV) estimators \citep{andr:1991,vats:fleg:jon:2018} and batch means estimators \citep{chen:seila:1987,vats:fleg:jon:2019}. Recently, \cite{gupta:vats:2020} constructed a replicated batch means estimator for estimating $\Sigma$ from parallel chains. Batch means estimators are computationally more efficient than SV estimators, whereas SV estimators are more reliable \citep{fleg:jone:2010}. Here, we utilize G-ACvF estimators to construct globally-centered SV estimator (G-SVE) of $\Sigma$. Using the methods of \cite{heberle2017fast}, we also provide an efficient algorithm for obtaining the G-SV estimator. 
 
-SV estimators are constructed as weighted and truncated sums of estimated lag covariances. The locally and globally centered empirical estimators for $\Upsilon(k)$, $\hat{\Upsilon}_s(k)$ and $\hat{\Upsilon}_{G,s}(k)$, can be defined in a similar way as $\hat{\Gamma}_s$ and $\hat{\Gamma}_{G,s}$ in Equation~\ref{eq:empirical_ACvF},\ref{eq:G-ACvF} for the Markov chain $\{Y_{st}\}_{t \geq 1}$ for all $s$. Let $w: \mathbb{R} \to [-c,c]$ be a lag window function and $b_n \in \mathbb{N}$ be a truncation point. The SV estimator of $\Sigma$ from a single chain is
+The locally and globally centered  estimators for $\Upsilon(k)$ are $\hat{\Upsilon}_s(k)$ and $\hat{\Upsilon}_{G,s}(k)$, respectively, where
+\[
+\hat{\Upsilon}_s(k) = \dfrac{1}{n} \ds \sum_{t=1}^{n - |k|} (Y_{st} - \bar{Y}_s)(Y_{s\,t+k} - \bar{Y}_s)^T \quad \text{ and } \quad \hat{\Upsilon}_{G,s}(k) = \dfrac{1}{n} \ds \sum_{t=1}^{n - |k|} (Y_{st} - \bar{\bar{Y}})(Y_{s\,t+k} - \bar{\bar{Y}})^T\,,
+\] 
+and let $\hat{\Upsilon}_G(k) = m^{-1} \sum_{k=1}^{m}\hat{\Upsilon}_{G,s}(k)$. SV estimators are constructed as weighted and truncated sums of estimated lag covariances. For some $c \geq 1$, let $w: \mathbb{R} \to [-c,c]$ be a lag window function and $b_n \in \mathbb{N}$ be a bandwidth. The SV estimator of $\Sigma$ for chain $s$ is
 %
-
+%
 \begin{equation} \label{eq:sve}
-    \hat{\Sigma}_{s} = \sum_{k=-n+1}^{n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Upsilon}_s(k)
+    \hat{\Sigma}_{s} = \sum_{k=-n+1}^{n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Upsilon}_s(k)\,.
 \end{equation}
-
-An overall estimate of $\Sigma$ from all $m$ chains is the average SV estimator (ASV):
+Large-sample properties of $\hat{\Sigma}_s$ have been studied widely. \cite{vats:fleg:jon:2018} provided conditions for strong consistency while \cite{fleg:jone:2010,vats:flegal:2018} provided large-sample bias and variance results. These results also extend naturally to an average SV (ASV) estimator
 \[
 \hat{\Sigma}_A = \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{s}\;.
 \]
+
 %  We propose a globally-centered spectral variance estimator (G-SVE) wherein we use G-ACF to estimate the autocovariance. Strong consistency for MSVE has been addressed by \cite{vats:fleg:jon:2018}. Bias and variance calculations for a variant of SVE with known mean is done by \cite{hannan2009multiple}. In this paper, we will address the asymptotic properties (strong consistency), bias and variance calculations for G-SVE. 
 
 \subsection{Globally-centered spectral variance estimators} % (fold)
@@ -325,45 +328,33 @@ An overall estimate of $\Sigma$ from all $m$ chains is the average SV estimator 
 
 % subsection globally_centered_spectral_variance_estimators (end)
 
-% Recall from Equation \ref{eq:empirical_ACvF} that $\hat{\Gamma}(k)$ is the empirical autocovariance function given by 
-
-% \begin{equation}
-%     \hat{\Gamma}(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}}(X_t - \bar{X})(X_{t + \abs{k}} - \bar{X})^T
-% \end{equation}
-
-We define the globally-centered SV estimator as the weighted and truncated sum of G-ACvFs
-%
-% Consider $m$ Markov chains where $\hat{\Gamma}_s(k)$, $\hat{\Gamma}_{G,s}(k)$ and $\hat{\Sigma}_{S, s}$ are the lag-$k$ empirical ACF, G-ACF, and SVE respectively for $s^{th}$ Markov chain, $s\in {1,...,m}$. 
-% Consider the globally-centered SV estimator (G-SVE) for the $s$th chain using G-ACF:
+We define the G-SV estimator as the weighted and truncated sum of G-ACvFs
 %
 \begin{align*}
-    \hat{\Sigma}_{G} &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Upsilon}_{G}(k)\,.
+    \hat{\Sigma}_{G} &= \sum_{k=-n+1}^{n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Upsilon}_{G}(k)\,.
 \end{align*}
-% and the combined G-SVE is
-% \[
-% \hat{\Sigma}_{G} =  \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{G,s}\,.
-% \]
-For $\hat{\Sigma}_{G}$ to accurately estimate $\Sigma$, conditions need to be imposed on the weight function, $w$. 
+%
+To accurately estimate $\Sigma$, standard conditions are imposed on the lag window, $w$. 
 %
 
 \begin{ass}
 \label{ass:lag_window}
-The lag window $w(x)$ is a continuous at $0$ and at all but finite number of points. It is bounded and even function with $w(0)=1, \; \abs{w(x)} < c$, \; $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $W = \sum_{k = -\infty}^{\infty} w(k/b_n)$ is finite.
+The lag window $w(x)$ is continuous at $0$ at all but finite number of points. Further, $w(x)$ is a bounded and even function with $w(0)=1, \; {\color{red}\abs{w(x)} < c}$, \; $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $W = \sum_{k = -\infty}^{\infty} w(k/b_n)$ is finite.
 \end{ass}
 % We will consider a range of lag windows $w(x)$; where $w(x)$ is a continuous, even function with $w(0)=1, \abs{w(x)} < c$, $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $W_n < \infty$. 
-Assumption~\ref{ass:lag_window} is standard \citep[see]{ande:1971} and is satisfied by most lag windows. We will use the popular Bartlett lag window in our simulations. The function $w(.)$ is given by
+Assumption~\ref{ass:lag_window} is standard \citep[see]{ande:1971} and is satisfied by most lag windows. We will use the following popular Bartlett lag window in our simulations:
 \[
 w(x) = \begin{cases}
-\left(1 - \abs{x}\right) & \textrm{for } \abs{x} \leq 1 \\
+1 - \abs{x} & \textrm{for } \abs{x} \leq 1 \\
 0 & \textrm{otherwise}\,.
 \end{cases}
 \]
 
-In relation to lag window, we are interested in $w(k/b_n)$ for lag-$k$. Therefore, zero weightage is given to autocovariances for lag greater than the truncation point $b_n$. This is true for Bartlett but not true for the quadratic spectral lag window in \cite{andr:1991} for example.
+% In relation to lag window, we are interested in $w(k/b_n)$ for lag-$k$. Therefore, zero weightage is given to autocovariances for lag greater than the bandwidth $b_n$. This is true for Bartlett but not true for the quadratic spectral lag window in \cite{andr:1991} for example.
 
 \subsubsection{Theoretical results} \label{sec:G-SVE}
 
-We will present three main results for the G-SV estimator. First, we provide conditions for strong consistency. Strong consistency is particularly important to demonstrate for MCMC as it is required to ensure sequential stopping rules yield correct coverage at termination \citep{glyn:whit:1992}. A critical assumption is that of a strong invariance principle below. Let $B(n)$ denotes a standard $p$-dimensional Brownian motion.
+We will present three main results for the G-SV estimator. First, we provide conditions for strong consistency. Strong consistency is particularly important to ensure sequential stopping rules yield correct coverage at termination \citep{glyn:whit:1992}. A critical assumption is that of a strong invariance principle which the following theorem establishes. Let $B(n)$ denotes a standard $p$-dimensional Brownian motion.
 
 
 \begin{theorem}[\cite{kuel:1976,vats:fleg:jon:2018}]
@@ -384,61 +375,34 @@ Let $\E_F\|Y_{11}\|^{2+ \delta} < \infty$ for $\delta > 0$ and let $P$ be a poly
 
 \begin{theorem}
 \label{th:consistency}
- Let the assumptions of Theorem~\ref{thm:kuelbs} hold with $q = 1$. If $\hat{\Sigma}_{SV,s} \xrightarrow{a.s.} \Sigma$ for all $s$, and $n^{-1}{b_n \log \log n} \to 0 \textrm{ as } n \to \infty$, then $\hat{\Sigma}_{G} \to \Sigma$ with probability 1, as $n \to \infty$.
+ Let the assumptions of Theorem~\ref{thm:kuelbs} hold with $q = 1$. If $\hat{\Sigma}_{s} \xrightarrow{a.s.} \Sigma$ for all $s$, and $n^{-1}{b_n \log \log n} \to 0 \textrm{ as } n \to \infty$, then $\hat{\Sigma}_{G} \overset{a.s.}{\to} \Sigma$ as $n \to \infty$.
 \end{theorem} 
 
-% \begin{proof}
-% We complete the proof by showing that $\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij}$ converges to 0 almost surely for all $i,j \in \{1,...,p\}$ and $\tilde{\Sigma}^{ij} \to \Sigma^{ij}$ with probability 1 as $n \to \infty$. We will show that 
-
-% \[
-% \hat{\Sigma}_{G-SVE}^{ij} - \tilde{\Sigma}^{ij} = g_1(n)D^2 + g_2(n)D + g_3(n)
-% \]
-% where $D$ is the finite random variable associated with SIP. We will show that
-% \begin{align*}
-%     g_1(n) &= (4+C_1)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2}\\
-%     g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4+C_1)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right]\\
-%     g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C_1)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right]
-% \end{align*}
-
-% Using $\psi(n) = \mathcal{O}(\sqrt{n \log \log n}),\; b_n = o(n), \textrm{ and } b_n \log \log n = o(n)$, we can finally we prove that $g_1(n), g_2(n), g_3(n) \to 0$ with probability 1, as $n \to \infty$. The proof is in Appendix subsection \ref{appendix:strong_consis}
-% \end{proof}
-
-
-% We are interested in the finding the bias for G-SVE estimator as a function of $n$. 
-%\begin{ass} \label{ass:bias}
-    % Let $\Gamma_s(k)$ be the lag-k autocovariance for $s^{th}$ Markov chain and $w(x)$ be the lag window. We assume that there exists a $q \geq 0$ such that for all $s$
-    % \begin{enumerate} [a.]
-    %     \item $\sum\limits_{-\infty}^{\infty}\abs{k}^q \|\Gamma_s(k)\| < \infty$ {\color{blue} DV: This assumption is satisfied by the polynomial ergodicity, so can remove it.}
-    %     \item $\lim _{x \to 0}\dfrac{1 - w(x)}{\abs{x}^q} = k_q < \infty$ 
-%        \item $\dfrac{b_n^q}{n} \to 0$ as $n \to \infty$
-%   \end{enumerate}
-    
-    % If $k_q$ is finite for some $q_o$, then it is zero for $q < q_0$. $q$ is taken to be the largest number satisfying the first two conditions above.
-%\end{ass}
-
+Our next two results establish large-sample bias and variance for G-SV and mimic those of $\hat{\Sigma}_s$ which can be found in \cite{hannan:1970}. However, \cite{hannan:1970} proved the results assuming $\mu_g$ was known. Here, we present the results under mild conditions for when $\mu_g$ is replaced by $\bar{\bar{Y}}$. Let $\Sigma^{ij}$ and $\hat{\Sigma}_G^{ij}$ denote the $ij$th element of the matrix $\Sigma$ and $\hat{\Sigma}_G$, repectively.
 
 \begin{theorem}\label{th:G-SVE_bias}
-Let the assumptions of Theorem~\ref{thm:kuelbs} hold with $q$ such that $\lim _{x \to 0}{1 - w(x)}/\abs{x}^q = k_q < \infty$ and $b_n^q/n \to 0$ as $n \to \infty$. Then
+Let the assumptions of Theorem~\ref{thm:kuelbs} hold with $q$ such that 
 \[
- \lim_{n \to \infty}b_n^q\mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = -k_q\Phi^{(q)}\,.
- \]
+\lim _{x \to 0} \dfrac{1 - w(x)}{\abs{x}^q} = k_q < \infty
+\] 
+and $b_n^q/n \to 0$ as $n \to \infty$. Then $ \lim_{n \to \infty}b_n^q\mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = -k_q\Phi^{(q)}\,.$
+% \[
+%  \lim_{n \to \infty}b_n^q\mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = -k_q\Phi^{(q)}\,.
+%  \]
 \end{theorem}
 
 \begin{theorem} \label{th:G-SVE_variance}
- Let the assumptions of Theorem~\ref{thm:kuelbs} hold and let $\E[D^4] < \infty$  and  $\E \|Y_{11}\|^4 < \infty$, then $b_n^{-1}{n}\Var \left(\hat{\Sigma}_{G}^{ij} \right) = [\Sigma_{ii}\Sigma_{jj} + \Sigma_{ij}^2]\int_{-\infty}^{\infty}w(x)^2dx  + o(1)$.
+ Let the assumptions of Theorem~\ref{thm:kuelbs} hold and let $\E[D^4] < \infty$  and  $\E \|Y_{11}\|^4 < \infty$, then $ \lim_{n \to \infty} b_n^{-1}{n}\Var \left(\hat{\Sigma}_{G}^{ij} \right) = [\Sigma_{ii}\Sigma_{jj} + \Sigma_{ij}^2]\int_{-\infty}^{\infty}w(x)^2dx $.
 \end{theorem}
 
-% \begin{proof}
-% Recall that $\tilde{\Sigma}$ is the averaged pseudo spectral variance estimator which uses the unobserved mean. Further, let $\tilde{\Sigma}^{ij}$ be the $(i,j)^{th}$ element of this matrix. We will prove that the variance of $\hat{\Sigma}_{G} \textrm{ and } \tilde{\Sigma}$ are equivalent for large sample sizes. The proof is in Appendix subsection \ref{appendix:variance}
-% \end{proof}
 
 \subsubsection{Fast implementation} % (fold)
 \label{ssub:fast_implementation}
 
-The SV estimator, despite good statistical properties, poses application limitations due to slow computation. From equation \ref{eq:empirical_ACvF} and \ref{eq:sve}, the computation of the SV estimator has a complexity of $\mathcal{O}(n^2 p^2)$ in general, and for Bartlett (and other truncated lag windows) $\mathcal{O}(b_n n p^2)$. In MCMC typically, $n$ is large, for highly-correlated processes, $b
-_n$ is large, and for high-dimensional target distributions, $p$ could also be large. 
+The SV estimator, despite good statistical properties, poses application limitations due to slow computation. From \eqref{eq:empirical_ACvF} and \eqref{eq:sve}, the complexity of the SV estimator is $\mathcal{O}(n^2 p^2)$ in general, and for Bartlett (and other truncated) lag window, the complexity is $\mathcal{O}(b_n n p^2)$. In MCMC, and especially for slow mixing Markov chains, $n$ and $b
+_n$ are large, limiting the use of SV estimators. 
 
-To overcome this limitation, we adapt the  fast Fourier transform based algorithm of \cite{heberle2017fast} for our purposes. Suppose $w_k = w(k/b_n)$ and let $T(w)$ be the $n \times n$ Toeplitz matrix of weights with the first column being $(1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1})^T$. Notice an alternate formulation of SVE for the $s^{th}$ chain $\{Y_{st};\, t \in 1, ..., n\}$ i
+To overcome this, we adapt the  fast Fourier transform based algorithm of \cite{heberle2017fast} for our purposes. Suppose $w_k = w(k/b_n)$ and let $T(w)$ be the $n \times n$ Toeplitz matrix of weights with the first column being $(1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1})^T$. Notice an alternate formulation of $\hat{\Sigma}_s$
 %
 \begin{equation} \label{eq:kyriakoulis}
     \hat{\Sigma}_s = \dfrac{1}{n}A_s^T T(w) A_s, \qquad \textrm{ where } A_s = \begin{pmatrix}

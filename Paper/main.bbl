@@ -171,6 +171,11 @@ Tjøstheim, D. (1990).
 \newblock Non-linear time series and markov chains.
 \newblock {\em Advances in Applied Probability}, 22(3):587--611.
 
+\bibitem[{Vats} and {Flegal}, 2018]{vats:flegal:2018}
+{Vats}, D. and {Flegal}, J.~M. (2018).
+\newblock {Lugsail lag windows and their application to {MCMC}}.
+\newblock {\em ArXiv e-prints}.
+
 \bibitem[Vats and Flegal, 2018]{vats2018lugsail}
 Vats, D. and Flegal, J.~M. (2018).
 \newblock Lugsail lag windows and their application to mcmc.
