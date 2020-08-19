@@ -2,7 +2,7 @@
 % We can write notes using the percent symbol!
 % The first line above is to announce we are beginning a document, an article in this case, and we want the default font size to be 12pt
 % \usepackage[utf8]{inputenc}
-\usepackage[left=1.2in,top=.8in,right=1.2in,nohead,bottom=.5in]{geometry}
+
 % This is a package to accept utf8 input.  I normally do not use it in my documents, but it was here by default in Overleaf.
 
 \usepackage{amssymb,amsthm,amsmath}
@@ -181,22 +181,13 @@ We demonstrate the striking difference in estimation of $\Gamma(k)$ via autocorr
 f(x) = 0.7\,f(x; -5, 1) + 0.3\,f(x; 5, 0.5)\,,
 \]
 where $f(x; a,b)$ is the density of a normal distribution with mean $a$ and variance $b$. 
-Two Markov chains are started at each mode. Let $n$ denote the number of samples for each chain. Figure~\ref{fig:gaussian-trace} indicates that in the first $10^4$ samples, the chains do not jump modes so that both Markov chains yield different estimates of the population mean, $\mu$. At $10^5$ sample size, both Markov chains have traversed the state space reasonably and yield similar estimates of $\mu$. We make two points here: first, for small sample size, we observe that the locally-centered ACF gives misleading estimates whereas G-ACF accounts for the discrepancy in sample means between two chains. This is evident from the ACF plots  in Figure~\ref{subfig:gauss-acf}. Second, for a large sample size, the estimates from G-ACrF as well as ACrF are equivalent. Therefore, G-ACF can be used in any situation with a promise of estimates that are at least as good as empirical ACF estimators.  
+Two Markov chains are started at each mode. Let $n$ denote the number of samples for each chain. Figure~\ref{fig:gaussian-trace} indicates that in the first $10^4$ samples, the chains do not jump modes so that both Markov chains yield different estimates of the population mean, $\mu$. At $10^5$ sample size, both Markov chains have traversed the state space reasonably and yield similar estimates of $\mu$. We make two points here: first, for small sample size, we observe that the locally-centered ACF gives misleading estimates whereas G-ACF accounts for the discrepancy in sample means between two chains. This is evident from the ACF plots  in Figure~\ref{fig:gaussian-acf}. Second, for a large sample size, the estimates from G-ACrF as well as ACrF are equivalent. Therefore, G-ACF can be used in any situation with a promise of estimates that are at least as good as empirical ACF estimators.  
 
 \begin{figure}[htbp]
-    \begin{subfigure}{.5\textwidth}
-   \centering
-   \includegraphics[width=\linewidth]{plots/gaussian-Targettrace_n1e4.pdf}
-   \caption{$n = 10^4$}
-   \label{subfig:gauss-trace_1e4}
- \end{subfigure}
- \begin{subfigure}{0.5\textwidth}
-   \centering
-   \includegraphics[width=\linewidth]{plots/gaussian-Targettrace_n1e5.pdf} 
-   \caption{$n = 10^5$}
-   \label{subfig:gauss-trace_1e5}
- \end{subfigure}
-    \caption{Target density and trace plots for two chains starting at different values.}
+\centering
+   \includegraphics[width=.35\linewidth]{plots/gaussian-Targettrace_n1e4.pdf}
+    \includegraphics[width=.35\linewidth]{plots/gaussian-Targettrace_n1e5.pdf} 
+    \caption{Target density and trace plots for two chains at $n = 10^4$ (left) and $n = 10^5$ (right)}
     \label{fig:gaussian-trace}
 \end{figure}
 
@@ -204,19 +195,11 @@ Two Markov chains are started at each mode. Let $n$ denote the number of samples
 
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}{.9\textwidth}
-   \centering
-   \includegraphics[width=.9\textwidth]{plots/gaussian-acf_hist.pdf}
-   \caption{$n-10^4$ (histogram) and $n = 5 \times 10^5$ (blue line)}
-   \label{subfig:gauss-acf_1e4_1e5}
-\end{subfigure}
-\begin{subfigure}{.9\textwidth}
-   \centering
-   \includegraphics[width=.9\textwidth]{plots/gaussian-acf_1e4.pdf} 
-   \caption{$n = 10^4$}
-   \label{subfig:gauss-acf_1e4}
-\end{subfigure}
-\caption{ACF plots for locally-centered ACF (left) and globally centered ACF (right). (a) The histogram plots the estimates for $n = 10^4$ and the blue line plot the estimates for $n = 5 \times 10^4$ for chain-1. (b) $n = 10^4$; the dotted lines are ACF for each chain and the thick solid line is the ACF averaged over both chains.}
+\includegraphics[width=.6\textwidth]{plots/gaussian-acf_hist.pdf} \\
+% \includegraphics[width=.6\textwidth]{plots/gaussian-acf_1e4.pdf} 
+
+\caption{ACF plots using locally-centering (left) and global centering (right). Histogram estimates at $n = 10^4$ with the blue line plot being estimates from $n = 50000$ for chain 1.}
+ % (b) $n = 10^4$; the dotted lines are ACF for each chain and the thick solid line is the ACF averaged over both chains.}
 \label{fig:gaussian-acf}
 \end{figure}
 
@@ -483,45 +466,36 @@ There are only a handful of MCMC methods where the true autocovariance and asymp
 X_t = \Phi X_{t-1} + \epsilon_t
 \]
 
-where $X_t \in \mathbb{R}^p$, $\Phi $ is a $p \times p $ matrix, $ \epsilon_t \overset{i.i.d.}{\sim} N(0, \Omega)$, and $\Omega$ is a positive definite $p \times p$ matrix. The invariant distribution for this Markov chain is $N(0, \Psi)$ where $\mathcal{N}(.,.)$ stands for the Gaussian distribution. The lag-k autocovariance $\Gamma(k)$ can be calculated for $k >0$ as $\Gamma(k) = \Phi^k\Psi \textrm{ and } \Gamma(-k) = \Psi(\Phi^T)^k$. The Markov chain is geometrically ergodic when the spectral norm of $\Phi$ is less than 1 (\cite{10.2307/1427459}). The CLT holds for the invariant distribution, therefore, $\Sigma$ exists and is known in closed form.\\
+where $X_t \in \mathbb{R}^p$, $\Phi $ is a $p \times p $ matrix, $ \epsilon_t \overset{i.i.d.}{\sim} N(0, \Omega)$, and $\Omega$ is a positive definite $p \times p$ matrix. The invariant distribution for this Markov chain is $N(0, \Psi)$ where $\mathcal{N}(.,.)$ stands for the Gaussian distribution. The lag-k autocovariance $\Gamma(k)$ can be calculated for $k >0$ as $\Gamma(k) = \Phi^k\Psi \textrm{ and } \Gamma(-k) = \Psi(\Phi^T)^k$. The Markov chain is geometrically ergodic when the spectral norm of $\Phi$ is less than 1 (\cite{10.2307/1427459}). The CLT holds for the invariant distribution, therefore, $\Sigma$ exists and is known in closed form.
 
-Let $\phi_{\max}$ be the largest absolute eigenvalue of $\Phi$ such that $\abs{\phi_{\max}} < 1$. The larger it is, the slower the Markov chain mixes. For our case, we require a slowly mixing VAR(1) process. We consider a bivariate example with $\phi_{\max} = 0.999$. We run five parallel deterministically initialized Markov chains with their starting points evenly distributed in the sample space. The correlation between the two components in the target distribution is very high for the chosen value of $\Phi$ and $\Omega$. As a result, it takes a long time for the Markov chain to explore the sample space significantly. \\
+Let $\phi_{\max}$ be the largest absolute eigenvalue of $\Phi$ such that $\abs{\phi_{\max}} < 1$. The larger it is, the slower the Markov chain mixes. For our case, we require a slowly mixing VAR(1) process. We consider a bivariate example with $\phi_{\max} = 0.999$. We run five parallel deterministically initialized Markov chains with their starting points evenly distributed in the sample space. The correlation between the two components in the target distribution is very high for the chosen value of $\Phi$ and $\Omega$. As a result, it takes a long time for the Markov chain to explore the sample space significantly. 
 
 \begin{figure}[h]
- \begin{subfigure}[h]{\textwidth}
-   \centering
-   \includegraphics[width=.7\linewidth]{plots/var-acf_n1000.pdf}
-   \caption{$n = 10^3$}
-   \label{subfig:var-acf_n1e3}
-\end{subfigure}\\
-\begin{subfigure}[h]{\textwidth}
-  \centering
-  \includegraphics[width=.7\linewidth]{plots/var-acf_n10000.pdf} 
-  \caption{$n = 10^4$}
-  \label{subfig:var-acf_n1e4}
-\end{subfigure}
-
+\centering
+   \includegraphics[width=.5\linewidth]{plots/var-acf_n1000.pdf}
+     \includegraphics[width=.5\linewidth]{plots/var-acf_n10000.pdf} 
 \caption{VAR(1). ACF (left) and G-ACF (right) for the second chain for $m=5$. (a): $n = 10^3$, not converged yet; (b): $n =  10^4$, converged. The red line marks the true ACF.}
 \label{fig:var-acf}
 \end{figure}
 
-The locally and globally-centered autocorrelations for the second chain have been shown in Figure~\ref{fig:var-acf} for two different simulation sizes where the true ACF is shown by the red line. When the individual chains have not explored well, the local sample means have not converged to $\mu$. As a consequence, the single chain empirical ACF estimator severely underestimate the truth. Due to sufficiently dispersed starting values, G-ACF is closer to reality. In subfigure~\ref{subfig:var-acf_n1e4}, the convergence property of sample means has kicked in for each chain. Therefore, both the estimators provide equivalent results. Note that G-ACF reveals the true nature of ACF for almost ten times lesser chain length $n$.\\
-
+The locally and globally-centered autocorrelations for the second chain have been shown in Figure~\ref{fig:var-acf} for two different simulation sizes where the true ACF is shown by the red line. When the individual chains have not explored well, the local sample means have not converged to $\mu$. As a consequence, the single chain empirical ACF estimator severely underestimate the truth. Due to sufficiently dispersed starting values, G-ACF is closer to reality. In subfigure~\ref{subfig:var-acf_n1e4}, the convergence property of sample means has kicked in for each chain. Therefore, both the estimators provide equivalent results. Note that G-ACF reveals the true nature of ACF for almost ten times lesser chain length $n$
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}{0.4\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/var-frob.pdf}
-      \caption{$log(\|\hat{\Sigma}\|_F)$}
-      \label{subfig:var-frob}
-    \end{subfigure}
-    \begin{subfigure}{0.4\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/var-ess.pdf}
-      \caption{$\log(\widehat{\textrm{ESS}}/mn)$}
-      \label{subfig:var-ess}
-    \end{subfigure}
+      \includegraphics[width = 2.2in]{plots/var-frob.pdf} 
+      \includegraphics[width = 2.2in]{plots/var-ess.pdf}         
+    % \begin{subfigure}{0.4\textwidth}
+    %   \centering
+
+    %   \caption{$log(\|\hat{\Sigma}\|_F)$}
+    %   \label{subfig:var-frob}
+    % \end{subfigure}
+    % \begin{subfigure}{0.4\textwidth}
+    %   \centering
+
+    %   \caption{$\log(\widehat{\textrm{ESS}}/mn)$}
+    %   \label{subfig:var-ess}
+    % \end{subfigure}
     \caption{VAR(1). (a) Running plot for logarithm of Frobenius norm of A-SVE and G-SVE from $n = 500$ to $n = 10^5$. (b) Running plot for logarithm of $\widehat{\textrm{ESS}}/mn$ calculated using A-SVE and G-SVE from $n=500$ to $n=10^5$.}
     \label{fig:var-frob_n_ess}
 \end{figure}
@@ -531,18 +505,13 @@ The quality of estimation of $\Sigma$ and $\text{ESS}/mn$ has been studied throu
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|ccccc|}
     \hline
-    n & A-SVE & G-SVE\\
-    \hline
-    1000 & 0.71 & 0.956\\
-    5000 & 0.843 & 0.937\\
-    10,000 & 0.885 & 0.924\\
-    50,000 & 0.928 & 0.945\\
-    100,000 & 0.944 & 0.952\\
-    \hline
+$n$  &  1000  & 5000  & 10000  & 50000  & 100000 \\  \hline
+A-SV  &    0.710 & 0.843 & .885 & .928 & .944 \\ 
+G-SV  &    0.956 & 0.937 & .924 & .945 & .952 \\ \hline
     \end{tabular}
-    \caption{VAR(1). Coverage probabilities for a $95$ percent confidence interval of global mean constructed using A-SVE and G-SVE as variance estimates around the known mean.}
+    \caption{VAR(1). Coverage probabilities at $95 \%$ nominal level using A-SVE and G-SVE.}
     \label{tab:var-coverage}
 \end{table}
 
@@ -569,83 +538,39 @@ The conditional distribution of $x$ given $y$ and vice versa is a normal distrib
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[h]{.45\textwidth}
-        \centering
-        \includegraphics[width = \textwidth]{plots/boom-2d_density_plot_1_3_8.pdf}
-        \caption{Setting-1}
-        \label{subfig:boom-2D_1_3_8}
-    \end{subfigure}
-    \begin{subfigure}[h]{.45\textwidth}
-        \centering
-        \includegraphics[width = \textwidth]{plots/boom-2d_density_plot_1_10_7.pdf}
-        \caption{Setting-2}
-        \label{subfig:boom-2D_1_10_7}
-    \end{subfigure}
-    \caption{Boomerang. Contour plots of the target distribution for both settings. Overlayed scatter plot for two chains (in different colors) starting near each mode.}
+    \includegraphics[width = .8\textwidth]{plots/boom-all_1_3_8.pdf}\\
+    \includegraphics[width = .8\textwidth]{plots/boom-all_1_10_7.pdf}    
+    % \includegraphics[width = 0.6\textwidth ]{plots/boom-acf_1_10_7_n1000.pdf}
+
+    \caption{Boomerang. Contour plots of the target distributions  overlayed with scatter plots for two chains for Setting 1 (left) and Setting 2 (right).}
    \label{fig:boom-2D}
 \end{figure}
 
 
 We report results for two different bi-modal parameter settings in this example. Firstly, we use a carefully chosen parameterization of $A = 1,\; B = 3,\; C = 8$ wherein the two modes are well-separated with a very low connection (Setting-1, Figure~\ref{subfig:boom-2D_1_3_8}). Secondly, to examine the performance of G-SVE for a nicely mixing Markov chain, we use the parametrization of $A = 1, \; B = 10, \; C=7$ wherein the two modes are closer and well-connected (Setting-2, Figure~\ref{subfig:boom-2D_1_10_7}). We will make another point through this example. For a fast mixing Markov chain, the globally-centered and locally-centered estimators give equivalent results. Therefore, it is a better practice to globally center the chains in any situation. We sample five parallel deterministically initialized chains with starting points dispersed uniformly in the first quadrant. Finding the actual mean of this distribution in closed form is difficult. Therefore, we use numerical integration with fine tuning to calculate it.
 
+
  To visualize the sticky nature of Markov chains in Setting-1, we show a scatter plot of two Markov chains starting near the two modes for $n = 1000$ in Figure~\ref{fig:boom-2D}. For the first thousand samples, both the chains are oblivious of the existence of another mode in setting-1. Whereas in setting-2, the chains have mixed fairly well for just $n=1000$.
- 
- 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width = .9\textwidth]{plots/boom-acf_1_3_8.pdf}
-    \caption{Boomerang (setting-I). A-ACF (left) and G-ACF (right) of component-1 for $n=1000$ (histogram) and $n=10000$ (blue line) }
-    \label{fig:boom-acf_1_3_8}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width = 0.9\textwidth ]{plots/boom-acf_1_10_7_n1000.pdf}
-    \caption{Boomerang. A-ACF (left) and G-ACF (right) of component-1 for $n=1000$}
-    \label{fig:boom-acf_1_10_7}
-\end{figure}
-
  
  In Figure \ref{fig:boom-acf_1_3_8}, the autocorrelations are severely underestimated by A-ACF for $n=1000$ because the chains have not jumped modes. Whereas, for $n=10000$, both ACF and G-ACF give almost indistinguishable results indicating that A-ACF and G-ACF have converged to the truth. We can observe in Figure~\ref{fig:boom-acf_1_10_7} that A-ACF and G-ACF give similar results for just $n=1000$ under simulation setting-2.
 
 
 \begin{figure}[h]
     \centering
-    
-    \begin{subfigure}[h]{.4\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/boom-ess_1_3_8_m5.pdf}
-      \caption{Setting-1}
-      \label{subfig:boom-ess1}
-    \end{subfigure} \hspace{1cm}
-    \begin{subfigure}[h]{.4\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/boom-ess_1_10_7_m5.pdf}
-      \caption{Setting-2}
-      \label{subfig:boom-ess2}
-    \end{subfigure}
-    \caption{Boomerang. Running plot for $\log \hat{\text{ESS}}_A/mn$ and $\log \hat{\text{ESS}}_G/mn$ for $m = 5$.}
+      \includegraphics[width = .30\textwidth]{plots/boom-ess_1_3_8_m5.pdf}
+      \includegraphics[width = .30\textwidth]{plots/boom-ess_1_10_7_m5.pdf}          
+
+    \caption{Boom: Running plot of $\log (\widehat{\text{ESS}}_A )/mn$ and $\log (\widehat{\text{ESS}}_G )/mn$ with $m = 5$ for Setting 1 (left) and Setting 2 (right).}
     \label{fig:boom-ess}
 \end{figure}
 
 
-
 \begin{figure}[h]
     \centering
-    
-    \begin{subfigure}[h]{.4\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/boom-frob_1_3_8_m5.pdf}
-      \caption{Setting-1}
-      \label{subfig:boom-frob1}
-    \end{subfigure} \hspace{1cm}
-    \begin{subfigure}[h]{.4\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/boom-frob_1_10_7_m5.pdf}
-      \caption{Setting-2}
-      \label{subfig:boom-frob2}
-    \end{subfigure}
-    \caption{Boomerang. Running plot for $\log \|\hat{\Sigma}_A\|_F$ and $\log \|\hat{\Sigma}_G\|_F$ for $m = 5$.}
+    \includegraphics[width = .30\textwidth]{plots/boom-frob_1_3_8_m5.pdf}  
+    \includegraphics[width = .30\textwidth]{plots/boom-frob_1_10_7_m5.pdf}      
+
+    \caption{Boom: Running plot of $\log(\|\hat{\Sigma}_A\|_F)$ and $\log (\|\hat{\Sigma}_G\|_F)$ with $m = 5$ for Setting 1 (left) and Setting 2 (right).}
     \label{fig:boom-frob}
 \end{figure}
 
@@ -658,9 +583,9 @@ The convergence of $\log \widehat{\textrm{ESS}}_G/mn$ and $\log \widehat{\textrm
 \hline
  $n$ & \multicolumn{2}{|c|}{$m = 2$} & \multicolumn{2}{|c|}{$m=5$}\\
  \hline
- & A-SVE & G-SVE & A-SVE & G-SVE \\
+ & A-SV & G-SV & A-SV & G-SV \\
  \hline
- 5000 & 0.595 &  0.7 & 0.402 &  0.64\\
+ 5000 & 0.595 &  0.700 & 0.402 &  0.640\\
  10000 & 0.563 &  0.665 & 0.59 &  0.739\\
  50000 & 0.775 &  0.814 & 0.807 &  0.864\\
  100000 & 0.847 &  0.864 & 0.884 &  0.902\\
@@ -676,10 +601,10 @@ The convergence of $\log \widehat{\textrm{ESS}}_G/mn$ and $\log \widehat{\textrm
  \hline
  $n$ & \multicolumn{2}{|c|}{$m = 2$} & \multicolumn{2}{|c|}{$m=5$}\\
  \hline
- & A-SVE & G-SVE & A-SVE & G-SVE \\
+ & A-SV & G-SV & A-SV & G-SV \\
  \hline
- 1000 &  0.856 &  0.868 & 0.895 &  0.9100\\
- 5000 & 0.921 &  0.925 & 0.91 &  0.915\\
+ 1000 &  0.856 &  0.868 & 0.895 &  0.910\\
+ 5000 & 0.921 &  0.925 & 0.910 &  0.915\\
  10000 & 0.928 &  0.93 & 0.919 &  0.926\\
  50000 & 0.943 &  0.944 & 0.951 &  0.952\\
 \hline
@@ -708,48 +633,29 @@ Following \cite{tak2018repelling}, we assume that there are six sensors scattere
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width = .9\textwidth]{sensor-trace_loc1.pdf}
-    \caption{Sensor Network. Trace plot of two chains for x (left) and y (right) coordinate of sensor location-1.}
+    \includegraphics[width = .6\textwidth]{plots/sensor-trace_loc1.pdf}
+    \caption{Sensor: Trace plots for $x$ (left) and $y$ (right) coordinate of sensor location-1.}
     \label{fig:sensor-trace}
 \end{figure}
 
-This is an 8-dimensional estimation problem where the components corresponds to x and y coordinates of four unknown sensor locations. We will use the RAM algorithm with a jumping scale equal to $0.5$ to sample five parallel Markov chains with well-separated starting points. The total simulation size for each chain is fixed at $100,000$. Since the truth about actual mean and asymptotic variance is not known in this case, we are not interested in coverage probabilities.\\
+This is an 8-dimensional estimation problem where the components corresponds to x and y coordinates of four unknown sensor locations. We will use the RAM algorithm with a jumping scale equal to $0.5$ to sample five parallel Markov chains with well-separated starting points. The total simulation size for each chain is fixed at $100,000$. Since the truth about actual mean and asymptotic variance is not known in this case, we are not interested in coverage probabilities.
 
-To illustrate the \textit{sticky} nature of the Markov chains, we plot the evolution of two chains (starting near different modes) with time. Figure~\ref{fig:sensor-trace} shows the trace plot of x and y coordinate of sensor location-1. It is evident that the marginal posterior for both the components is bimodal. Similarly, the other three locations also have a bimodal marginal distribution in each component.  Observe that each chain explores one particular mode for a long time before jumping to another mode. \\
+To illustrate the \textit{sticky} nature of the Markov chains, we plot the evolution of two chains (starting near different modes) with time. Figure~\ref{fig:sensor-trace} shows the trace plot of x and y coordinate of sensor location-1. It is evident that the marginal posterior for both the components is bimodal. Similarly, the other three locations also have a bimodal marginal distribution in each component.  Observe that each chain explores one particular mode for a long time before jumping to another mode.
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[h]{.45\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/sensor-acf_n5e3.pdf}
-      \caption{$n = 5 \times 10^3$}
-      \label{subfig:sensor-acf_5e3}
-    \end{subfigure}
-    \begin{subfigure}[h]{.45\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/sensor-acf_n5e4.pdf}
-      \caption{$n = 5 \times 10^4$}
-      \label{subfig:sensor-acf_5e4}
-    \end{subfigure}
-    \caption{Sensor Network. ACrF (orange) and G-ACrF (blue) for individual chains (dotted lines) and average over all chains (thick solid line).}
+      \includegraphics[width = .33\textwidth]{plots/sensor-acf_n5e3.pdf}\includegraphics[width = .33\textwidth]{plots/sensor-acf_n5e4.pdf}
+
+    \caption{Sensor: ACF (orange) and G-ACF (blue) for individual chains (dotted lines) and average over all chains (solid line) for $n = 5000$ (left) and $n = 50000$ (right).}
     \label{fig:sensor-acf}
 \end{figure}
 
 \begin{figure}
     \centering
-    \begin{subfigure}[h]{0.4\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/sensor-frob.pdf}
-      \caption{log Frobenius norm}
-      \label{subfig:sensor-frob}
-    \end{subfigure}
-    \begin{subfigure}[h]{0.4\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/sensor-ess.pdf}
-      \caption{$\log(\widehat{\textrm{ESS}}/mn)$}
-      \label{subfig:sensor-ess}
-    \end{subfigure}
-    \caption{Sensor Network. Running plot for $\log \|{\Sigma}\|_F$ (left) and $\log {\textrm{ESS}}/mn$ (right) estimated using A-SVE and G-SVE along with standard errors for 10 replications.}
+      \includegraphics[width = .30\textwidth]{plots/sensor-frob.pdf} 
+      \includegraphics[width = .30\textwidth]{plots/sensor-ess.pdf}
+
+    \caption{Sensor: Running plot of $\log (\|{\Sigma}\|_F)$ (left) and $\log ({\textrm{ESS}})/mn$ (right) estimated using A-SV and G-SV along with standard errors for 10 replications.}
     \label{fig:sensor-frob_n_ess}
 \end{figure}
 
@@ -1371,35 +1277,23 @@ Consider the militarized interstate dispute (MID) data of \cite{martin2011mcmcpa
 \begin{align*}
     y_t &\sim \text{Poisson}(\lambda_i), \qquad i = 1, ..., k\\
     \lambda_i &\sim \text{Gamma}(c_o, d_o), \qquad i = 1,..., k\\
-    p_{ii} &\sim \text{Beta}(\alpha, \beta), \qquad i = 1,..., k
+    p_{ii} &\sim \text{Beta}(\alpha, \beta), \qquad i = 1,..., k\,.
 \end{align*}
-
-% The results of model comparison by \cite{martin2011mcmcpack} showed that the ratio of maximum likelihood for six change-point model is favored over the alternatives. We will use this information and present the ACF results for a six change-points model only. We will use the hyperparameters values $c_o = 13 \textrm{ and } d_o = 1$ because the mean of MID is around 13. \\
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width = 0.9\textwidth]{plots/poisson-trace_n1e+05.pdf}
+    \includegraphics[width = 0.7\textwidth]{plots/poisson-trace_n50000.pdf}
     \caption{Trace plot for second (left) and third (right) component of two chains started from random points.The two colors denote the two different chains.}
     \label{fig:poisson-trace}
 \end{figure}
 
-This is a 7-dimensional estimation problem wherein the marginal distribution of majority of components display a multimodal nature. Figure~\ref{fig:poisson-trace} shows the evolution of two chains started from random points with time for the second component. We will report the ACF plots for component-2. Similar behavior is observed for ACF plots of other components as well.\\
+This is a 7-dimensional estimation problem wherein the marginal distribution of majority of components display a multimodal nature. Figure~\ref{fig:poisson-trace} shows the evolution of two chains started from random points with time for the second component. We will report the ACF plots for component-2. Similar behavior is observed for ACF plots of other components as well
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[h]{.8\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/poisson-acf_n1000.pdf}
-      \caption{$n = 1000$}
-      \label{subfig:poisson-acf_n1e3}
-    \end{subfigure}
-    \begin{subfigure}[h]{.8\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/poisson-acf_n10000.pdf}
-      \caption{$n = 10000$}
-      \label{subfig:poisson-acf_n1e4}
-    \end{subfigure}
-    \caption{Poisson change point. ACF (left) and G-ACF (right) for individual chains and average over $m$ chains for two chain lengths.}
+      \includegraphics[width = .6\textwidth]{plots/poisson-acf_n1000.pdf}    
+      \includegraphics[width = .6\textwidth]{plots/poisson-acf_n10000.pdf}      
+    \caption{Change point: ACF (left) and G-ACF (right) for individual chains and average over $m$ chains for $n = 1000$ (left) and $n = 10000$ (right).}
     \label{fig:poisson-acf}
 \end{figure}
 
@@ -1413,23 +1307,14 @@ Figure~\ref{fig:poisson-acf} demonstrates a striking advantage of G-ACF in estim
 
 The \texttt{faux.magnolia.high} dataset available in the \texttt{ergm} \texttt{R} package represents a simulated within school friendship network based on Ad-Health data (\cite{resnick1997protecting}). The school communities represented by the network data are located in the southern United States. Each node represents a student and each edge represents a friendship between the nodes it connects.
 
-The goal is to draw nodes uniformly from the network by using a network crawler. \cite{nilakanta2019ensuring} modified the data by removing 1,022 out of 1,461 nodes to obtain a well-connected graph. This resulting social network has 439 nodes and 573 edges. We use a Metropolis-Hastings algorithm with a simple random-walk  proposal suggested by \cite{gjoka2011practical}. Each node is associated with five features namely - degree of connection, cluster coefficient, grade, binary sex indicator (1 for female, 0 for male), and binary race indicator (1 for white, 0 for others).\\
+The goal is to draw nodes uniformly from the network by using a network crawler. \cite{nilakanta2019ensuring} modified the data by removing 1,022 out of 1,461 nodes to obtain a well-connected graph. This resulting social network has 439 nodes and 573 edges. We use a Metropolis-Hastings algorithm with a simple random-walk  proposal suggested by \cite{gjoka2011practical}. Each node is associated with five features namely - degree of connection, cluster coefficient, grade, binary sex indicator (1 for female, 0 for male), and binary race indicator (1 for white, 0 for others)
 
 \begin{figure}
     \centering
-    \begin{subfigure}[h]{.8\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/magnolia-acf_n100.pdf}
-      \caption{$n = 100$}
-      \label{subfig:magnolia-acf_n1e3}
-    \end{subfigure}
-    \begin{subfigure}[h]{.8\textwidth}
-      \centering
-      \includegraphics[width = \textwidth]{plots/magnolia-acf_n1000.pdf}
-      \caption{$n = 1000$}
-      \label{subfig:magnolia-acf_n1e4}
-    \end{subfigure}
-    \caption{Network crawling. ACF (left) and G-ACF (right) for individual chains and average over $m$ chains for two chain lengths.}
+      \includegraphics[width = .6\textwidth]{plots/magnolia-acf_n100.pdf}
+      \includegraphics[width = .6\textwidth]{plots/magnolia-acf_n1000.pdf}
+
+    \caption{Crawling: ACF (left) and G-ACF (right) for individual chains and average over $m$ chains for $n = 1000$ (left) and $n = 10000$ (right).}
     \label{fig:magnolia-acf}
 \end{figure}
 % , i.e. $\lambda(i) = 1/n$ for all $i \in V$.  The Metropolis-Hastings transition kernel for this method is
