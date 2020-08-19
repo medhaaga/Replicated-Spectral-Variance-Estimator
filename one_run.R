@@ -187,10 +187,10 @@ legend("topright", legend=c("A-SVE", "G-SVE", "Truth"),col=c("darkorange", "roya
 dev.off()
 
 ################# Table 1 ######################
-
-load(file = paste("AllOut/var-out_check.pts_freq", freq, ".Rdata", sep = ""))
 check.pts <- c(5e2, 1e3, 5e3, 1e4, 5e4, 1e5)
 freq <- 1e3
+
+load(file = paste("AllOut/var-out_check.pts_freq", freq, ".Rdata", sep = ""))
 
 for (j in 1:length(check.pts)){
   
@@ -652,3 +652,4 @@ dev.off()
 
 
 ################# The End ########################
+
