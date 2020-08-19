@@ -25,6 +25,7 @@ for (i in 1:m){
   mc.chain.list[[i]] = chain
 }
 global.mean <- global.mean/m
+save(mc.chain.list, file = "Out/_1_3_8_/boom-five_chains_1_3_8.Rdata")
 component <- 1
 lag.max <- 50
 
@@ -75,6 +76,7 @@ for (i in 1:m){
   mc.chain.list[[i]] = chain
 }
 
+save(mc.chain.list, file = "Out/_1_10_7_/boom-five_chains_1_10_7.Rdata")
 ####################################
 nsim <- 1000
 ########################################

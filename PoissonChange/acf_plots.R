@@ -53,7 +53,13 @@ globalACF(x, chains=0, component = component, mean = "local", type = "correlatio
 globalACF(x, chains=0, component = component, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
 dev.off()
 
-n <- 1e5
+#########################################
+#########################################
+########### Trace plots #################
+#########################################
+#########################################
+
+n <- 5e4
 pdf(file = paste("Out/poisson-trace_n", n, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
 plot.ts(mc.chain.list[[1]][1:n,2], col = "steelblue1", xlab = "Time", ylab = "Component-2", main = "")

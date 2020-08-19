@@ -40,7 +40,7 @@ min <- 5e2
 max <- 5e4
 step <- 500
 conv.pts <- seq(min, max, step)
-
+save(target, truth, file = "Out/var-truth.Rdata")
 ###########################################################
 ############## log Frobenius norm running plots ###########
 ###########################################################

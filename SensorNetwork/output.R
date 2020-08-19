@@ -49,10 +49,6 @@ start <- rbind(runif(n=8, min=-0.3, max=0), runif(n=8, min=0.7, max=1))
 aux <- rbind(runif(n=8, min=-0.3, max=0), runif(n=8, min=0.7, max=1))
 j.scale <- rep(1,.08, 4)
 
-check.pts <- c(5e3, 1e4, 5e4, 1e5)
-r <- length(check.pts)
-freq <- 1e2
-c.prob <- .95
 min <- 500
 max <- 2e5
 step <- 500
@@ -81,8 +77,8 @@ r <- colMeans(r)
 pdf(file = paste("Out/sensor-frob.pdf", sep = ""), height = 5, width = 5)
 plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
 lines(conv.pts, r, col="royalblue", lwd = 2)
-segments(x0 = conv.pts[ind], y0 = (a - se.a)[ind], y1 = (a + se.a)[ind], col = adjustcolor("darkorange", alpha.f = .50))
-segments(x0 = conv.pts[ind], y0 = (r - se.r)[ind], y1 = (r + se.r)[ind], col = adjustcolor("royalblue", alpha.f = .50))
+segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
+segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
 legend("bottomright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, lwd = 2)
 dev.off()
 

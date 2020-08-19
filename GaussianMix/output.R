@@ -38,6 +38,8 @@ sd2 <- 0.5
 
 chain1 <- mh.mcmc(start = -3, p, mu1, mu2, sd1, sd2, N, 1)
 chain2 <- mh.mcmc(start = 3, p, mu1, mu2, sd1, sd2, N, 1)
+mc.chain.list <- list(as.matrix(chain1), as.matrix(chain2))
+save(mc.chain.list, file = "gaussian-two_chains.Rdata")
 
 mean(chain1)
 mean(chain2)
@@ -93,9 +95,6 @@ dev.off()
 
 m <- 2
 lag.max <- 50
-mc.chain.list <- list(as.matrix(chain1), as.matrix(chain2))
-
-####################################
 nsim1 <- 1e4
 nsim2 <- 5e4
 ########################################
@@ -112,7 +111,7 @@ local.acf2 <- acf(y[[1]], type = "correlation", lag.max = lag.max, plot = FALSE)
 global.acf1 <- globalACF(x, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, graph = FALSE)[[1]]
 global.acf2 <- globalACF(y, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, graph = FALSE)[[1]]
 
-pdf(file = "gaussion-acf_hist.pdf", width = 10, height= 4)
+pdf(file = "gaussian-acf_hist.pdf", width = 10, height= 4)
 par(mfrow = c(1,2))
 plot(as.matrix(local.acf1$acf), type = 'h', ylab = "Autocorrelation", xlab = "Lag")
 lines(as.matrix(local.acf2$acf), type = 'l', col = "steelblue1", lwd = 2)

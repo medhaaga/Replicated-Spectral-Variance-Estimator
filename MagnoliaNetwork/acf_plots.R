@@ -17,17 +17,18 @@ igraph::assortativity_degree(gmagnolia)
 
 
 #m chains length 1e5
-  set.seed(1)
-  m <- 2
-  start <- c(386, 244)
-  markovChains = magnolia.mhrw.func(nrep = 1e3, chains = m, start = start)
-  mc.chain.list <- list()
-  for(i in 1:m){
-    mc.chain.list[[i]] <- MHRWestimation(markovChains[[i]])
-    mc.chain.list[[i]] = mc.chain.list[[i]][,c(1,7,5,8,9)]
-  }
+set.seed(1)
+m <- 2
+start <- c(386, 244)
+markovChains = magnolia.mhrw.func(nrep = 1e3, chains = m, start = start)
+mc.chain.list <- list()
+for(i in 1:m){
+  mc.chain.list[[i]] <- MHRWestimation(markovChains[[i]])
+  mc.chain.list[[i]] = mc.chain.list[[i]][,c(1,7,5,8,9)]
+}
 
-  component = 3
+save(mc.chain.list, file = "Out/magnolia-two_chains.Rdata")
+component = 3
 
 ########################################
 ncrop <- 1e2

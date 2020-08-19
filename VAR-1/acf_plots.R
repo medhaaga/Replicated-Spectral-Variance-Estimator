@@ -50,10 +50,10 @@ for (i in 1:m){
   print(colMeans(chain))
 }
 global.mean <- global.mean/m
-save(mc.chain.list, file = "Out/five_chains.Rdata")
+save(mc.chain.list, true.acf, file = "Out/var-five_chains.Rdata")
 #################################################################################
 
-load(file = "Out/five_chains.Rdata")
+load(file = "Out/var-five_chains.Rdata")
 #######################################################
 ############### ACF and G-ACF #########################
 #######################################################

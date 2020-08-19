@@ -49,9 +49,10 @@ for(i in 1:floor(m/2)){
 chain <- array(0, dim = c(1e3, p, m))
 chain[,,1] <- markov.chain(A1, B1, C1, 1e3, start[1,])
 chain[,,2] <- markov.chain(A1, B1, C1, 1e3, start[2,])
+samples <- perspective(A1, B1, C1, 100)
+save(chain, samples, file = paste(paste("Out/", A1, B1, C1, "/boom-two_chains_sp", A1, B1, C1, sep = "_"), ".Rdata", sep = ""))
 
 pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-2d_density_plot", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
-samples <- perspective(A1, B1, C1, 100)
 contour2D(x=samples$x, y=samples$y, z=samples$z, colkey = FALSE, xlim=c(0,10), ylim=c(0,10))
 points(rbind(chain[,,1], chain[,,2]), cex=.2, col = c(rep("black",1e3), rep("darkorange",1e3)))
 dev.off()
@@ -72,9 +73,10 @@ for(i in 1:floor(m/2)){
 chain <- array(0, dim = c(1e3, p, m))
 chain[,,1] <- markov.chain(A2, B2, C2, 1e3, start[1,])
 chain[,,2] <- markov.chain(A2, B2, C2, 1e3, start[2,])
+samples <- perspective(A2, B2, C2, 100)
+save(chain, samples, file = paste(paste("Out/", A2, B2, C2, "/boom-two_chains_sp", A2, B2, C2, sep = "_"), ".Rdata", sep = ""))
 
 pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-2d_density_plot", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
-samples <- perspective(A2, B2, C2, 100)
 contour2D(x=samples$x, y=samples$y, z=samples$z, colkey = FALSE, xlim=c(0,10), ylim=c(0,10))
 points(rbind(chain[,,1], chain[,,2]), cex=.2, col = c(rep("black",1e3), rep("darkorange",1e3)))
 dev.off()
@@ -129,13 +131,14 @@ dev.off()
 m <- 5
 load(file = paste(paste("Out/", A1, B1, C1, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
-a <- lapply(asv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
-r <- lapply(rsv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
+a <- lapply(asv[1:10], function(x) log(apply(x, 3, norm, "F") ) )
+r <- lapply(rsv[1:10], function(x) log(apply(x, 3, norm, "F") ) )
 a <- Reduce("rbind", a)
 r <- Reduce("rbind", r)
 
 se.a <- apply(a, 2, sd)/sqrt(10)
 se.r <- apply(r, 2, sd)/sqrt(10)
+
 
 a <- colMeans(a)
 r <- colMeans(r)
@@ -247,8 +250,8 @@ dev.off()
 m <- 5
 load(file = paste(paste("Out/", A1, B1, C1, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
-a <- lapply(ess.asv[(1:10)], log)
-r <- lapply(ess.rsv[(1:10)], log)
+a <- lapply(ess.asv, log)
+r <- lapply(ess.rsv, log)
 se.a <- 2*apply(Reduce("rbind", a), 2, sd)/sqrt(length(a))
 se.r <- 2*apply(Reduce("rbind", r), 2, sd)/sqrt(length(r))
 a <- Reduce("+", a)/length(a)
