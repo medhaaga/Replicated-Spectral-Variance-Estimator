@@ -51,11 +51,11 @@
 
 \author{
   Medha Agarwal \\
-  Department of Mathematics and Statistics\\
+  Dept. of Mathematics and Statistics\\
   IIT Kanpur\\
   \texttt{medhaaga@iitk.ac.in} \and
  Dootika Vats \\
-  Department of Mathematics and Statistics\\
+  Dept.of Mathematics and Statistics\\
   IIT Kanpur\\
   \texttt{dootika@iitk.ac.in}
 }
@@ -382,72 +382,71 @@ and $b_n^q/n \to 0$ as $n \to \infty$. Then $ \lim_{n \to \infty}b_n^q\mathbb{E}
 \subsubsection{Fast implementation} % (fold)
 \label{ssub:fast_implementation}
 
-The SV estimator, despite good statistical properties, poses application limitations due to slow computation. From \eqref{eq:empirical_ACvF} and \eqref{eq:sve}, the complexity of the SV estimator is $\mathcal{O}(n^2 p^2)$ in general, and for Bartlett (and other truncated) lag window, the complexity is $\mathcal{O}(b_n n p^2)$. In MCMC, and especially for slow mixing Markov chains, $n$ and $b
-_n$ are large, limiting the use of SV estimators. 
-
-To overcome this, we adapt the  fast Fourier transform based algorithm of \cite{heberle2017fast} for our purposes. Suppose $w_k = w(k/b_n)$ and let $T(w)$ be the $n \times n$ Toeplitz matrix of weights with the first column being $(1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1})^T$. Notice an alternate formulation of $\hat{\Sigma}_s$
+The SV estimator, despite good statistical properties, poses limitations due to slow computation. From \eqref{eq:empirical_ACvF} and \eqref{eq:sve}, the complexity of the SV estimator is $\mathcal{O}(n^2 p^2)$ in general, and for the Bartlett lag window, it is $\mathcal{O}(b_n n p^2)$. For slow mixing Markov chains, $n$ and $b_n$ are large, limiting the use of SV estimators.  To overcome this, we adapt the  fast Fourier transform based algorithm of \cite{heberle2017fast}. Suppose $w_k = w(k/b_n)$ and let $T(w)$ be the $n \times n$ Toeplitz matrix with the first column being $(1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1})^T$. Notice an alternate formulation of $\hat{\Sigma}_s$
 %
 \begin{equation} \label{eq:kyriakoulis}
     \hat{\Sigma}_s = \dfrac{1}{n}A_s^T T(w) A_s, \qquad \textrm{ where } A_s = \begin{pmatrix}
     Y_{s1} - \bar{Y}_s  & \dots & Y_{sn} - \bar{Y}_s
 \end{pmatrix}^T
 \end{equation}
+ \cite{heberle2017fast} compute the $n \times 1$ vector $T(w)A_s$  using an algorithm based on fast Fourier transforms. Let $w^* = (1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1}, ~0, ~w_{n-1}, \dots, w_1)^T$ and set $C(w^*)$ to be a symmetric circulant matrix such that $C(w^*)_{1:n, 1:n} = T(w)$.  With inputs $C(w^*)$ and $A_s$, Algorithm~\ref{algo:herberle} produces $\hat{\Sigma}_s$ exactly. For more details, see \cite{heberle2017fast}.
+ % Let $C(w^*) = V\Lambda V^*$ be the spectral decomposition of $C(w^*)$, then $\Lambda$ is determined by a discrete Fourier transform of the first column of $C(w^*)$. 
+% $A_s$ is extrapolated into a $2n \times p$ matrix $A_s^*$ by appending $n$ rows of $0$ vector to write Equation~\ref{eq:kyriakoulis} in the following form
+% \[
+%     \hat{\Sigma}_s = \dfrac{1}{n} A_s^T T(w) A_s = \dfrac{1}{n} A_s^T (C(w^*) A_s^*)_{1:n, :} = \dfrac{1}{n} A_s^T (V \Lambda V^* A_s^*)_{1:n, :}).
+% \]
+% Here $M_{1:r, \, 1:c}$ denotes the matrix truncation up to first $r$ rows and $c$ columns. 
 
-
-For computational efficiency, \cite{heberle2017fast} computed $T(w)A_s$ directly using an FFT based algorithm. The algorithm requires embedding $T(w)$ in a $2n \times 2n$ circulation matrix $C(w^*)$. We write the spectral decomposition of $C(w^*)$ as $V\Lambda V^*$ where the eigenvalues of $C(w^*)$ are given by the DFT of the first column of $C(w^*)$. $A_s$ is extrapolated into a $2n \times p$ matrix $A_s^*$ by appending $n$ rows of $0$ vector to write Equation~\ref{eq:kyriakoulis} in the following form
-\[
-    \hat{\Sigma}_s = \dfrac{1}{n} A_s^T T(w) A_s = \dfrac{1}{n} A_s^T (C(w^*) A_s^*)_{1:n, :} = \dfrac{1}{n} A_s^T (V \Lambda V^* A_s^*)_{1:n, :}).
-\]
-Here $M_{1:r, \, 1:c}$ denotes the matrix truncation up to first $r$ rows and $c$ columns. For our purpose, we center the chain $\{Y_{st}; \; t \in \mathbb{Z}\}$ around $\bar{\bar{Y}}$ instead of $\bar{Y}_s$ in Equation \ref{eq:kyriakoulis} for all $s \in \{1, ..., m\}$. Herberle's algorithm is then applied on the formulation
-
-\[
-\hat{\Sigma}_{G,s} = \dfrac{1}{n}B_s^T T(w) B_s \qquad \textrm{ where } B_s = 
-\begin{pmatrix}
-    Y_{s1} - \bar{\bar{Y}} \; \dots \; Y_{sn} - \bar{\bar{Y}}\end{pmatrix}^T.
-\]
-The complete algorithm leads to a tremendous reduction in time and storage requirements with a computational complexity of $\mathcal{O}(p n \log n)$. $B_s^*$ is constructed from $B_s$ in the similar way as $A_s^*$. In Algorithm~\ref{algo:herberle}, we use $v^{(i)}$ to denote the $i^{th}$ element of vector $v$ and $M_{(j)}$ to denote the $j^{th}$ column of matrix $M$. The algorithm is the following.
 
 \begin{algorithm}[htbp] 
+\KwIn{$C(w^*)$ and $A_s$}
 \DontPrintSemicolon
 \SetAlgoLined
-Construct $C(w^*) \textrm{ and } B_s^*$ from $\{Y_{st};\, t = 1, ...,\, n\}$.\\ 
-Compute $\Lambda$ by DFT of $C(w^*)_{(1)}$\;
-\For{$j = 1, 2, ..., p$}    
+% Construct $C(w^*) \textrm{ and } B_s^*$ from $\{Y_{st};\, t = 1, ...,\, n\}$.\\ 
+Compute eigenvalues $\lambda_i$ of  $C(w^*)_{(1)}$ using a discrete Fourier transform, $i = 1, \dots, 2n$\;
+Construct $2n \times p$ matrix $A^*_s = (A^T  \quad 0_{n \times q})^T$\;
+
+\For{$j = 1, 2, \dots, p$}    
     { 
-    Calculate $V^*B_s^{*_{(j)}}$ by FFT of $B^*_{s(j)}$.\;
-    Multiply $V^* B_{s(j)}^{*^{(i)}}$ with the eigenvalue $\lambda_i$ for all $i = 1, ..., 2n$ to construct $\Lambda V^* B_{s(j)}^*$.\;
-    Calculate $C(w^*)B^*_{s(j)} = V \Lambda V^* B_{s(j)}^*$ by inverse FFT of $\Lambda V^* B_{s(j)}^*$.\;
+    Calculate $V^*A_s^{*_{(j)}}$ by DFT of $A^*_{s(j)}$.\;
+    Multiply $V^* A_{s(j)}^{*^{(i)}}$ with the eigenvalue $\lambda_i$ for all $i = 1, ..., 2n$ to construct $\Lambda V^* A_{s(j)}^*$.\;
+    Calculate $C(w^*)A^*_{s(j)} = V \Lambda V^* A_{s(j)}^*$ by inverse FFT of $\Lambda V^* A_{s(j)}^*$.\;
     }
- Select the first $n$ rows of $C(w^*)B^*_s$ to form $T(w)B_s$.\;
- Premultiply by $B_s^T$ and divide by $n$.
- \caption{Herberle's Algorithm}
+ Select the first $n$ rows of $C(w^*)A^*_s$ to form $T(w)A_s$.\;
+ Premultiply by $A_s^T$ and divide by $n$.\;
+ \KwOut{$\hat{\Sigma}_s$}
+ \caption{\cite{heberle2017fast} Algorithm}
  \label{algo:herberle}
 \end{algorithm}
 
+
+% For our purpose, we center the chain $\{Y_{st}; \; t \in \mathbb{Z}\}$ around $\bar{\bar{Y}}$ instead of $\bar{Y}_s$ in Equation \ref{eq:kyriakoulis} for all $s \in \{1, ..., m\}$. Herberle's algorithm is then applied on the formulation
+We note a similar decomposition is possible for the G-SV estimator. Setting $B_s = (Y_{s1} - \bar{\bar{Y}} \; \dots \; Y_{sn} - \bar{\bar{Y}})^T$ and calling Algorithm~\ref{algo:herberle} with inputs $C(w^*)$ and $B_s$ yields $\hat{\Sigma}_{G,s}$. This algorithm has complexity $\mathcal{O}(p n \log n)$ and is thus orders of magnitude faster. Of particular importance is the fact that the bandwidth $b_n$ has close to no impact on the computation time.
 % subsubsection fast_implementation (end)
 
 \section{Effective sample size} \label{sec:ess}
 
-An important method of quantifying the simulation efforts is to simulate until a desired effective sample size (ESS) is obtained. The key motivation behind using ESS as a termination criteria is to stop the simulations when the variance of Monte Carlo average is small relative to the inherent variance in $g$ with respect to $F$ by a pre-specified factor. \cite{wilks:1932} suggests the determinant of a covariance matrix as a viable metric to understand the variance of a multivariate process and calls it \textit{generalized variance}. For a $p$-dimensional stationary Markov chain, let $\Lambda := \Var_F(Y_1))$. \cite{vats2019multivariate} use the ratio of generalized variances to give the following formulation for multivariate ESS (m-ESS):
-
+An important method of assessing the reliability of $\bar{\bar{Y}}$ in estimating $\mu_g$ is to simulate until a desired effective sample size (ESS) is obtained. ESS are number of independent and identically distributed samples that would yield the same Monte Carlo variability as this correlated sampler for estimating $\mu_g$. Let $|\cdot|$ denote determinant. A multiple chain version of the ESS as defined by \cite{vats2019multivariate} is
 \[
-\textrm{ESS} = n \left(\dfrac{\abs{\Lambda}}{\abs{\Sigma}}\right)^{1/p}\, .
+\textrm{ESS} = mn \left(\dfrac{|\Upsilon(0)|}{|\Sigma|}\right)^{1/p}\, .
 \]
 
-The simulation process is stopped once the ESS is greater than a pre-specified lower-bound $W_{p}$ which is function of dimension $p$ (see \cite{vats2019multivariate} for details). For a multi-modal target distribution, the single chain estimators for $\Sigma$ underestimate the true generalized variance; giving an unrealistic assurance of high ESS for a given $n$. 
-
+The simulation terminates when the ESS is greater than a pre-specified, theoretically motivated, lower-bound $W_{p}$. 
+% For a multi-modal target distribution, the single chain estimators for $\Sigma$ underestimate the true generalized variance; giving an unrealistic assurance of high ESS for a given $n$. 
+%
 In our setting of $m$ parallel chains of $n$ samples each, define
-
+%
 \[
-\hat{\Lambda}_{mn} = \dfrac{1}{m(n-1)}\sum_{s=1}^{m}\sum_{t=1}^{n}(Y_{st} - \bar{Y}_s)(Y_{st} - \bar{Y}_s)^T\, .
+\hat{\Lambda}_{mn} = \dfrac{1}{m(n-1)}\sum_{s=1}^{m}\sum_{t=1}^{n}(Y_{st} - \bar{Y}_s)(Y_{st} - \bar{Y}_s)^T\, ,
 \]
-We estimate the m-ESS by using the strongly consistent average G-SV estimator $\hat{\Sigma}_G$ for $\Sigma$ as
-
+and estimate ESS with
 \[
-\widehat{\textrm{ESS}}_G = mn\left(\dfrac{\abs{\hat{\Lambda}_{mn}}}{\abs{\hat{\Sigma}_{G}}}\right)^{1/p}\, .
+\widehat{\textrm{ESS}}_G = mn\left(\dfrac{|\hat{\Upsilon}(0)|}{|\hat{\Sigma}_{G}|}\right)^{1/p}\, .
 \]
+We use the locally-centered $\hat{\Upsilon}(0)$ to estimate $\Upsilon(0)$ instead of $\hat{\Upsilon}_G(0)$ when calculating ESS. Both $\hat{\Upsilon}(0)$ and $\hat{\Upsilon}_G(0)$ are consistent  for $\Upsilon(0)$; however using $\hat{\Upsilon}(0)$ produces lower sample sizes when the parallel chains do not agree, indicating that more MCMC draws are needed.
 
-For the sake of comparison, $\widehat{\textrm{ESS}}_A$ is constructed similarly using $\hat{\Sigma}_A$ instead of $\hat{\Sigma}_G$ to estimate $\Sigma$. We refrain from using the globally centered version of sample covariance matrix, i.e. $\hat{\Upsilon}(0)$ to estimate $\Lambda$ in both $\widehat{\textrm{ESS}}_A \textrm{ and } \widehat{\textrm{ESS}}_G $. This is because in practice, it is preferred to underestimate the ESS than do otherwise. Both $\hat{\Upsilon}(0)$ and $\hat{\Lambda}_{mn}$ converge to $\Lambda$; however $\abs{\hat{\Lambda}_{mn}}$ shall underestimate $\abs{\Lambda}$ in the beginning. We will compare $\widehat{\textrm{ESS}}_G$ to $\widehat{\textrm{ESS}}_A$ in the following Section.
+For the sake of comparison, $\widehat{\textrm{ESS}}_A$ is constructed similarly using $\hat{\Sigma}_A$ instead of $\hat{\Sigma}_G$ to estimate $\Sigma$.  
+% We will compare $\widehat{\textrm{ESS}}_G$ to $\widehat{\textrm{ESS}}_A$ in the following Section.
 
 % {\color{blue} Define $\Lambda_{mn}$ explicitly. Also first define what ESS is in truth, and then explain why we are not using $\hat{\Upsilon}_G(0)$. Also explain why ESS is critical since simulation is terminated when ESS $>$ M. Also do a "backslash text" for ESS, so that it looks like $\widehat{\text{ESS}}_G$}.
 
@@ -665,13 +664,18 @@ Figure~\ref{fig:sensor-acf} plots the locally and globally centered ACF estimato
 \section{Discussion} \label{sec:discussion}
 
 
-In case of slowly mixing Markov chains or multimodal target distributions, the traditional single chain empirical estimator for ACvF can excruciatingly underestimate the truth. This will have serious impact on estimation of lag covariances, large sample variance of Monte Carlo averages, and determining when to stop the simulation process. It has been concluded in the paper that all of this can be significantly avoided by sampling multiple chains starting from dispersed points and pooling in the information from all chains to build consistent estimators for $\Gamma(k)$, $\Sigma$, and ESS. We have derived the bias of G-ACvF. We have shown that not only G-ACvF is asymptotically unbiased but also counters the negative bias of single chain ACF estimator by an amount proportional to the number of chains $m$. We have also proved the strong consistency of G-SVE and derived its limiting bias and variance results. Although the asymptotic results for G-SVE match those for SVE in \cite{andr:1991}, finite sample advantages are observed in terms of better coverage probability and faster convergence to truth.  
+
+For slowly mixing Markov chains, the traditional single chain empirical estimator for ACvF can dramatically underestimate the truth. This has a severe impact on ACF plots, Monte Carlo variance, and stopping time of MCMC algorithms. We provide a globally-centered estimate of the ACvF that leads to improvements in all three aspects of MCMC output analysis.
+
+% It has been concluded in the paper that all of this can be significantly avoided by sampling multiple chains starting from dispersed points and pooling in the information from all chains to build consistent estimators for $\Gamma(k)$, $\Sigma$, and ESS. We have derived the bias of G-ACvF. We have shown that not only G-ACvF is asymptotically unbiased but also counters the negative bias of single chain ACF estimator by an amount proportional to the number of chains $m$. We have also proved the strong consistency of G-SVE and derived its limiting bias and variance results. Although the asymptotic results for G-SVE match those for SVE in \cite{andr:1991}, finite sample advantages are observed in terms of better coverage probability and faster convergence to truth.  
 
 
 
 % Calculation of exact ACF has been done for simple stationary stochastic models like autoregressive (AR) models (under assumption of stationarity), moving average (MA) (\cite{quenouille1947notes}), and autoregressive-moving-average (ARMA) (\cite{box2015time}) models. We have already shown the impact of G-ACF for VAR(1) model where the truth is known. This gives us sufficient reason to believe that similar advantage will be observed for all the other models mentioned above in case of slowly mixing chains. Comparison to truth will reveal similar behavior However, for most of the complex sampling algorithms (including MCMC), we rely on sample estimators for ACF. 
 
-For the purpose of experimentation in Section~\ref{sec:examples}, Bartlett lag window has been used throughout. Lag window comparisons done by \cite{andr:1991} reveal that quadratic spectral (QS) lag window gives consistently better coverage probabilities for any confidence interval. However, SVE gives poor coverage probability for all lag windows when the amount of autocorrelation is high in the Markov chain. Recently, \textit{lugsail} lag window has been proposed by \cite{vats2018lugsail} to deal with this issue by deliberately accentuating the autocovariance at smaller lags. We have refrained from doing lag window comparisons for G-SVE in our examples but we believe it can help improve the estimation quality significantly.
+In our simulations, we use the Bartlett lag window, which is convenient but not optimal. The untruncated quadratic spectral lag window of \cite{andr:1991} is known to be mean-squared optimal and could easily be used here to obtain $\hat{\Sigma}_G$. The quadratic spectral lag window is typically slow to compute, but by adapting  \citeauthor{heberle2017fast}'s algorithm, the implementation is similar to that of Bartlett's. 
+
+% Lag window comparisons done by  reveal that quadratic spectral (QS) lag window gives consistently better coverage probabilities for any confidence interval. However, SVE gives poor coverage probability for all lag windows when the amount of autocorrelation is high in the Markov chain. Recently, \textit{lugsail} lag window has been proposed by \cite{vats2018lugsail} to deal with this issue by deliberately accentuating the autocovariance at smaller lags. We have refrained from doing lag window comparisons for G-SVE in our examples but we believe it can help improve the estimation quality significantly.
 %
 
 Another class of estimators for asymptotic variance of Monte Carlo averages are the multivariate initial sequence (mIS) estimators \citep{dai:jon:2017}. Similar to SV estimator, lag-covariances form the fundamental part of mIS estimators. In case of multi-modal target distributions, single chain mIS estimator will suffer from the same drawbacks as SVE. In this paper, we have chiefly focused on the usage of G-ACvF for estimating autocovariances in SVE; however the argument for a similar usage in mIS is straightforward.  Following \cite{dai:jon:2017}, generalised variance estimates obtained from mIS consistently overestimate $\abs{\Sigma}$. From Theorem~\ref{th:G-ACF_bias}, one can prove that, on average, the eigenvalues of $\hat{\Gamma}_{G,s}(k)$ are greater than the eigenvalues of $\hat{\Gamma}_s(k)$. This supplies readers with sufficient motivation to believe that the generalized variance for mIS constructed from $\hat{\Gamma}_G(k)$ not only consistently overestimates $\abs{\Sigma}$ but also upper-bounds the mIS from empirical single chain estimator of $\Gamma(k)$ for finite samples. An valuable line of research would be to prove these observations and carry out the theoretical analysis of mIS estimators using G-ACvF. 

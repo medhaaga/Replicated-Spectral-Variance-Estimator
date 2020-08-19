@@ -176,11 +176,6 @@ Tjøstheim, D. (1990).
 \newblock {Lugsail lag windows and their application to {MCMC}}.
 \newblock {\em ArXiv e-prints}.
 
-\bibitem[Vats and Flegal, 2018]{vats2018lugsail}
-Vats, D. and Flegal, J.~M. (2018).
-\newblock Lugsail lag windows and their application to mcmc.
-\newblock {\em arXiv preprint arXiv:1809.04541}.
-
 \bibitem[Vats et~al., 2018]{vats:fleg:jon:2018}
 Vats, D., Flegal, J.~M., and Jones, G.~L. (2018).
 \newblock Strong consistency of multivariate spectral variance estimators in
@@ -202,11 +197,6 @@ Vats, D., Robertson, N., Flegal, J.~M., and Jones, G.~L. (2020).
 \newblock Analyzing {M}arkov chain {M}onte {C}arlo output.
 \newblock {\em Wiley Interdisciplinary Reviews: Computational Statistics},
   12:e1501.
-
-\bibitem[Wilks, 1932]{wilks:1932}
-Wilks, S.~S. (1932).
-\newblock Certain generalizations in the analysis of variance.
-\newblock {\em Biometrika}, pages 471--494.
 
 \bibitem[Zeidler, 2013]{zeid:2013}
 Zeidler, E. (2013).

@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex main"] 1597832558 "main.aux" "main.bbl" "main" 1597832559
+["bibtex main"] 1597840772 "main.aux" "main.bbl" "main" 1597840772
   "/usr/local/texlive/2015/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "main.aux" 1597832558 18388 661a24038578be10d73227334d9a11b0 ""
+  "main.aux" 1597840772 18272 8287891755f31e7f67b38d232f813da0 ""
   "main.bcf" 0 -1 0 ""
   "sample.bib" 1597558173 132145 1d8f1e5c7180381007f78096951733d8 ""
   (generated)
   "main.blg"
   "main.bbl"
-["pdflatex"] 1597832558 "main.tex" "main.pdf" "main" 1597832559
-  "./main.out" 1597832558 1483 b86884d6d4463f0f8c9525ce960560d8 ""
+["pdflatex"] 1597840772 "main.tex" "main.pdf" "main" 1597840772
+  "./main.out" 1597840772 1483 b86884d6d4463f0f8c9525ce960560d8 ""
   "./plots/boom-all_1_10_7.pdf" 1597829853 24365 2225ab0c29279396680181a76c8b9f44 ""
   "./plots/boom-all_1_3_8.pdf" 1597829853 20501 068f150aa471e5f74cad0cb26fee94ec ""
   "./plots/boom-ess_1_10_7_m5.pdf" 1597830017 8041 6cb773e905f9f6abaee3e5e4f9722d7d ""
@@ -132,10 +132,10 @@
   "/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1432479641 1764542 91654ba72bdb667e84ea24f076ae16d8 ""
   "/usr/local/texlive/2015/texmf-var/web2c/pdftex/pdflatex.fmt" 1432479681 3849859 39a7d258195bde2394e244961601fbc5 ""
   "/usr/local/texlive/2015/texmf.cnf" 1432479636 577 0d611272082f3cdb8e80e09a3c69cf07 ""
-  "main.aux" 1597832558 18388 661a24038578be10d73227334d9a11b0 ""
-  "main.bbl" 1597832558 8574 d2135e058584e0e51f78fbb0b1afff64 "bibtex main"
-  "main.out" 1597832558 1483 b86884d6d4463f0f8c9525ce960560d8 ""
-  "main.tex" 1597832557 115099 6212150d6b2e33aa7e3709db93cd8f9e ""
+  "main.aux" 1597840772 18272 8287891755f31e7f67b38d232f813da0 ""
+  "main.bbl" 1597840772 8216 9608904d621ad632164ec5e6a0222626 "bibtex main"
+  "main.out" 1597840772 1483 b86884d6d4463f0f8c9525ce960560d8 ""
+  "main.tex" 1597840770 115092 ec0a7dece7c586b708a91a59910b7144 ""
   "plots/boom-all_1_10_7.pdf" 1597829853 24365 2225ab0c29279396680181a76c8b9f44 ""
   "plots/boom-all_1_3_8.pdf" 1597829853 20501 068f150aa471e5f74cad0cb26fee94ec ""
   "plots/boom-ess_1_10_7_m5.pdf" 1597830017 8041 6cb773e905f9f6abaee3e5e4f9722d7d ""
@@ -160,7 +160,7 @@
   "plots/var-ess.pdf" 1597825961 8089 553ca221c9970fc827be385cc01b5241 ""
   "plots/var-frob.pdf" 1597825961 8020 100ddd896bc65a73c5f95101403626cf ""
   (generated)
+  "main.aux"
   "main.log"
   "main.out"
   "main.pdf"
-  "main.aux"
