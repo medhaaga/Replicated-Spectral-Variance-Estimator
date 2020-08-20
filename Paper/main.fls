@@ -168,6 +168,14 @@ INPUT ./plots/var-acf_n1000.pdf
 INPUT plots/var-acf_n10000.pdf
 INPUT ./plots/var-acf_n10000.pdf
 INPUT ./plots/var-acf_n10000.pdf
+INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
+INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
+INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
+INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm
+INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam5.tfm
+INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
+INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
+INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
 INPUT plots/var-frob.pdf
 INPUT ./plots/var-frob.pdf
 INPUT ./plots/var-frob.pdf
@@ -186,12 +194,6 @@ INPUT ./plots/boom-ess_1_3_8_m5.pdf
 INPUT plots/boom-ess_1_10_7_m5.pdf
 INPUT ./plots/boom-ess_1_10_7_m5.pdf
 INPUT ./plots/boom-ess_1_10_7_m5.pdf
-INPUT plots/boom-frob_1_3_8_m5.pdf
-INPUT ./plots/boom-frob_1_3_8_m5.pdf
-INPUT ./plots/boom-frob_1_3_8_m5.pdf
-INPUT plots/boom-frob_1_10_7_m5.pdf
-INPUT ./plots/boom-frob_1_10_7_m5.pdf
-INPUT ./plots/boom-frob_1_10_7_m5.pdf
 INPUT plots/sensor-trace_loc1.pdf
 INPUT ./plots/sensor-trace_loc1.pdf
 INPUT ./plots/sensor-trace_loc1.pdf
