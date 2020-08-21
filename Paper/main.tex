@@ -143,14 +143,14 @@ Estimating $\Gamma(k)$ is critical to assessing the quality of the sampler and t
 \begin{equation} \label{eq:empirical_ACvF}
     \hat{\Gamma}_s(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}} \left(X_{st} - \bar{X}_s \right) \left(X_{s\, t+\abs{k}} - \bar{X}_s \right)^T\,.
 \end{equation}
-{\color{red} We need to figure out how we want to define autocovariance: with or without absolute value.}
+
 %
 % It is a known fact that most of the Markov chains obtained from practical MCMC algorithms are not stationary. Regardless, Equation~\ref{eq:empirical_ACvF} provides the empirical estimator for ACF at a particular lag for the Markov chain with any initial distribution (\cite{geyer2011introduction}).\\
 
 % Calculation of exact ACF has been done for simple stationary stochastic models like autoregressive (AR) models (under assumption of stationarity), moving average (MA) (\cite{quenouille1947notes}), and autoregressive-moving-average (ARMA) (\cite{box2015time}) models. However, for most of the complex sampling algorithms (including MCMC), we rely on sample estimators for ACF. Unfortunately, the estimator given in Equation~\ref{eq:empirical_ACvF} has been observed to have a some drawbacks. Firstly, it is not immune to outliers (see \cite{ma2000highly}) and secondly, it is usually non-informative in case of slowly mixing Markov chains. 
 For single-chain MCMC runs, the estimator $\hat{\Gamma}(k)$ is used to construct autocorrelation (ACF) plots, to estimate the long-run variance of Monte Carlo estimators \cite{hannan:1970,dame:1991}, and to estimate effective sample size for an estimation problem \cite{kass:carlin:gelman:neal:1998,gong:fleg:2016,vats:fleg:jon:2019}. 
 
-However, there is no unified approach to constructing estimators of $\Gamma(k)$ for multiple-chain implementations. Specifically, parallel MCMC chains are often spread across the state space so as to adequately capture high density areas. For slow mixing Markov chains and multi-modal targets, the chains take time to traverse the space so that estimates of $\mu$ can be vastly different. The sample ACvF from each chain is typically underestimated yielding false sense of security about the quality of process.
+However, there is no unified approach to constructing estimators of $\Gamma(k)$ for multiple-chain implementations. Specifically, parallel MCMC chains are often spread across the state space so as to adequately capture high density areas. For slow mixing chains and multi-modal targets, the chains take time to traverse the space so that estimates of $\mu$ are vastly different. The ACvF from each chain is typically underestimated yielding false sense of security about the quality of process.
 
 % We address the second issue in this paper by using multiple representative samples of the target distribution via parallel Markov chains. This approach is especially relevant to MCMC wherein multiple chain sampling is computationally possible and statistically desirable for making informative inferences. Our goal is to pool in the information from all the Markov chains while estimating the autocovariances. 
 
@@ -212,9 +212,7 @@ Recall that we run $m$ independent $F$-ergodic Markov chains denoted by $\{X_{st
     \hat{\Gamma}_{G,s}(k) = \dfrac{1}{n} \sum_{t=1}^{n-k}(X_{st}-\bar{\bar{X}})(X_{s(t+k)}-\bar{\bar{X}})^T,
 \end{equation}
 
-In the event that all $m$ Markov chains have been run long enough that $\bar{X}_s \approx \bar{\bar{X}}$ are similar, then  $\hat{\Gamma}_{s} (k) \approx \hat{\Gamma}_{G,s}(k)$. However, for shorter runs or for slow mixing chains, $\Gamma(k)$ is more appropriately estimated by $\hat{\Gamma}_{G,s}$ as it utilizes information from all chains and accounts for disparity between estimates of $\mu$. We quantify the gains in  bias  for the G-ACvF estimator below.
-% If the starting points of these parallel Markov chains are sufficiently dispersed, G-ACF provides more realistic estimation of lag covariances. \cite{priestley1981spectral} shows that the empirical estimator in Equation \ref{eq:empirical_ACvF} is biased with the main bias term equal to $\abs{k}\Gamma(k)/n$, ignoring the small order terms arising due to estimation of $\mu$. Though, an unbiased estimator with a divisor of $n - \abs{k}$ instead of $n$ exists, the biased estimator is preferred for its lower mean square error for larger relative $k$  (\cite{priestley1981spectral})
-Let 
+In the event that all $m$ Markov chains have been run long enough that $\bar{X}_s \approx \bar{\bar{X}}$ are similar, then  $\hat{\Gamma}_{s} (k) \approx \hat{\Gamma}_{G,s}(k)$. However, for shorter runs or for slow mixing chains, $\Gamma(k)$ is more appropriately estimated by $\hat{\Gamma}_{G,s}$ as it utilizes information from all chains and accounts for disparity between estimates of $\mu$. We quantify the gains in  bias  for the G-ACvF estimator below. Let 
 \[
 \Phi^{(q)} = \sum_{ k= -\infty}^{\infty}\abs{k}^q \Gamma(k)\,,
 \]
@@ -230,7 +228,6 @@ and consequently,
 \]
 \end{theorem}
 
-{\color{orange}MA: I corrected the RHS for the abover equation. Or did you mean to write $\mathbb{E}_F\left[\hat{\Gamma}_{G,s}(k) - \Gamma(k) \right]as LHS?$} 
 
 \begin{remark}
 Polynomial ergodicity and the moment conditions are required to ensure $\Phi$ and $\Sigma$ are finite. The above result can be stated more generally for $\alpha$-mixing processes, but we limit our attention to Markov chains. 
@@ -273,15 +270,13 @@ $\mu_g = \mathbb{E}_F[g(X)]$.
 % \mu_g = \mathbb{E}_F[g(X)] = \int_{\X}g(x)F(dx)\;.
 % \]
  % 
-Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for all $s = 1, \dots, m$. Let $\bar{Y}_s = n^{-1}\sum_{t=1}^{n}Y_{st}$  and  $\bar{\bar{Y}} = m^{-1}\sum_{s=1}^{m}\bar{Y}_s$. By Birkhoff's ergodic theorem,  $\bar{\bar{Y}} \to \mu_g$ as $n \to \infty$ with probability 1.
-
-An asymptotic sampling distribution may be available via a Markov chain central limit theorem (CLT) if there exists a $p \times p$ positive-definite matrix $\Sigma$ such that
+Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for all $s = 1, \dots, m$. Let $\bar{Y}_s = n^{-1}\sum_{t=1}^{n}Y_{st}$  and  $\bar{\bar{Y}} = m^{-1}\sum_{s=1}^{m}\bar{Y}_s$. By Birkhoff's ergodic theorem,  $\bar{\bar{Y}} \to \mu_g$ as $n \to \infty$ with probability 1. An asymptotic sampling distribution may be available via a Markov chain central limit theorem (CLT) if there exists a $p \times p$ positive-definite matrix $\Sigma$ such that
 %
 \begin{equation}
 \label{eq:CLT}
-  \sqrt{mn}(\bar{\bar{Y}} - \mu_g) \xrightarrow{d} N(0,\Sigma)\,
+  \sqrt{mn}(\bar{\bar{Y}} - \mu_g) \xrightarrow{d} N(0,\Sigma)\, \quad \text{ where, }
 \end{equation}
-where
+% where
 \begin{equation}
 \label{eq:sigma}
   \Sigma = \sum_{k = -\infty}^{\infty} \Cov_F \left( Y_{11}, Y_{1(1+k)} \right) := \sum_{k = -\infty}^{\infty}\Upsilon (k)
@@ -322,9 +317,9 @@ To accurately estimate $\Sigma$, standard conditions are imposed on the lag wind
 
 \begin{ass}
 \label{ass:lag_window}
-The lag window $w(x)$ is continuous at $0$ at all but finite number of points. Further, $w(x)$ is a bounded and even function with $w(0)=1, \; {\color{red}\abs{w(x)} < c}$, \; $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $W = \sum_{k = -\infty}^{\infty} w(k/b_n)$ is finite.
+The lag window $w(x)$ is continuous at $0$ at all but finite number of points, is a bounded and even function with $w(0)=1$, \; $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $\sum_{k = -\infty}^{\infty} w(k/b_n) < \infty$.
 \end{ass}
-% We will consider a range of lag windows $w(x)$; where $w(x)$ is a continuous, even function with $w(0)=1, \abs{w(x)} < c$, $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $W_n < \infty$. 
+
 Assumption~\ref{ass:lag_window} is standard \citep[see]{ande:1971} and is satisfied by most lag windows. We will use the following popular Bartlett lag window in our simulations:
 \[
 w(x) = \begin{cases}
@@ -434,12 +429,12 @@ An important method of assessing the reliability of $\bar{\bar{Y}}$ in estimatin
 The simulation terminates when the ESS is greater than a pre-specified, theoretically motivated, lower-bound $W_{p}$. 
 % For a multi-modal target distribution, the single chain estimators for $\Sigma$ underestimate the true generalized variance; giving an unrealistic assurance of high ESS for a given $n$. 
 %
-In our setting of $m$ parallel chains of $n$ samples each, define
+In our setting of $m$ parallel chains of $n$ samples each, we
 %
-\[
-\hat{\Lambda}_{mn} = \dfrac{1}{m(n-1)}\sum_{s=1}^{m}\sum_{t=1}^{n}(Y_{st} - \bar{Y}_s)(Y_{st} - \bar{Y}_s)^T\, ,
-\]
-and estimate ESS with
+% \[
+% \hat{\Lambda}_{mn} = \dfrac{1}{m(n-1)}\sum_{s=1}^{m}\sum_{t=1}^{n}(Y_{st} - \bar{Y}_s)(Y_{st} - \bar{Y}_s)^T\, ,
+% \]
+ estimate ESS with
 \[
 \widehat{\textrm{ESS}}_G = mn\left(\dfrac{|\hat{\Upsilon}(0)|}{|\hat{\Sigma}_{G}|}\right)^{1/p}\, .
 \]
@@ -501,8 +496,8 @@ The quality of estimation of $\Sigma$ and $\text{ESS}$ is assessed by running pl
  In Figure~\ref{fig:var-frob_n_ess}, we present running plots of $\log(\|\hat{\Sigma}\|_F)$ for both $\hat{\Sigma}_G$ and $\hat{\Sigma}_A$ and the running plots of $\log(\widehat{\text{ESS}})$ for both  $\widehat{\text{ESS}}_G$ and $\widehat{\text{ESS}}_A$. It is evident that the locally centered estimator of $\Sigma$ severely underestimates the truth, leading to an overestimation of ESS. The GSV estimator is able to estimate $\Sigma$ more accurately early on, safeguarding against early termination using ESS. 
 \begin{figure}[htbp]
     \centering
-      \includegraphics[width = 2.2in]{plots/var-frob.pdf} 
-      \includegraphics[width = 2.2in]{plots/var-ess.pdf}         
+      \includegraphics[width = 2.0in]{plots/var-frob.pdf} 
+      \includegraphics[width = 2.0in]{plots/var-ess.pdf}         
     \caption{VAR(1). (Left) Running plot for logarithm of Frobenius norm of A-SV and G-SV.(Right) Running plot for logarithm of $\widehat{\textrm{ESS}}/mn$ using A-SV and G-SV.}
     \label{fig:var-frob_n_ess}
 \end{figure}
@@ -528,10 +523,10 @@ We run a deterministic scan Gibbs sampler to sample from this target using the f
 \end{align*}
 
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width = .8\textwidth]{plots/boom-all_1_3_8.pdf}\\
-    \includegraphics[width = .8\textwidth]{plots/boom-all_1_10_7.pdf}    
+    \includegraphics[width = .75\textwidth]{plots/boom-all_1_3_8.pdf}\\
+    \includegraphics[width = .75\textwidth]{plots/boom-all_1_10_7.pdf}    
     % \includegraphics[width = 0.6\textwidth ]{plots/boom-acf_1_10_7_n1000.pdf}
 
     \caption{Boomerang. Top row is Setting 1 and bottom row is Setting 2. Contour plots of the target distributions  overlaid with scatter plots for two chains for both settings.  Locally-centered ACF (middle) and G-ACF (right) plots for one chain for $n = 1000$ with the blue line being the respectie ACF at $n = 10^4$.  }
@@ -547,7 +542,7 @@ $A = 1,\; B = 3,\; C = 8$ which results in well-separated models. In setting 2, 
 
 
 
-\begin{table}[h]
+\begin{table}[htbp]
 \parbox{.45\linewidth}{
 \centering
 \small
@@ -589,10 +584,10 @@ $A = 1,\; B = 3,\; C = 8$ which results in well-separated models. In setting 2, 
 
 The true mean of the target distribution can be obtained using numerical approximation. Using this and both the A-SV and G-SV estimators, we construct $95\%$ confidence regions and report coverage probabilities for 1000 replications for both $m=2$ and $m=5$. Table \ref{tab:boom-coverage_1}, \ref{tab:boom-coverage_2} reports all  results. In setting 1, systematically, the G-SV estimator yields far superior coverage than the A-SV estimator for all values of $n$. Whereas for setting 2, the results are almost similar indicating the equivalence of A-SV and G-SV for fast mixing Markov chains.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
-      \includegraphics[width = .35\textwidth]{plots/boom-ess_1_3_8_m5.pdf}
-      \includegraphics[width = .35\textwidth]{plots/boom-ess_1_10_7_m5.pdf}          
+      \includegraphics[width = .30\textwidth]{plots/boom-ess_1_3_8_m5.pdf}
+      \includegraphics[width = .30\textwidth]{plots/boom-ess_1_10_7_m5.pdf}          
 
     \caption{Boom: Running plot of $\log (\widehat{\text{ESS}}_A )/mn$ and $\log (\widehat{\text{ESS}}_G )/mn$ with $m = 5$ for Setting 1 (left) and Setting 2 (right).}
     \label{fig:boom-ess}
@@ -617,38 +612,27 @@ In Figure~\ref{fig:boom-ess} we present running plots of estimates of $\log \tex
 
 \subsection{Sensor Network Localization}
 
-For our third example, we consider a real-life example of sensor locations previously discussed by \cite{ihler2005nonparametric}. The goal is to identify unknown sensor locations using noisy distance data. This problem is specifically interesting in our case because the marginal posterior distribution for missing sensor locations is multi-modal for all locations. 
-
-Following \cite{tak2018repelling}, we assume that there are six sensors scattered on a planar region where $x_i = (x_{i1}, x_{i2})^T$ denote the $2d$ coordinates of $i^{th}$ sensor. Let $y_{ij} = (y_{ji})$ denote the distance between the sensors $x_i$ and $x_j$. The distance between $x_i$ and $x_j$ is observed with probability $\pi (x_i, x_j) = \exp{\|x_i - x_j\|^2 / 2R^2}$ and with a Gaussian measurement error of $\sigma^2$. Let $z_{ij}$ denote the indicator variable which is equal to 1 when the distance between $x_i$ and $x_j$ is observed. The probability model is then,
+Consider the sensor network localization problem discussed in \cite{ihler2005nonparametric}. The goal is to identify unknown sensor locations using noisy distance data. We use the data
+% This problem is specifically interesting in our case because the marginal posterior distribution for missing sensor locations is multi-modal for all locations. 
 %
+We use the data and the model as specified by \cite{tak2018repelling}. There are four sensors scattered on a planar region where $x_i = (x_{i1}, x_{i2})^T$ denotes the coordinates of the $i${th} sensor. Let $y_{ij} = (y_{ij})$ denotes the distance between the sensors $x_i$ and $x_j$ and if observed yields $z_{ij} = 1$, otherwise, $z_{ij} = 0$. The complete model is then,
 \begin{align*}
-    z_{ij} \mid x_1, ..., x_6 & \sim \text{Bernoulli}\left(\exp\left(\dfrac{-\|x_i - x_j\|^2}{2R^2}\right)\right)\\
-    y_{ij} \mid w_{ij} = 1, x_1, ..., x_6 &\sim N(\|x_i - x_j\|^2, \sigma^2)
+    z_{ij} \mid x_1, ..., x_4 & \sim \text{Bernoulli}\left(\exp\left(\dfrac{-\|x_i - x_j\|^2}{2R^2}\right)\right)\\
+    y_{ij} \mid z_{ij} = 1, x_i,x_j &\sim N(\|x_i - x_j\|^2, \sigma^2)
 \end{align*}
 %
-\cite{ahn2013distributed} suggested the value of $R = 0.3$ and $\sigma = 0.02$. We use a Gaussian prior for the unknown locations with  mean equal to $(0,0)$ and covariance matrix equal to $100 I_2$. $y_{ij}$ is specified only if $w_{ij} = 1$. We follow the Markov chain structure as described by \cite{tak2018repelling} and sample from the four bivariate conditionals for each sensor location using a Gibbs sampler. In their paper on Repelling Attractive Metropolis (RAM) algorithms, \cite{tak2018repelling} compare the performance of different sampling techniques and show that RAM improves the acceptance rate by a factor of at least 5.5 over Metropolis using the same jumping scale. RAM algorithm supplies Markov chains with higher jumping frequency between the modes.
+\cite{tak2018repelling} set $R = 0.3$ and $\sigma = 0.02$ and use a Gaussian prior for the unknown locations with  mean equal to $(0,0)$ and covariance matrix equal to $100 I_2$. $y_{ij}$ is specified only if $w_{ij} = 1$. The resulting $8$-dimensional posterior of $(x_1, \dots, x_4)$ is intractable with unknown full conditionals. A Metropolis-within-Gibbs type sampler is implemented with each full conditional employing the repelling attractive Metropolis (RAM) algorithm of \cite{tak2018repelling}. The RAM algorithm supplies Markov chains with higher jumping frequency between the modes.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width = .32\textwidth]{plots/sensor-trace_loc1.pdf}
       \includegraphics[width = .32\textwidth]{plots/sensor-acf_n5e3.pdf}
       \includegraphics[width = .32\textwidth]{plots/sensor-acf_n5e4.pdf}    
-    \caption{Sensor: Trace plots for $x$ (left) and $y$ (right) coordinate of sensor location-1.}
+    \caption{Sensor: Trace plot of $x_{11}$ (left). Locally-centered ACF (solid orange) and G-ACF (solid blue) at $n = 5000$ (middle) and $n = 50000$ (right). Dashed lines are single-chain estimated ACFs.}
     \label{fig:sensor-trace}
 \end{figure}
 
-This is an 8-dimensional estimation problem where the components corresponds to x and y coordinates of four unknown sensor locations. We will use the RAM algorithm with a jumping scale equal to $0.5$ to sample five parallel Markov chains with well-separated starting points. The total simulation size for each chain is fixed at $100,000$. Since the truth about actual mean and asymptotic variance is not known in this case, we are not interested in coverage probabilities.
 
-To illustrate the \textit{sticky} nature of the Markov chains, we plot the evolution of two chains (starting near different modes) with time. Figure~\ref{fig:sensor-trace} shows the trace plot of x and y coordinate of sensor location-1. It is evident that the marginal posterior for both the components is bimodal. Similarly, the other three locations also have a bimodal marginal distribution in each component.  Observe that each chain explores one particular mode for a long time before jumping to another mode.
-
-% \begin{figure}[h]
-%     \centering
-%       \includegraphics[width = .33\textwidth]{plots/sensor-acf_n5e3.pdf}
-%       \includegraphics[width = .33\textwidth]{plots/sensor-acf_n5e4.pdf}
-
-%     \caption{Sensor: ACF (orange) and G-ACF (blue) for individual chains (dotted lines) and average over all chains (solid line) for $n = 5000$ (left) and $n = 50000$ (right).}
-%     \label{fig:sensor-acf}
-% \end{figure}
 
 \begin{figure}
     \centering
@@ -659,7 +643,7 @@ To illustrate the \textit{sticky} nature of the Markov chains, we plot the evolu
     \label{fig:sensor-frob_n_ess}
 \end{figure}
 
-Figure~\ref{fig:sensor-acf} plots the locally and globally centered ACF estimators for individual chains  as well as the average over all the chains. The thick solid line plots the averaged estimator and the thin dotted lines correspond to ACF calculated using single chains. Figure~\ref{fig:sensor-frob_n_ess} presents the running plot of $\log \|{\Sigma}\|_F$ and $\log \textrm{ESS}/mn$ estimated using A-SVE and G-SVE along with standard errors from $10$ replications for each value of $n$. In both the plots, G-SVE and $\widehat{\textrm{ESS}}_G/mn$ reach the convergence value faster.
+We run $m = 5$ parallel Markov chains with well-separated starting points. The total simulation size for each chain is fixed at $10^5$. Coverage probabilities are not estimable since the true posterior mean is unknown. Trace plot of $x_{11}$ for two Markov chains is shown in Figure~\ref{fig:sensor-trace}. Figure~\ref{fig:sensor-trace} also  plots locally and globally centered ACFs. As seen in previous examples, early estimates of locally-centered ACFs are must smaller than later estimates. The globally-centered ACFs, on the other hand are similar at small and large sample sizes. Figure~\ref{fig:sensor-frob_n_ess} presents the running plot of $\log \|{\Sigma}\|_F$ and $\log \textrm{ESS}/mn$ using A-SV and G-SV  estimators along with standard errors from $10$ replications. In both the plots, G-SV and $\widehat{\textrm{ESS}}_G/mn$ reaches stability significantly earlier than A-SV.
 
  
 \section{Discussion} \label{sec:discussion}
@@ -1285,18 +1269,17 @@ Consider the militarized interstate dispute (MID) data of \cite{martin2011mcmcpa
     p_{ii} &\sim \text{Beta}(\alpha, \beta), \qquad i = 1,..., k\,.
 \end{align*}
 
-\begin{figure}[h]
+This is a 7-dimensional estimation problem wherein the marginal distribution of majority of components display a multimodal nature. Figure~\ref{fig:poisson-trace} shows the evolution of two chains started from random points with time for the second component. We will report the ACF plots for component-2. Similar behavior is observed for ACF plots of other components as well
+
+\begin{figure}[htbp]
     \centering
     \includegraphics[width = 0.7\textwidth]{plots/poisson-trace_n50000.pdf}
     \caption{Trace plot for second (left) and third (right) component of two chains started from random points.The two colors denote the two different chains.}
     \label{fig:poisson-trace}
 \end{figure}
-
-This is a 7-dimensional estimation problem wherein the marginal distribution of majority of components display a multimodal nature. Figure~\ref{fig:poisson-trace} shows the evolution of two chains started from random points with time for the second component. We will report the ACF plots for component-2. Similar behavior is observed for ACF plots of other components as well
-
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
-      \includegraphics[width = .6\textwidth]{plots/poisson-acf_n1000.pdf}    
+      \includegraphics[width = .6\textwidth]{plots/poisson-acf_n1000.pdf}  \\ \vspace{-.5cm}
       \includegraphics[width = .6\textwidth]{plots/poisson-acf_n10000.pdf}      
     \caption{Change point: ACF (left) and G-ACF (right) for individual chains and average over $m$ chains for $n = 1000$ (left) and $n = 10000$ (right).}
     \label{fig:poisson-acf}
@@ -1314,9 +1297,9 @@ The \texttt{faux.magnolia.high} dataset available in the \texttt{ergm} \texttt{R
 
 The goal is to draw nodes uniformly from the network by using a network crawler. \cite{nilakanta2019ensuring} modified the data by removing 1,022 out of 1,461 nodes to obtain a well-connected graph. This resulting social network has 439 nodes and 573 edges. We use a Metropolis-Hastings algorithm with a simple random-walk  proposal suggested by \cite{gjoka2011practical}. Each node is associated with five features namely - degree of connection, cluster coefficient, grade, binary sex indicator (1 for female, 0 for male), and binary race indicator (1 for white, 0 for others)
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
-      \includegraphics[width = .6\textwidth]{plots/magnolia-acf_n100.pdf}
+      \includegraphics[width = .6\textwidth]{plots/magnolia-acf_n100.pdf}\\ \vspace{-.5cm}
       \includegraphics[width = .6\textwidth]{plots/magnolia-acf_n1000.pdf}
 
     \caption{Crawling: ACF (left) and G-ACF (right) for individual chains and average over $m$ chains for $n = 1000$ (left) and $n = 10000$ (right).}
