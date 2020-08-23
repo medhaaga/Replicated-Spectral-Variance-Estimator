@@ -1,6 +1,5 @@
 \documentclass[11pt]{article}
-% We can write notes using the percent symbol!
-% The first line above is to announce we are beginning a document, an article in this case, and we want the default font size to be 12pt
+
 % \usepackage[utf8]{inputenc}
 
 % This is a package to accept utf8 input.  I normally do not use it in my documents, but it was here by default in Overleaf.
@@ -21,7 +20,7 @@
 \newcommand{\X}{\mathcal{X}}
 \newcommand{\B}{\mathcal{B}}
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
-% These three packages are from the American Mathematical Society and includes all of the important symbols and operations 
+
 \usepackage{fullpage}
 \usepackage{comment}
 \usepackage[linesnumbered, ruled]{algorithm2e}
@@ -54,7 +53,7 @@
   Dept. of Mathematics and Statistics\\
   IIT Kanpur\\
   \texttt{medhaaga@iitk.ac.in} \and
- Dootika Vats \\
+ Dootika Vats\footnote{Corresponding author}\\
   Dept.of Mathematics and Statistics\\
   IIT Kanpur\\
   \texttt{dootika@iitk.ac.in}
@@ -72,103 +71,33 @@ Autocovariances are the fundamental quantity in many features of Markov chain Mo
 \end{abstract}
 
 
-% {\color{blue} Main things to change
-% \begin{itemize}
-%   \item I don't want to call this ``Replicated autocovariance'' or ``Replicated spectral variance''. I think ``Globally-centered autocovariance'' is more appropriate and self-explanatory. So we will have to go over the whole document and change this.
-
-%   \item The contents are a bit messy right now, and I am having trouble organizing my thoughts. 
-
-% \end{itemize}
-
-% A rough outline of the organization
-% \begin{enumerate}
-%   \item Introduction, with a sneak peak at new plots. Change this example to a univariate mixture of Gaussians.:
-
-%     Here, we will just explain the problem with the old ACF and what happens by using the new ACF. We will show a plot to illustrate the impact. Then we will summarize the three places this will have an impact: (1) ACF plots (2) estimators of the asymptotic variance-covariance matrix (3) estimating effective sample size.
-
-%   \item Globally-centered autocovariance
-%     \begin{itemize}
-%       \item Theoretical soundness
-%     \end{itemize}
-
-%   \item Variance of Monte Carlo averages
-
-%     Describe MC averages and CLT here and not before
-%     \begin{itemize}
-%       \item Globally-centered Spectral variance estimators
-%       \begin{itemize}
-%         \item Theoretical results
-%         \item Fast implementation
-%       \end{itemize}
-%     \end{itemize}
-
-%   \item Effective sample size
-
-%   \item Examples
-
-%   \item Discussion
-%     \begin{itemize}
-%       \item All plots have been made using the package:(name). The package can be found on GitHub.
-%       \item One thing to discuss is that the new autocovariances can be used in the initial sequence estimators as well.
-%     \end{itemize}
-
-%   \item Appendix
-%     \begin{itemize}
-%       \item Proofs
-%       \item ACF plots for other examples.
-%     \end{itemize}
-
-% \end{enumerate}
-% }
-% \newpage
-
 \section{Introduction} \label{sec:intro}
 
-The power of the modern personal computer has made it easy to run parallel Markov chain Monte Carlo (MCMC) implementations. This is particularly useful for slow mixing or multi-modal target distributions, where the starting points of the chains are spread over the state-space in order to capture characteristics of the target distribution more accurately. The output from $m$ parallel chains is then summarized, visually and quantitatively, to assess the empirical mixing properties of the chains and the quality of Monte Carlo estimators.
+Advancements in modern personal computing have made it easy to run parallel Markov chain Monte Carlo (MCMC) implementations. This is particularly useful for slow mixing Markov chains where the starting points of the chains are spread over the state-space in order to more accurately capture characteristics of the target distribution. The output from $m$ parallel chains is then summarized, visually and quantitatively, to assess the empirical mixing properties of the chains and the quality of Monte Carlo estimators.
 
-A key quantity of interest that drives MCMC output analysis is the autocovariance function (ACvF). From their use in autocorrelation plots to assessing Monte Carlo variability of estimates, to determining when to stop MCMC simulation, autocovariances drive many visual and quantitative inferences users make from MCMC output. However, tools on estimating ACvF are largely constructed for output from one MCMC chain. {\color{blue} a little bit more here}.
+A key quantity that drives MCMC output analysis is the autocovariance function (ACvF). From their use in autocorrelation (ACF) plots to assessing Monte Carlo variability of estimators, to determining when to stop MCMC simulation, autocovariances drive many visual and quantitative inferences from MCMC output. However, estimators of ACvF are only available for single-chain implementations, with multiple-chain obtained by naive averaging. As we will demonstrate, this defeats the purpose of running parallel Markov chains from dispersed starting values.
+ 
 
-% Markov chain Monte Carlo (MCMC) is a sampling method used to obtain serially correlated realizations from a desired probability distribution when i.i.d. sampling is difficult. Due to this serial correlation in samples, a larger number of MCMC samples are required to make inferences about the target distribution as compared to the independent ones. Therefore, it becomes imperative for an MCMC practitioner to have an idea about the underlying dependence structure in the Markov chains. Autocovariance function (ACF) characterizes this dependence at a particular lag $k$. 
-
-Let $F$ be the target distribution with mean $\mu$ defined on the set $\X \subseteq \mathbb{R}^p$ equipped with a countably generated Borel $\sigma$-field $\mathcal{B}(\X)$. For $s = 1, \dots, m$, let $\{X_{st}; \; t \in \mathbb{Z}\}$ be the $s^{th}$ $F$-Harris ergodic stationary Markov chain \citep[see][for definitions]{meyn:twee:2009} employed to learn characteristics about $F$.
-% If $\bar{X} = n^{-1} \sum_{t=1}^{n}X_t$ , then with probability 1, $\bar{X} \to \mu_g$ as $n \to \infty$. \\
-The process is covariance stationary so that
-the ACvF at lag $k$ depends only on $k$ and is defined as 
+Let $F$ be the target distribution with mean $\mu$ defined on a space $\X \subseteq \mathbb{R}^d$ equipped with a countably generated $\sigma$-field $\mathcal{B}(\X)$. For $s = 1, \dots, m$, let $\{X_{st}\}_{t\geq1}$ be the $s${th} Harris ergodic $F$-invariant Markov chain \citep[see][for definitions]{meyn:twee:2009} employed to learn characteristics about $F$. The process is covariance stationary so that
+the ACvF at lag $k$ is defined as 
 %
 \[
     \Gamma(k) = \Cov_F(X_{s1}, X_{s\,1+k})= \mathbb{E}_F \left[(X_{s1} - \mu)(X_{s\,1+k} - \mu)^T \right]\,.
 \]
-Estimating $\Gamma(k)$ is critical to assessing the quality of the sampler and the quality of sample statistics. Let $\bar{X}_s = n^{-1} \sum_{t=1}^{n} X_{st}$ denote the Monte Carlo estimator of $\mu$ from the $s$th chain. The standard estimator for $\Gamma(k)$ is the sample autocovariance matrix at lag $k$. For the $s$th chain, it is given by
+Estimating $\Gamma(k)$ is critical to assessing the quality of the sampler and the reliability of Monte Carlo estimators. Let $\bar{X}_s = n^{-1} \sum_{t=1}^{n} X_{st}$ denote the Monte Carlo estimator of $\mu$ from the $s$th chain. The standard estimator for $\Gamma(k)$ is the sample autocovariance matrix at lag $k \geq 0$:
 %
 \begin{equation} \label{eq:empirical_ACvF}
-    \hat{\Gamma}_s(k) = \dfrac{1}{n}\sum_{t=1}^{n-\abs{k}} \left(X_{st} - \bar{X}_s \right) \left(X_{s\, t+\abs{k}} - \bar{X}_s \right)^T\,.
+    \hat{\Gamma}_s(k) = \dfrac{1}{n}\sum_{t=1}^{n-k} \left(X_{st} - \bar{X}_s \right) \left(X_{s\, t + k} - \bar{X}_s \right)^T\,,
 \end{equation}
+and for $k < 0$, $\hat{\Gamma}_s(k) = \hat{\Gamma}_s(-k)^T$. For single-chain MCMC runs, the estimator $\hat{\Gamma}_s(k)$ is used to construct ACF plots, to estimate the long-run variance of Monte Carlo estimators \cite{hannan:1970,dame:1991}, and to estimate effective sample size (ESS) \cite{kass:carlin:gelman:neal:1998,gong:fleg:2016,vats:fleg:jon:2019}. However, there is no unified approach to constructing estimators of $\Gamma(k)$ for multiple-chain implementations. Specifically, parallel MCMC chains are often spread across the state space so as to adequately capture high density areas. For slow mixing chains, the chains take time to traverse the space so that $\bar{X}_s$  are all vastly different. Consequently, $\hat{\Gamma}_s$ typically underestimates $\Gamma$ leading to a false sense of security about the quality of process.
 
-%
-% It is a known fact that most of the Markov chains obtained from practical MCMC algorithms are not stationary. Regardless, Equation~\ref{eq:empirical_ACvF} provides the empirical estimator for ACF at a particular lag for the Markov chain with any initial distribution (\cite{geyer2011introduction}).\\
 
-% Calculation of exact ACF has been done for simple stationary stochastic models like autoregressive (AR) models (under assumption of stationarity), moving average (MA) (\cite{quenouille1947notes}), and autoregressive-moving-average (ARMA) (\cite{box2015time}) models. However, for most of the complex sampling algorithms (including MCMC), we rely on sample estimators for ACF. Unfortunately, the estimator given in Equation~\ref{eq:empirical_ACvF} has been observed to have a some drawbacks. Firstly, it is not immune to outliers (see \cite{ma2000highly}) and secondly, it is usually non-informative in case of slowly mixing Markov chains. 
-For single-chain MCMC runs, the estimator $\hat{\Gamma}(k)$ is used to construct autocorrelation (ACF) plots, to estimate the long-run variance of Monte Carlo estimators \cite{hannan:1970,dame:1991}, and to estimate effective sample size for an estimation problem \cite{kass:carlin:gelman:neal:1998,gong:fleg:2016,vats:fleg:jon:2019}. 
-
-However, there is no unified approach to constructing estimators of $\Gamma(k)$ for multiple-chain implementations. Specifically, parallel MCMC chains are often spread across the state space so as to adequately capture high density areas. For slow mixing chains and multi-modal targets, the chains take time to traverse the space so that estimates of $\mu$ are vastly different. The ACvF from each chain is typically underestimated yielding false sense of security about the quality of process.
-
-% We address the second issue in this paper by using multiple representative samples of the target distribution via parallel Markov chains. This approach is especially relevant to MCMC wherein multiple chain sampling is computationally possible and statistically desirable for making informative inferences. Our goal is to pool in the information from all the Markov chains while estimating the autocovariances. 
-
- % A commonly faced problem with the MCMC models is the slow mixing property. Especially in case of multi modal target distributions, it has been observed that the Markov chains tend to get \textit{stuck} in a particular mode for a long time. In such situations, single chain empirical ACF will severely underestimate the autocovariance. 
- We propose a globally-centered ACvF (G-ACvF) that centers the Markov chain around the overall mean vector from all $m$ chains. We show that the bias under stationarity for G-ACvF is lower than $\hat{\Gamma}(k)$, and through various examples, empirically demonstrate improved estimation. We employ the G-ACvF estimators to construct autocorrelation plots, which leads to remarkable improvements. A demonstrative example is at the end of this Section. 
+ We propose a globally-centered estimator of ACvF (G-ACvF) that centers the Markov chain around the overall mean vector from all $m$ chains. We show that the bias under stationarity for G-ACvF is lower than $\hat{\Gamma}_s(k)$, and through various examples, empirically demonstrate improved estimation. We employ the G-ACvF estimators to construct ACF plots, which leads to remarkable improvements. A demonstrative example is at the end of this Section. 
 
 
 % We will further study the impact of G-ACF in calculation of two important applications of ACF (1) asymptotic variance of Markov chain average and (2) effective sample size (ESS).
  
-ACvFs are required to estimate the long-run variance of Monte Carlo averages. Specifically, spectral variance estimators are used to estimate $\Sigma = \sum_{k=-\infty}^{\infty} \Gamma(k)$. We replace $\hat{\Gamma}(k)$ with G-ACvF in spectral variance estimators (SVE) and show strong consistency of this estimator under weak conditions. In the spirit of \cite{andr:1991}, we also obtain large-sample bias and variance of the resulting estimator of $\Sigma$. Spectral variance estimators can be slow to prohibitively expensive to calculate \citep{liu:fleg:2018}. To relieve the computational burden, we adapt the fast algorithm of \cite{heberle2017fast} for G-ACvFs that dramatically reduces computation time. The globally-centered spectral variance estimator (G-SVE) is employed in the computation of effective sample size through the estimator given by \cite{vats2019multivariate}. We will show that using G-SVE for estimating $\Sigma$ safeguards us against early termination of the MCMC process and improves the reliability of estimators. 
-
-
-% Let $g: \X \to \mathbb{R}^d$ be an F-integrable function and suppose we are interested in estimating the expected value $\mu_g = \mathbb{E}_F[g(X)]$. We know that $\sum_{t=1}^{n}g(X_t)/n$ converges to $\mu_g$ as $n \to \infty$ almost surely. MCMC ensures asymptotic convergence, however this is not practically very useful where the number of samples is finite and the Markov chain mixes slowly. 
-% One of the important criteria to determine the quality of estimation is the Monte Carlo aymptotic covariance matrix which is given by an infinite summation of autocovariance matrices for all lags. For a slowly mixing Markov chain, underestimated autocovariances will deliver underestimated asymptotic variance. There are many techniques for estimating it like batch means (BM), overlapping bath means (OBM), and spectral variance estimator (SVE). Due to its nice statistical properties, we will only focus on SVE in this paper. SVE involves a truncated and weighted sum of autocovariances. We propose a version of SVE that uses our globally centered autocovariances. We call this globally-centered SVE (G-SVE).
-
-% A more powerful estimator of Monte Carlo variability can enable us to estimate the effective sample size for the Markov chain which is closer to reality. There are many criteria for terminating simulation like fixed-time rule, sequencial fixed-volume rule (see \cite{glynn1992asymptotic}), and using Gelman Rubin diagnostics (\cite{gelman1992inference}). The relative fixed-volume rule has been thoroughly discussed for MCMC by \cite{flegal2015relative} and \cite{gong2016practical}. We will use method of effective sample size (ESS) by \cite{vats2019multivariate} for terminating the simulations. The quality of estimation of asymptotic covariance matrix is critical in estimation of the ESS. We will successfully show that the G-SVE estimates the truth better and prevents the premature stopping of Markov chain.
-
-% The rest of the paper is arranged as follows. In Section~\ref{sec:G-ACF} we introduce the new sample autocovariance estimator and calculate its bias for finite samples. We observe that the bias term for G-ACF is similar to the bias of empirical ACF except for a few small order end-effect terms that vanish as $n \to \infty$. In Section~\ref{sec:variance_est}, we introduce the globally-centered SVE and give a proof of strong consistency, bias, and variance calculations. We will elaborate on the estimator for ESS using G-SVE in Section~\ref{sec:ess}. Section~\ref{sec:examples} gives an experimental study on three different examples for the proposed estimators. All the important proofs are given in the Appendix. 
+Estimators of ACvFs are often needed to estimate the long-run variance of Monte Carlo averages. Specifically, spectral variance (SV) estimators  are used to estimate $\Sigma = \sum_{k=-\infty}^{\infty} \Gamma(k)$ \citep{andr:1991,dame:1991,fleg:jone:2010}. We replace $\hat{\Gamma}(k)$ with G-ACvF in SV estimators and demonstrate strong consistency under weak conditions. In the spirit of \cite{andr:1991}, we also obtain large-sample bias and variance of the resulting estimators. SV estimators can be prohibitively slow to  compute \citep{liu:fleg:2018}. To relieve the computational burden, we adapt the fast algorithm of \cite{heberle2017fast} for G-ACvFs that dramatically reduces computation time. The globally-centered spectral variance estimator (G-SVE) is employed in the computation of ESS. We will show that using G-SVE for estimating $\Sigma$ safeguards users against early termination of the MCMC process.
 
 \subsection{Demonstrative example} % (fold)
 \label{sub:demonstrative_example}
@@ -176,12 +105,15 @@ ACvFs are required to estimate the long-run variance of Monte Carlo averages. Sp
 % subsection demonstrative_example (end)
 % \begin{example}[Demonstrative example]
 
-We demonstrate the striking difference in estimation of $\Gamma(k)$ via autocorrelation function (ACrF) plots. Consider a random-walk Metropolis-Hastings sampler for a univariate mixture of Gaussians target density. Let the target density be 
+We demonstrate the striking difference in estimation of $\Gamma(k)$ via ACF plots. Consider a random-walk Metropolis-Hastings sampler for a univariate mixture of Gaussians target density. Let the target density be 
 \[
 f(x) = 0.7\,f(x; -5, 1) + 0.3\,f(x; 5, 0.5)\,,
 \]
 where $f(x; a,b)$ is the density of a normal distribution with mean $a$ and variance $b$. 
-Two Markov chains are started at each mode. Let $n$ denote the number of samples for each chain. Figure~\ref{fig:gaussian-trace} indicates that in the first $10^4$ samples, the chains do not jump modes so that both Markov chains yield different estimates of the population mean, $\mu$. At $10^5$ sample size, both Markov chains have traversed the state space reasonably and yield similar estimates of $\mu$. We make two points here: first, for small sample size, we observe that the locally-centered ACF gives misleading estimates whereas G-ACF accounts for the discrepancy in sample means between two chains. This is evident from the ACF plots  in Figure~\ref{fig:gaussian-acf}. Second, for a large sample size, the estimates from G-ACrF as well as ACrF are equivalent. Therefore, G-ACF can be used in any situation with a promise of estimates that are at least as good as empirical ACF estimators.  
+We set $m = 2$ with starting values distributed to the two modes. The trace plots in Figure~\ref{fig:gaussian-trace} indicates that in the first $10^4$ steps, the chains do not jump modes so that both Markov chains yield significantly different estimates of the population mean, $\mu$. At $10^5$ sample size, both Markov chains have traversed the state space reasonably and yield similar estimates of $\mu$. 
+
+In Figure~\ref{fig:gaussian-acf} for $n = 10^4$, we present the ACF plots using the usual locally-centered ACvF and our proposed G-ACF estimator. The blue curve are the respective estimates at $n = 10^5$. At $n = 10^5$ when the chains have similar means, the G-ACF and locally-centered ACF are equivalent.  However, for $n = 10^4$, the locally-centered ACFs critically underestimate the correlation giving user a misleading visual quality of the Markov chain. 
+The G-ACF estimator accounts for the discrepancy in sample means between two chains leading to a far improved quality of estimation.
 
 \begin{figure}[htbp]
 \centering
@@ -198,7 +130,7 @@ Two Markov chains are started at each mode. Let $n$ denote the number of samples
 \includegraphics[width=.6\textwidth]{plots/gaussian-acf_hist.pdf} \\
 % \includegraphics[width=.6\textwidth]{plots/gaussian-acf_1e4.pdf} 
 
-\caption{ACF plots using locally-centering (left) and global centering (right). Histogram estimates at $n = 10^4$ with the blue line plot being estimates from $n = 50000$ for chain 1.}
+\caption{ACF plots using local-centering (left) and global-centering (right). Histogram estimates at $n = 10^4$ with the blue curve being estimates from $n = 50000$ {\color{red}can you do this at $10^5$?} for chain 1.}
  % (b) $n = 10^4$; the dotted lines are ACF for each chain and the thick solid line is the ACF averaged over both chains.}
 \label{fig:gaussian-acf}
 \end{figure}
@@ -206,26 +138,29 @@ Two Markov chains are started at each mode. Let $n$ denote the number of samples
 
 \section{Globally-centered autocovariance} \label{sec:G-ACF}
 
-Recall that we run $m$ independent $F$-ergodic Markov chains denoted by $\{X_{st}; \; t \in \mathbb{Z}\}$ for the $s^{th}$ chain. Let the sample mean of the $s^{th}$ Markov chain be $\bar{X}_s = n^{-1} \sum_{t=1}^{n} X_{st}$ and the global mean by $\bar{\bar{X}} = m^{-1}\sum_{s = 1}^{m}\bar{X}_s$. The global mean is naturally superior estimator of $\mu$ than $\bar{X}_s$. We define the globally-centered autocovariance function (G-ACvF) estimator for the $s^{th}$ Markov chain as
+% Recall that we run $m$ independent $F$-ergodic Markov chains denoted by $\{X_{st}; \; t \in \mathbb{Z}\}$ for the $s^{th}$ chain. 
+Let $P$ denote the Markov transition kernel that uniquely determines the ACvF under stationarity. Recall the sample mean of the $s^{th}$ Markov chain is $\bar{X}_s = n^{-1} \sum_{t=1}^{n} X_{st}$ and denote the global mean by $\bar{\bar{X}} = m^{-1}\sum_{s = 1}^{m}\bar{X}_s$. The global mean is a naturally superior estimator of $\mu$ than $\bar{X}_s$. For $k \geq 0$, we define the globally-centered ACvF (G-ACvF) estimator for the $s${th} Markov chain as
 %
 \begin{equation} \label{eq:G-ACvF}
     \hat{\Gamma}_{G,s}(k) = \dfrac{1}{n} \sum_{t=1}^{n-k}(X_{st}-\bar{\bar{X}})(X_{s(t+k)}-\bar{\bar{X}})^T,
 \end{equation}
-
-In the event that all $m$ Markov chains have been run long enough that $\bar{X}_s \approx \bar{\bar{X}}$ are similar, then  $\hat{\Gamma}_{s} (k) \approx \hat{\Gamma}_{G,s}(k)$. However, for shorter runs or for slow mixing chains, $\Gamma(k)$ is more appropriately estimated by $\hat{\Gamma}_{G,s}$ as it utilizes information from all chains and accounts for disparity between estimates of $\mu$. We quantify the gains in  bias  for the G-ACvF estimator below. Let 
+with $\hat{\Gamma}_{G,s}(k) = \hat{\Gamma}_{G,s}(-k)^T$ for $k < 0$. 
+In the event that all $m$ Markov chains have been run long enough that $\bar{X}_s \approx \bar{\bar{X}}$, then  $\hat{\Gamma}_{s} (k) \approx \hat{\Gamma}_{G,s}(k)$. However, for shorter runs or for slow mixing chains, $\Gamma(k)$ is more appropriately estimated by $\hat{\Gamma}_{G,s}$ as it utilizes information from all chains and accounts for disparity between estimates of $\mu$. 
+% We quantify the gains in  bias  for the G-ACvF estimator below. 
+Let 
 \[
 \Phi^{(q)} = \sum_{ k= -\infty}^{\infty}\abs{k}^q \Gamma(k)\,,
 \]
-and let $\Phi^{(1)}$ be denoted by $\Phi$.  The proof of the following theorem is available in Appendix~\ref{appendix:bias}.
+and let $\Phi^{(1)}$ be denoted by $\Phi$.  The proof of the following theorem is available in Appendix~\ref{appendix:bias}. 
 
-\begin{theorem} \label{th:G-ACF_bias} Let $\E_F \|X_{11}\|^{2 + \delta} < \infty$ for some $\delta > 0$. Let $P$ be a  polynomially ergodic Markov chain of order $\xi > (2 + \epsilon)/(1 + 2/\delta)$ for some $\epsilon > 0$. Then,
+\begin{theorem} \label{th:G-ACF_bias} Let $\E_F \|X_{11}\|^{2 + \delta} < \infty$ for some $\delta > 0$. If $P$ is polynomially ergodic of order $\xi > (2 + \epsilon)/(1 + 2/\delta)$ for some $\epsilon > 0$,  then,
 \[
-   \mathbb{E}_F\left[\hat{\Gamma}_{G,s}(k) \right] = \left(1- \dfrac{|k|}{n}\right) \left(\Gamma(k) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2}\right)  + o \left(n^{-2} \right)\,,
+   \mathbb{E}_F\left[\hat{\Gamma}_{G,s}(k) \right] = \left(1- \dfrac{|k|}{n}\right) \left(\Gamma(k) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2}\right)  + o \left(n^{-2} \right)\,.
 \]
-and consequently,
-\[
-\mathbb{E}_F\left[\hat{\Gamma}_{G,s}(k) - \hat{\Gamma}_s(k) \right] =  \left(1- \dfrac{|k|}{n}\right)\left(1- \dfrac{1}{m}\right)\left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right) + o\left(n^{-2} \right)\,. 
-\]
+% and consequently,
+% \[
+% \mathbb{E}_F\left[\hat{\Gamma}_{G,s}(k) - \hat{\Gamma}_s(k) \right] =  \left(1- \dfrac{|k|}{n}\right)\left(1- \dfrac{1}{m}\right)\left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right) + o\left(n^{-2} \right)\,. 
+% \]
 \end{theorem}
 
 
@@ -237,24 +172,24 @@ Polynomial ergodicity and the moment conditions are required to ensure $\Phi$ an
 When $m = 1$, $\hat{\Gamma}_{G,s}(k) = \hat{\Gamma}_{s}(k)
 $ the bias results for which can be found in \cite{priestley1981spectral}. Since lag-covariances are typically positive in MCMC, Theorem~\ref{th:G-ACF_bias} implies that the G-ACvF estimators are asymptotically unbiased and exhibit reduced bias in finite samples compared to locally-centered ACvF estimators. The consequences of this are particularly pertinent for the diagonals of $\Gamma(k)$.
  % Special interest is also in the lag-0 autocovariance, that is, the variance of the target distribution. 
-\begin{remark} \label{rem:lag0_expectation}
-The variance of the target distribution is the lag covariance at lag 0 and is of particular interest. The bias of the estimator reduces by a factor of $m$:
+% The covariance matrix of the target distribution is the lag-0 covariance and is of particular interest.
+%  The bias of the estimator reduces by a factor of $m$:
+% \[
+% \mathbb{E} \left[\hat{\Gamma}_{G,s}(0) \right] = \Gamma(0) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2} + o(n^{-2})
+% \]
+
+
+
+% A first use of the ACvFs in MCMC is in constructing ACF plots. 
+Let the target variance of $i${th} component be $\Gamma^{ii}(k)$. For any component $i$, the autocorrelation is defined as
 \[
-\mathbb{E} \left[\hat{\Gamma}_{G}(0) \right] = \Gamma(0) - \dfrac{\Sigma}{mn} - \dfrac{\Phi}{mn^2} + o(n^{-2})
-\]
-\end{remark}
-
-
-
-A first use of the ACvFs in MCMC is in constructing ACF plots. Let the target variance of $i${th} component be $\Gamma^{ii}(0)$. For any component $i$, the autocorrelation is defined as
-\[
-\rho^{ii}(k) = \dfrac{\Gamma^{ii}(k)}{\Gamma^{ii}(0)}\,,
+\rho^{(i)}(k) = \dfrac{\Gamma^{ii}(k)}{\Gamma^{ii}(0)}\,,
 \]
 and is instrumental in visualizing the serial correlation in components of the Markov chain. The typical estimate of the autocorrelation is constructed from $\hat{\Gamma}_s(k)$. Instead, we advocate for using G-ACvF estimates so that,
 \[
 \hat{\rho}_{G,s}^{(i)}(k) = \dfrac{ \hat{\Gamma}^{(i)}_{G,s} (k)}{\hat{\Gamma}^{(i)}_{G,s} (0)}.
 \]
-The globally-centered autocorrelation provides a far more realistic assessment of the correlation structure of marginal components of the chain  as evidenced in Figure~\ref{fig:gaussian:acf}. 
+The globally-centered autocorrelation provides a far more realistic assessment of the correlation structure of marginal components of the chain  as evidenced in Figure~\ref{fig:gaussian-acf}.
 
 We end this section by noting that we can obtain an average G-ACvF and G-ACF over all $m$ chains
 \[
@@ -264,13 +199,13 @@ The averaged estimators present a measure of the overall correlation structure i
 
 \section{Variance estimators for multiple Markov chains} \label{sec:variance_est}
 
-A critical use of autocovariances is in the assessment of Monte Carlo variability of estimators.  Let $g:\X \longrightarrow \mathbb{R}^p$ be an $F$-integrable function so that interest is in estimating
+A critical use of autocovariances is in the assessment of Monte Carlo variability of estimators.  Let $g:\X \to \mathbb{R}^p$ be an $F$-integrable function so that interest is in estimating
 $\mu_g = \mathbb{E}_F[g(X)]$.
 % \[
 % \mu_g = \mathbb{E}_F[g(X)] = \int_{\X}g(x)F(dx)\;.
 % \]
  % 
-Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for all $s = 1, \dots, m$. Let $\bar{Y}_s = n^{-1}\sum_{t=1}^{n}Y_{st}$  and  $\bar{\bar{Y}} = m^{-1}\sum_{s=1}^{m}\bar{Y}_s$. By Birkhoff's ergodic theorem,  $\bar{\bar{Y}} \to \mu_g$ as $n \to \infty$ with probability 1. An asymptotic sampling distribution may be available via a Markov chain central limit theorem (CLT) if there exists a $p \times p$ positive-definite matrix $\Sigma$ such that
+Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for all $s = 1, \dots, m$. Let $\bar{Y}_s = n^{-1}\sum_{t=1}^{n}Y_{st}$  and  $\bar{\bar{Y}} = m^{-1}\sum_{s=1}^{m}\bar{Y}_s$. By Birkhoff's ergodic theorem,  $\bar{\bar{Y}} \to \mu_g$ with probability 1 as $n \to \infty$. An asymptotic sampling distribution may be available via a Markov chain central limit theorem (CLT) if there exists a $p \times p$ positive-definite matrix $\Sigma$ such that
 %
 \begin{equation}
 \label{eq:CLT}
@@ -282,22 +217,22 @@ Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for all $s = 1, \dots, m$
   \Sigma = \sum_{k = -\infty}^{\infty} \Cov_F \left( Y_{11}, Y_{1(1+k)} \right) := \sum_{k = -\infty}^{\infty}\Upsilon (k)
 \end{equation}
 %
-The goal in output analysis for MCMC is to estimate $\Sigma$ in order to assess variability in $\bar{\bar{Y}}$ \citep{fleg:hara:jone:2008,roy:2019,vats:rob:fle:jon:2020}. There is a rich literature on estimating $\Sigma$ for single-chain MCMC implementations. The most common are spectral variance (SV) estimators \citep{andr:1991,vats:fleg:jon:2018} and batch means estimators \citep{chen:seila:1987,vats:fleg:jon:2019}. Recently, \cite{gupta:vats:2020} constructed a replicated batch means estimator for estimating $\Sigma$ from parallel chains. Batch means estimators are computationally more efficient than SV estimators, whereas SV estimators are more reliable \citep{fleg:jone:2010}. Here, we utilize G-ACvF estimators to construct globally-centered SV estimator (G-SVE) of $\Sigma$. Using the methods of \cite{heberle2017fast}, we also provide an efficient algorithm for obtaining the G-SV estimator. 
+The goal in output analysis for MCMC is to estimate $\Sigma$ in order to assess variability in $\bar{\bar{Y}}$ \citep{fleg:hara:jone:2008,roy:2019,vats:rob:fle:jon:2020}. There is a rich literature on estimating $\Sigma$ for single-chain MCMC implementations. The most common are SV estimators \citep{andr:1991,vats:fleg:jon:2018} and batch means estimators \citep{chen:seila:1987,vats:fleg:jon:2019}. Recently, \cite{gupta:vats:2020} constructed a replicated batch means estimator for estimating $\Sigma$ from parallel chains. Batch means estimators are computationally more efficient than SV estimators, whereas SV estimators are more reliable \citep{damerdji:1995,fleg:jone:2010}. Here, we utilize G-ACvF estimators to construct globally-centered SV (G-SV) estimator of $\Sigma$. Using the methods of \cite{heberle2017fast}, we also provide an efficient algorithm for obtaining the G-SV estimator. 
 
-The locally and globally centered  estimators for $\Upsilon(k)$ are $\hat{\Upsilon}_s(k)$ and $\hat{\Upsilon}_{G,s}(k)$, respectively, where
+The locally and globally-centered  estimators of $\Upsilon(k)$ are $\hat{\Upsilon}_s(k)$ and $\hat{\Upsilon}_{G,s}(k)$, respectively, where for $k \geq 0$
 \[
-\hat{\Upsilon}_s(k) = \dfrac{1}{n} \ds \sum_{t=1}^{n - |k|} (Y_{st} - \bar{Y}_s)(Y_{s\,t+k} - \bar{Y}_s)^T \quad \text{ and } \quad \hat{\Upsilon}_{G,s}(k) = \dfrac{1}{n} \ds \sum_{t=1}^{n - |k|} (Y_{st} - \bar{\bar{Y}})(Y_{s\,t+k} - \bar{\bar{Y}})^T\,,
+\hat{\Upsilon}_s(k) = \dfrac{1}{n} \ds \sum_{t=1}^{n - k} (Y_{st} - \bar{Y}_s)(Y_{s\,t+k} - \bar{Y}_s)^T \quad \text{ and } \quad \hat{\Upsilon}_{G,s}(k) = \dfrac{1}{n} \ds \sum_{t=1}^{n - k} (Y_{st} - \bar{\bar{Y}})(Y_{s\,t+k} - \bar{\bar{Y}})^T\,,
 \] 
-and let $\hat{\Upsilon}_G(k) = m^{-1} \sum_{k=1}^{m}\hat{\Upsilon}_{G,s}(k)$. SV estimators are constructed as weighted and truncated sums of estimated lag covariances. For some $c \geq 1$, let $w: \mathbb{R} \to [-c,c]$ be a lag window function and $b_n \in \mathbb{N}$ be a bandwidth. The SV estimator of $\Sigma$ for chain $s$ is
+and let $\hat{\Upsilon}_G(k) = m^{-1} \sum_{k=1}^{m}\hat{\Upsilon}_{G,s}(k)$. SV estimators are constructed as weighted and truncated sums of estimated ACvFs. For some $c \geq 1$, let $w: \mathbb{R} \to [-c,c]$ be a lag window function and $b_n \in \mathbb{N}$ be a bandwidth. The (locally-centered) SV estimator of $\Sigma$ for chain $s$ is
 %
 %
 \begin{equation} \label{eq:sve}
     \hat{\Sigma}_{s} = \sum_{k=-n+1}^{n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Upsilon}_s(k)\,.
 \end{equation}
-Large-sample properties of $\hat{\Sigma}_s$ have been studied widely. \cite{vats:fleg:jon:2018} provided conditions for strong consistency while \cite{fleg:jone:2010,vats:flegal:2018} provided large-sample bias and variance results. These results also extend naturally to an average SV (ASV) estimator
-\[
-\hat{\Sigma}_A = \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{s}\;.
-\]
+Large-sample properties of $\hat{\Sigma}_s$ have been studied widely. \cite{vats:fleg:jon:2018} provided conditions for strong consistency while \cite{fleg:jone:2010,vats:flegal:2018} provided large-sample bias and variance results. These results also extend naturally to an average SV (ASV) estimator $\hat{\Sigma}_A = m^{-1} \sum_{s=1}^{m}\hat{\Sigma}_{s}$.
+% \[
+% \hat{\Sigma}_A = \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{s}\;.
+% \]
 
 %  We propose a globally-centered spectral variance estimator (G-SVE) wherein we use G-ACF to estimate the autocovariance. Strong consistency for MSVE has been addressed by \cite{vats:fleg:jon:2018}. Bias and variance calculations for a variant of SVE with known mean is done by \cite{hannan2009multiple}. In this paper, we will address the asymptotic properties (strong consistency), bias and variance calculations for G-SVE. 
 
@@ -317,7 +252,7 @@ To accurately estimate $\Sigma$, standard conditions are imposed on the lag wind
 
 \begin{ass}
 \label{ass:lag_window}
-The lag window $w(x)$ is continuous at $0$ at all but finite number of points, is a bounded and even function with $w(0)=1$, \; $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $\sum_{k = -\infty}^{\infty} w(k/b_n) < \infty$.
+The lag window $w(x)$ is continuous at $0$ at all but a finite number of points, is a bounded and even function with $w(0)=1$, \; $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $\sum_{k = -\infty}^{\infty} w(k/b_n) < \infty$.
 \end{ass}
 
 Assumption~\ref{ass:lag_window} is standard \citep[see]{ande:1971} and is satisfied by most lag windows. We will use the following popular Bartlett lag window in our simulations:
@@ -332,14 +267,14 @@ w(x) = \begin{cases}
 
 \subsubsection{Theoretical results} \label{sec:G-SVE}
 
-We will present three main results for the G-SV estimator. First, we provide conditions for strong consistency. Strong consistency is particularly important to ensure sequential stopping rules yield correct coverage at termination \citep{glyn:whit:1992}. A critical assumption is that of a strong invariance principle which the following theorem establishes. Let $B(n)$ denotes a standard $p$-dimensional Brownian motion.
+First, we provide conditions for strong consistency. Strong consistency is particularly important to ensure sequential stopping rules yield correct coverage at termination \citep{glyn:whit:1992}. A critical assumption is that of a strong invariance principle which the following theorem establishes. Let $B(n)$ denotes a standard $p$-dimensional Brownian motion.
 
 
 \begin{theorem}[\cite{kuel:1976,vats:fleg:jon:2018}]
   \label{thm:kuelbs}
-Let $\E_F\|Y_{11}\|^{2+ \delta} < \infty$ for $\delta > 0$ and let $P$ be a polynomially ergodic Markov chain of order $\xi > (q + 1 + \epsilon)/(1 + 2/\delta)$ for $q \geq 1$. Then there exists a $p \times p$ lower triangular matrix $L$ such that $LL^T = \Sigma$, a non-negative function $\psi(n) = n^{1/2 - \lambda}$ for some $\lambda > 0$, a finite random variable $D$, and a sufficiently rich probability space $\Omega$ such that for almost all $\omega \in \Omega$ such that for all $n > n_0$, with probability 1,
+Let $\E_F\|Y_{11}\|^{2+ \delta} < \infty$ for $\delta > 0$ and let $P$ be polynomially ergodic of order $\xi > (q + 1 + \epsilon)/(1 + 2/\delta)$ for $q \geq 1$. Then there exists a $p \times p$ lower triangular matrix $L$ such that $LL^T = \Sigma$, a non-negative function $\psi(n) = n^{1/2 - \lambda}$ for some $\lambda > 0$, a finite random variable $D$, and a sufficiently rich probability space $\Omega$ such that for almost all $\omega \in \Omega$ and for all $n > n_0$,
 \[
-\left\|\sum_{t=1}^{n}Y_t - n\mu_g - LB(n)\right\| < D\psi(n)\,.
+\left\|\sum_{t=1}^{n}Y_t - n\mu_g - LB(n)\right\| < D\psi(n) \qquad \text{  with probability 1}\,.
 \]
 \end{theorem}
 
@@ -634,7 +569,7 @@ We use the data and the model as specified by \cite{tak2018repelling}. There are
 
 
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
       \includegraphics[width = .30\textwidth]{plots/sensor-frob.pdf} 
       \includegraphics[width = .30\textwidth]{plots/sensor-ess.pdf}
@@ -663,10 +598,14 @@ In our simulations, we use the Bartlett lag window, which is convenient but not 
 % Lag window comparisons done by  reveal that quadratic spectral (QS) lag window gives consistently better coverage probabilities for any confidence interval. However, SVE gives poor coverage probability for all lag windows when the amount of autocorrelation is high in the Markov chain. Recently, \textit{lugsail} lag window has been proposed by \cite{vats2018lugsail} to deal with this issue by deliberately accentuating the autocovariance at smaller lags. We have refrained from doing lag window comparisons for G-SVE in our examples but we believe it can help improve the estimation quality significantly.
 %
 
-Another class of estimators for asymptotic variance of Monte Carlo averages are the multivariate initial sequence (mIS) estimators \citep{dai:jon:2017}. Similar to SV estimator, lag-covariances form the fundamental part of mIS estimators. In case of multi-modal target distributions, single chain mIS estimator will suffer from the same drawbacks as SVE. In this paper, we have chiefly focused on the usage of G-ACvF for estimating autocovariances in SVE; however the argument for a similar usage in mIS is straightforward.  Following \cite{dai:jon:2017}, generalised variance estimates obtained from mIS consistently overestimate $\abs{\Sigma}$. From Theorem~\ref{th:G-ACF_bias}, one can prove that, on average, the eigenvalues of $\hat{\Gamma}_{G,s}(k)$ are greater than the eigenvalues of $\hat{\Gamma}_s(k)$. This supplies readers with sufficient motivation to believe that the generalized variance for mIS constructed from $\hat{\Gamma}_G(k)$ not only consistently overestimates $\abs{\Sigma}$ but also upper-bounds the mIS from empirical single chain estimator of $\Gamma(k)$ for finite samples. An valuable line of research would be to prove these observations and carry out the theoretical analysis of mIS estimators using G-ACvF. 
+Another class of estimators for asymptotic variance of Monte Carlo averages are the multivariate initial sequence (mIS) estimators \citep{dai:jon:2017}. Similar to SV estimator, ACvFs are a  fundamental part of mIS estimators and underestimation in ACvFs yields underestimates of $\Sigma$. 
+% In this paper, we have chiefly focused on the usage of G-ACvF for estimating autocovariances in SVE; however the argument for a similar usage in mIS is straightforward.  
+Following \cite{dai:jon:2017}, it is easy to show that $\hat{\Upsilon}_{G,s}(k)$ are strongly consistent for $\Upsilon(k)$ and replacing $\hat{\Upsilon}_s(k)$ for $\hat{\Upsilon}_{G,s}(k)$ and following \citep[][Lemma 5]{dai:jon:2017} will yield consistent overestimation of $\Sigma$ using a globally-centered version of the mIS estimator.
+
+% generalised variance estimates obtained from mIS consistently overestimate $\abs{\Sigma}$. From Theorem~\ref{th:G-ACF_bias}, one can prove that, on average, the eigenvalues of $\hat{\Gamma}_{G,s}(k)$ are greater than the eigenvalues of $\hat{\Gamma}_s(k)$. This supplies readers with sufficient motivation to believe that the generalized variance for mIS constructed from $\hat{\Gamma}_G(k)$ not only consistently overestimates $\abs{\Sigma}$ but also upper-bounds the mIS from empirical single chain estimator of $\Gamma(k)$ for finite samples. An valuable line of research would be to prove these observations and carry out the theoretical analysis of mIS estimators using G-ACvF. 
 %
 
-The choice of starting vector is crucial for multiple chain sampling. In case the chains are started very near to each other, all the chains will explore nearly the same neighborhood in the state space. As a consequence, the G-ACvF will be equivalent to A-ACvF, and no significant improvement will be observed in estimation quality. We have used a deterministic initialization method in our examples using our prior knowledge about the location of modes in the target distribution. Comparing existing initialization methods {\color{orange} MA: maybe cite a few} and developing new ones could be an interesting direction for future research.  
+% The choice of starting vector is crucial for multiple chain sampling. In case the chains are started very near to each other, all the chains will explore nearly the same neighborhood in the state space. As a consequence, the G-ACvF will be equivalent to A-ACvF, and no significant improvement will be observed in estimation quality. We have used a deterministic initialization method in our examples using our prior knowledge about the location of modes in the target distribution. Comparing existing initialization methods {\color{orange} MA: maybe cite a few} and developing new ones could be an interesting direction for future research.  
 
 \section{Appendix}  \label{sec:appendix}
 \subsection{Preliminaries} \label{apdx:preliminaries}

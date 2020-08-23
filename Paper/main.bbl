@@ -39,6 +39,12 @@ Damerdji, H. (1991).
   estimator.
 \newblock {\em Management Science}, 37:1424--1440.
 
+\bibitem[Damerdji, 1995]{damerdji:1995}
+Damerdji, H. (1995).
+\newblock Mean-square consistency of the variance estimator in steady-state
+  simulation output analysis.
+\newblock {\em Operations Research}, 43(2):282--291.
+
 \bibitem[Flegal et~al., 2008]{fleg:hara:jone:2008}
 Flegal, J.~M., Haran, M., and Jones, G.~L. (2008).
 \newblock {M}arkov chain {M}onte {C}arlo: {C}an we trust the third significant
