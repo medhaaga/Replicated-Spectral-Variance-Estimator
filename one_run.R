@@ -1,4 +1,4 @@
-library(rep.acf.ccf)
+library(multichainACF)
 
 ##########################################
 ##########################################
@@ -49,7 +49,7 @@ dev.off()
 
 lag.max <- 50
 nsim1 <- 1e4
-nsim2 <- 5e4
+nsim2 <- 1e5
 
 x <- list()
 y <- list()
@@ -62,8 +62,8 @@ for (i in 1:m){
 
 local.acf1 <- acf(as.matrix(x[[1]]), type = "correlation", lag.max = lag.max, plot = FALSE)
 local.acf2 <- acf(as.matrix(y[[1]]), type = "correlation", lag.max = lag.max, plot = FALSE)
-global.acf1 <- globalACF(x, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, graph = FALSE)[[1]]
-global.acf2 <- globalACF(y, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, graph = FALSE)[[1]]
+global.acf1 <- globalACF(x, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
+global.acf2 <- globalACF(y, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
 
 #### Figure 2a
 pdf(file = "AllOut/gaussian-acf_hist.pdf", width = 8, height= 4)

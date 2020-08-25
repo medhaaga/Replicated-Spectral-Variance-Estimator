@@ -75,7 +75,7 @@ Autocovariances are the fundamental quantity in many features of Markov chain Mo
 
 Advancements in modern personal computing have made it easy to run parallel Markov chain Monte Carlo (MCMC) implementations. This is particularly useful for slow mixing Markov chains where the starting points of the chains are spread over the state-space in order to more accurately capture characteristics of the target distribution. The output from $m$ parallel chains is then summarized, visually and quantitatively, to assess the empirical mixing properties of the chains and the quality of Monte Carlo estimators.
 
-A key quantity that drives MCMC output analysis is the autocovariance function (ACvF). From their use in autocorrelation (ACF) plots to assessing Monte Carlo variability of estimators, to determining when to stop MCMC simulation, autocovariances drive many visual and quantitative inferences from MCMC output. However, estimators of ACvF are only available for single-chain implementations, with multiple-chain obtained by naive averaging. As we will demonstrate, this defeats the purpose of running parallel Markov chains from dispersed starting values.
+A key quantity that drives MCMC output analysis is the autocovariance function (ACvF). From their use in autocorrelation (ACF) plots to assessing Monte Carlo variability of estimators, to determining when to stop MCMC simulation, autocovariances drive many visual and quantitative inferences from MCMC output. However, estimators of ACvF are only available for single-chain implementations, with multiple-chain version obtained by naive averaging. As we will demonstrate, this defeats the purpose of running parallel Markov chains from dispersed starting values.
  
 
 Let $F$ be the target distribution with mean $\mu$ defined on a space $\X \subseteq \mathbb{R}^d$ equipped with a countably generated $\sigma$-field $\mathcal{B}(\X)$. For $s = 1, \dots, m$, let $\{X_{st}\}_{t\geq1}$ be the $s${th} Harris ergodic $F$-invariant Markov chain \citep[see][for definitions]{meyn:twee:2009} employed to learn characteristics about $F$. The process is covariance stationary so that
@@ -89,7 +89,7 @@ Estimating $\Gamma(k)$ is critical to assessing the quality of the sampler and t
 \begin{equation} \label{eq:empirical_ACvF}
     \hat{\Gamma}_s(k) = \dfrac{1}{n}\sum_{t=1}^{n-k} \left(X_{st} - \bar{X}_s \right) \left(X_{s\, t + k} - \bar{X}_s \right)^T\,,
 \end{equation}
-and for $k < 0$, $\hat{\Gamma}_s(k) = \hat{\Gamma}_s(-k)^T$. For single-chain MCMC runs, the estimator $\hat{\Gamma}_s(k)$ is used to construct ACF plots, to estimate the long-run variance of Monte Carlo estimators \cite{hannan:1970,dame:1991}, and to estimate effective sample size (ESS) \cite{kass:carlin:gelman:neal:1998,gong:fleg:2016,vats:fleg:jon:2019}. However, there is no unified approach to constructing estimators of $\Gamma(k)$ for multiple-chain implementations. Specifically, parallel MCMC chains are often spread across the state space so as to adequately capture high density areas. For slow mixing chains, the chains take time to traverse the space so that $\bar{X}_s$  are all vastly different. Consequently, $\hat{\Gamma}_s$ typically underestimates $\Gamma$ leading to a false sense of security about the quality of process.
+and for $k < 0$, $\hat{\Gamma}_s(k) = \hat{\Gamma}_s(-k)^T$. For single-chain MCMC runs, the estimator $\hat{\Gamma}_s(k)$ is used to construct ACF plots, to estimate the long-run variance of Monte Carlo estimators \citep{hannan:1970,dame:1991}, and to estimate effective sample size (ESS) \citep{kass:carlin:gelman:neal:1998,gong:fleg:2016,vats:fleg:jon:2019}. However, there is no unified approach to constructing estimators of $\Gamma(k)$ for multiple-chain implementations. Specifically, parallel MCMC chains are often spread across the state space so as to adequately capture high density areas. For slow mixing chains, the chains take time to traverse the space so that $\bar{X}_s$  are all vastly different. Consequently, $\hat{\Gamma}_s$ typically underestimates $\Gamma$ leading to a false sense of security about the quality of process.
 
 
  We propose a globally-centered estimator of ACvF (G-ACvF) that centers the Markov chain around the overall mean vector from all $m$ chains. We show that the bias under stationarity for G-ACvF is lower than $\hat{\Gamma}_s(k)$, and through various examples, empirically demonstrate improved estimation. We employ the G-ACvF estimators to construct ACF plots, which leads to remarkable improvements. A demonstrative example is at the end of this Section. 
@@ -97,7 +97,7 @@ and for $k < 0$, $\hat{\Gamma}_s(k) = \hat{\Gamma}_s(-k)^T$. For single-chain MC
 
 % We will further study the impact of G-ACF in calculation of two important applications of ACF (1) asymptotic variance of Markov chain average and (2) effective sample size (ESS).
  
-Estimators of ACvFs are often needed to estimate the long-run variance of Monte Carlo averages. Specifically, spectral variance (SV) estimators  are used to estimate $\Sigma = \sum_{k=-\infty}^{\infty} \Gamma(k)$ \citep{andr:1991,dame:1991,fleg:jone:2010}. We replace $\hat{\Gamma}(k)$ with G-ACvF in SV estimators and demonstrate strong consistency under weak conditions. In the spirit of \cite{andr:1991}, we also obtain large-sample bias and variance of the resulting estimators. SV estimators can be prohibitively slow to  compute \citep{liu:fleg:2018}. To relieve the computational burden, we adapt the fast algorithm of \cite{heberle2017fast} for G-ACvFs that dramatically reduces computation time. The globally-centered spectral variance estimator (G-SVE) is employed in the computation of ESS. We will show that using G-SVE for estimating $\Sigma$ safeguards users against early termination of the MCMC process.
+Estimators of ACvFs are often needed to estimate the long-run variance of Monte Carlo averages. Specifically, spectral variance (SV) estimators  are used to estimate $\Sigma = \sum_{k=-\infty}^{\infty} \Gamma(k)$ \citep{andr:1991,dame:1991,fleg:jone:2010}. We replace $\hat{\Gamma}(k)$ with G-ACvF in SV estimators to obtain globally-centered SV (G-SV) estimator and demonstrate strong consistency under weak conditions. In the spirit of \cite{andr:1991}, we also obtain large-sample bias and variance of the resulting estimator. SV estimators can be prohibitively slow to  compute \citep{liu:fleg:2018}. To relieve the computational burden, we adapt the fast algorithm of \cite{heberle2017fast} for G-SV estimator that dramatically reduces computation time. The G-SV estimator  is employed in the computation of ESS. We will show that using G-SV estimator for estimating $\Sigma$ safeguards users against early termination of the MCMC process.
 
 \subsection{Demonstrative example} % (fold)
 \label{sub:demonstrative_example}
@@ -130,7 +130,7 @@ The G-ACF estimator accounts for the discrepancy in sample means between two cha
 \includegraphics[width=.6\textwidth]{plots/gaussian-acf_hist.pdf} \\
 % \includegraphics[width=.6\textwidth]{plots/gaussian-acf_1e4.pdf} 
 
-\caption{ACF plots using local-centering (left) and global-centering (right). Histogram estimates at $n = 10^4$ with the blue curve being estimates from $n = 50000$ {\color{red}can you do this at $10^5$?} for chain 1.}
+\caption{ACF plots using local-centering (left) and global-centering (right). Histogram estimates at $n = 10^4$ with the blue curve being estimates from $n = 10^5$ for chain 1.}
  % (b) $n = 10^4$; the dotted lines are ACF for each chain and the thick solid line is the ACF averaged over both chains.}
 \label{fig:gaussian-acf}
 \end{figure}
@@ -217,7 +217,7 @@ Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for all $s = 1, \dots, m$
   \Sigma = \sum_{k = -\infty}^{\infty} \Cov_F \left( Y_{11}, Y_{1(1+k)} \right) := \sum_{k = -\infty}^{\infty}\Upsilon (k)
 \end{equation}
 %
-The goal in output analysis for MCMC is to estimate $\Sigma$ in order to assess variability in $\bar{\bar{Y}}$ \citep{fleg:hara:jone:2008,roy:2019,vats:rob:fle:jon:2020}. There is a rich literature on estimating $\Sigma$ for single-chain MCMC implementations. The most common are SV estimators \citep{andr:1991,vats:fleg:jon:2018} and batch means estimators \citep{chen:seila:1987,vats:fleg:jon:2019}. Recently, \cite{gupta:vats:2020} constructed a replicated batch means estimator for estimating $\Sigma$ from parallel chains. Batch means estimators are computationally more efficient than SV estimators, whereas SV estimators are more reliable \citep{damerdji:1995,fleg:jone:2010}. Here, we utilize G-ACvF estimators to construct globally-centered SV (G-SV) estimator of $\Sigma$. Using the methods of \cite{heberle2017fast}, we also provide an efficient algorithm for obtaining the G-SV estimator. 
+The goal in output analysis for MCMC is to estimate $\Sigma$ in order to assess variability in $\bar{\bar{Y}}$ \citep{fleg:hara:jone:2008,roy:2019,vats:rob:fle:jon:2020}. There is a rich literature on estimating $\Sigma$ for single-chain MCMC implementations. The most common are SV estimators \citep{andr:1991,vats:fleg:jon:2018} and batch means estimators \citep{chen:seila:1987,vats:fleg:jon:2019}. Recently, \cite{gupta:vats:2020} constructed a replicated batch means estimator for estimating $\Sigma$ from parallel chains. Batch means estimators are computationally more efficient than SV estimators, whereas SV estimators are more reliable \citep{damerdji:1995,fleg:jone:2010}. Here, we utilize G-ACvF estimators to construct globally-centered SV (G-SV) estimator of $\Sigma$. Using the method of \cite{heberle2017fast}, we also provide a computationally efficient algorithm for obtaining the G-SV estimator. 
 
 The locally and globally-centered  estimators of $\Upsilon(k)$ are $\hat{\Upsilon}_s(k)$ and $\hat{\Upsilon}_{G,s}(k)$, respectively, where for $k \geq 0$
 \[
@@ -229,7 +229,7 @@ and let $\hat{\Upsilon}_G(k) = m^{-1} \sum_{k=1}^{m}\hat{\Upsilon}_{G,s}(k)$. SV
 \begin{equation} \label{eq:sve}
     \hat{\Sigma}_{s} = \sum_{k=-n+1}^{n-1}w\left(\dfrac{k}{b_n}\right)\hat{\Upsilon}_s(k)\,.
 \end{equation}
-Large-sample properties of $\hat{\Sigma}_s$ have been studied widely. \cite{vats:fleg:jon:2018} provided conditions for strong consistency while \cite{fleg:jone:2010,vats:flegal:2018} provided large-sample bias and variance results. These results also extend naturally to an average SV (ASV) estimator $\hat{\Sigma}_A = m^{-1} \sum_{s=1}^{m}\hat{\Sigma}_{s}$.
+Large-sample properties of $\hat{\Sigma}_s$ have been studied widely. \cite{vats:fleg:jon:2018} provided conditions for strong consistency while \cite{fleg:jone:2010,vats:flegal:2018} provided large-sample bias and variance results. These results also extend naturally to an average SV (ASV) estimator defined as $\hat{\Sigma}_A := m^{-1} \sum_{s=1}^{m}\hat{\Sigma}_{s}$.
 % \[
 % \hat{\Sigma}_A = \dfrac{1}{m}\sum_{s=1}^{m}\hat{\Sigma}_{s}\;.
 % \]
@@ -312,14 +312,14 @@ and $b_n^q/n \to 0$ as $n \to \infty$. Then $ \lim_{n \to \infty}b_n^q\mathbb{E}
 \subsubsection{Fast implementation} % (fold)
 \label{ssub:fast_implementation}
 
-The SV estimator, despite good statistical properties, poses limitations due to slow computation. From \eqref{eq:empirical_ACvF} and \eqref{eq:sve}, the complexity of the SV estimator is $\mathcal{O}(n^2 p^2)$ in general, and for the Bartlett lag window, it is $\mathcal{O}(b_n n p^2)$. For slow mixing Markov chains, $n$ and $b_n$ are large, limiting the use of SV estimators.  To overcome this, we adapt the  fast Fourier transform based algorithm of \cite{heberle2017fast}. Suppose $w_k = w(k/b_n)$ and let $T(w)$ be the $n \times n$ Toeplitz matrix with the first column being $(1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1})^T$. Notice an alternate formulation of $\hat{\Sigma}_s$
+The SV estimator, despite having good statistical properties, poses limitations due to slow computation. From \eqref{eq:empirical_ACvF} and \eqref{eq:sve}, the complexity of the SV estimator is $\mathcal{O}(n^2 p^2)$ in general, and for the Bartlett lag window, it is $\mathcal{O}(b_n n p^2)$. For slow mixing Markov chains, $n$ and $b_n$ are large, limiting the use of SV estimators.  To overcome this, we adapt the  fast Fourier transform based algorithm of \cite{heberle2017fast}. Suppose $w_k = w(k/b_n)$ and let $T(w)$ be the $n \times n$ Toeplitz matrix with the first column being $(1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1})^T$. Notice an alternate formulation of $\hat{\Sigma}_s$
 %
 \begin{equation} \label{eq:kyriakoulis}
     \hat{\Sigma}_s = \dfrac{1}{n}A_s^T T(w) A_s, \qquad \textrm{ where } A_s = \begin{pmatrix}
     Y_{s1} - \bar{Y}_s  & \dots & Y_{sn} - \bar{Y}_s
 \end{pmatrix}^T
 \end{equation}
- \cite{heberle2017fast} compute the $n \times 1$ vector $T(w)A_s$  using an algorithm based on fast Fourier transforms. Let $w^* = (1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1}, ~0, ~w_{n-1}, \dots, w_1)^T$ and set $C(w^*)$ to be a symmetric circulant matrix such that $C(w^*)_{1:n, 1:n} = T(w)$.  With inputs $C(w^*)$ and $A_s$, Algorithm~\ref{algo:herberle} produces $\hat{\Sigma}_s$ exactly. For more details, see \cite{heberle2017fast}.
+ \cite{heberle2017fast} compute the $n \times 1$ vector $T(w)A_s$  using an algorithm based on fast Fourier transforms. Let $w^* = (1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1}, ~0, ~w_{n-1}, \dots, w_1)^T$ and set $C(w^*)$ to be a symmetric circulant matrix such that the matrix truncation $C(w^*)_{1:n, 1:n} = T(w)$.  With inputs $C(w^*)$ and $A_s$, Algorithm~\ref{algo:herberle} produces $\hat{\Sigma}_s$ exactly. For more details, see \cite{heberle2017fast}.
  % Let $C(w^*) = V\Lambda V^*$ be the spectral decomposition of $C(w^*)$, then $\Lambda$ is determined by a discrete Fourier transform of the first column of $C(w^*)$. 
 % $A_s$ is extrapolated into a $2n \times p$ matrix $A_s^*$ by appending $n$ rows of $0$ vector to write Equation~\ref{eq:kyriakoulis} in the following form
 % \[
@@ -338,7 +338,7 @@ Construct $2n \times p$ matrix $A^*_s = (A^T  \quad 0_{n \times q})^T$\;
 
 \For{$j = 1, 2, \dots, p$}    
     { 
-    Calculate $V^*A_s^{*_{(j)}}$ by DFT of $A^*_{s(j)}$.\;
+    Calculate $V^*A^*_{s(j)}$ by DFT of $A^*_{s(j)}$.\;
     Multiply $V^* A_{s(j)}^{*^{(i)}}$ with the eigenvalue $\lambda_i$ for all $i = 1, ..., 2n$ to construct $\Lambda V^* A_{s(j)}^*$.\;
     Calculate $C(w^*)A^*_{s(j)} = V \Lambda V^* A_{s(j)}^*$ by inverse FFT of $\Lambda V^* A_{s(j)}^*$.\;
     }
@@ -351,7 +351,7 @@ Construct $2n \times p$ matrix $A^*_s = (A^T  \quad 0_{n \times q})^T$\;
 
 
 % For our purpose, we center the chain $\{Y_{st}; \; t \in \mathbb{Z}\}$ around $\bar{\bar{Y}}$ instead of $\bar{Y}_s$ in Equation \ref{eq:kyriakoulis} for all $s \in \{1, ..., m\}$. Herberle's algorithm is then applied on the formulation
-We note a similar decomposition is possible for the G-SV estimator. Setting $B_s = (Y_{s1} - \bar{\bar{Y}} \; \dots \; Y_{sn} - \bar{\bar{Y}})^T$ and calling Algorithm~\ref{algo:herberle} with inputs $C(w^*)$ and $B_s$ yields $\hat{\Sigma}_{G,s}$. This algorithm has complexity $\mathcal{O}(p n \log n)$ and is thus orders of magnitude faster. Of particular importance is the fact that the bandwidth $b_n$ has close to no impact on the computation time.
+We observe that a similar decomposition is possible for the G-SV estimator. Setting $B_s = (Y_{s1} - \bar{\bar{Y}} \; \dots \; Y_{sn} - \bar{\bar{Y}})^T$ and calling Algorithm~\ref{algo:herberle} with inputs $C(w^*)$ and $B_s$ yields $\hat{\Sigma}_{G,s}$. This algorithm has complexity $\mathcal{O}(p n \log n)$ and is thus orders of magnitude faster. Of particular importance is the fact that the bandwidth $b_n$ has close to no impact on the computation time.
 % subsubsection fast_implementation (end)
 
 \section{Effective sample size} \label{sec:ess}
@@ -382,9 +382,9 @@ For the sake of comparison, $\widehat{\textrm{ESS}}_A$ is constructed similarly 
 
 \section{Examples} \label{sec:examples}
 
-In this section we consider three different target distributions and sample multiple Markov chains using MCMC methods to experimentally analyse the performance of our globally-centered estimators. We will make the following three comparisons - (1) A-ACF vs G-ACF through ACrF plots; (2) A-SVE vs G-SVE; (3) $\widehat{\textrm{ESS}}_G$ vs $\widehat{\textrm{ESS}}_A$. The quality of estimation of $\Sigma$ is studied by coverage probabilities for a $95 \%$ confidence interval in cases where the true mean $\mu$ is known. The convergence of local and global estimators as $n$ increases is studied through two types of running plots (1) logarithm of Frobenius norm of estimated $\Sigma$ denoted by $\|M\|_F$ for a matrix $M$, and (2) logarithm of estimated ESS/$mn$. In all the examples we consider the function $g(x) = x$, which implies the Markov chain $\{Y_t\}$ and $\{X_t\}$ are the same.
+In this section we consider three different target distributions and sample $m$ parallel Markov chains using MCMC methods to experimentally analyse the performance of our globally-centered estimators. We will make the following three comparisons - (1) A-ACF vs G-ACF through ACrF plots; (2) A-SVE vs G-SVE; (3) $\widehat{\textrm{ESS}}_G$ vs $\widehat{\textrm{ESS}}_A$. The quality of estimation of $\Sigma$ is studied by coverage probabilities of a $95 \%$ Wald  confidence interval in cases where the true mean $\mu$ is known. The convergence of local and global estimators of $\Sigma$ and $\widehat{\textrm{ESS}}$ as $n$ increases is studied through two types of running plots (1) logarithm of Frobenius norm of estimated $\Sigma$, and (2) logarithm of estimated ESS/$mn$. In all the examples we are interested in estimating the mean of the stationary distribution $\mu$, so $g$ is the identity function. The batch size $b_n$ is obtained from the function \texttt{batchSize} from \texttt{R} package \texttt{mcmcse}.
 
-% There are only a handful of MCMC chains where the true autocovariance and asymptotic variance are known. To compare the globally and locally-centered estimators when the truth is known, we use a slowly mixing vector autoregressive process of order 1 (VAR(1)). A distinct advantage of our estimators is observed when the target distribution is multi-modal. For this purpose we use a bivariate bi-modal probability distribution introduced by \cite{gelman1991note}. Through this example, we will also show that in case of nicely mixing Markov chains, these estimators give almost equivalent results. Lastly, we consider a real-life example of finding unknown locations of sensors using noisy distance data. The posterior distribution is this case is marginally bimodal in all dimensions. All the examples have been selected to display some kind of \textit{sticky} nature in the Markov chains. In such scenario, we successfully show that our globally-centered estimators yield better results as compared to the classical single-chain estimators for autocovariance, asymptotic variance, and effective sample size.
+% There are only a handful of MCMC chains where the true autocovariance and asymptotic variance are known. To compare the globally and locally-centered estimators when the truth is known, we use a slowly mixing vector autoregressive process of order 1 (VAR(1)). A distinct advantage of our estimators is observed when the target distribution is multi-modal. For this purpose we use a bivariate bi-modal probability distribution introduced by \cite{gelman1991note}. Through this example, we will also show that in case of nicely mixing Markov chains, these estimat give almost equivalent results. Lastly, we consider a real-life example of finding unknown locations of sensors using noisy distance data. The posterior distribution is this case is marginally bimodal in all dimensions. All the examples have been selected to display some kind of \textit{sticky} nature in the Markov chains. In such scenario, we successfully show that our globally-centered estimators yield better results as compared to the classical single-chain estimators for autocovariance, asymptotic variance, and effective sample size.
 
 
 \subsection{Vector Autoregressive Process} \label{ex:var}
@@ -396,7 +396,7 @@ Our first example is one where the $\Upsilon$ and $\Sigma$ are available in clos
 X_t = \Phi X_{t-1} + \epsilon_t
 \]
 %
-where $X_t \in \mathbb{R}^p$, $\Phi $ is a $p \times p $ matrix, $ \epsilon_t \overset{i.i.d.}{\sim} N(0, \Omega)$, and $\Omega$ is a positive definite $p \times p$ matrix. We fix $\Omega$ be a AR correlation matrix with parameter .9. The invariant distribution for this Markov chain is $N(0, \Psi)$, where $vec(\Psi) = (I_{p^2} - \Phi \times \Phi)^{-1} vec(W)$. We are interested in estimating the mean of the stationary distribution, so $g$ is the identity function.  For $k > 0$, the lag-$k$ autocovariance is $\Upsilon(k) = \Gamma(k) = \Phi^k\Psi$. The process satisfies a CLT for $\bar{X} = n^{-1} \sum_{t=1}^{n} X_t$ if the spectral norm of $\Phi$ is less than 1 \citep{10.2307/1427459} and the limiting covariance, $\Sigma$ is known in closed form \citep{dai:jon:2017}. We set $p = 2$ and set $\Phi$ such that its eigenvalues are .999 and .001. The resulting process is slowly mixing and allows us to highlight the difference in the estimation of ACvF.We further set $m = 5$ with starting values dispersed across the state space.  
+where $X_t \in \mathbb{R}^p$, $\Phi $ is a $p \times p $ matrix, $ \epsilon_t \overset{i.i.d.}{\sim} N(0, \Omega)$, and $\Omega$ is a positive definite $p \times p$ matrix. We fix $\Omega$ be a AR correlation matrix with parameter .9. The invariant distribution for this Markov chain is $N(0, \Psi)$, where $vec(\Psi) = (I_{p^2} - \Phi \times \Phi)^{-1} vec(W)$.  For $k > 0$, the lag-$k$ autocovariance is $\Upsilon(k) = \Gamma(k) = \Phi^k\Psi$. The process satisfies a CLT for $\bar{X} = n^{-1} \sum_{t=1}^{n} X_t$ if the spectral norm of $\Phi$ is less than 1 \citep{10.2307/1427459} and the limiting covariance, $\Sigma$ is known in closed form \citep{dai:jon:2017}. We set $p = 2$ and set $\Phi$ such that its eigenvalues are .999 and .001. The resulting process is slowly mixing and allows us to highlight the difference in the estimation of ACvF.We further set $m = 5$ with starting values dispersed across the state space.  
 \begin{figure}[htbp]
 \centering
    \includegraphics[width=.5\linewidth]{plots/var-acf_n1000.pdf}
@@ -409,7 +409,7 @@ where $X_t \in \mathbb{R}^p$, $\Phi $ is a $p \times p $ matrix, $ \epsilon_t \o
 We compare the the locally and globally-centered autocorrelations against the truth. In Figure~\ref{fig:var-acf} are the estimated ACF plots for the first component of the second chain against the truth in red. For a run length of $10^3$ (top row), the commonly used locally centered ACF underestimates the true correlation structure giving a false sense of security about the mixing of the chain. The G-ACF, on the other hand, is much closer to the truth. This difference is negligible at the larger run length of $n = 10^4$ when each of the 5 chains have sufficiently explored the state space.
 
 
-Since $\mu_g$ is known, we assess the performance of ASV and GSV by assessing coverage probabilities of $95\%$ Wald confidence regions over 1000 replications.  Table~\ref{tab:var-coverage} shows that for each sample size, the $\hat{\Sigma}_G$ results in close to nominal coverage probability, whereas $\hat{\Sigma}_A$ yields critically low coverage. The low coverage is a consequence of underestimating the autocovariances. It is only at the sample size of $n=10^5$ that $\hat{\Sigma}_A$ yields close to nominal coverage. 
+Since $\mu$ is known, we assess the performance of A-SV and G-SV estimatiors by assessing coverage probabilities of $95\%$ Wald confidence regions over 1000 replications.  Table~\ref{tab:var-coverage} shows that for each sample size, the $\hat{\Sigma}_G$ results in close to nominal coverage probability, whereas $\hat{\Sigma}_A$ yields critically low coverage. The low coverage is a consequence of underestimating the autocovariances. It is only at the sample size of $n=10^5$ that $\hat{\Sigma}_A$ yields close to nominal coverage. 
 
 
 \begin{table}[htbp]
@@ -428,7 +428,7 @@ G-SV  &    0.956 & 0.937 & .924 & .945 & .952 \\ \hline
 
 
 The quality of estimation of $\Sigma$ and $\text{ESS}$ is assessed by running plots from 50 replications of run length 50000. 
- In Figure~\ref{fig:var-frob_n_ess}, we present running plots of $\log(\|\hat{\Sigma}\|_F)$ for both $\hat{\Sigma}_G$ and $\hat{\Sigma}_A$ and the running plots of $\log(\widehat{\text{ESS}})$ for both  $\widehat{\text{ESS}}_G$ and $\widehat{\text{ESS}}_A$. It is evident that the locally centered estimator of $\Sigma$ severely underestimates the truth, leading to an overestimation of ESS. The GSV estimator is able to estimate $\Sigma$ more accurately early on, safeguarding against early termination using ESS. 
+ In Figure~\ref{fig:var-frob_n_ess}, we present running plots of $\log(\|\hat{\Sigma}\|_F)$ for both $\hat{\Sigma}_G$ and $\hat{\Sigma}_A$ and the running plots of $\log(\widehat{\text{ESS}})$ for both  $\widehat{\text{ESS}}_G$ and $\widehat{\text{ESS}}_A$. It is evident that the locally centered estimator of $\Sigma$ severely underestimates the truth, leading to an overestimation of ESS. The G-SV estimator is able to estimate $\Sigma$ more accurately early on, safeguarding against early termination using ESS. 
 \begin{figure}[htbp]
     \centering
       \includegraphics[width = 2.0in]{plots/var-frob.pdf} 
@@ -445,7 +445,7 @@ The quality of estimation of $\Sigma$ and $\text{ESS}$ is assessed by running pl
 \subsection{Boomerang Distribution} \label{ex:boomerang}
 
 
-Consider the following family of bimodal bivariate distributions introduced by \cite{gelman1991note}, which term as a boomerang distribution. For $A \geq 0$ and $B, C  \in \mathbb{R}$, the target density is
+Consider the following family of bimodal bivariate distributions introduced by \cite{gelman1991note}, which we term as a boomerang distribution. For $A \geq 0$ and $B, C  \in \mathbb{R}$, the target density is
 %
 \[
 f(x, y) \propto \exp\left(-\dfrac{1}{2} \left[Ax^2y^2 + x^2 + y^2 -2Bxy  -2Cx - 2Cy  \right]\right)\,.
@@ -469,10 +469,9 @@ We run a deterministic scan Gibbs sampler to sample from this target using the f
 \end{figure}
 
 We consider two settings; in setting 1 we let
-$A = 1,\; B = 3,\; C = 8$ which results in well-separated models. In setting 2, we let $A = 1, \; B = 10, \; C=7$ which yields in a boomerang shape for the contours. The contour plots for these two settings are in the left in Figure~\ref{fig:boom-2D}, overlaid with scatter plots of two parallel draws of the Gibbs sampler. Setting 2 is chosen specifically to illustrate that the locally and globally centered ACvFs perform similarly when the Markov chain moves freely across the state space.  {\color{red} what is m here?}
+$A = 1,\; B = 3,\; C = 8$ which results in well-separated modes. In setting 2, we let $A = 1, \; B = 10, \; C=7$ which yields in a boomerang shape for the contours. The contour plots for these two settings are in the left in Figure~\ref{fig:boom-2D}, overlaid with scatter plots of two parallel draws of the Gibbs sampler. Setting 2 is chosen specifically to illustrate that the locally and globally centered ACvFs perform similarly when the Markov chain moves freely across the state space. 
 
-
- For Setting 1, when the Markov chains have not been able to jump modes, locally-centered ACF severely underestimates autocorrelation. This is seen in the middle column in Figure \ref{fig:boom-2D}, where the locally-centered autocorrelations at $n=1000$ (histogram) are drastically different from the locally-centered autocorrelations at $n = 10^4$. Somewhere between $n = 1000$ and $n = 10^4$, the Markov chains jump modes and it is only then that the locally-centered ACFs provide better estimates. The G-ACFs,  on the other hand, produce similar ACF estimates at $n = 1000$ and $n = 10^4$ by measuring deviations about the global mean. For setting 2, both methods yield similar ACF estimates reinforcing our claim that there is much to gain by using G-ACvF and nothing to lose.
+We run $m=5$ parallel Markov chains with starting points evenly distributed across the state space. For Setting 1, when the Markov chains have not been able to jump modes, locally-centered ACF severely underestimates autocorrelation. This is seen in the top-middle plot of Figure \ref{fig:boom-2D}, where the locally-centered autocorrelations at $n=1000$ (histogram) are drastically different from the locally-centered autocorrelations at $n = 10^4$ (overlayed blue line). Somewhere between $n = 1000$ and $n = 10^4$, the Markov chains jump modes and it is only then that the locally-centered ACFs provide better estimates. The G-ACFs,  on the other hand, produce similar ACF estimates at $n = 1000$ and $n = 10^4$ by measuring deviations about the global mean. For setting 2, both methods yield similar ACF estimates reinforcing our claim that there is much to gain by using G-ACvF and nothing to lose.
 
 
 
@@ -517,7 +516,7 @@ $A = 1,\; B = 3,\; C = 8$ which results in well-separated models. In setting 2, 
 }
 \end{table}
 
-The true mean of the target distribution can be obtained using numerical approximation. Using this and both the A-SV and G-SV estimators, we construct $95\%$ confidence regions and report coverage probabilities for 1000 replications for both $m=2$ and $m=5$. Table \ref{tab:boom-coverage_1}, \ref{tab:boom-coverage_2} reports all  results. In setting 1, systematically, the G-SV estimator yields far superior coverage than the A-SV estimator for all values of $n$. Whereas for setting 2, the results are almost similar indicating the equivalence of A-SV and G-SV for fast mixing Markov chains.
+The true mean of the target distribution can be obtained using numerical approximation. Using this and both the A-SV and G-SV estimators, we construct $95\%$ confidence regions and report coverage probabilities for 1000 replications for both $m=2$ and $m=5$. Table \ref{tab:boom-coverage_1}, \ref{tab:boom-coverage_2} reports all  results. In setting 1, systematically, the G-SV estimator yields far superior coverage than the A-SV estimator for all values of $n$. Whereas for setting 2, the results are almost similar indicating the equivalence of A-SV and G-SV estimator for fast mixing Markov chains.
 
 \begin{figure}[htbp]
     \centering
@@ -547,13 +546,10 @@ In Figure~\ref{fig:boom-ess} we present running plots of estimates of $\log \tex
 
 \subsection{Sensor Network Localization}
 
-Consider the sensor network localization problem discussed in \cite{ihler2005nonparametric}. The goal is to identify unknown sensor locations using noisy distance data. We use the data
-% This problem is specifically interesting in our case because the marginal posterior distribution for missing sensor locations is multi-modal for all locations. 
-%
-We use the data and the model as specified by \cite{tak2018repelling}. There are four sensors scattered on a planar region where $x_i = (x_{i1}, x_{i2})^T$ denotes the coordinates of the $i${th} sensor. Let $y_{ij} = (y_{ij})$ denotes the distance between the sensors $x_i$ and $x_j$ and if observed yields $z_{ij} = 1$, otherwise, $z_{ij} = 0$. The complete model is then,
+Consider the sensor network localization problem discussed in \cite{ihler2005nonparametric}. The goal is to identify unknown sensor locations using noisy distance data. We use the data and the model as specified by \cite{tak2018repelling}. There are four sensors scattered on a planar region where $x_i = (x_{i1}, x_{i2})^T$ denotes the coordinates of the $i${th} sensor. Let $y_{ij} = (y_{ij})$ denotes the distance between the sensors $x_i$ and $x_j$ and if observed, yields $z_{ij} = 1$ otherwise, $z_{ij} = 0$. The complete model is then,
 \begin{align*}
     z_{ij} \mid x_1, ..., x_4 & \sim \text{Bernoulli}\left(\exp\left(\dfrac{-\|x_i - x_j\|^2}{2R^2}\right)\right)\\
-    y_{ij} \mid z_{ij} = 1, x_i,x_j &\sim N(\|x_i - x_j\|^2, \sigma^2)
+    y_{ij} \mid z_{ij} = 1, x_i,x_j &\sim N(\|x_i - x_j\|^2, \sigma^2)\,.
 \end{align*}
 %
 \cite{tak2018repelling} set $R = 0.3$ and $\sigma = 0.02$ and use a Gaussian prior for the unknown locations with  mean equal to $(0,0)$ and covariance matrix equal to $100 I_2$. $y_{ij}$ is specified only if $w_{ij} = 1$. The resulting $8$-dimensional posterior of $(x_1, \dots, x_4)$ is intractable with unknown full conditionals. A Metropolis-within-Gibbs type sampler is implemented with each full conditional employing the repelling attractive Metropolis (RAM) algorithm of \cite{tak2018repelling}. The RAM algorithm supplies Markov chains with higher jumping frequency between the modes.
@@ -563,7 +559,7 @@ We use the data and the model as specified by \cite{tak2018repelling}. There are
     \includegraphics[width = .32\textwidth]{plots/sensor-trace_loc1.pdf}
       \includegraphics[width = .32\textwidth]{plots/sensor-acf_n5e3.pdf}
       \includegraphics[width = .32\textwidth]{plots/sensor-acf_n5e4.pdf}    
-    \caption{Sensor: Trace plot of $x_{11}$ (left). Locally-centered ACF (solid orange) and G-ACF (solid blue) at $n = 5000$ (middle) and $n = 50000$ (right). Dashed lines are single-chain estimated ACFs.}
+    \caption{Sensor: Trace plot of $x_{11}$ (left) for two parallel chains. Average locally-centered ACF (solid orange) and G-ACF (solid blue) at $n = 5000$ (middle) and $n = 50000$ (right). Dashed lines are single-chain estimated ACFs (orange) and G-ACFs (blue).}
     \label{fig:sensor-trace}
 \end{figure}
 
@@ -578,7 +574,7 @@ We use the data and the model as specified by \cite{tak2018repelling}. There are
     \label{fig:sensor-frob_n_ess}
 \end{figure}
 
-We run $m = 5$ parallel Markov chains with well-separated starting points. The total simulation size for each chain is fixed at $10^5$. Coverage probabilities are not estimable since the true posterior mean is unknown. Trace plot of $x_{11}$ for two Markov chains is shown in Figure~\ref{fig:sensor-trace}. Figure~\ref{fig:sensor-trace} also  plots locally and globally centered ACFs. As seen in previous examples, early estimates of locally-centered ACFs are must smaller than later estimates. The globally-centered ACFs, on the other hand are similar at small and large sample sizes. Figure~\ref{fig:sensor-frob_n_ess} presents the running plot of $\log \|{\Sigma}\|_F$ and $\log \textrm{ESS}/mn$ using A-SV and G-SV  estimators along with standard errors from $10$ replications. In both the plots, G-SV and $\widehat{\textrm{ESS}}_G/mn$ reaches stability significantly earlier than A-SV.
+We run $m = 5$ parallel Markov chains with well-separated starting points. The total simulation size for each chain is fixed at $10^5$. Coverage probabilities are not estimable since the true posterior mean is unknown. Trace plot of $x_{11}$ for two Markov chains is shown in Figure~\ref{fig:sensor-trace}. Figure~\ref{fig:sensor-trace} also  plots locally and globally centered ACFs. As seen in previous examples, early estimates of locally-centered ACFs are much smaller than later estimates. The globally-centered ACFs, on the other hand are similar at small and large sample sizes. Figure~\ref{fig:sensor-frob_n_ess} presents the running plot of $\log \|{\Sigma}\|_F$ and $\log \textrm{ESS}/mn$ using A-SV and G-SV  estimators along with standard errors from $10$ replications. In both the plots, G-SV estimator and $\widehat{\textrm{ESS}}_G/mn$ reach stability significantly earlier than A-SV estimator and $\widehat{\textrm{ESS}}_A/mn$.
 
  
 \section{Discussion} \label{sec:discussion}
@@ -600,9 +596,9 @@ In our simulations, we use the Bartlett lag window, which is convenient but not 
 
 Another class of estimators for asymptotic variance of Monte Carlo averages are the multivariate initial sequence (mIS) estimators \citep{dai:jon:2017}. Similar to SV estimator, ACvFs are a  fundamental part of mIS estimators and underestimation in ACvFs yields underestimates of $\Sigma$. 
 % In this paper, we have chiefly focused on the usage of G-ACvF for estimating autocovariances in SVE; however the argument for a similar usage in mIS is straightforward.  
-Following \cite{dai:jon:2017}, it is easy to show that $\hat{\Upsilon}_{G,s}(k)$ are strongly consistent for $\Upsilon(k)$ and replacing $\hat{\Upsilon}_s(k)$ for $\hat{\Upsilon}_{G,s}(k)$ and following \citep[][Lemma 5]{dai:jon:2017} will yield consistent overestimation of $\Sigma$ using a globally-centered version of the mIS estimator.
+It is easy to show that $\hat{\Upsilon}_{G,s}(k)$ is a strongly consistent estimators for $\Upsilon(k)$. Replacing $\hat{\Upsilon}_s(k)$ for $\hat{\Upsilon}_{G,s}(k)$ and following the proof of Theorem~2 in \citep{dai:jon:2017} will yield consistent overestimation of generalized variance $\abs{\Sigma}$ estimated using a globally-centered version of the mIS estimator.  A valuable line of research would be to carry out the theoretical and experimental analysis of mIS estimators using G-ACvF. 
 
-% generalised variance estimates obtained from mIS consistently overestimate $\abs{\Sigma}$. From Theorem~\ref{th:G-ACF_bias}, one can prove that, on average, the eigenvalues of $\hat{\Gamma}_{G,s}(k)$ are greater than the eigenvalues of $\hat{\Gamma}_s(k)$. This supplies readers with sufficient motivation to believe that the generalized variance for mIS constructed from $\hat{\Gamma}_G(k)$ not only consistently overestimates $\abs{\Sigma}$ but also upper-bounds the mIS from empirical single chain estimator of $\Gamma(k)$ for finite samples. An valuable line of research would be to prove these observations and carry out the theoretical analysis of mIS estimators using G-ACvF. 
+% generalised variance estimates obtained from mIS consistently overestimate $\abs{\Sigma}$. From Theorem~\ref{th:G-ACF_bias}, one can prove that, on average, the eigenvalues of $\hat{\Gamma}_{G,s}(k)$ are greater than the eigenvalues of $\hat{\Gamma}_s(k)$. This supplies readers with sufficient motivation to believe that the generalized variance for mIS constructed from $\hat{\Gamma}_G(k)$ not only consistently overestimates $\abs{\Sigma}$ but also upper-bounds the mIS from empirical single chain estimator of $\Gamma(k)$ for finite samples.
 %
 
 % The choice of starting vector is crucial for multiple chain sampling. In case the chains are started very near to each other, all the chains will explore nearly the same neighborhood in the state space. As a consequence, the G-ACvF will be equivalent to A-ACvF, and no significant improvement will be observed in estimation quality. We have used a deterministic initialization method in our examples using our prior knowledge about the location of modes in the target distribution. Comparing existing initialization methods {\color{orange} MA: maybe cite a few} and developing new ones could be an interesting direction for future research.  

@@ -1,5 +1,5 @@
 set.seed(1)
-library(rep.acf.ccf)
+library(multichainACF)
 
 
 log.density <- function(x, p, mu1, mu2, sd1, sd2){
@@ -8,22 +8,15 @@ log.density <- function(x, p, mu1, mu2, sd1, sd2){
 
 
 mh.mcmc <- function(start, p, mu1, mu2, sd1, sd2, N, h){
-
   X <- rep(0, N)
-  acc <- 0
   X[1] <- start
   for (i in 2:N){
     prop <- rnorm(1, mean = X[i-1], sd = 2)
     ratio <- log.density(prop, p, mu1, mu2, sd1, sd2) - log.density(X[i-1], p, mu1, mu2, sd1, sd2)
-
-    if(runif(1) < exp(ratio)){
-      X[i] <- prop
-      acc <- acc+1
-    } else {
-      X[i] <- X[i-1]
-    }
+    if(runif(1) < exp(ratio))
+      X[i] <- prop else
+        X[i] <- X[i-1]
   }
-  print(acc/N)
   return (X)
 }
 
@@ -38,11 +31,13 @@ sd2 <- 0.5
 
 chain1 <- mh.mcmc(start = -3, p, mu1, mu2, sd1, sd2, N, 1)
 chain2 <- mh.mcmc(start = 3, p, mu1, mu2, sd1, sd2, N, 1)
+mean(chain1)
+mean(chain2)
 mc.chain.list <- list(as.matrix(chain1), as.matrix(chain2))
 save(mc.chain.list, file = "gaussian-two_chains.Rdata")
 
-mean(chain1)
-mean(chain2)
+load(file = "gaussian-two_chains.Rdata")
+
 
 ##################################
 ######Trace plots for n=1e4#######
@@ -96,7 +91,7 @@ dev.off()
 m <- 2
 lag.max <- 50
 nsim1 <- 1e4
-nsim2 <- 5e4
+nsim2 <- 1e5
 ########################################
 
 x <- list()
@@ -108,8 +103,8 @@ for (i in 1:m){
 
 local.acf1 <- acf(x[[1]], type = "correlation", lag.max = lag.max, plot = FALSE)
 local.acf2 <- acf(y[[1]], type = "correlation", lag.max = lag.max, plot = FALSE)
-global.acf1 <- globalACF(x, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, graph = FALSE)[[1]]
-global.acf2 <- globalACF(y, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, graph = FALSE)[[1]]
+global.acf1 <- globalACF(x, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
+global.acf2 <- globalACF(y, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
 
 pdf(file = "gaussian-acf_hist.pdf", width = 10, height= 4)
 par(mfrow = c(1,2))
