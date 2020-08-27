@@ -38,12 +38,6 @@
 \setlength{\parindent}{0in}
 \renewcommand{\arraystretch}{1.5}
 
-% This gives us a full line break when we write a new paragraph
-% \usepackage[mathscr]{euscript}
-% \usepackage{tikz}
-% \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
-%             \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
-% \newcommand{\indep}{\perp \!\!\! \perp}
 
 
 \title{Globally-centered autocovariances in MCMC}
@@ -67,7 +61,7 @@
 
 \onehalfspacing
 \begin{abstract}
-Autocovariances are the fundamental quantity in many features of Markov chain Monte Carlo (MCMC) simulations with autcorrelation function (ACF) plots being often used as a visual tool to ascertain the performance of a Markov chain. Unfortunately, for slow mixing Markov chains, the empirical autocovariance can highly underestimate the truth. For multiple chain MCMC sampling,  we propose a globally-centered estimate of the autocovariance that pools information from all Markov chains. We show the impact of these improved estimators in three aspects: (1) acf plots, (2) estimates of the Monte Carlo asymptotic covariance matrix, and (3) estimates of the effective sample size. 
+Autocovariances are the fundamental quantity in many features of Markov chain Monte Carlo (MCMC) simulations with autcorrelation function (ACF) plots being often used as a visual tool to ascertain the performance of a Markov chain. Unfortunately, for slow mixing Markov chains, the empirical autocovariance can highly underestimate the truth. For multiple chain MCMC sampling,  we propose a globally-centered estimator of autocovariance function (G-ACvF) that pools information from all Markov chains. G-ACvF is also shown to correct the negative bias of single chain empirical autocovariance. We show the impact of this improved estimator in three aspects: (1) ACF plots, (2) estimates of the Monte Carlo asymptotic covariance matrix, and (3) estimates of the effective sample size. We have established the strong consistency of our improved asymptotic variance estimator, and obtained its large sample bias and variance.
 \end{abstract}
 
 
@@ -75,7 +69,7 @@ Autocovariances are the fundamental quantity in many features of Markov chain Mo
 
 Advancements in modern personal computing have made it easy to run parallel Markov chain Monte Carlo (MCMC) implementations. This is particularly useful for slow mixing Markov chains where the starting points of the chains are spread over the state-space in order to more accurately capture characteristics of the target distribution. The output from $m$ parallel chains is then summarized, visually and quantitatively, to assess the empirical mixing properties of the chains and the quality of Monte Carlo estimators.
 
-A key quantity that drives MCMC output analysis is the autocovariance function (ACvF). From their use in autocorrelation (ACF) plots to assessing Monte Carlo variability of estimators, to determining when to stop MCMC simulation, autocovariances drive many visual and quantitative inferences from MCMC output. However, estimators of ACvF are only available for single-chain implementations, with multiple-chain version obtained by naive averaging. As we will demonstrate, this defeats the purpose of running parallel Markov chains from dispersed starting values.
+A key quantity that drives MCMC output analysis is the autocovariance function (ACvF). From their use in autocorrelation (ACF) plots to assessing Monte Carlo variability of estimators, to determining when to stop MCMC simulation, autocovariances drive many visual and quantitative inferences from MCMC output. However, estimators of ACvF are only available for single-chain implementations, with parallel-chain version obtained by naive averaging. As we will demonstrate, this defeats the purpose of running parallel Markov chains from dispersed starting values.
  
 
 Let $F$ be the target distribution with mean $\mu$ defined on a space $\X \subseteq \mathbb{R}^d$ equipped with a countably generated $\sigma$-field $\mathcal{B}(\X)$. For $s = 1, \dots, m$, let $\{X_{st}\}_{t\geq1}$ be the $s${th} Harris ergodic $F$-invariant Markov chain \citep[see][for definitions]{meyn:twee:2009} employed to learn characteristics about $F$. The process is covariance stationary so that
@@ -89,7 +83,7 @@ Estimating $\Gamma(k)$ is critical to assessing the quality of the sampler and t
 \begin{equation} \label{eq:empirical_ACvF}
     \hat{\Gamma}_s(k) = \dfrac{1}{n}\sum_{t=1}^{n-k} \left(X_{st} - \bar{X}_s \right) \left(X_{s\, t + k} - \bar{X}_s \right)^T\,,
 \end{equation}
-and for $k < 0$, $\hat{\Gamma}_s(k) = \hat{\Gamma}_s(-k)^T$. For single-chain MCMC runs, the estimator $\hat{\Gamma}_s(k)$ is used to construct ACF plots, to estimate the long-run variance of Monte Carlo estimators \citep{hannan:1970,dame:1991}, and to estimate effective sample size (ESS) \citep{kass:carlin:gelman:neal:1998,gong:fleg:2016,vats:fleg:jon:2019}. However, there is no unified approach to constructing estimators of $\Gamma(k)$ for multiple-chain implementations. Specifically, parallel MCMC chains are often spread across the state space so as to adequately capture high density areas. For slow mixing chains, the chains take time to traverse the space so that $\bar{X}_s$  are all vastly different. Consequently, $\hat{\Gamma}_s$ typically underestimates $\Gamma$ leading to a false sense of security about the quality of process.
+and for $k < 0$, $\hat{\Gamma}_s(k) = \hat{\Gamma}_s(-k)^T$. For single-chain MCMC runs, the estimator $\hat{\Gamma}_s(k)$ is used to construct ACF plots, to estimate the long-run variance of Monte Carlo estimators \citep{hannan:1970,dame:1991}, and to estimate effective sample size (ESS) \citep{kass:carlin:gelman:neal:1998,gong:fleg:2016,vats:fleg:jon:2019}. However, there is no unified approach to constructing estimators of $\Gamma(k)$ for parallel-chain implementations. Specifically, parallel MCMC chains are often spread across the state space so as to adequately capture high density areas. For slow mixing chains, the chains take time to traverse the space so that $\bar{X}_s$  are all vastly different. Consequently, $\hat{\Gamma}_s$ typically underestimates $\Gamma$ leading to a false sense of security about the quality of process.
 
 
  We propose a globally-centered estimator of ACvF (G-ACvF) that centers the Markov chain around the overall mean vector from all $m$ chains. We show that the bias under stationarity for G-ACvF is lower than $\hat{\Gamma}_s(k)$, and through various examples, empirically demonstrate improved estimation. We employ the G-ACvF estimators to construct ACF plots, which leads to remarkable improvements. A demonstrative example is at the end of this Section. 
@@ -152,6 +146,8 @@ Let
 \Phi^{(q)} = \sum_{ k= -\infty}^{\infty}\abs{k}^q \Gamma(k)\,,
 \]
 and let $\Phi^{(1)}$ be denoted by $\Phi$.  The proof of the following theorem is available in Appendix~\ref{appendix:bias}. 
+
+{\color{orange} I don't think that the RHS below is correct. In the formulation below, $o(n^{-2})$ is be $o(n^{-1})$}
 
 \begin{theorem} \label{th:G-ACF_bias} Let $\E_F \|X_{11}\|^{2 + \delta} < \infty$ for some $\delta > 0$. If $P$ is polynomially ergodic of order $\xi > (2 + \epsilon)/(1 + 2/\delta)$ for some $\epsilon > 0$,  then,
 \[
@@ -252,7 +248,7 @@ To accurately estimate $\Sigma$, standard conditions are imposed on the lag wind
 
 \begin{ass}
 \label{ass:lag_window}
-The lag window $w(x)$ is continuous at $0$ at all but a finite number of points, is a bounded and even function with $w(0)=1$, \; $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $\sum_{k = -\infty}^{\infty} w(k/b_n) < \infty$.
+The lag window $w(x)$ is continuous at $0$ at all but a finite number of points, is a bounded and even function with $w(0)=1$, \; $\int_{-\infty}^{\infty}w^2(x)dx < \infty$, and $\sum_{k = -\infty}^{\infty} \abs{w(k/b_n)} < \infty$.
 \end{ass}
 
 Assumption~\ref{ass:lag_window} is standard \citep[see]{ande:1971} and is satisfied by most lag windows. We will use the following popular Bartlett lag window in our simulations:
@@ -319,7 +315,7 @@ The SV estimator, despite having good statistical properties, poses limitations 
     Y_{s1} - \bar{Y}_s  & \dots & Y_{sn} - \bar{Y}_s
 \end{pmatrix}^T
 \end{equation}
- \cite{heberle2017fast} compute the $n \times 1$ vector $T(w)A_s$  using an algorithm based on fast Fourier transforms. Let $w^* = (1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1}, ~0, ~w_{n-1}, \dots, w_1)^T$ and set $C(w^*)$ to be a symmetric circulant matrix such that the matrix truncation $C(w^*)_{1:n, 1:n} = T(w)$.  With inputs $C(w^*)$ and $A_s$, Algorithm~\ref{algo:herberle} produces $\hat{\Sigma}_s$ exactly. For more details, see \cite{heberle2017fast}.
+ \cite{heberle2017fast} compute the $n \times 1$ vector $T(w)A_s$  using an algorithm based on fast Fourier transforms. Let $w^* = (1 ~ w_1 ~ w_2 ~ \dots, ~ w_{n-1}, ~0, ~w_{n-1}, \dots, w_1)^T$ and set $C(w^*)$ to be a symmetric circulant matrix such that the matrix truncation $C(w^*)_{1:n, 1:n} = T(w)$. Let $M_{(j)}$ denote the $j$th column of matrix $M$ and $v^{(i)}$ denote the $i$th element of the vector $v$. With inputs $C(w^*)$ and $A_s$, Algorithm~\ref{algo:herberle} produces $\hat{\Sigma}_s$ exactly. For more details, see \cite{heberle2017fast}.
  % Let $C(w^*) = V\Lambda V^*$ be the spectral decomposition of $C(w^*)$, then $\Lambda$ is determined by a discrete Fourier transform of the first column of $C(w^*)$. 
 % $A_s$ is extrapolated into a $2n \times p$ matrix $A_s^*$ by appending $n$ rows of $0$ vector to write Equation~\ref{eq:kyriakoulis} in the following form
 % \[
@@ -382,7 +378,7 @@ For the sake of comparison, $\widehat{\textrm{ESS}}_A$ is constructed similarly 
 
 \section{Examples} \label{sec:examples}
 
-In this section we consider three different target distributions and sample $m$ parallel Markov chains using MCMC methods to experimentally analyse the performance of our globally-centered estimators. We will make the following three comparisons - (1) A-ACF vs G-ACF through ACrF plots; (2) A-SVE vs G-SVE; (3) $\widehat{\textrm{ESS}}_G$ vs $\widehat{\textrm{ESS}}_A$. The quality of estimation of $\Sigma$ is studied by coverage probabilities of a $95 \%$ Wald  confidence interval in cases where the true mean $\mu$ is known. The convergence of local and global estimators of $\Sigma$ and $\widehat{\textrm{ESS}}$ as $n$ increases is studied through two types of running plots (1) logarithm of Frobenius norm of estimated $\Sigma$, and (2) logarithm of estimated ESS/$mn$. In all the examples we are interested in estimating the mean of the stationary distribution $\mu$, so $g$ is the identity function. The batch size $b_n$ is obtained from the function \texttt{batchSize} from \texttt{R} package \texttt{mcmcse}.
+In this section we consider three different target distributions and sample $m$ parallel Markov chains using MCMC methods to experimentally analyse the performance of our globally-centered estimators. We will make the following three comparisons - (1) A-ACF vs G-ACF through ACrF plots; (2) A-SVE vs G-SVE; (3) $\widehat{\textrm{ESS}}_G$ vs $\widehat{\textrm{ESS}}_A$. The quality of estimation of $\Sigma$ is studied by coverage probabilities of a $95 \%$ Wald  confidence interval in cases where the true mean $\mu$ is known. The convergence of local and global estimators of $\Sigma$ and $\widehat{\textrm{ESS}}$ as $n$ increases is studied through two types of running plots (1) logarithm of Frobenius norm of estimated $\Sigma$, and (2) logarithm of estimated ESS/$mn$. In all the examples we are interested in estimating the mean of the stationary distribution $\mu$, so $g$ is the identity function. The batch size $b_n$ is obtained from the function \texttt{batchSize} from \texttt{R} package \texttt{mcmcse} \citep{mcmcse}.
 
 % There are only a handful of MCMC chains where the true autocovariance and asymptotic variance are known. To compare the globally and locally-centered estimators when the truth is known, we use a slowly mixing vector autoregressive process of order 1 (VAR(1)). A distinct advantage of our estimators is observed when the target distribution is multi-modal. For this purpose we use a bivariate bi-modal probability distribution introduced by \cite{gelman1991note}. Through this example, we will also show that in case of nicely mixing Markov chains, these estimat give almost equivalent results. Lastly, we consider a real-life example of finding unknown locations of sensors using noisy distance data. The posterior distribution is this case is marginally bimodal in all dimensions. All the examples have been selected to display some kind of \textit{sticky} nature in the Markov chains. In such scenario, we successfully show that our globally-centered estimators yield better results as compared to the classical single-chain estimators for autocovariance, asymptotic variance, and effective sample size.
 
@@ -608,14 +604,14 @@ It is easy to show that $\hat{\Upsilon}_{G,s}(k)$ is a strongly consistent estim
 
 \begin{lemma}
 \label{lemma: brownian}
-(\cite{csorgo2014strong}). Suppose the conditions of Theorem~\ref{thm:kuelbs} hold, then for all $\epsilon > 0$ and for almost all sample paths, there exists $n_{0}\left(\epsilon\right)$ such that $\forall n\geq n_{0}$ and $\forall i = 1, ..., p$
+(\cite{csorgo1981strong}). Suppose the conditions of Theorem~\ref{thm:kuelbs} hold, then for all $\epsilon > 0$ and for almost all sample paths, there exists $n_{0}\left(\epsilon\right)$ such that $\forall n\geq n_{0}(\epsilon)$ and $\forall i = 1, ..., p$
 
 \[
 \sup_{0\leq t \leq n-b_n}\sup_{0 \leq s \leq b_n} \left| B^{\left(i\right)}\left(t+s\right) - B^{\left(i\right)}\left(t\right) \right| < \left(1+ \epsilon\right)\left(2b_n\left(\log\dfrac{n}{b_n} + \log\; \log\; n\right)\right)^{1/2} ,
 \]
 %
 \[
-\sup_{0 \leq s \leq b_n} \left|B^{\left(i\right)}\left(n\right) - B^{\left(i\right)}\left(n - s\right)\right| < \left(1+ \epsilon\right)\left(2b_n\left(\log\dfrac{n}{b_n} + \log\;\log\;n\right)\right)^{1/2} , \;and
+\sup_{0 \leq s \leq b_n} \left|B^{\left(i\right)}\left(n\right) - B^{\left(i\right)}\left(n - s\right)\right| < \left(1+ \epsilon\right)\left(2b_n\left(\log\dfrac{n}{b_n} + \log\;\log\;n\right)\right)^{1/2} , \; \textrm{and}
 \]
 %
 \[
@@ -649,6 +645,8 @@ It is easy to show that $\hat{\Upsilon}_{G,s}(k)$ is a strongly consistent estim
 
 
 % \section{Proof of Theorems} \label{appendix:A}
+
+For the purpose of generalizing summations for positive and negative lags in the following proofs, we define the sets $I_k, J_{k1} \text{ and } J_{k2}$ as $ I_k := \{1, \dots, n-k\}, J_{k1} := \{n-k+1, \dots , n\}, J_{k2} := \{1, \dots, k\}$ for $k > 0$ and  $I_k := \{1-k, \dots, n\}, J_{k1} := \{1, \dots , -k\}, J_{k2} := \{n+k+1, \dots, n\}$ for $k < 0$. For $k=0$, $J_{k1}$ and $J_{k2}$ are empty sets and $I_k := \{1, \dots, n\}$. Notice that the empirical autocovariance estimator at lag-$k$ requires a summation over $I_k$. 
 
 \subsection{Proof of Theorem~\ref{th:G-ACF_bias}} 
 \label{appendix:bias}
@@ -709,13 +707,13 @@ We can break $\hat{\Gamma}_{G,s}$ into four parts for all $k \geq 1$ as:
 
 
 \begin{align*}
-\hat{\Gamma}_{G,s}(k) & = \dfrac{1}{n}\sum_{t=1}^{n-|k|} \left(X_{st} - \bar{\bar{X}} \right) \left(X_{s(t+k)} - \bar{\bar{X}} \right)^T \\
-    &= \left[\dfrac{1}{n} \sum_{t=1}^{n-|k|} \left(X_{st} - \bar{X}_s \right) \left(X_{s(t+k)} - \bar{X}_s \right)^T \right] + \left[\dfrac{1}{n} \sum_{t=1}^{|k|} \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - X_{st} \right)^T\right] \\ 
-    & \quad +  \left[\dfrac{1}{n} \sum_{t=n-|k|+1}^{n}  \left( \bar{X}_s - X_{st} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right] + \left[\dfrac{n-|k|}{n} \left(\bar{X}_s - \bar{\bar{X}}\right)   \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right]\\
-    &= \hat{\Gamma}_s(k) - \dfrac{1}{n} \sum_{t=1}^{|k|}A_{st}^T - \dfrac{1}{n}\sum_{t=n-|k|+1}^{n}A_{st} + \dfrac{n-|k|}{n}  \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\,, \numberthis \label{eq:acf_breakdown}
+\hat{\Gamma}_{G,s}(k) & = \dfrac{1}{n}\sum_{t \in I_k} \left(X_{st} - \bar{\bar{X}} \right) \left(X_{s(t+k)} - \bar{\bar{X}} \right)^T \\
+    &= \left[\dfrac{1}{n} \sum_{t \in I_k} \left(X_{st} - \bar{X}_s \right) \left(X_{s(t+k)} - \bar{X}_s \right)^T \right] + \left[\dfrac{1}{n} \sum_{t \in J_{k2}} \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - X_{st} \right)^T\right] \\ 
+    & \quad +  \left[\dfrac{1}{n} \sum_{t \in J_{k1}}  \left( \bar{X}_s - X_{st} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right] + \left[\dfrac{n-\abs{k}}{n} \left(\bar{X}_s - \bar{\bar{X}}\right)   \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right]\\
+    &= \hat{\Gamma}_s(k) - \dfrac{1}{n} \sum_{t \in J_{k2}}^{k}A_{st}^T - \dfrac{1}{n}\sum_{t \in J_{k1}}A_{st} + \dfrac{n-\abs{k}}{n}  \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\,, \numberthis \label{eq:acf_breakdown}
 \end{align*}
 %
-where $A_{st} = (X_{st}-\bar{X}_s)(\bar{X}_s - \bar{\bar{X}})^T$. Under the assumption of stationarity, we will study the expectations of the each of the above terms. Without loss of generality, consider $A_{11}$,
+where $A_{st} = (X_{st}-\bar{X}_s)(\bar{X}_s - \bar{\bar{X}})^T$. Under the assumption of stationarity, we will study the expectations of each of the above terms. Without loss of generality, consider $A_{11}$,
 \begin{align*}
     &\E \left[A_{11} \right]\\
      &= \mathbb{E} \left[ \left(X_{11} - \bar{X}_1 \right) \left(\bar{X}_1 - \bar{\bar{X}} \right)^T \right]\\
@@ -751,13 +749,12 @@ Additionally, the locally-centered autocovariance exhibits the following expecta
  \right)\,.
  \end{equation}
 %
-As a consequence, if $\Var(\bar{X})$ is finite, then $\Var(\bar{X}) \to 0 \textrm{ as } n \to \infty$.
-Using \eqref{eq:priestly}, \eqref{eq:acf_2}, \eqref{eq:acf_3}, and \eqref{eq:acf_4} in \eqref{eq:acf_breakdown},
+Using\eqref{eq:acf_2}, \eqref{eq:acf_3}, \eqref{eq:acf_4}, and  \eqref{eq:priestly} in \eqref{eq:acf_breakdown},
 \begin{align*}
     & \E \left[\hat{\Gamma}_{G,s}(k) \right] \\
-    &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - \dfrac{1}{n} \left(\sum\limits_{t=1}^{|k|}\mathbb{E}[A_{1t}^T] + \sum\limits_{t=n-|k|+1}^{n}\mathbb{E}[A_{1t}]\right) + \left(1- \dfrac{|k|}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
-    &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - \dfrac{|k|}{n}\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h) + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T - 2 \Var(\bar{X}_1)\right) + \left(1- \dfrac{|k|}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
-    &= \left(1- \dfrac{|k|}{n}\right)\Gamma(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\bar{X}_1)}{m}\,.
+    &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - \dfrac{1}{n} \left(\sum\limits_{t \in J_{k2}}\mathbb{E}[A_{1t}^T] + \sum\limits_{t \in J_{k1}}\mathbb{E}[A_{1t}]\right) + \left(1- \dfrac{\abs{k}}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
+    &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - \dfrac{\abs{k}}{n}\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h) + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T - 2 \Var(\bar{X}_1)\right) + \left(1- \dfrac{\abs{k}}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
+    &= \left(1- \dfrac{\abs{k}}{n}\right)\Gamma(k) - \dfrac{\abs{k}}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\bar{X}_1)}{m}\,.
 \end{align*}
 %
 
@@ -768,21 +765,21 @@ Using \eqref{eq:priestly}, \eqref{eq:acf_2}, \eqref{eq:acf_3}, and \eqref{eq:acf
 
 As a consequence, if $\Var(\bar{X})$ is finite, then $\Var(\bar{X}) \to 0 \textrm{ as } n \to \infty$. Expectation of $\hat{\Gamma}_{G,s}(k)$ can then broken down as following,
  \begin{equation} \label{eq:G-ACF_expec_breakdown}
-     \mathbb{E}\left[\hat{\Gamma}_{G,s}(k)\right] = \left(1- \dfrac{|k|}{n}\right)\Gamma(k) + O_1 + O_2\,.
+     \mathbb{E}\left[\hat{\Gamma}_{G,s}(k)\right] = \left(1- \dfrac{\abs{k}}{n}\right)\Gamma(k) + O_1 + O_2\,.
  \end{equation}
 %
 where,
 \begin{align*}
-    O_1 &= -\dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right)\right] + o(n^{-2})\, ,\\
+    O_1 &= -\dfrac{\abs{k}}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right)\right] + o(n^{-2})\, ,\\
     O_2 &= -\dfrac{1}{m}\left(\dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2}\right) + o(n^{-2})
 \end{align*}
 %
-We observe that both $O_1 \textrm{ and } O_2$ are small order terms that converge to 0 as $n \to \infty$. Here, $O_1 = (-\abs{k}/n)\mathcal{O}(1/n) \textrm{ and } O_2 = {\mathcal{O}}(1/n)$. For a diagonal element of $\Gamma$,
+We observe that both $O_1 \textrm{ and } O_2$ are small order terms that converge to 0 as $n \to \infty$. Here, $O_1 = (\abs{k}/n)\mathcal{O}(1/n) \textrm{ and } O_2 = {\mathcal{O}}(1/n)$. For a diagonal element of $\Gamma$,
 % We observe that this expectation result is very similar to equation \ref{eq:priestly} from \cite{priestley1981spectral} for the asymptotically unbiased estimator of autocovariance except for an additional positive bias term. This helps in countering the inherent negative bias in $\hat{\Gamma}(k)$ and give more informative estimates of autocovariance.  Although, bias term for a fixed $k$ is $o(1)$, it increases with $k$. We have explicitly written the end effect term arising from using the estimator $\bar{\bar{X}}$ for $\mu$. These are small order terms that vanish as $n \to \infty$.
 %
 \begin{align*}
 & \E \left[ \hat{\Gamma}_{G,s}^{ii}\right]\\
-& = \mathbb{E}\left[\hat{\Gamma}^{ii}_{s}(k)\right] - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1} \left[\Gamma^{ii}(h)^T + \Gamma^{ii}(h) \right] \right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)^{ii}\right] - \dfrac{\Var(\bar{X}_1)^{ii}}{m}\,.
+& = \mathbb{E}\left[\hat{\Gamma}^{ii}_{s}(k)\right] - \dfrac{\abs{k}}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1} \left[\Gamma^{ii}(h)^T + \Gamma^{ii}(h) \right] \right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)^{ii}\right] - \dfrac{\Var(\bar{X}_1)^{ii}}{m}\,.
 \end{align*}
 In the presence of positive correlation, the leftover term is positive.
 
@@ -810,56 +807,56 @@ In the presence of positive correlation, the leftover term is positive.
 
 Consider pseudo autocovariance and spectral variance estimators for the $s$th chain, denoted by $\tilde{\Upsilon}_s(k)$ and $\tilde{\Sigma}_s$ that use data centered around the unobserved actual mean $\mu$:
 \begin{align*}
-    \tilde{\Upsilon}_s(k) &= \dfrac{1}{n}\sum_{t=1}^{n-|k|}(Y_{st}-\mu_g)(Y_{s(t+k)}-\mu_g)^T \\ 
+    \tilde{\Upsilon}_s(k) &= \dfrac{1}{n}\sum_{t \in I_k}(Y_{st}-\mu_g)(Y_{s(t+k)}-\mu_g)^T \\ 
     \tilde{\Sigma}_s &= \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\tilde{\Upsilon}_s(k) \,.
 \end{align*}
 %
 The average pseudo spectral variance estimator is
 \[
-\tilde{\Sigma} = \dfrac{1}{m}\sum\limits_{s=1}^{m}\tilde{\Sigma}_s
+\tilde{\Sigma}_A = \dfrac{1}{m}\sum\limits_{s=1}^{m}\tilde{\Sigma}_s
 \]
 
 Further, let
 \begin{align*}
-  M_1 & = \dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{\sum\limits_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum\limits_{t=1}^{n-|k|}\dfrac{1}{n}\left[ \left(Y_{st}-\mu_g \right)_i   \left(\mu_g-\bar{\bar{Y}} \right)_j +    \left(\mu_g-\bar{\bar{Y}} \right)_i  \left(Y_{s(t+k)}-\mu_g \right)_j \right]\right\}\,, \\ 
+  M_1 & = \dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{\sum\limits_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum\limits_{t \in I_k}\dfrac{1}{n}\left[ \left(Y_{st}-\mu_g \right)_i   \left(\mu_g-\bar{\bar{Y}} \right)_j +    \left(\mu_g-\bar{\bar{Y}} \right)_i  \left(Y_{s(t+k)}-\mu_g \right)_j \right]\right\}\,, \\ 
   %
-M_2 &= \left(\mu_g-\bar{\bar{Y}} \right)_i   \left(\mu_g-\bar{\bar{Y}} \right)_j\sum\limits_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\,.
+M_2 &= \left(\mu_g-\bar{\bar{Y}} \right)_i   \left(\mu_g-\bar{\bar{Y}} \right)_j\sum\limits_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{\abs{k}}{n}\right)w\left(\dfrac{k}{b_n}\right)\,.
 \end{align*}
 
 
 \begin{lemma} \label{lemma:G-SVE_breakdown}
-For the G-SVE estimator, $\hat{\Sigma}_{G}^{ij} = \tilde{\Sigma}^{ij} + M_1 + M_2$ and 
+For the G-SVE estimator, $\hat{\Sigma}_{G}^{ij} = \tilde{\Sigma}_A^{ij} + M_1 + M_2$ and 
 \[
 |M_1 + M_2| \leq D^2 g_1(n) + D g_2(n) + g_3(n)\,,
 \]
-where
+where for some constant $C$,
 \begin{align*}
-    g_1(n) &= (4+C_1)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2} \to 0\\
-    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4+C_1)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
-    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C_1)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0\,.
+    g_1(n) &= (4+C)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2} \to 0\\
+    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4+C)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
+    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0\,.
 \end{align*}
 \end{lemma}
 
 \begin{proof}
 The proof follows from standard algebraic calculations and is presented here for completeness. Consider,
 \begin{align*}
-\hat{\Sigma}_{G}^{ij} &= \dfrac{1}{m}\sum_{s=1}^{m} \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|} \left(Y_{st}-\bar{\bar{Y}} \right)_i \left(Y_{s(t+k)}-\bar{\bar{Y}} \right)_j\\
-% &= \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|} \left[  \left\{\left(X_{st}-\mu_g \right)_i + \left(\mu_g-\bar{\bar{X}} \right)_i \right \}  \left\{ \left(X_{s(t+k)}-\mu_g \right)_j + \left(\mu_g-\bar{\bar{X}} \right)_j \right \} \right]\\
-&= \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left[ \left(Y_{st}-\mu_g \right)_i  \left(Y_{s(t+k)}-\mu_g \right)_j+  \left(Y_{st} - \mu_g \right)_i    \left(\mu_g - \bar{\bar{Y}} \right)_j \right. \\  
+\hat{\Sigma}_{G}^{ij} &= \dfrac{1}{m}\sum_{s=1}^{m} \sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t \in I_k} \left(Y_{st}-\bar{\bar{Y}} \right)_i \left(Y_{s(t+k)}-\bar{\bar{Y}} \right)_j\\
+% &= \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-k} \left[  \left\{\left(X_{st}-\mu_g \right)_i + \left(\mu_g-\bar{\bar{X}} \right)_i \right \}  \left\{ \left(X_{s(t+k)}-\mu_g \right)_j + \left(\mu_g-\bar{\bar{X}} \right)_j \right \} \right]\\
+&= \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t \in I_k}  \left[ \left(Y_{st}-\mu_g \right)_i  \left(Y_{s(t+k)}-\mu_g \right)_j+  \left(Y_{st} - \mu_g \right)_i    \left(\mu_g - \bar{\bar{Y}} \right)_j \right. \\  
 & \quad + \left. \left(\mu_g-\bar{\bar{Y}} \right)_i  \left(Y_{s(t+k)}-\mu_g \right)_j + \left(\mu_g-\bar{\bar{Y}} \right)_i  \left(\mu_g-\bar{\bar{Y}}  \right)_j  \right]\\
-& = \tilde{\Sigma}^{ij} + \left[(\mu_g-\bar{\bar{Y}})_i(\mu_g-\bar{\bar{Y}})_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right] \\ 
-& \quad  + \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-|k|}  \left[\dfrac{1}{n} \left(Y_{st} - \mu_g \right)_i \left(\mu_g - \bar{\bar{Y}} \right)_j + \dfrac{1}{n} \left(\mu_g-\bar{\bar{Y}} \right)_i  \left(Y_{s(t+k)}-\mu_g \right)_j \right] \\ 
-& = \tilde{\Sigma}^{ij} + M_1 + M_2\,.
+& = \tilde{\Sigma}^{ij}_A + \left[(\mu_g-\bar{\bar{Y}})_i(\mu_g-\bar{\bar{Y}})_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{\abs{k}}{n}\right)w\left(\dfrac{k}{b_n}\right)\right] \\ 
+& \quad  + \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\sum_{t \in I_k}  \left[\dfrac{1}{n} \left(Y_{st} - \mu_g \right)_i \left(\mu_g - \bar{\bar{Y}} \right)_j + \dfrac{1}{n} \left(\mu_g-\bar{\bar{Y}} \right)_i  \left(Y_{s(t+k)}-\mu_g \right)_j \right] \\ 
+& = \tilde{\Sigma}^{ij}_A + M_1 + M_2\,.
 \end{align*}
 
 Consequently
 \[
-\left|\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij}  \right| = |M_1 + M_2| \leq |M_1| + |M_2|\,.
+\left|\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}_{A}^{ij}  \right| = |M_1 + M_2| \leq |M_1| + |M_2|\,.
 \]
 %
 We first present a result which will be useful to use later. For any Markov chain $s$, 
 \begin{align*}
-  \|\bar{Y}_s - \mu_g\|_{\infty} & \leq \|\bar{Y}_s - \mu_g\| = \dfrac{1}{mn}\left\|\sum_{t=1}^{n}Y_{st} - n\mu_g\right\| \\
+  \|\bar{Y}_s - \mu_g\|_{\infty} & \leq \|\bar{Y}_s - \mu_g\| = \dfrac{1}{n}\left\|\sum_{t=1}^{n}Y_{st} - n\mu_g\right\| \\
   % &= \dfrac{1}{n}  \left \|\sum_{t=1}^{n}X_{st} - n\mu_g \pm L B(n) \right\|\\
   & \leq \dfrac{1}{n}\left\|\sum_{t=1}^{n}Y_{st} - n \mu_g - L B(n)\right\| + \dfrac{\left\|L B(n)\right\|}{n}\\
   &< \dfrac{D\psi(n)}{n} + \dfrac{\|L B(n)\|}{n}\\
@@ -886,22 +883,22 @@ We first present a result which will be useful to use later. For any Markov chai
 Now consider,
 \begin{align*}
 & |M_1| \\ 
-   % & = \left|\dfrac{1}{m}\sum _{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-|k|} \dfrac{1}{n}\left[ \left(X_{st} - \mu_g \right)_i  \left(\mu_g-\bar{\bar{X}} \right)_j + \left(\mu_g-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)} - \mu_g \right)_j\right]\right\}\right| \\
-   % & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}{\left|\sum\limits_{t=1}^{n-|k|} \left(X_{st} - \mu_g \right)_i  \left(\mu_g - \bar{\bar{X}} \right)_j\right|} + \dfrac{1}{n}{\left|\sum_{t=1}^{n-|k|} \left(\mu_g-\bar{\bar{X}} \right)_i\left(X_{s(t+k)} - \mu_g \right)_j\right|} \right]\right\}\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}\left|\sum_{t=1}^{n-|k|}(Y_{st}- \mu_g)_i\right|\left|(\mu_g-\bar{\bar{Y}})_j\right|+ \dfrac{1}{n}\left|(\mu_g-\bar{\bar{Y}})_i\right|\left|\sum_{t=1}^{n-|k|}(Y_{j(t+k)}-\mu_g)_j\right|\right]\right\}\\
-    & \leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t=1}^{n-|k|}(Y_{st}-\mu_g)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t=1}^{n-|k|}(Y_{s(t+k)}-\mu_g)\right\|_{\infty} \right]\\
+   % & = \left|\dfrac{1}{m}\sum _{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-k} \dfrac{1}{n}\left[ \left(X_{st} - \mu_g \right)_i  \left(\mu_g-\bar{\bar{X}} \right)_j + \left(\mu_g-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)} - \mu_g \right)_j\right]\right\}\right| \\
+   % & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}{\left|\sum\limits_{t=1}^{n-k} \left(X_{st} - \mu_g \right)_i  \left(\mu_g - \bar{\bar{X}} \right)_j\right|} + \dfrac{1}{n}{\left|\sum_{t=1}^{n-k} \left(\mu_g-\bar{\bar{X}} \right)_i\left(X_{s(t+k)} - \mu_g \right)_j\right|} \right]\right\}\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}\left|\sum_{t \in I_k}(Y_{st}- \mu_g)_i\right|\left|(\mu_g-\bar{\bar{Y}})_j\right|+ \dfrac{1}{n}\left|(\mu_g-\bar{\bar{Y}})_i\right|\left|\sum_{t \in I_k }(Y_{j(t+k)}-\mu_g)_j\right|\right]\right\}\\
+    & \leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t \in I_k}(Y_{st}-\mu_g)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t \in I_k}(Y_{s(t+k)}-\mu_g)\right\|_{\infty} \right]\\
     &\leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \\
-    & \quad \times \sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t=n-|k|+1}^{n}(Y_{st} - \mu_g) - n(\bar{Y}_s - \mu_g) \right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t=1}^{|k|}(Y_{st} - \mu_g) - n(\bar{Y}_s - \mu_g)\right\|_{\infty} \right]\\
-    &\leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t=n-|k|+1}^{n}(Y_{st} - \mu_g)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t=1}^{|k|}(Y_{st} - \mu_g)\right\|_{\infty} + 2\|\bar{Y}_s - \mu_g\|_{\infty} \right]\\
-    & \leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum\limits_{s=1}^{m}\sum_{k=-b_n + 1}^{b_n-1}   \dfrac{1}{n}\left[\left\|\sum_{t=n-|k|+1}^{n}(Y_{st} - \mu_g)\right\|_{\infty} + \left\|\sum_{t=1}^{|k|}(Y_{st} - \mu_g)\right\|_{\infty} \right]\\
-    & \; \;+ 2(2b_n - 1)\|\bar{\bar{Y}} - \mu_g\|_{\infty}\|\bar{Y}_1 - \mu_g\|_{\infty}\,.
+    & \quad \times \sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t \in J_{k1}}(Y_{st} - \mu_g) - n(\bar{Y}_s - \mu_g) \right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t \in J_{k2}}(Y_{st} - \mu_g) - n(\bar{Y}_s - \mu_g)\right\|_{\infty} \right]\\
+    &\leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t \in J_{k1}}(Y_{st} - \mu_g)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t \in J_{k2}}(Y_{st} - \mu_g)\right\|_{\infty} + 2\|\bar{Y}_s - \mu_g\|_{\infty} \right]\\
+    & \leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum\limits_{s=1}^{m}\sum_{k=-b_n + 1}^{b_n-1}   \dfrac{1}{n}\left[\left\|\sum_{t \in J_{k1}}(Y_{st} - \mu_g)\right\|_{\infty} + \left\|\sum_{t \in J_{k2}}(Y_{st} - \mu_g)\right\|_{\infty} \right]\\
+    & \; \;+ 2(2b_n - 1)\|\bar{\bar{Y}} - \mu_g\|_{\infty}\|\bar{Y}_h - \mu_g\|_{\infty} \textrm{ for some } h \in \{1, \dots, m\} \,.
 \end{align*}
 %
 Using SIP on summation of $k$ terms, we obtain the following upper bound for $|M_1|$
 \begin{align*}
 |M_1|
-    & < 2\|(\bar{\bar{Y}} - \mu_g)\|_{\infty} \left[\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] \right]  + 2(2b_n - 1) \|\bar{Y}_1 - \mu_g\|_{\infty} \\
-    &\leq 2(2b_n - 1)\|(\bar{\bar{Y}} - \mu_g)\|_{\infty} \left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n} + \|\bar{Y}_1 - \mu_g\|_{\infty}  \right]\\
+    & < 2\|(\bar{\bar{Y}} - \mu_g)\|_{\infty} \left[\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right]  + (2b_n - 1) \|\bar{Y}_h - \mu_g\|_{\infty}  \right]\\
+    &\leq 2(2b_n - 1)\|(\bar{\bar{Y}} - \mu_g)\|_{\infty} \left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n} + \|\bar{Y}_h - \mu_g\|_{\infty}  \right]\\
     % & \quad  + 2(2b_n - 1)\|\bar{\bar{X}} - \mu_g\|_{\infty}\\
     & \leq 4(2b_n - 1)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2  \quad \text{(by \eqref{eq:xbars_bound} and \eqref{eq:xbarbar_bound})}\,. \numberthis \label{eq:strong_consis_term-1}
 \end{align*}
@@ -915,12 +912,12 @@ Using SIP on summation of $k$ terms, we obtain the following upper bound for $|M
 % Using the bound on $\psi(n)$ given by \cite{stra:1964}, equation (\ref{eq:strong_consis_term-1}) becomes $\mathcal{O}\left(b_n \log \log n/n\right)$ which converges to 0 as $n \to \infty$. Now we will show that $M_2 \xrightarrow{a.s.} 0$ as $n\to \infty$
 For $M_2$,
 \begin{align*}
-   |M_2| & = \left|\dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{ \left(\mu_g - \bar{\bar{Y}} \right)_i  \left(\mu_g - \bar{\bar{Y}} \right)_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right\}\right|\\
-    & \leq\|\bar{\bar{Y}} - \mu_g\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{|k|}{n}\right)w\left(\dfrac{k}{b_n}\right)\right] < \|\bar{\bar{Y}} - \mu_g\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
+   |M_2| & = \left|\dfrac{1}{m}\sum\limits_{s=1}^{m}\left\{ \left(\mu_g - \bar{\bar{Y}} \right)_i  \left(\mu_g - \bar{\bar{Y}} \right)_j\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{\abs{k}}{n}\right)w\left(\dfrac{k}{b_n}\right)\right\}\right|\\
+    & \leq\|\bar{\bar{Y}} - \mu_g\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left(1-\dfrac{\abs{k}}{n}\right)w\left(\dfrac{k}{b_n}\right)\right] < \|\bar{\bar{Y}} - \mu_g\|_{\infty}^2\left[\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
     % &= b_n\|\bar{\bar{X}} - \mu_g\|_{\infty}^2\left[\dfrac{1}{b_n}\sum_{k=-b_n+1}^{b_n-1}\left|w\left(\dfrac{k}{b_n}\right)\right|\right]\\
     & \leq b_n\|\bar{\bar{Y}} - \mu_g\|_{\infty}^2 \int_{-\infty}^{\infty}|w(x)|dx \\
     % & \leq Cb_n\|\bar{\bar{X}} - \mu_g \|^2 \\ 
-    & \leq Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2 \quad \text{ (by \eqref{eq:xbarbar_bound})} \numberthis \label{eq:strong_consis_term-2} \,.
+    & \leq Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2 \quad \text{ for some constant $C$ (by \eqref{eq:xbarbar_bound})} \numberthis \label{eq:strong_consis_term-2} \,.
 \end{align*}
 %
 % Using Lemma~\ref{lemma:consis_1} to upper bound the above term as 
@@ -934,7 +931,7 @@ For $M_2$,
 %
 Using \eqref{eq:strong_consis_term-1} and \eqref{eq:strong_consis_term-2},
 \begin{align*}
-|M_1 + M_2  & \leq |M_1| + |M_2|
+|M_1 + M_2|  & \leq |M_1| + |M_2|
   % & \leq 4(2b_n - 1)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2 + Cb_n\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2\\
    = D^2g_1(n) + D g_2(n) + g_3(n)\,,
 \end{align*}
@@ -944,10 +941,8 @@ where
     g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(8 + C)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right]\\
     g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(8 + C)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right]\,.
 \end{align*}
-Under our assumptions, 
-$b_n\log \log n /n \to 0$ and $\psi(n) = o(\sqrt{n \log \log n})$. Consequently, 
-$b_n \psi^2(n)/n^2 \to 0$, $\psi^2(n)/n^2 \to 0$, ${b_n\psi(n)\sqrt{n\log \log n}/n^2} \to 0$, and $\psi(n) \sqrt{n \log \log n}/n^2 \to 0$. Thus, $g_1(n), g_2(n)$ and $g_3(n) \to 0$ as $n \to \infty$. {\color{orange} MA: Should we add a footnote here telling why $\phi(n)=o(\sqrt{n \log \log n})?$ It was earlier stated explicitly in Assumption-1 which is not Theorem-1.}
-
+Under the assumptions of Theorem~\ref{thm:kuelbs}, $\psi(n) = o(n^{1/2})$. Using Law of Iterative Logarithms (LIL), a tighter bound for $\psi(n)$ is given by \cite{stra:1964} as $o(\sqrt{n\log \log n})$. We have already assumed that $b_n \log \log n / n \to 0$ as $n \to \infty$. Consequently, 
+$b_n \psi^2(n)/n^2 \to 0$, $\psi^2(n)/n^2 \to 0$, ${b_n\psi(n)\sqrt{n\log \log n}/n^2} \to 0$, and $\psi(n) \sqrt{n \log \log n}/n^2 \to 0$. Thus, $g_1(n), g_2(n)$ and $g_3(n) \to 0$ as $n \to \infty$.
 \end{proof}
 % \begin{lemma} \label{lemma:pseudo_consis}
 % If the Assumption \ref{ass:sip}, \ref{ass:sve_consis} hold and $n^{-1}{b_n \log \log n}\to 0$, then $\tilde{\Sigma}^{ij} \xrightarrow{a.s.} \Sigma^{ij} \textrm{ as } n \to \infty$
@@ -956,48 +951,48 @@ $b_n \psi^2(n)/n^2 \to 0$, $\psi^2(n)/n^2 \to 0$, ${b_n\psi(n)\sqrt{n\log \log n
 \begin{proof}[Proof of theorem \ref{th:consistency}]
 We have the following decomposition,
 \begin{align*}
-\tilde{\Sigma}^{ij}
-    % & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(X_{st} - \mu_g \right)_i  \left(X_{s(t + k)} - \mu_g \right)_j\\
-    & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}  \left(Y_{st} \pm \bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t + k)} \pm \bar{Y}_s - \mu_g \right)_j\\
-    & = \hat{\Sigma}_{SV}^{ij} + \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(Y_{st} - \bar{Y}_s \right)_i   \left(\bar{Y}_s - \mu_g \right)_j + \left(\bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t+k)} - \bar{Y}_s \right)_j\right]\\
+\tilde{\Sigma}_{A}^{ij}
+    % & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-k}  \left(X_{st} - \mu_g \right)_i  \left(X_{s(t + k)} - \mu_g \right)_j\\
+    & = \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t \in I_k}  \left(Y_{st} \pm \bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t + k)} \pm \bar{Y}_s - \mu_g \right)_j\\
+    & = \hat{\Sigma}_{A}^{ij} + \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t \in I_k}\left[ \left(Y_{st} - \bar{Y}_s \right)_i   \left(\bar{Y}_s - \mu_g \right)_j + \left(\bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t+k)} - \bar{Y}_s \right)_j\right]\\
     & \quad + \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{Y}_s - \mu_g \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\\
-    & = \hat{\Sigma}_{SV}^{ij} + N_1 + N_2 \,,
+    & = \hat{\Sigma}_{A}^{ij} + N_1 + N_2 \,,
 \end{align*}
 where
 \begin{align*}
-N_1 & = \dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t=1}^{n-|k|}  \left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j + \left(\bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t+k)} - \bar{Y}_s \right)_j\right]\\
-N_2 & = \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{Y}_s - \mu_g \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\,.
+N_1 & = \dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t \in I_k}  \left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j + \left(\bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t+k)} - \bar{Y}_s \right)_j\right]\\
+N_2 & = \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{Y}_s - \mu_g \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right]  \left[\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left(1 - \dfrac{\abs{k}}{b_n}\right) \right]\;.
 \end{align*}
 %
-Using the above and  Lemma~\ref{lemma:G-SVE_breakdown}, 
+Using the above breakdown and  Lemma~\ref{lemma:G-SVE_breakdown}, 
 \begin{align*}
-\left|\hat{\Sigma}_{G}^{ij} - \Sigma^{ij} \right| & = \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} + N_1 + N_2 + M_1 + M_2 \right|  \leq \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} \right| +  \left| N_1 \right| +  \left|N_2 \right| + \left| M_1 + M_2 \right| \numberthis \label{eq:G-SVE_full_decomp}
+\left|\hat{\Sigma}_{G}^{ij} - \Sigma^{ij} \right| & = \left| \hat{\Sigma}_{A}^{ij} - \Sigma^{ij} + N_1 + N_2 + M_1 + M_2 \right|  \leq \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} \right| +  \left| N_1 \right| +  \left|N_2 \right| + \left| M_1 + M_2 \right| \numberthis \label{eq:G-SVE_full_decomp}
 \end{align*}
 %
-By the strong consistency of single-chain SV estimator, the first term goes to 0 with probability 1 and by Lemma~\ref{lemma:G-SVE_breakdown}, the third term goes to 0 with probability 1 as $n \to \infty$. It is left to show that $|N_1| \to 0$ and $|N_2| \to 0$ with probability 1
+By the strong consistency of single-chain SV estimator, the first term goes to 0 with probability 1 and by Lemma~\ref{lemma:G-SVE_breakdown}, the third term goes to 0 with probability 1 as $n \to \infty$. It is left to show that $|N_1| \to 0$ and $|N_2| \to 0$ with probability 1. Consider,
 %
 \begin{align*}
-|N_1| & = \left|\dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t=1}^{n-|k|}  \left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j + \left(\bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t+k)} - \bar{Y}_s \right)_j\right] \right|\\
-& \leq \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right] \right| \\ 
-& \quad + \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(\bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t+k)} - \bar{Y}_s \right)_j\right] \right|
+|N_1| & = \left|\dfrac{1}{m}\sum_{s=1}^{m}  \sum_{k=-b_n+1}^{b_n-1}  w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}  \sum_{t \in I_k}  \left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j + \left(\bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t+k)} - \bar{Y}_s \right)_j\right] \right|\\
+& \leq \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t \in I_k}\left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right] \right| \\ 
+& \quad + \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t \in I_k}\left[ \left(\bar{Y}_s - \mu_g \right)_i  \left(Y_{s(t+k)} - \bar{Y}_s \right)_j\right] \right|\,.
 \end{align*}
 %
 We will show that the first term goes to 0 and the proof for the second term is similar. Consider
 \begin{align*}
-    & \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right] \right| \\
-    % & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right)  \right|\dfrac{  \left| \left(\bar{X}_s - \mu_g \right)_j \right| }{n} \left[ \left|  \sum_{t=1}^{|k|} \left(\bar{X}_s - X_{st} \right)_i  \right| \right]\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left| w\left(\dfrac{k}{b_n}\right) \right| \dfrac{ \left|  \left(\bar{Y}_s - \mu_g \right)_j \right| }{n} \left[ \left|\sum_{t=1}^{|k|} \left(\mu_g - Y_{st} \right)_i \right| + \abs{k} \left|\left(\bar{Y}_s - \mu_g \right)_i \right|\right]\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left\|\sum_{t=1}^{|k|} \left(\mu_g - Y_{st} \right) + \abs{k} \left(\bar{Y}_s - \mu_g \right)\right\|_{\infty}\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left(\left\|\sum_{t=1}^{|k|}  \left(Y_{st} - \mu_g \right)\right\|_{\infty} + \abs{k}\|\bar{Y}_s - \mu_g\|_{\infty} \right)\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left\|\sum_{t=1}^{|k|} \left(Y_{st} - \mu_g\right) \right\| + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n} \left \|\bar{Y}_s - \mu_g \right \|_{\infty}^2\,.
+    & \left| \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t \in I_k}\left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right] \right| \\
+    % & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right)  \right|\dfrac{  \left| \left(\bar{X}_s - \mu_g \right)_j \right| }{n} \left[ \left|  \sum_{t=1}^{k} \left(\bar{X}_s - X_{st} \right)_i  \right| \right]\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left| w\left(\dfrac{k}{b_n}\right) \right| \dfrac{ \left| \left(\bar{Y}_s - \mu_g \right)_j \right| }{n} \left| \sum_{t \in J_{k1}} \left(\mu_g - Y_{st} \right)_i  + \abs{k} \left(\bar{Y}_s - \mu_g \right)_i \right|\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left\|\sum_{t \in J_{k1}} \left(\mu_g - Y_{st} \right) + \abs{k} \left(\bar{Y}_s - \mu_g \right)\right\|_{\infty}\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left(\left\|\sum_{t \in J_{k1}}  \left(Y_{st} - \mu_g \right)\right\|_{\infty} + \abs{k}\|\bar{Y}_s - \mu_g\|_{\infty} \right)\\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left\|\sum_{t \in J_{k1}} \left(Y_{st} - \mu_g\right) \right\| + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{cb_n(b_n-1)}{n} \left \|\bar{Y}_s - \mu_g \right \|_{\infty}^2\,.
 \end{align*}
 
 Using SIP on the summation of $k$ terms,
 \begin{align*}
-    & \left|\dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-|k|}\left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right] \right|\\
-   &  < \dfrac{1}{m}\sum\limits_{s=1}^{m}\|\bar{Y}_s - \mu_g\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{Y}_s - \mu_g\|_{\infty}^2\\
-   &  < \dfrac{(2b_n-1)}{m}\sum\limits_{s=1}^{m}\|\bar{Y}_s - \mu_g\|_{\infty}\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{Y}_s - \mu_g\|_{\infty}^2 \\
-   &  \leq   \left(2b_n - 1 + \dfrac{b_n^2}{n} - \dfrac{b_n}{n}\right)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2  \to 0\,. \quad  \text{(by \eqref{eq:xbars_bound})}
+    & \left|\dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-k}\left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right] \right|\\
+   &  < \dfrac{1}{m}\sum\limits_{s=1}^{m}\|\bar{Y}_s - \mu_g\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{cb_n(b_n-1)}{n}\|\bar{Y}_s - \mu_g\|_{\infty}^2\\
+   &  < \dfrac{(2b_n-1)}{m}\sum\limits_{s=1}^{m}\|\bar{Y}_s - \mu_g\|_{\infty}\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{cb_n(b_n-1)}{n}\|\bar{Y}_s - \mu_g\|_{\infty}^2 \\
+   &  \leq   \left(2b_n - 1 + \dfrac{cb_n^2}{n} - \dfrac{cb_n}{n}\right)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2  \to 0\,. \quad  \text{(by \eqref{eq:xbars_bound})}
 \end{align*}
 %
 % Using Lemma~\ref{lemma:consis_1}, the above term can be upper bounded by,
@@ -1029,7 +1024,7 @@ Thus, in \eqref{eq:G-SVE_full_decomp}, every term goes to 0 and $\hat{\Sigma}_{G
 By Equation~\ref{eq:G-ACF_expec_breakdown},
 %\begin{align*}
 %\mathbb{E} \left[\hat{\Upsilon}_{G}(k) \right]
-% &  = \left(1- \dfrac{|k|}{n}\right)\Upsilon(k) - \dfrac{|k|}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Upsilon(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Upsilon(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\bar{X}_1)}{m} \\
+% &  = \left(1- \dfrac{k}{n}\right)\Upsilon(k) - \dfrac{k}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Upsilon(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Upsilon(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\bar{X}_1)}{m} \\
 % & = \left(1 - \dfrac{\abs{k}}{n}\right)\Upsilon(k) + \mathcal{O} \left(n^{-1} \right)  \numberthis \label{eq:G-_bias2}  \,.
 % \end{align*}
 %
@@ -1042,14 +1037,14 @@ where both $O_1 \textrm{ and } O_2$ are the small order terms where $O_1 = n^{-1
 Consider the G-SVE estimator,
 \begin{align*}
  \mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] & = \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Upsilon}_{G}(k) \right] - \sum_{k=-\infty}^{\infty}\Upsilon(k)\\
-    &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{|k|}{n}\right)\Upsilon(k) + O_1 + O_2 \right]  - \sum_{k=-\infty}^{\infty}\Upsilon(k)\\
-    &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Upsilon(k)\right]  - \sum_{k=-\infty}^{\infty}\Upsilon(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)  (O_1 + O_2) \right] \\ 
+    &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{k}{n}\right)\Upsilon(k) + O_1 + O_2 \right]  - \sum_{k=-\infty}^{\infty}\Upsilon(k)\\
+    &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{\abs{k}}{n}\right)\Upsilon(k)\right]  - \sum_{k=-\infty}^{\infty}\Upsilon(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)  (O_1 + O_2) \right] \\ 
     & = P_1 + P_2\,,
 \end{align*}
 %
 where 
 \begin{align*}
-    P_1 &= \sum\limits_{k=-n+1}^{n-1}\left[w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{|k|}{n}\right)\Upsilon(k) \right] - \sum\limits_{k=-\infty}^{\infty}\Upsilon(k) \textrm{ and }\\   
+    P_1 &= \sum\limits_{k=-n+1}^{n-1}\left[w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{\abs{k}}{n}\right)\Upsilon(k) \right] - \sum\limits_{k=-\infty}^{\infty}\Upsilon(k) \textrm{ and }\\   
     P_2 &= \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k }{b_n}\right)\left(O_1 + O_2\right)\right]\,.
 \end{align*}
 
@@ -1057,33 +1052,33 @@ where
 Similar to \cite{hannan2009multiple}, we break $P_1$ into three parts. Note that notation $A = o(z)$ for matrix $A$  implies $A^{ij} = o(z)$ for every $(i,j)$th element of the matrix $A$. Consider,
 \begin{equation}
 \label{eq:P1_decomp}
-P_1 = -\sum_{|k|\geq n}\Upsilon(k)  -  \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Upsilon(k)- \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{|k|}{n}\right)\right)\Upsilon(k)\,.  
+P_1 = -\sum_{\abs{k}\geq n}\Upsilon(k)  -  \sum_{k = -n+1}^{n-1}w\left(\dfrac{k}{n}\right)\dfrac{\abs{k}}{n}\Upsilon(k)- \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{k}{n}\right)\right)\Upsilon(k)\,.  
 \end{equation}
 %
 We deal with the three subterms of term $P_1$ individually. First,
 %    
 \begin{align*}
- {-\sum_{|k|\geq n}\Upsilon(k)} &\leq  \sum_{|k|\geq n} \abs{\dfrac{k}{n}}^q   \Upsilon(k) = \dfrac{1}{b_n^q}\abs{\dfrac{b_n}{n}}^q \sum_{|k|\geq n}|k|^q  \Upsilon(k) = o\left(\dfrac{1}{b_n^q}\right)\,, \numberthis \label{eq:P1_first}
+ {-\sum_{\abs{k}\geq n}\Upsilon(k)} &\leq  \sum_{\abs{k}\geq n} \abs{\dfrac{k}{n}}^q   \Upsilon(k) = \dfrac{1}{b_n^q}\abs{\dfrac{b_n}{n}}^q \sum_{k\geq n}\abs{k}^q  \Upsilon(k) = o\left(\dfrac{1}{b_n^q}\right)\,, \numberthis \label{eq:P1_first}
 \end{align*}
 %
-since $\sum_{|k|\geq n}|k|^q \Upsilon(k)  < \infty$. Next,
+since $\sum_{\abs{k}\geq n}\abs{k}^q \Upsilon(k)  < \infty$. Next,
 %
 \begin{align*}
- \sum_{k = -n+1}^{n-1}w\left(\dfrac{k}{n}\right)\dfrac{|k|}{n}\Upsilon(k)   &\leq \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Upsilon(k)  \,.
+ \sum_{k = -n+1}^{n-1}w\left(\dfrac{k}{n}\right)\dfrac{\abs{k}}{n}\Upsilon(k)   &\leq \dfrac{C}{n}\sum_{k = -n+1}^{n-1}\abs{k} \Upsilon(k)  \,.
 \end{align*}
 For $q\geq 1$,
 \begin{align*}
-\dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Upsilon(k) &\leq \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|^q  \Upsilon(k) = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n} C\sum_{k = -n+1}^{n-1}|k|^q  \Upsilon(k)  = o\left(\dfrac{1}{b_n^q}\right)\,.
+\dfrac{c}{n}\sum_{k = -n+1}^{n-1}\abs{k}  \Upsilon(k) &\leq \dfrac{c}{n}\sum_{k = -n+1}^{n-1}\abs{k}^q  \Upsilon(k) = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n} c\sum_{k = -n+1}^{n-1}\abs{k}^q  \Upsilon(k)  = o\left(\dfrac{1}{b_n^q}\right)\,.
 \end{align*}
           
 For $q <1$,
 \begin{align*}
-   \dfrac{C}{n}\sum_{k = -n+1}^{n-1}|k|  \Upsilon(k)  &\leq C\sum_{k =-n+1}^{n-1}\abs{\dfrac{k}{n}}^q  \Upsilon(k)  = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n^q} C \sum_{k =-n+1}^{n-1}|k|^q \Upsilon(k)  = o\left(\dfrac{1}{b_n^q}\right) \, .
+   \dfrac{c}{n}\sum_{k = -n+1}^{n-1}\abs{k} \Upsilon(k)  &\leq c\sum_{k =-n+1}^{n-1}\abs{\dfrac{k}{n}}^q  \Upsilon(k)  = \dfrac{1}{b_n^q}\dfrac{b_n^q}{n^q} c \sum_{k =-n+1}^{n-1}\abs{k}^q \Upsilon(k)  = o\left(\dfrac{1}{b_n^q}\right) \, .
 \end{align*}
 So,
 \begin{equation}
 \label{eq:P1_second}
- \sum_{k = -n+1}^{n-1}w\left(\dfrac{|k|}{n}\right)\dfrac{|k|}{n}\Upsilon(k) = o \left(\dfrac{1}{b_n^q} \right)
+ \sum_{k = -n+1}^{n-1}w\left(\dfrac{k}{n}\right)\dfrac{|k|}{n}\Upsilon(k) = o \left(\dfrac{1}{b_n^q} \right)
 \end{equation}
 Lastly, by our assumptions, for $x \to 0$
 \[
@@ -1096,17 +1091,17 @@ For $x = k/b_n$, $\abs{k/b_n}^{-q}(1-w(k/b_n))$ converges boundedly to $k_q$ for
      % \]
 So,
 \begin{align*}
-     \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{k}{b_n}\right)\right)\Upsilon(k) &= -\dfrac{1}{b_n^q}\sum_{k = -n+1}^{n-1}  \left(\dfrac{|k|}{b_n}\right)^{-q} {\left(1-w\left(\dfrac{|k|}{b_n}\right)\right)}|k|^q \Upsilon(k) \\
+     \sum_{k = -n+1}^{n-1}\left(1-w\left(\dfrac{k}{b_n}\right)\right)\Upsilon(k) &= -\dfrac{1}{b_n^q}\sum_{k = -n+1}^{n-1}  \left(\dfrac{|k|}{b_n}\right)^{-q} {\left(1-w\left(\dfrac{k}{b_n}\right)\right)}|k|^q \Upsilon(k) \\
      & = -\dfrac{1}{b_n^q}\sum_{k = -n+1}^{n-1}   \left[k_q + o(1) \right]|k|^q \Gamma(k) \\
      & = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right) \numberthis \label{eq:P1_third}\,.
 \end{align*}
 
-  Finally, we will solve for $P_2$. Note that $O_2$ is independent of $k$. We will write $O_1$ as $(\abs{k}/n)\mathcal{O}(1/n)$ and $O_2$ as $\mathcal{O}(1/n)$. We will find an upper bound and prove that it is $\mathcal{O}\left(n^{-1}\right)$:
+  Finally, we will solve for $P_2$. Note that $O_2$ is independent of $k$. We will write $O_1$ as $(\abs{k}/n)\mathcal{O}(1/n)$ and $O_2$ as $\mathcal{O}(1/n)$. We will find an upper bound and prove that it is $o\left(b_n^{-q}\right)$:
   \begin{align*}
-      &  \sum_{k=-n+1}^{n-1}w\left(\dfrac{|k|}{b_n}\right)\left[ O_1 + O_2 \right]  \\
-      & \leq \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{|k|}{b_n}\right)O_1} + \abs{O_2}\sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{|k|}{b_n}\right)} \\
-      &= \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-n+1}^{n-1}\dfrac{\abs{k}}{n}\abs{w\left(\dfrac{|k|}{b_n}\right)} + \mathcal{O}\left(\dfrac{1}{n}\right)\\
-      &= \mathcal{O}\left(\dfrac{1}{n}\right) W_n \\
+      &  \sum_{k=-n+1}^{n-1}w\left(\dfrac{k}{b_n}\right)( O_1 + O_2) \\
+      & \leq \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{k}{b_n}\right)O_1} + \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{k}{b_n}\right)O_2} \\
+      &= \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-n+1}^{n-1}\dfrac{\abs{k}}{n}\abs{w\left(\dfrac{|k|}{b_n}\right)} + \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{|k|}{b_n}\right)}\\
+      &= \mathcal{O}\left(\dfrac{1}{n}\right) \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{|k|}{b_n}\right)}\\
       &= \mathcal{O}\left(\dfrac{1}{n}\right) = o\left(\dfrac{1}{b_n^q}\right) \,.
  \end{align*}
  
@@ -1131,15 +1126,15 @@ which completes the result.
 \end{equation}
 Further, we have defined $g_1(n), g_2(n), g_3(n)$ such that as $n \to \infty$,
 \begin{align*}
-    g_1(n) &= (4+C_1)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2} \to 0\\
-    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4+C_1)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
-    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C_1)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0\,.
+    g_1(n) &= (4+C)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2} \to 0\\
+    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4+C)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
+    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0\,.
 \end{align*}
 %
 We have shown from the proof of strong consistency that,
 \begin{align*}
  &\left| \hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right|\\
- & \leq \dfrac{1}{m} \sum_{s=1}^m \left| \sum_{k=-b_n+1}^{b_n-1} w \left(\dfrac{k}{b_n} \right) \sum_{t=1}^{n-|k|}   \left[ \left( \dfrac{(Y_{st} - \mu_g)_i(\mu_g-\bar{\bar{Y}})_j}{n}\right)+ \left(\dfrac{(\mu_g-\bar{\bar{Y}})_i(Y_{s(t+k)}-\mu_g)_j}{n}\right) \right] \right.\\
+ & \leq \dfrac{1}{m} \sum_{s=1}^m \left| \sum_{k=-b_n+1}^{b_n-1} w \left(\dfrac{k}{b_n} \right) \sum_{t \in I_k}   \left[ \left( \dfrac{(Y_{st} - \mu_g)_i(\mu_g-\bar{\bar{Y}})_j}{n}\right)+ \left(\dfrac{(\mu_g-\bar{\bar{Y}})_i(Y_{s(t+k)}-\mu_g)_j}{n}\right) \right] \right.\\
 & \quad \quad  \left. + (\mu_g-\bar{\bar{Y}})(\mu_g-\bar{\bar{Y}})^T\sum_{k=-b_n+1}^{b_n-1}\left(\dfrac{n-|k|}{n}\right)w\left(\dfrac{k}{n}\right) \right|  < D^2g_1(n) + Dg_2(n) + g_3(n)\,.
 \end{align*}
 
@@ -1147,7 +1142,7 @@ By \eqref{eq:G-SVE_asv_consis}, there exists an $N_0$ such that
 \begin{align*}
 \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 &= \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) + \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(n > N_0)\\
 & \leq \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) +  \left(D^2g_1(n) + Dg_2(n) + g_3(n) \right)^2 I(n > N_0)\\
-& := g_n^*(X_{11}, \dots, Y_{1n}, \dots, Y_{m1}, \dots, Y_{mn})\,.
+& := g_n^*(Y_{11}, \dots, Y_{1n}, \dots, Y_{m1}, \dots, Y_{mn})\,.
 \end{align*}
 But since by assumption $\E D^4 <\infty$ and the fourth moment is finite,
 \[
@@ -1204,7 +1199,7 @@ Consider the militarized interstate dispute (MID) data of \cite{martin2011mcmcpa
     p_{ii} &\sim \text{Beta}(\alpha, \beta), \qquad i = 1,..., k\,.
 \end{align*}
 
-This is a 7-dimensional estimation problem wherein the marginal distribution of majority of components display a multimodal nature. Figure~\ref{fig:poisson-trace} shows the evolution of two chains started from random points with time for the second component. We will report the ACF plots for component-2. Similar behavior is observed for ACF plots of other components as well
+This is a 7-dimensional estimation problem wherein the marginal distribution of majority of components display a multimodal nature. Figure~\ref{fig:poisson-trace} shows the evolution of two chains started from random points with time for the second and third component. We will report the ACF plots for component-2. Similar behavior is observed for ACF plots of other components as well.
 
 \begin{figure}[htbp]
     \centering
@@ -1220,7 +1215,7 @@ This is a 7-dimensional estimation problem wherein the marginal distribution of 
     \label{fig:poisson-acf}
 \end{figure}
 
-Figure~\ref{fig:poisson-acf} demonstrates a striking advantage of G-ACF in estimating the true autocorrelations. G-ACF gives a more realistic and accurate estimation of autocorrelations in almost ten times lesser chain length.
+Figure~\ref{fig:poisson-acf} demonstrates a striking advantage of G-ACF in estimating the true autocorrelations. G-ACF gives a more realistic and accurate estimation of autocorrelations in almost ten times lesser samples per chain.
 
  % it is evident that the chains have not explored the sample space well. Hence for $10^3$ samples ACF severely underestimates the autocorrelations whereas G-ACF gives more realistic estimates. For a large sample size of $10^5$, the Markov chains have mixed properly and therefore, both the estimators are approximately alike.
 

@@ -3,57 +3,50 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: apalike.bst
 Database file #1: sample.bib
-Repeated entry---line 4136 of file sample.bib
- : @article{vats:fleg:jon:2018
- :                            ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 4172 of file sample.bib
- : @book{zeid:2013
- :                ,
-I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "csorgo2014strong"
 Warning--empty journal in hannan:1970
 Warning--empty journal in martin2011mcmcpack
 Warning--there's a number but no series in priestley1981spectral
 Warning--empty publisher in priestley1981spectral
-You've used 37 entries,
+You've used 36 entries,
             1935 wiz_defined-function locations,
-            708 strings with 9867 characters,
-and the built_in function-call counts, 14144 in all, are:
-= -- 1400
-> -- 529
-< -- 28
-+ -- 187
-- -- 172
-* -- 1195
-:= -- 2476
-add.period$ -- 110
-call.type$ -- 37
-change.case$ -- 264
-chr.to.int$ -- 36
-cite$ -- 41
-duplicate$ -- 525
-empty$ -- 1009
-format.name$ -- 235
-if$ -- 2731
+            704 strings with 9752 characters,
+and the built_in function-call counts, 13828 in all, are:
+= -- 1371
+> -- 516
+< -- 27
++ -- 183
+- -- 168
+* -- 1172
+:= -- 2419
+add.period$ -- 107
+call.type$ -- 36
+change.case$ -- 258
+chr.to.int$ -- 35
+cite$ -- 40
+duplicate$ -- 511
+empty$ -- 986
+format.name$ -- 228
+if$ -- 2669
 int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 43
-newline$ -- 186
-num.names$ -- 111
-pop$ -- 217
+missing$ -- 41
+newline$ -- 181
+num.names$ -- 108
+pop$ -- 208
 preamble$ -- 1
-purify$ -- 270
+purify$ -- 263
 quote$ -- 0
-skip$ -- 402
+skip$ -- 392
 stack$ -- 0
-substring$ -- 1081
-swap$ -- 46
+substring$ -- 1069
+swap$ -- 45
 text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 210
+type$ -- 206
 warning$ -- 4
-while$ -- 122
+while$ -- 120
 width$ -- 0
-write$ -- 471
-(There were 2 error messages)
+write$ -- 459
+(There were 5 warnings)
