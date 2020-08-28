@@ -61,7 +61,7 @@
 
 \onehalfspacing
 \begin{abstract}
-Autocovariances are the fundamental quantity in many features of Markov chain Monte Carlo (MCMC) simulations with autcorrelation function (ACF) plots being often used as a visual tool to ascertain the performance of a Markov chain. Unfortunately, for slow mixing Markov chains, the empirical autocovariance can highly underestimate the truth. For multiple chain MCMC sampling,  we propose a globally-centered estimator of autocovariance function (G-ACvF) that pools information from all Markov chains. G-ACvF is also shown to correct the negative bias of single chain empirical autocovariance. We show the impact of this improved estimator in three aspects: (1) ACF plots, (2) estimates of the Monte Carlo asymptotic covariance matrix, and (3) estimates of the effective sample size. We have established the strong consistency of our improved asymptotic variance estimator, and obtained its large sample bias and variance.
+Autocovariances are the fundamental quantity of interest in many features of Markov chain Monte Carlo (MCMC) simulations with autcorrelation function (ACF) plots being often used as a visual tool to ascertain the performance of a Markov chain. Unfortunately, for slow mixing Markov chains, the empirical autocovariance can highly underestimate the truth. For multiple chain MCMC sampling,  we propose a globally-centered estimator of autocovariance function (G-ACvF) that pools information from all Markov chains. G-ACvF is also shown to correct the negative bias of single chain empirical autocovariance. We show the impact of this improved estimator in three aspects: (1) ACF plots, (2) estimates of the Monte Carlo asymptotic covariance matrix, and (3) estimates of the effective sample size. We also establish the strong consistency of our improved asymptotic covariance estimator under weak conditions, and obtain its large sample bias and variance. 
 \end{abstract}
 
 
@@ -378,7 +378,7 @@ For the sake of comparison, $\widehat{\textrm{ESS}}_A$ is constructed similarly 
 
 \section{Examples} \label{sec:examples}
 
-In this section we consider three different target distributions and sample $m$ parallel Markov chains using MCMC methods to experimentally analyse the performance of our globally-centered estimators. We will make the following three comparisons - (1) A-ACF vs G-ACF through ACrF plots; (2) A-SVE vs G-SVE; (3) $\widehat{\textrm{ESS}}_G$ vs $\widehat{\textrm{ESS}}_A$. The quality of estimation of $\Sigma$ is studied by coverage probabilities of a $95 \%$ Wald  confidence interval in cases where the true mean $\mu$ is known. The convergence of local and global estimators of $\Sigma$ and $\widehat{\textrm{ESS}}$ as $n$ increases is studied through two types of running plots (1) logarithm of Frobenius norm of estimated $\Sigma$, and (2) logarithm of estimated ESS/$mn$. In all the examples we are interested in estimating the mean of the stationary distribution $\mu$, so $g$ is the identity function. The batch size $b_n$ is obtained from the function \texttt{batchSize} from \texttt{R} package \texttt{mcmcse} \citep{mcmcse}.
+In this section we consider three different target distributions and sample $m$ parallel Markov chains using MCMC methods to experimentally analyse the performance of our globally-centered estimators. We will make the following three comparisons - (1) ACF vs G-ACF estimator, (2) SV vs G-SV estimator, and (3) $\widehat{\textrm{ESS}}_A$ vs $\widehat{\textrm{ESS}}_G$. The quality of estimation of $\Sigma$ is studied by coverage probabilities of a $95 \%$ Wald  confidence interval in cases where the true mean $\mu$ is known. The convergence of local and global estimators of $\Sigma$ and $\widehat{\textrm{ESS}}$ as $n$ increases is studied through two types of running plots (1) logarithm of Frobenius norm of estimated $\Sigma$, and (2) logarithm of estimated ESS/$mn$. In all the examples we are interested in estimating the mean of the stationary distribution $\mu$, so $g$ is the identity function. The batch size $b_n$ is obtained from the function \texttt{batchSize} from \texttt{R} package \texttt{mcmcse} \citep{mcmcse}.
 
 % There are only a handful of MCMC chains where the true autocovariance and asymptotic variance are known. To compare the globally and locally-centered estimators when the truth is known, we use a slowly mixing vector autoregressive process of order 1 (VAR(1)). A distinct advantage of our estimators is observed when the target distribution is multi-modal. For this purpose we use a bivariate bi-modal probability distribution introduced by \cite{gelman1991note}. Through this example, we will also show that in case of nicely mixing Markov chains, these estimat give almost equivalent results. Lastly, we consider a real-life example of finding unknown locations of sensors using noisy distance data. The posterior distribution is this case is marginally bimodal in all dimensions. All the examples have been selected to display some kind of \textit{sticky} nature in the Markov chains. In such scenario, we successfully show that our globally-centered estimators yield better results as compared to the classical single-chain estimators for autocovariance, asymptotic variance, and effective sample size.
 
@@ -417,7 +417,7 @@ $n$  &  1000  & 5000  & 10000  & 50000  & 100000 \\  \hline
 A-SV  &    0.710 & 0.843 & .885 & .928 & .944 \\ 
 G-SV  &    0.956 & 0.937 & .924 & .945 & .952 \\ \hline
     \end{tabular}
-    \caption{VAR(1). Coverage probabilities at $95 \%$ nominal level using A-SVE and G-SVE.}
+    \caption{VAR(1). Coverage probabilities at $95 \%$ nominal level using A-SV and G-SV estimator.}
     \label{tab:var-coverage}
 \end{table}
 
@@ -429,7 +429,7 @@ The quality of estimation of $\Sigma$ and $\text{ESS}$ is assessed by running pl
     \centering
       \includegraphics[width = 2.0in]{plots/var-frob.pdf} 
       \includegraphics[width = 2.0in]{plots/var-ess.pdf}         
-    \caption{VAR(1). (Left) Running plot for logarithm of Frobenius norm of A-SV and G-SV.(Right) Running plot for logarithm of $\widehat{\textrm{ESS}}/mn$ using A-SV and G-SV.}
+    \caption{VAR(1). (Left) Running plot for logarithm of Frobenius norm of A-SV and G-SV estimator. (Right) Running plot for logarithm of $\widehat{\textrm{ESS}}/mn$ using A-SV and G-SV estimator.}
     \label{fig:var-frob_n_ess}
 \end{figure}
 
@@ -708,9 +708,9 @@ We can break $\hat{\Gamma}_{G,s}$ into four parts for all $k \geq 1$ as:
 
 \begin{align*}
 \hat{\Gamma}_{G,s}(k) & = \dfrac{1}{n}\sum_{t \in I_k} \left(X_{st} - \bar{\bar{X}} \right) \left(X_{s(t+k)} - \bar{\bar{X}} \right)^T \\
-    &= \left[\dfrac{1}{n} \sum_{t \in I_k} \left(X_{st} - \bar{X}_s \right) \left(X_{s(t+k)} - \bar{X}_s \right)^T \right] + \left[\dfrac{1}{n} \sum_{t \in J_{k2}} \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - X_{st} \right)^T\right] \\ 
-    & \quad +  \left[\dfrac{1}{n} \sum_{t \in J_{k1}}  \left( \bar{X}_s - X_{st} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right] + \left[\dfrac{n-\abs{k}}{n} \left(\bar{X}_s - \bar{\bar{X}}\right)   \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right]\\
-    &= \hat{\Gamma}_s(k) - \dfrac{1}{n} \sum_{t \in J_{k2}}^{k}A_{st}^T - \dfrac{1}{n}\sum_{t \in J_{k1}}A_{st} + \dfrac{n-\abs{k}}{n}  \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\,, \numberthis \label{eq:acf_breakdown}
+    &= \left[\dfrac{1}{n} \sum_{t \in I_k} \left(X_{st} - \bar{X}_s \right) \left(X_{s(t+k)} - \bar{X}_s \right)^T \right] + \left[\dfrac{1}{n} \sum_{t \in J_{k1}}  \left( \bar{X}_s - X_{st} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right]\\ 
+    & \quad + \left[\dfrac{1}{n} \sum_{t \in J_{k2}} \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - X_{st} \right)^T\right]   + \left[\dfrac{n-\abs{k}}{n} \left(\bar{X}_s - \bar{\bar{X}}\right)   \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right]\\
+    &= \hat{\Gamma}_s(k) - \dfrac{1}{n}\sum_{t \in J_{k1}}A_{st} - \dfrac{1}{n} \sum_{t \in J_{k2}}^{k}A_{st}^T  + \dfrac{n-\abs{k}}{n}  \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\,, \numberthis \label{eq:acf_breakdown}
 \end{align*}
 %
 where $A_{st} = (X_{st}-\bar{X}_s)(\bar{X}_s - \bar{\bar{X}})^T$. Under the assumption of stationarity, we will study the expectations of each of the above terms. Without loss of generality, consider $A_{11}$,
@@ -752,7 +752,7 @@ Additionally, the locally-centered autocovariance exhibits the following expecta
 Using\eqref{eq:acf_2}, \eqref{eq:acf_3}, \eqref{eq:acf_4}, and  \eqref{eq:priestly} in \eqref{eq:acf_breakdown},
 \begin{align*}
     & \E \left[\hat{\Gamma}_{G,s}(k) \right] \\
-    &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - \dfrac{1}{n} \left(\sum\limits_{t \in J_{k2}}\mathbb{E}[A_{1t}^T] + \sum\limits_{t \in J_{k1}}\mathbb{E}[A_{1t}]\right) + \left(1- \dfrac{\abs{k}}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
+    &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - \dfrac{1}{n} \left(+ \sum\limits_{t \in J_{k1}}\mathbb{E}[A_{1t}] + \sum\limits_{t \in J_{k2}}\mathbb{E}[A_{1t}^T] \right) + \left(1- \dfrac{\abs{k}}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
     &= \mathbb{E}\left[\hat{\Gamma}_{s}(k)\right] - \dfrac{\abs{k}}{n}\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h) + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T - 2 \Var(\bar{X}_1)\right) + \left(1- \dfrac{\abs{k}}{n}\right)\left(1-\dfrac{1}{m}\right)\Var(\bar{X}_1)\\
     &= \left(1- \dfrac{\abs{k}}{n}\right)\Gamma(k) - \dfrac{\abs{k}}{n}\left[\left(1-\dfrac{1}{m}\right)\left(\dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)^T + \dfrac{1}{n}\sum_{h=0}^{n-1}\Gamma(h)\right) - \left(2-\dfrac{1}{m}\right) \Var(\bar{X}_1)\right] - \dfrac{\Var(\bar{X}_1)}{m}\,.
 \end{align*}
@@ -825,15 +825,15 @@ M_2 &= \left(\mu_g-\bar{\bar{Y}} \right)_i   \left(\mu_g-\bar{\bar{Y}} \right)_j
 
 
 \begin{lemma} \label{lemma:G-SVE_breakdown}
-For the G-SVE estimator, $\hat{\Sigma}_{G}^{ij} = \tilde{\Sigma}_A^{ij} + M_1 + M_2$ and 
+Let Assumption~\ref{ass:lag_window} holds, then for the G-SV estimator, $\hat{\Sigma}_{G}^{ij} = \tilde{\Sigma}_A^{ij} + M_1 + M_2$ and 
 \[
 |M_1 + M_2| \leq D^2 g_1(n) + D g_2(n) + g_3(n)\,,
 \]
 where for some constant $C$,
 \begin{align*}
-    g_1(n) &= (4+C)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2} \to 0\\
-    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4+C)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
-    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0\,.
+    g_1(n) &= (4c+C)\dfrac{b_n \psi^2(n)}{n^2} - 4c\dfrac{\psi^2(n)}{n^2} \to 0\\
+    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4c+C)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4c\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
+    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4c+C)\dfrac{b_n \log\log n}{n} - 4c \dfrac{\log \log n}{n}\right] \to 0\,.
 \end{align*}
 \end{lemma}
 
@@ -885,22 +885,22 @@ Now consider,
 & |M_1| \\ 
    % & = \left|\dfrac{1}{m}\sum _{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\sum_{t=1}^{n-k} \dfrac{1}{n}\left[ \left(X_{st} - \mu_g \right)_i  \left(\mu_g-\bar{\bar{X}} \right)_j + \left(\mu_g-\bar{\bar{X}} \right)_i  \left(X_{s(t+k)} - \mu_g \right)_j\right]\right\}\right| \\
    % & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}{\left|\sum\limits_{t=1}^{n-k} \left(X_{st} - \mu_g \right)_i  \left(\mu_g - \bar{\bar{X}} \right)_j\right|} + \dfrac{1}{n}{\left|\sum_{t=1}^{n-k} \left(\mu_g-\bar{\bar{X}} \right)_i\left(X_{s(t+k)} - \mu_g \right)_j\right|} \right]\right\}\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\left[ \dfrac{1}{n}\left|\sum_{t \in I_k}(Y_{st}- \mu_g)_i\right|\left|(\mu_g-\bar{\bar{Y}})_j\right|+ \dfrac{1}{n}\left|(\mu_g-\bar{\bar{Y}})_i\right|\left|\sum_{t \in I_k }(Y_{j(t+k)}-\mu_g)_j\right|\right]\right\}\\
-    & \leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t \in I_k}(Y_{st}-\mu_g)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t \in I_k}(Y_{s(t+k)}-\mu_g)\right\|_{\infty} \right]\\
-    &\leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \\
+    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\left\{\sum_{k=-b_n+1}^{b_n-1}\abs{w\left(\dfrac{k}{b_n}\right)}\left[ \dfrac{1}{n}\left|\sum_{t \in I_k}(Y_{st}- \mu_g)_i\right|\left|(\mu_g-\bar{\bar{Y}})_j\right|+ \dfrac{1}{n}\left|(\mu_g-\bar{\bar{Y}})_i\right|\left|\sum_{t \in I_k }(Y_{j(t+k)}-\mu_g)_j\right|\right]\right\}\\
+    & \leq \dfrac{c\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t \in I_k}(Y_{st}-\mu_g)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t \in I_k}(Y_{s(t+k)}-\mu_g)\right\|_{\infty} \right]\\
+    &\leq \dfrac{c\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \\
     & \quad \times \sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t \in J_{k1}}(Y_{st} - \mu_g) - n(\bar{Y}_s - \mu_g) \right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t \in J_{k2}}(Y_{st} - \mu_g) - n(\bar{Y}_s - \mu_g)\right\|_{\infty} \right]\\
-    &\leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t \in J_{k1}}(Y_{st} - \mu_g)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t \in J_{k2}}(Y_{st} - \mu_g)\right\|_{\infty} + 2\|\bar{Y}_s - \mu_g\|_{\infty} \right]\\
-    & \leq \dfrac{\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum\limits_{s=1}^{m}\sum_{k=-b_n + 1}^{b_n-1}   \dfrac{1}{n}\left[\left\|\sum_{t \in J_{k1}}(Y_{st} - \mu_g)\right\|_{\infty} + \left\|\sum_{t \in J_{k2}}(Y_{st} - \mu_g)\right\|_{\infty} \right]\\
-    & \; \;+ 2(2b_n - 1)\|\bar{\bar{Y}} - \mu_g\|_{\infty}\|\bar{Y}_h - \mu_g\|_{\infty} \textrm{ for some } h \in \{1, \dots, m\} \,.
+    &\leq \dfrac{c\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum_{s=1}^{m}\sum\limits_{k=-b_n+1}^{b_n-1}\left[ \dfrac{1}{n}\left\|\sum_{t \in J_{k1}}(Y_{st} - \mu_g)\right\|_{\infty} + \dfrac{1}{n}\left\|\sum_{t \in J_{k2}}(Y_{st} - \mu_g)\right\|_{\infty} + 2\|\bar{Y}_s - \mu_g\|_{\infty} \right]\\
+    & \leq \dfrac{c\|(\bar{\bar{Y}} - \mu_g)\|_{\infty}}{m} \sum\limits_{s=1}^{m}\sum_{k=-b_n + 1}^{b_n-1}   \dfrac{1}{n}\left[\left\|\sum_{t \in J_{k1}}(Y_{st} - \mu_g)\right\|_{\infty} + \left\|\sum_{t \in J_{k2}}(Y_{st} - \mu_g)\right\|_{\infty} \right]\\
+    & \; \;+ 2c(2b_n - 1)\|\bar{\bar{Y}} - \mu_g\|_{\infty}\|\bar{Y}_h - \mu_g\|_{\infty} \textrm{ for some } h \in \{1, \dots, m\} \,.
 \end{align*}
 %
 Using SIP on summation of $k$ terms, we obtain the following upper bound for $|M_1|$
 \begin{align*}
 |M_1|
-    & < 2\|(\bar{\bar{Y}} - \mu_g)\|_{\infty} \left[\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right]  + (2b_n - 1) \|\bar{Y}_h - \mu_g\|_{\infty}  \right]\\
-    &\leq 2(2b_n - 1)\|(\bar{\bar{Y}} - \mu_g)\|_{\infty} \left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n} + \|\bar{Y}_h - \mu_g\|_{\infty}  \right]\\
+    & < 2c\|(\bar{\bar{Y}} - \mu_g)\|_{\infty} \left[\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right]  + (2b_n - 1) \|\bar{Y}_h - \mu_g\|_{\infty}  \right]\\
+    &\leq 2c(2b_n - 1)\|(\bar{\bar{Y}} - \mu_g)\|_{\infty} \left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n} + \|\bar{Y}_h - \mu_g\|_{\infty}  \right]\\
     % & \quad  + 2(2b_n - 1)\|\bar{\bar{X}} - \mu_g\|_{\infty}\\
-    & \leq 4(2b_n - 1)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2  \quad \text{(by \eqref{eq:xbars_bound} and \eqref{eq:xbarbar_bound})}\,. \numberthis \label{eq:strong_consis_term-1}
+    & \leq 4c(2b_n - 1)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{n \log\log n}}{n}  \right]^2  \quad \text{(by \eqref{eq:xbars_bound} and \eqref{eq:xbarbar_bound})}\,. \numberthis \label{eq:strong_consis_term-1}
 \end{align*}
 %
  %
@@ -937,9 +937,9 @@ Using \eqref{eq:strong_consis_term-1} and \eqref{eq:strong_consis_term-2},
 \end{align*}
 where
 \begin{align*}
-    g_1(n) &= (8 + C)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2}\\
-    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(8 + C)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right]\\
-    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(8 + C)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right]\,.
+    g_1(n) &= (8c + C)\dfrac{b_n \psi^2(n)}{n^2} - 4c\dfrac{\psi^2(n)}{n^2}\\
+    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(8c + C)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4c\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right]\\
+    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(8c + C)\dfrac{b_n \log\log n}{n} - 4c \dfrac{\log \log n}{n}\right]\,.
 \end{align*}
 Under the assumptions of Theorem~\ref{thm:kuelbs}, $\psi(n) = o(n^{1/2})$. Using Law of Iterative Logarithms (LIL), a tighter bound for $\psi(n)$ is given by \cite{stra:1964} as $o(\sqrt{n\log \log n})$. We have already assumed that $b_n \log \log n / n \to 0$ as $n \to \infty$. Consequently, 
 $b_n \psi^2(n)/n^2 \to 0$, $\psi^2(n)/n^2 \to 0$, ${b_n\psi(n)\sqrt{n\log \log n}/n^2} \to 0$, and $\psi(n) \sqrt{n \log \log n}/n^2 \to 0$. Thus, $g_1(n), g_2(n)$ and $g_3(n) \to 0$ as $n \to \infty$.
@@ -984,15 +984,15 @@ We will show that the first term goes to 0 and the proof for the second term is 
     & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left| w\left(\dfrac{k}{b_n}\right) \right| \dfrac{ \left| \left(\bar{Y}_s - \mu_g \right)_j \right| }{n} \left| \sum_{t \in J_{k1}} \left(\mu_g - Y_{st} \right)_i  + \abs{k} \left(\bar{Y}_s - \mu_g \right)_i \right|\\
     & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}  \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left\|\sum_{t \in J_{k1}} \left(\mu_g - Y_{st} \right) + \abs{k} \left(\bar{Y}_s - \mu_g \right)\right\|_{\infty}\\
     & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1} \left|w\left(\dfrac{k}{b_n}\right) \right|\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left(\left\|\sum_{t \in J_{k1}}  \left(Y_{st} - \mu_g \right)\right\|_{\infty} + \abs{k}\|\bar{Y}_s - \mu_g\|_{\infty} \right)\\
-    & \leq \dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left\|\sum_{t \in J_{k1}} \left(Y_{st} - \mu_g\right) \right\| + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{cb_n(b_n-1)}{n} \left \|\bar{Y}_s - \mu_g \right \|_{\infty}^2\,.
+    & \leq \dfrac{c}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}\dfrac{\|\bar{Y}_s - \mu_g\|_{\infty}}{n} \left\|\sum_{t \in J_{k1}} \left(Y_{st} - \mu_g\right) \right\| + \dfrac{c}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n} \left \|\bar{Y}_s - \mu_g \right \|_{\infty}^2\,.
 \end{align*}
 
 Using SIP on the summation of $k$ terms,
 \begin{align*}
     & \left|\dfrac{1}{m}\sum_{s=1}^{m}\sum_{k=-b_n+1}^{b_n-1}w\left(\dfrac{k}{b_n}\right)\dfrac{1}{n}\sum_{t=1}^{n-k}\left[ \left(Y_{st} - \bar{Y}_s \right)_i  \left(\bar{Y}_s - \mu_g \right)_j \right] \right|\\
-   &  < \dfrac{1}{m}\sum\limits_{s=1}^{m}\|\bar{Y}_s - \mu_g\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{cb_n(b_n-1)}{n}\|\bar{Y}_s - \mu_g\|_{\infty}^2\\
-   &  < \dfrac{(2b_n-1)}{m}\sum\limits_{s=1}^{m}\|\bar{Y}_s - \mu_g\|_{\infty}\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right] + \dfrac{1}{m}\sum\limits_{s=1}^{m} \dfrac{cb_n(b_n-1)}{n}\|\bar{Y}_s - \mu_g\|_{\infty}^2 \\
-   &  \leq   \left(2b_n - 1 + \dfrac{cb_n^2}{n} - \dfrac{cb_n}{n}\right)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2  \to 0\,. \quad  \text{(by \eqref{eq:xbars_bound})}
+   &  < \dfrac{c}{m}\sum\limits_{s=1}^{m}\|\bar{Y}_s - \mu_g\|_{\infty}\sum\limits_{k=-b_n + 1}^{b_n-1}\left[ \dfrac{D \psi(k)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2k \log\log k}}{n}  \right] + \dfrac{c}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{Y}_s - \mu_g\|_{\infty}^2\\
+   &  < \dfrac{c(2b_n-1)}{m}\sum\limits_{s=1}^{m}\|\bar{Y}_s - \mu_g\|_{\infty}\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right] + \dfrac{c}{m}\sum\limits_{s=1}^{m} \dfrac{b_n(b_n-1)}{n}\|\bar{Y}_s - \mu_g\|_{\infty}^2 \\
+   &  \leq   c\left(2b_n - 1 + \dfrac{b_n^2}{n} - \dfrac{b_n}{n}\right)\left[ \dfrac{D \psi(n)}{n} + \dfrac{\|L\| p^{1/2}(1+\epsilon)\sqrt{2n \log\log n}}{n}  \right]^2  \to 0\,. \quad  \text{(by \eqref{eq:xbars_bound})}
 \end{align*}
 %
 % Using Lemma~\ref{lemma:consis_1}, the above term can be upper bounded by,
@@ -1033,8 +1033,8 @@ By Equation~\ref{eq:G-ACF_expec_breakdown},
 \mathbb{E} \left[\hat{\Upsilon}_{G}(k) \right] = \left(1 - \dfrac{\abs{k}}{n}\right)\Upsilon(k) + O_1 + O_2    \,.
 \]
 %
-where both $O_1 \textrm{ and } O_2$ are the small order terms where $O_1 = n^{-1}\abs{k} \mathcal{O}(n^{-1}) \text{ and } O_2 = \mathcal{O}(n^{-1})$. By our assumptions, $\sum_{h=-\infty}^{\infty}\Upsilon(h) < \infty$.  
-Consider the G-SVE estimator,
+where both $O_1 \textrm{ and } O_2$ are the small order terms where $O_1 = n^{-1}\abs{k} \mathcal{O}(n^{-1}) \text{ and } O_2 = \mathcal{O}(n^{-1})$. By our assumptions, $\sum_{k=-\infty}^{\infty}\Upsilon(k) < \infty$.  
+For a truncation point $b_n$, $w(k/b_n)=0$ for all $\abs{k} > b_n$. Therefore, SV estimator can be written as a weighted sum of estimated autocovariances from lag $-n+1$ to $n-1$. Consider the G-SV estimator,
 \begin{align*}
  \mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] & = \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Upsilon}_{G}(k) \right] - \sum_{k=-\infty}^{\infty}\Upsilon(k)\\
     &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{k}{n}\right)\Upsilon(k) + O_1 + O_2 \right]  - \sum_{k=-\infty}^{\infty}\Upsilon(k)\\
@@ -1124,19 +1124,20 @@ which completes the result.
 \label{eq:G-SVE_asv_consis}
  \left|\hat{\Sigma}_{G} -  \tilde{\Sigma}\right| \to 0 \text{ with probability 1}\,. 
 \end{equation}
-Further, we have defined $g_1(n), g_2(n), g_3(n)$ such that as $n \to \infty$,
-\begin{align*}
-    g_1(n) &= (4+C)\dfrac{b_n \psi^2(n)}{n^2} - 4\dfrac{\psi^2(n)}{n^2} \to 0\\
-    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4+C)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
-    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4+C)\dfrac{b_n \log\log n}{n} - 4 \dfrac{\log \log n}{n}\right] \to 0\,.
-\end{align*}
-%
 We have shown from the proof of strong consistency that,
 \begin{align*}
  &\left| \hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right|\\
  & \leq \dfrac{1}{m} \sum_{s=1}^m \left| \sum_{k=-b_n+1}^{b_n-1} w \left(\dfrac{k}{b_n} \right) \sum_{t \in I_k}   \left[ \left( \dfrac{(Y_{st} - \mu_g)_i(\mu_g-\bar{\bar{Y}})_j}{n}\right)+ \left(\dfrac{(\mu_g-\bar{\bar{Y}})_i(Y_{s(t+k)}-\mu_g)_j}{n}\right) \right] \right.\\
-& \quad \quad  \left. + (\mu_g-\bar{\bar{Y}})(\mu_g-\bar{\bar{Y}})^T\sum_{k=-b_n+1}^{b_n-1}\left(\dfrac{n-|k|}{n}\right)w\left(\dfrac{k}{n}\right) \right|  < D^2g_1(n) + Dg_2(n) + g_3(n)\,.
+& \quad \quad  \left. + (\mu_g-\bar{\bar{Y}})(\mu_g-\bar{\bar{Y}})^T\sum_{k=-b_n+1}^{b_n-1}\left(\dfrac{n-|k|}{n}\right)w\left(\dfrac{k}{n}\right) \right|  < D^2g_1(n) + Dg_2(n) + g_3(n)\,,
 \end{align*}
+where $g_1(n), g_2(n), g_3(n)$ are defined such that as $n \to \infty$,  $g_1(n), g_2(n), g_3(n) \to 0$.
+%\begin{align*}
+%   g_1(n) &= (4c+C)\dfrac{b_n \psi^2(n)}{n^2} - 4c\dfrac{\psi^2(n)}{n^2} \to 0\\
+%    g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4c+C)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4c\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
+%    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4c+C)\dfrac{b_n \log\log n}{n} - 4c \dfrac{\log \log n}{n}\right] \to 0\,.
+%\end{align*}
+%
+
 
 By \eqref{eq:G-SVE_asv_consis}, there exists an $N_0$ such that
 \begin{align*}
@@ -1199,23 +1200,23 @@ Consider the militarized interstate dispute (MID) data of \cite{martin2011mcmcpa
     p_{ii} &\sim \text{Beta}(\alpha, \beta), \qquad i = 1,..., k\,.
 \end{align*}
 
-This is a 7-dimensional estimation problem wherein the marginal distribution of majority of components display a multimodal nature. Figure~\ref{fig:poisson-trace} shows the evolution of two chains started from random points with time for the second and third component. We will report the ACF plots for component-2. Similar behavior is observed for ACF plots of other components as well.
+This is a 7-dimensional estimation problem wherein the marginal distribution of majority of components display a multimodal nature. Figure~\ref{fig:poisson-trace} shows the evolution of two chains started from random points with time for the second and third component. We report the ACF plots for the second component component only, however, similar behavior is observed in ACF plots of other components as well.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width = 0.7\textwidth]{plots/poisson-trace_n50000.pdf}
-    \caption{Trace plot for second (left) and third (right) component of two chains started from random points.The two colors denote the two different chains.}
+    \caption{Trace plot for second (left) and third (right) component of two chains started from random points. The two colors denote the two different chains.}
     \label{fig:poisson-trace}
 \end{figure}
 \begin{figure}[htbp]
     \centering
       \includegraphics[width = .6\textwidth]{plots/poisson-acf_n1000.pdf}  \\ \vspace{-.5cm}
       \includegraphics[width = .6\textwidth]{plots/poisson-acf_n10000.pdf}      
-    \caption{Change point: ACF (left) and G-ACF (right) for individual chains and average over $m$ chains for $n = 1000$ (left) and $n = 10000$ (right).}
+    \caption{Change point: ACF plots using local-centering (left) and global-centering (right) for $m=2$ parallel Markov chains. The individual chains are shown through dashed lines and average over $m$ chains is the solid line. The chain lengths are $n = 1000$ (top row) and $n = 10000$ (bottom row).}
     \label{fig:poisson-acf}
 \end{figure}
 
-Figure~\ref{fig:poisson-acf} demonstrates a striking advantage of G-ACF in estimating the true autocorrelations. G-ACF gives a more realistic and accurate estimation of autocorrelations in almost ten times lesser samples per chain.
+Figure~\ref{fig:poisson-acf} demonstrates a striking advantage of G-ACF against locally-centered ACF in estimating the autocorrelations. For a chain length of $n=1000$, locally-centered ACF gives a false sense of security about the Markov chains whereas in reality, the process is highgly correlated. G-ACF gives a more realistic and accurate estimation of autocorrelations in almost ten times lesser samples per chain.
 
  % it is evident that the chains have not explored the sample space well. Hence for $10^3$ samples ACF severely underestimates the autocorrelations whereas G-ACF gives more realistic estimates. For a large sample size of $10^5$, the Markov chains have mixed properly and therefore, both the estimators are approximately alike.
 
@@ -1232,7 +1233,7 @@ The goal is to draw nodes uniformly from the network by using a network crawler.
       \includegraphics[width = .6\textwidth]{plots/magnolia-acf_n100.pdf}\\ \vspace{-.5cm}
       \includegraphics[width = .6\textwidth]{plots/magnolia-acf_n1000.pdf}
 
-    \caption{Crawling: ACF (left) and G-ACF (right) for individual chains and average over $m$ chains for $n = 1000$ (left) and $n = 10000$ (right).}
+    \caption{Crawling:  ACF plots using local-centering (left) and global-centering (right) for $m=2$ parallel Markov chains. The individual chains are shown through dashed lines and average over $m$ chains is the solid line. The chain lengths are $n = 100$ (top row) and $n = 1000$ (bottom row).}
     \label{fig:magnolia-acf}
 \end{figure}
 % , i.e. $\lambda(i) = 1/n$ for all $i \in V$.  The Metropolis-Hastings transition kernel for this method is
@@ -1257,7 +1258,9 @@ The goal is to draw nodes uniformly from the network by using a network crawler.
 
 % Table (blah) shows the population parameters we are interested in estimating using MCMC methods.  The race and sex parameters are estimated as proportion of whites and females in the sample respectively. 
 
-We believe that the students from different races engage in a "selective networking" which might cause formation of clusters in the network wherein students within a cluster engage more with each other than with the students outside it. We sample two parallel Markov chains starting from two students belonging to different races and study its impacts on the average features of their immediate social group. Figure~\ref{fig:magnolia-acf} shows the ACF and G-ACF plots for the third feature at two different simulation sizes. As evident, G-ACF displays a clear advantage over ACF in just $n=100$ samples.
+We believe that the students from different races experience different socio-political conditions which causes them to engage in a "selective networking" which might cause formation of clusters in the social network. We sample two parallel Markov chains starting from two students belonging to different races and study its impacts on the average features of their immediate social group, especially their grades. Due to cluster formation in the network, a Markov chain will land on students within a cluster more often than on students outside it. As a consequence, the sample averages for the two chains will differ for a relatively shorter chain length. 
+
+Figure~\ref{fig:magnolia-acf} shows the ACF plots for the \textit{grade} feature at two different simulation sizes for $m=2$ parallel Markov chains. For a shorter chain length, both the chains have explored different clusters and as a consequence, the local and global mean do not agree. Regardless, G-ACF displays a clear advantage over locally-centered ACF for a chain length of $n=100$ samples whereas the latter takes $n=1000$ samples to reach the truth. 
 
 % It is hypothesized that students from certain communities tend to engage more with students of same or other marginally represented communities. We believe that this "selective networking" might cause formation of clusters in the network wherein students within a cluster engage more with each other than with the students outside it. Given that the graph is well-connected, the Markov chains will eventually explore all the nodes. 
 
