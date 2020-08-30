@@ -1,52 +1,51 @@
-This is BibTeX, Version 0.99d (MiKTeX 2.9.7380 64-bit)
-Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: main.aux
 The style file: apalike.bst
 Database file #1: sample.bib
-Warning--I didn't find a database entry for "csorgo2014strong"
 Warning--empty journal in hannan:1970
 Warning--empty journal in martin2011mcmcpack
 Warning--there's a number but no series in priestley1981spectral
 Warning--empty publisher in priestley1981spectral
-You've used 36 entries,
+You've used 37 entries,
             1935 wiz_defined-function locations,
-            704 strings with 9752 characters,
-and the built_in function-call counts, 13828 in all, are:
-= -- 1371
-> -- 516
+            716 strings with 10216 characters,
+and the built_in function-call counts, 14262 in all, are:
+= -- 1420
+> -- 534
 < -- 27
-+ -- 183
-- -- 168
-* -- 1172
-:= -- 2419
-add.period$ -- 107
-call.type$ -- 36
-change.case$ -- 258
-chr.to.int$ -- 35
-cite$ -- 40
-duplicate$ -- 511
-empty$ -- 986
-format.name$ -- 228
-if$ -- 2669
-int.to.chr$ -- 2
++ -- 190
+- -- 174
+* -- 1205
+:= -- 2495
+add.period$ -- 112
+call.type$ -- 37
+change.case$ -- 265
+chr.to.int$ -- 37
+cite$ -- 41
+duplicate$ -- 525
+empty$ -- 1014
+format.name$ -- 237
+if$ -- 2754
+int.to.chr$ -- 1
 int.to.str$ -- 0
 missing$ -- 41
-newline$ -- 181
-num.names$ -- 108
-pop$ -- 208
+newline$ -- 187
+num.names$ -- 111
+pop$ -- 211
 preamble$ -- 1
-purify$ -- 263
+purify$ -- 271
 quote$ -- 0
-skip$ -- 392
+skip$ -- 402
 stack$ -- 0
-substring$ -- 1069
-swap$ -- 45
-text.length$ -- 3
+substring$ -- 1108
+swap$ -- 46
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 206
+type$ -- 212
 warning$ -- 4
-while$ -- 120
+while$ -- 124
 width$ -- 0
-write$ -- 459
-(There were 5 warnings)
+write$ -- 474
+(There were 4 warnings)

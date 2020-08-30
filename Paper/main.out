@@ -1,15 +1,15 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [2][-]{subsection.1.1}{Demonstrative example}{section.1}% 2
 \BOOKMARK [1][-]{section.2}{Globally-centered autocovariance}{}% 3
-\BOOKMARK [1][-]{section.3}{Variance estimators for multiple Markov chains}{}% 4
+\BOOKMARK [1][-]{section.3}{Long-run variance estimators}{}% 4
 \BOOKMARK [2][-]{subsection.3.1}{Globally-centered spectral variance estimators}{section.3}% 5
 \BOOKMARK [3][-]{subsubsection.3.1.1}{Theoretical results}{subsection.3.1}% 6
 \BOOKMARK [3][-]{subsubsection.3.1.2}{Fast implementation}{subsection.3.1}% 7
 \BOOKMARK [1][-]{section.4}{Effective sample size}{}% 8
 \BOOKMARK [1][-]{section.5}{Examples}{}% 9
-\BOOKMARK [2][-]{subsection.5.1}{Vector Autoregressive Process}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.1}{Vector autoregressive process}{section.5}% 10
 \BOOKMARK [2][-]{subsection.5.2}{Boomerang Distribution}{section.5}% 11
-\BOOKMARK [2][-]{subsection.5.3}{Sensor Network Localization}{section.5}% 12
+\BOOKMARK [2][-]{subsection.5.3}{Sensor network localization}{section.5}% 12
 \BOOKMARK [1][-]{section.6}{Discussion}{}% 13
 \BOOKMARK [1][-]{section.7}{Appendix}{}% 14
 \BOOKMARK [2][-]{subsection.7.1}{Preliminaries}{section.7}% 15
