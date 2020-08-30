@@ -1,6 +1,6 @@
 set.seed(10)
 source("functions.R")
-library(rep.acf.ccf)
+library(multichainACF)
 
 
 ######################################
@@ -71,8 +71,8 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), graph = FALSE, avg = FALSE)[[1]]
-local.acf <- acf(x[[2]][, component], lag.max = lag.max, type = "correlation", plot = FALSE)
+global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
+local.acf <- globalACF(x, type = "correlation", component = 1, mean="local", lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
 
 pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
@@ -92,8 +92,8 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), graph = FALSE, avg = FALSE)[[1]]
-local.acf <- acf(x[[2]][, component], lag.max = lag.max, type = "correlation", plot = FALSE)
+global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
+local.acf <- globalACF(x, type = "correlation", component = 1, mean="local", lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
 
 pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
