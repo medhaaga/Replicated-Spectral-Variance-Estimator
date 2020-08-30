@@ -173,6 +173,7 @@ INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmti8.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmti7.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmbx8.tfm
+INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
 INPUT plots/var-acf_n1000.pdf
 INPUT ./plots/var-acf_n1000.pdf
 INPUT ./plots/var-acf_n1000.pdf
@@ -217,7 +218,6 @@ INPUT ./plots/sensor-frob.pdf
 INPUT plots/sensor-ess.pdf
 INPUT ./plots/sensor-ess.pdf
 INPUT ./plots/sensor-ess.pdf
-INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
 INPUT plots/poisson-trace_n50000.pdf
 INPUT ./plots/poisson-trace_n50000.pdf
 INPUT ./plots/poisson-trace_n50000.pdf

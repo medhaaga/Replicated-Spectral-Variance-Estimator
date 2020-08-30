@@ -22,6 +22,12 @@ Chib, S. (1998).
 \newblock Estimation and comparison of multiple change-point models.
 \newblock {\em Journal of econometrics}, 86(2):221--241.
 
+\bibitem[Cs{\"o}rg{\"o} and R{\'e}v{\'e}sz, 1981]{csorgo1981strong}
+Cs{\"o}rg{\"o}, M. and R{\'e}v{\'e}sz, P. (1981).
+\newblock {\em Strong Approximations in Probability and Statistics}.
+\newblock Probability and Mathematical Statistics : a series of monographs and
+  textbooks. Academic Press.
+
 \bibitem[Dai and Jones, 2017]{dai:jon:2017}
 Dai, N. and Jones, G.~L. (2017).
 \newblock Multivariate initial sequence estimators in {M}arkov chain {M}onte
@@ -40,11 +46,23 @@ Damerdji, H. (1995).
   simulation output analysis.
 \newblock {\em Operations Research}, 43(2):282--291.
 
+\bibitem[Flegal and Gong, 2015]{fleg:gong:2015}
+Flegal, J.~M. and Gong, L. (2015).
+\newblock Relative fixed-width stopping rules for {M}arkov chain {M}onte
+  {C}arlo simulations.
+\newblock {\em Statistica Sinica}, 25:655--676.
+
 \bibitem[Flegal et~al., 2008]{fleg:hara:jone:2008}
 Flegal, J.~M., Haran, M., and Jones, G.~L. (2008).
 \newblock {M}arkov chain {M}onte {C}arlo: {C}an we trust the third significant
   figure?
 \newblock {\em Statistical Science}, 23:250--260.
+
+\bibitem[Flegal et~al., 2020]{mcmcse}
+Flegal, J.~M., Hughes, J., Vats, D., and Dai, N. (2020).
+\newblock {\em mcmcse: Monte Carlo Standard Errors for MCMC}.
+\newblock Riverside, CA, Denver, CO, Coventry, UK, and Minneapolis, MN.
+\newblock R package version 1.4-1.
 
 \bibitem[Flegal and Jones, 2010]{fleg:jone:2010}
 Flegal, J.~M. and Jones, G.~L. (2010).
@@ -85,11 +103,6 @@ Hannan, E.~J. (1970).
 \newblock Multiple time series: {W}iley series in probability and mathematical
   statistics.
 
-\bibitem[Hannan, 2009]{hannan2009multiple}
-Hannan, E.~J. (2009).
-\newblock {\em Multiple time series}, volume~38.
-\newblock John Wiley \& Sons.
-
 \bibitem[Heberle and Sattarhoff, 2017]{heberle2017fast}
 Heberle, J. and Sattarhoff, C. (2017).
 \newblock A fast algorithm for the computation of hac covariance matrix
@@ -121,7 +134,7 @@ Liu, Y. and Flegal, J.~M. (2018).
 
 \bibitem[Martin et~al., 2011]{martin2011mcmcpack}
 Martin, A.~D., Quinn, K.~M., and Park, J.~H. (2011).
-\newblock Mcmcpack: Markov chain monte carlo in r.
+\newblock {MCMCpack}: {M}arkov chain {M}onte {C}arlo in {R}.
 
 \bibitem[Meyn and Tweedie, 2009]{meyn:twee:2009}
 Meyn, S.~P. and Tweedie, R.~L. (2009).
@@ -130,7 +143,7 @@ Meyn, S.~P. and Tweedie, R.~L. (2009).
 
 \bibitem[Nilakanta et~al., 2019]{nilakanta2019ensuring}
 Nilakanta, H., Almquist, Z.~W., and Jones, G.~L. (2019).
-\newblock Ensuring reliable monte carlo estimates of network properties.
+\newblock Ensuring reliable {M}onte {C}arlo estimates of network properties.
 \newblock {\em arXiv preprint arXiv:1911.08682}.
 
 \bibitem[Priestley, 1981]{priestley1981spectral}
@@ -156,6 +169,12 @@ Song, W.~T. and Schmeiser, B.~W. (1995).
 \newblock Optimal mean-squared-error batch sizes.
 \newblock {\em Management Science}, 41(1):110--123.
 
+\bibitem[Strassen, 1964]{stra:1964}
+Strassen, V. (1964).
+\newblock An invariance principle for the law of the iterated logarithm.
+\newblock {\em Zeitschrift f{\"u}r Wahrscheinlichkeitstheorie und Verwandte
+  Gebiete}, 3:211--226.
+
 \bibitem[Tak et~al., 2018]{tak2018repelling}
 Tak, H., Meng, X.-L., and van Dyk, D.~A. (2018).
 \newblock A repelling--attracting metropolis algorithm for multimodality.
@@ -164,13 +183,8 @@ Tak, H., Meng, X.-L., and van Dyk, D.~A. (2018).
 
 \bibitem[Tjøstheim, 1990]{10.2307/1427459}
 Tjøstheim, D. (1990).
-\newblock Non-linear time series and markov chains.
+\newblock Non-linear time series and {M}arkov chains.
 \newblock {\em Advances in Applied Probability}, 22(3):587--611.
-
-\bibitem[{Vats} and {Flegal}, 2018]{vats:flegal:2018}
-{Vats}, D. and {Flegal}, J.~M. (2018).
-\newblock {Lugsail lag windows and their application to {MCMC}}.
-\newblock {\em ArXiv e-prints}.
 
 \bibitem[Vats et~al., 2018]{vats:fleg:jon:2018}
 Vats, D., Flegal, J.~M., and Jones, G.~L. (2018).
@@ -178,15 +192,10 @@ Vats, D., Flegal, J.~M., and Jones, G.~L. (2018).
   {M}arkov chain {M}onte {C}arlo.
 \newblock {\em Bernoulli}, 24:1860--1909.
 
-\bibitem[Vats et~al., 2019a]{vats:fleg:jon:2019}
-Vats, D., Flegal, J.~M., and Jones, G.~L. (2019a).
+\bibitem[Vats et~al., 2019]{vats:fleg:jon:2019}
+Vats, D., Flegal, J.~M., and Jones, G.~L. (2019).
 \newblock Multivariate output analysis for {M}arkov chain {M}onte {C}arlo.
 \newblock {\em Biometrika}, 106:321--337.
-
-\bibitem[Vats et~al., 2019b]{vats2019multivariate}
-Vats, D., Flegal, J.~M., and Jones, G.~L. (2019b).
-\newblock Multivariate output analysis for markov chain monte carlo.
-\newblock {\em Biometrika}, 106(2):321--337.
 
 \bibitem[Vats et~al., 2020]{vats:rob:fle:jon:2020}
 Vats, D., Robertson, N., Flegal, J.~M., and Jones, G.~L. (2020).
