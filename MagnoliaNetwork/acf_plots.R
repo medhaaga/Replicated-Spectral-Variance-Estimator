@@ -1,5 +1,5 @@
 
-library(rep.acf.ccf)
+library(multichainACF)
 source("functions.R")
 library(ergm)
 
@@ -28,6 +28,7 @@ for(i in 1:m){
 }
 
 save(mc.chain.list, file = "Out/magnolia-two_chains.Rdata")
+load(file = "Out/magnolia-two_chains.Rdata")
 component = 3
 
 ########################################
@@ -41,8 +42,8 @@ for (i in 1:m){
 
 pdf(file = paste("Out/magnolia-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-globalACF(x, chains=0, component = component, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
-globalACF(x, chains=0, component = component, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
+globalACF(x, chains=0, component = component, mean = "local", type = "correlation", col = "darkorange")
+globalACF(x, chains=0, component = component, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
 #######################################
@@ -56,6 +57,6 @@ for (i in 1:m){
 
 pdf(file = paste("Out/magnolia-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-globalACF(x, chains=0, component = component, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
-globalACF(x, chains=0, component = component, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
+globalACF(x, chains=0, component = component, mean = "local", type = "correlation", col = "darkorange")
+globalACF(x, chains=0, component = component, mean = "global", type = "correlation", col = "royalblue")
 dev.off()

@@ -1,6 +1,6 @@
 set.seed(1)
 library("MCMCpack")
-library(rep.acf.ccf)
+library(multichainACF)
 load("mida.rda")
 
 c0 <- 13
@@ -34,8 +34,8 @@ for (i in 1:m){
 
 pdf(file = paste("Out/poisson-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-globalACF(x, chains=0, component = component, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
-globalACF(x, chains=0, component = component, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
+globalACF(x, chains=0, component = component, mean = "local", type = "correlation", col = "darkorange")
+globalACF(x, chains=0, component = component, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
 ### ncrop = 1e4
@@ -49,8 +49,8 @@ for (i in 1:m){
 
 pdf(file = paste("Out/poisson-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-globalACF(x, chains=0, component = component, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
-globalACF(x, chains=0, component = component, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
+globalACF(x, chains=0, component = component, mean = "local", type = "correlation", col = "darkorange")
+globalACF(x, chains=0, component = component, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
 #########################################
