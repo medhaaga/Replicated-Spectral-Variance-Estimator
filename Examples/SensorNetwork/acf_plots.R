@@ -1,5 +1,5 @@
 set.seed(1)
-library(rep.acf.ccf)
+library(multichainACF)
 source("functions.R")
 ######## Data
 
@@ -50,6 +50,8 @@ aux5 <- runif(n=8, min=min(start5), max=max(start5))
 start <- rbind(start1, start2, start3, start4, start5)
 aux <- rbind(aux1, aux2, aux3, aux4, aux5)
 j.scale <- rep(0.5, 4)
+
+############# Run only for simulating marov chains #####################
 mc.chain.list <- list()
 
 for (k in 1:m){
@@ -59,6 +61,7 @@ for (k in 1:m){
 }
 
 save(mc.chain.list, file = "Out/five_chains.Rdata")
+######################################################################
 
 load(file = "Out/five_chains.Rdata")
 
@@ -81,9 +84,9 @@ for (i in 1:m){
 
 
 pdf(file = "Out/sensor-acf_n5e3.pdf", height = 4, width = 4)
-globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
+globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "local", type = "correlation", col = "darkorange")
 par(new = TRUE)
-globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
+globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
 
@@ -97,9 +100,9 @@ for (i in 1:m){
 
 
 pdf(file = "Out/sensor-acf_n5e4.pdf", height = 4, width = 4)
-globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
+globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "local", type = "correlation", col = "darkorange")
 par(new = TRUE)
-globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
+globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
 

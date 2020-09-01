@@ -65,20 +65,13 @@ local.acf2 <- acf(as.matrix(y[[1]]), type = "correlation", lag.max = lag.max, pl
 global.acf1 <- globalACF(x, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
 global.acf2 <- globalACF(y, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
 
-#### Figure 2a
+#### Figure 2
 pdf(file = "AllOut/gaussian-acf_hist.pdf", width = 8, height= 4)
 par(mfrow = c(1,2))
 plot(as.matrix(local.acf1$acf), type = 'h', ylab = "Autocorrelation", xlab = "Lag")
 lines(as.matrix(local.acf2$acf), type = 'l', col = "steelblue1", lwd = 2)
 plot(as.matrix(global.acf1$acf), type = 'h', ylim = c(min(local.acf1$acf), 1), ylab = "Autocorrelation", xlab = "Lag")
 lines(as.matrix(global.acf2$acf), type = 'l', col = "steelblue1", lwd = 2)
-dev.off()
-
-### Figure 2b
-pdf(file = "AllOut/gaussian-acf_1e4.pdf", width = 8, height= 4)
-par(mfrow = c(1,2))
-l <- globalACF(x, chains = 0, component = 1, lag.max = lag.max, mean = "local", type = "correlation", col = "royalblue", leg = FALSE)
-g <- globalACF(x, chains = 0, component = 1, lag.max = lag.max, mean = "global", type = "correlation", col = "darkorange", leg = FALSE)
 dev.off()
 
 
@@ -104,8 +97,8 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), graph = FALSE, avg = FALSE)[[1]]
-local.acf <- acf(x[[2]][, component], lag.max = lag.max, type = "correlation", plot = FALSE)
+global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
+local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
 
 pdf(file = paste("AllOut/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 8)
 par(mfrow = c(1,2))
@@ -123,8 +116,8 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), graph = FALSE, avg = FALSE)[[1]]
-local.acf <- acf(x[[2]][, component], lag.max = lag.max, type = "correlation", plot = FALSE)
+global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
+local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
 
 pdf(file = paste("AllOut/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 8)
 par(mfrow = c(1,2))
@@ -234,10 +227,10 @@ for (i in 1:m){
   y[[i]] <- mc.chain.list[[i]][1:nsim2,]
 }
 
-global.acf1 <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$"avg_ACF"
-global.acf2 <- globalACF(y, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$"avg_ACF"
-local.acf1 <- globalACF(x, type = "correlation", lag.max = lag.max, mean = "local", component = 1, graph = FALSE)$"avg_ACF"
-local.acf2 <- globalACF(y, type = "correlation", lag.max = lag.max, mean = "local", component = 1, graph = FALSE)$"avg_ACF"
+global.acf1 <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, plot = FALSE)$"avgACF"
+global.acf2 <- globalACF(y, type = "correlation", lag.max = lag.max, component = 1, plot = FALSE)$"avgACF"
+local.acf1 <- globalACF(x, type = "correlation", lag.max = lag.max, mean = "local", component = 1, plot = FALSE)$"avgACF"
+local.acf2 <- globalACF(y, type = "correlation", lag.max = lag.max, mean = "local", component = 1, plot = FALSE)$"avgACF"
 
 
 pdf(file = paste(paste("AllOut/boom-all", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 4, width = 12)
@@ -263,8 +256,8 @@ for (i in 1:m)
   x[[i]] <- mc.chain.list[[i]][1:nsim,]
 
 
-global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, graph = FALSE)$"avg_ACF"
-local.acf <- globalACF(x, type = "correlation", lag.max = lag.max, mean = "local", component = 1, graph = FALSE)$"avg_ACF"
+global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, plot = FALSE)$"avgACF"
+local.acf <- globalACF(x, type = "correlation", lag.max = lag.max, mean = "local", component = 1, plot = FALSE)$"avgACF"
 
 pdf(file = paste(paste("AllOut/boom-all", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 4, width = 12)
 par(mfrow = c(1,3))
@@ -484,9 +477,9 @@ for (i in 1:m){
 }
 
 pdf(file = "AllOut/sensor-acf_n5e3.pdf", height = 4, width = 4)
-globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
+globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "local", type = "correlation", col = "darkorange")
 par(new = TRUE)
-globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
+globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
 ### Figure 11b
@@ -499,9 +492,9 @@ for (i in 1:m){
 }
 
 pdf(file = "AllOut/sensor-acf_n5e4.pdf", height = 4, width = 4)
-globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
+globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "local", type = "correlation", col = "darkorange")
 par(new = TRUE)
-globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
+globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
 ######################## Figure 12 ###########################
@@ -590,8 +583,8 @@ for (i in 1:m){
 
 pdf(file = paste("AllOut/poisson-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-globalACF(x, chains=0, component = component, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
-globalACF(x, chains=0, component = component, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
+globalACF(x, chains=0, component = component, mean = "local", type = "correlation", col = "darkorange")
+globalACF(x, chains=0, component = component, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
 ### Figure 14b
@@ -604,8 +597,8 @@ for (i in 1:m){
 
 pdf(file = paste("AllOut/poisson-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-globalACF(x, chains=0, component = component, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
-globalACF(x, chains=0, component = component, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
+globalACF(x, chains=0, component = component, mean = "local", type = "correlation", col = "darkorange")
+globalACF(x, chains=0, component = component, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
 ############################################

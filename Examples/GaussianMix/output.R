@@ -68,22 +68,6 @@ legend("topleft", legend=c("Target", "Chain-1", "Chain-2"),col=c("black", "light
 dev.off()
 
 
-###############################################
-##############Density plots ####################
-###############################################
-
-pdf(file = "density.pdf", height = 5, width = 5)
-x <- seq(-10, 10, .01)
-plot(density(chain1[1:1e4]), col = "lightskyblue", type = "l", lwd=2, xlim = range(chain1, chain2), ylim = c(0, 1), xlab = "x", ylab = "density", main = "")
-polygon(density(chain1[1:1e4]), col = rgb(135, 206, 250, max = 255, alpha = 100, names = "lsb50"))
-lines(density(chain2[1:1e4]), col = "plum3", lwd=2)
-polygon(density(chain2[1:1e4]), col = rgb(205, 150, 205, max = 255, alpha = 100, names = "p350"))
-lines(x, exp(log.density(x, p, mu1, mu2, sd1, sd2)), type = "l", lwd=2)
-legend("topleft", legend=c("Target", "Chain-1", "Chain-2"),col=c("black", "lightskyblue", "plum3"), lty=1, cex=0.8, lwd=2)
-
-dev.off()
-
-
 ##############################################
 ########## ACF and G-ACF ####################
 #############################################
@@ -101,8 +85,8 @@ for (i in 1:m){
   y[[i]] <- as.matrix(mc.chain.list[[i]][1:nsim2,])
 }
 
-local.acf1 <- acf(x[[1]], type = "correlation", lag.max = lag.max, plot = FALSE)
-local.acf2 <- acf(y[[1]], type = "correlation", lag.max = lag.max, plot = FALSE)
+local.acf1 <- globalACF(x, chains = c(1), component = 1, mean = "local", lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
+local.acf2 <- globalACF(y, chains = c(1), component = 1, mean = "local", lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
 global.acf1 <- globalACF(x, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
 global.acf2 <- globalACF(y, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
 
@@ -113,10 +97,3 @@ lines(as.matrix(local.acf2$acf), type = 'l', col = "steelblue1", lwd = 2)
 plot(as.matrix(global.acf1$acf), type = 'h', ylim = c(min(local.acf1$acf), 1), ylab = "Autocorrelation", xlab = "Lag")
 lines(as.matrix(global.acf2$acf), type = 'l', col = "steelblue1", lwd = 2)
 dev.off()
-
-pdf(file = "gaussian-acf_1e4.pdf", width = 10, height= 4)
-par(mfrow = c(1,2))
-l <- globalACF(x, chains = 0, component = 1, lag.max = lag.max, mean = "local", type = "correlation", col = "royalblue", leg = FALSE)
-g <- globalACF(x, chains = 0, component = 1, lag.max = lag.max, mean = "global", type = "correlation", col = "darkorange", leg = FALSE)
-dev.off()
-
