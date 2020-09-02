@@ -617,7 +617,7 @@ We can break $\hat{\Gamma}_{G,s}$ into four parts for all $k \geq 1$ as:
 \hat{\Gamma}_{G,s}(k) & = \dfrac{1}{n}\sum_{t \in I_k} \left(X_{st} - \bar{\bar{X}} \right) \left(X_{s(t+k)} - \bar{\bar{X}} \right)^T \\
     &= \left[\dfrac{1}{n} \sum_{t \in I_k} \left(X_{st} - \bar{X}_s \right) \left(X_{s(t+k)} - \bar{X}_s \right)^T \right] + \left[\dfrac{1}{n} \sum_{t \in J_{k1}}  \left( \bar{X}_s - X_{st} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right]\\ 
     & \quad + \left[\dfrac{1}{n} \sum_{t \in J_{k2}} \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - X_{st} \right)^T\right]   + \left[\dfrac{n-\abs{k}}{n} \left(\bar{X}_s - \bar{\bar{X}}\right)   \left(\bar{X}_s - \bar{\bar{X}} \right)^T\right]\\
-    &= \hat{\Gamma}_s(k) - \dfrac{1}{n}\sum_{t \in J_{k1}}A_{st} - \dfrac{1}{n} \sum_{t \in J_{k2}}^{k}A_{st}^T  + \dfrac{n-\abs{k}}{n}  \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\,, \numberthis \label{eq:acf_breakdown}
+    &= \hat{\Gamma}_s(k) - \dfrac{1}{n}\sum_{t \in J_{k1}}A_{st} - \dfrac{1}{n} \sum_{t \in J_{k2}}A_{st}^T  + \dfrac{n-\abs{k}}{n}  \left(\bar{X}_s - \bar{\bar{X}} \right)  \left(\bar{X}_s - \bar{\bar{X}} \right)^T\,, \numberthis \label{eq:acf_breakdown}
 \end{align*}
 %
 where $A_{st} = (X_{st}-\bar{X}_s)(\bar{X}_s - \bar{\bar{X}})^T$. Under the assumption of stationarity, we will study the expectations of each of the above terms. Without loss of generality, consider $A_{11}$,
@@ -666,7 +666,7 @@ Using\eqref{eq:acf_2}, \eqref{eq:acf_3}, \eqref{eq:acf_4}, and  \eqref{eq:priest
 
 By \cite[Proposition 1]{song1995optimal},
 \[
-\Var(\bar{X}) = \dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2} + o(n^{-2})\,.
+\Var(\bar{X}_s) = \dfrac{\Sigma}{n} + \dfrac{\Phi}{n^2} + o(n^{-2})\,.
 \]
 As a consequence, we get the result 
 \[
@@ -712,7 +712,7 @@ where,
 % \end{proof}
 
 
-\subsection{Strong consistency argument} \label{appendix:strong_consis}
+\subsection{Strong consistency of G-SV estimator} \label{appendix:strong_consis}
 
 
 Consider pseudo autocovariance and spectral variance estimators for the $s$th chain, denoted by $\tilde{\Upsilon}_s(k)$ and $\tilde{\Sigma}_s$ that use data centered around the unobserved actual mean $\mu_g$:
@@ -743,7 +743,7 @@ where for some constant $C$,
 \begin{align*}
     g_1(n) &= (4c+C)\dfrac{b_n \psi^2(n)}{n^2} - 4c\dfrac{\psi^2(n)}{n^2} \to 0\\
     g_2(n) &= 2\sqrt{2}\|L\|p^{1/2}(1+\epsilon)\left[(4c+C)\dfrac{b_n\psi(n)\sqrt{n\log \log n}}{n^2} - 4c\dfrac{\psi(n)\sqrt{n\log \log n}}{n^2}\right] \to 0\\
-    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4c+C)\dfrac{b_n \log\log n}{n} - 4c \dfrac{\log \log n}{n}\right] \to 0\,.
+    g_3(n) &= \|L\|^2 p (1+\epsilon)^2\left[(4c+C)\dfrac{b_n \log\log n}{n} - 4c \dfrac{\log \log n}{n}\right] \to 0 \quad \text{as }n \to \infty\,.
 \end{align*}
 \end{lemma}
 
@@ -874,7 +874,7 @@ N_2 & = \left[\dfrac{1}{m}  \sum_{s=1}^{m}  \left(\bar{Y}_s - \mu_g \right)_i  \
 %
 Using the above breakdown and  Lemma~\ref{lemma:G-SVE_breakdown}, 
 \begin{align*}
-\left|\hat{\Sigma}_{G}^{ij} - \Sigma^{ij} \right| & = \left| \hat{\Sigma}_{A}^{ij} - \Sigma^{ij} + N_1 + N_2 + M_1 + M_2 \right|  \leq \left| \hat{\Sigma}_{SV}^{ij} - \Sigma^{ij} \right| +  \left| N_1 \right| +  \left|N_2 \right| + \left| M_1 + M_2 \right| \numberthis \label{eq:G-SVE_full_decomp}
+\left|\hat{\Sigma}_{G}^{ij} - \Sigma^{ij} \right| & = \left| \hat{\Sigma}_{A}^{ij} - \Sigma^{ij} + N_1 + N_2 + M_1 + M_2 \right|  \leq \left| \hat{\Sigma}_{A}^{ij} - \Sigma^{ij} \right| +  \left| N_1 \right| +  \left|N_2 \right| + \left| M_1 + M_2 \right| \numberthis \label{eq:G-SVE_full_decomp}
 \end{align*}
 %
 By the strong consistency of single-chain SV estimator, the first term goes to 0 with probability 1 and by Lemma~\ref{lemma:G-SVE_breakdown}, the third term goes to 0 with probability 1 as $n \to \infty$. It is left to show that $|N_1| \to 0$ and $|N_2| \to 0$ with probability 1. Consider,
@@ -947,7 +947,7 @@ For a truncation point $b_n$, $w(k/b_n)=0$ for all $\abs{k} > b_n$. Therefore, S
  \mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] & = \sum_{k=-n+1}^{n-1} w\left(\dfrac{k}{b_n}\right)\mathbb{E} \left[\hat{\Upsilon}_{G}(k) \right] - \sum_{k=-\infty}^{\infty}\Upsilon(k)\\
     &= \sum_{k=-n+1}^{n-1}  w\left(\dfrac{k}{b_n}\right)\left[\left(1-\dfrac{k}{n}\right)\Upsilon(k) + O_1 + O_2 \right]  - \sum_{k=-\infty}^{\infty}\Upsilon(k)\\
     &= \sum_{k=-n+1}^{n-1} \left[ w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{\abs{k}}{n}\right)\Upsilon(k)\right]  - \sum_{k=-\infty}^{\infty}\Upsilon(k) + \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k}{b_n}\right)  (O_1 + O_2) \right] \\ 
-    & = P_1 + P_2\,,
+    & = P_1 + P_2\,, \numberthis \label{eq:bias_gsve}
 \end{align*}
 %
 where 
@@ -955,7 +955,7 @@ where
     P_1 &= \sum\limits_{k=-n+1}^{n-1}\left[w\left(\dfrac{k}{b_n}\right)\left(1-\dfrac{\abs{k}}{n}\right)\Upsilon(k) \right] - \sum\limits_{k=-\infty}^{\infty}\Upsilon(k) \textrm{ and }\\   
     P_2 &= \sum_{k=-n+1}^{n-1}\left[  w\left(\dfrac{k }{b_n}\right)\left(O_1 + O_2\right)\right]\,.
 \end{align*}
-
+%
 %
 Similar to \cite{hannan:1970}, we break $P_1$ into three parts. Note that notation $A = o(z)$ for matrix $A$  implies $A^{ij} = o(z)$ for every $(i,j)$th element of the matrix $A$. Consider,
 \begin{equation}
@@ -972,7 +972,7 @@ We deal with the three subterms of term $P_1$ individually. First,
 since $\sum_{\abs{k}\geq n}\abs{k}^q \Upsilon(k)  < \infty$. Next,
 %
 \begin{align*}
- \sum_{k = -n+1}^{n-1}w\left(\dfrac{k}{n}\right)\dfrac{\abs{k}}{n}\Upsilon(k)   &\leq \dfrac{C}{n}\sum_{k = -n+1}^{n-1}\abs{k} \Upsilon(k)  \,.
+ \sum_{k = -n+1}^{n-1}w\left(\dfrac{k}{n}\right)\dfrac{\abs{k}}{n}\Upsilon(k)   &\leq \dfrac{c}{n}\sum_{k = -n+1}^{n-1}\abs{k} \Upsilon(k)  \,.
 \end{align*}
 For $q\geq 1$,
 \begin{align*}
@@ -1004,17 +1004,16 @@ So,
      & = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right) \numberthis \label{eq:P1_third}\,.
 \end{align*}
 
-  Finally, we will solve for $P_2$. Note that $O_2$ is independent of $k$. We will write $O_1$ as $(\abs{k}/n)\mathcal{O}(1/n)$ and $O_2$ as $\mathcal{O}(1/n)$. We will find an upper bound and prove that it is $o\left(b_n^{-q}\right)$:
+Finally, we will solve for $P_2$. Note that $O_1 = (\abs{k}/n)\mathcal{O}(1/n)$ and $O_2 = \mathcal{O}(1/n)$. So,
   \begin{align*}
-      &  \sum_{k=-n+1}^{n-1}w\left(\dfrac{k}{b_n}\right)( O_1 + O_2) \\
-      & \leq \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{k}{b_n}\right)O_1} + \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{k}{b_n}\right)O_2} \\
-      &= \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-n+1}^{n-1}\dfrac{\abs{k}}{n}\abs{w\left(\dfrac{|k|}{b_n}\right)} + \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{|k|}{b_n}\right)}\\
-      &= \mathcal{O}\left(\dfrac{1}{n}\right) \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{|k|}{b_n}\right)}\\
+    P_2  & \leq \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{k}{b_n}\right)O_1} + \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{k}{b_n}\right)O_2} \\
+      &= \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-n+1}^{n-1}\dfrac{\abs{k}}{n}\abs{w\left(\dfrac{k}{b_n}\right)} + \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{k}{b_n}\right)}\\
+      &= \mathcal{O}\left(\dfrac{1}{n}\right) \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{k}{b_n}\right)}\\
       &= \mathcal{O}\left(\dfrac{1}{n}\right) = o\left(\dfrac{1}{b_n^q}\right) \,.
  \end{align*}
  
 %
-Using \eqref{eq:P1_first}, \eqref{eq:P1_second}, and \eqref{eq:P1_third} in \eqref{eq:P1_decomp}, we get
+Using \eqref{eq:P1_decomp},\eqref{eq:P1_first}, \eqref{eq:P1_second}, and \eqref{eq:P1_third} in \eqref{eq:bias_gsve},
 \[
 \mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right)\,,
 \]

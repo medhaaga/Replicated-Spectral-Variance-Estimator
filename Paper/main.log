@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  2 SEP 2020 08:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  2 SEP 2020 17:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -607,62 +607,62 @@ Overfull \hbox (16.36847pt too wide) in paragraph at lines 904--904
  []
 
 [22] [23] [24] [25] [26]
-<plots/poisson-trace_n50000.pdf, id=654, 722.7pt x 289.08pt>
+<plots/poisson-trace_n50000.pdf, id=656, 722.7pt x 289.08pt>
 File: plots/poisson-trace_n50000.pdf Graphic file (type pdf)
 
 <use plots/poisson-trace_n50000.pdf>
-Package pdftex.def Info: plots/poisson-trace_n50000.pdf used on input line 1107
+Package pdftex.def Info: plots/poisson-trace_n50000.pdf used on input line 1106
 .
 (pdftex.def)             Requested size: 328.82707pt x 131.5316pt.
 
-<plots/poisson-acf_n1000.pdf, id=655, 722.7pt x 289.08pt>
+<plots/poisson-acf_n1000.pdf, id=657, 722.7pt x 289.08pt>
 File: plots/poisson-acf_n1000.pdf Graphic file (type pdf)
 
 <use plots/poisson-acf_n1000.pdf>
-Package pdftex.def Info: plots/poisson-acf_n1000.pdf used on input line 1113.
+Package pdftex.def Info: plots/poisson-acf_n1000.pdf used on input line 1112.
 (pdftex.def)             Requested size: 281.85587pt x 112.74074pt.
 
-<plots/poisson-acf_n10000.pdf, id=656, 722.7pt x 289.08pt>
+<plots/poisson-acf_n10000.pdf, id=658, 722.7pt x 289.08pt>
 File: plots/poisson-acf_n10000.pdf Graphic file (type pdf)
 
 <use plots/poisson-acf_n10000.pdf>
-Package pdftex.def Info: plots/poisson-acf_n10000.pdf used on input line 1114.
+Package pdftex.def Info: plots/poisson-acf_n10000.pdf used on input line 1113.
 (pdftex.def)             Requested size: 281.85587pt x 112.74074pt.
  [27 <./plots/poisson-trace_n50000.pdf>]
-<plots/magnolia-acf_n100.pdf, id=677, 722.7pt x 289.08pt>
+<plots/magnolia-acf_n100.pdf, id=680, 722.7pt x 289.08pt>
 File: plots/magnolia-acf_n100.pdf Graphic file (type pdf)
 
 <use plots/magnolia-acf_n100.pdf>
-Package pdftex.def Info: plots/magnolia-acf_n100.pdf used on input line 1133.
+Package pdftex.def Info: plots/magnolia-acf_n100.pdf used on input line 1132.
 (pdftex.def)             Requested size: 281.85587pt x 112.74074pt.
 
-<plots/magnolia-acf_n1000.pdf, id=678, 722.7pt x 289.08pt>
+<plots/magnolia-acf_n1000.pdf, id=681, 722.7pt x 289.08pt>
 File: plots/magnolia-acf_n1000.pdf Graphic file (type pdf)
 
 <use plots/magnolia-acf_n1000.pdf>
-Package pdftex.def Info: plots/magnolia-acf_n1000.pdf used on input line 1134.
+Package pdftex.def Info: plots/magnolia-acf_n1000.pdf used on input line 1133.
 (pdftex.def)             Requested size: 281.85587pt x 112.74074pt.
  (./main.bbl [28 <./plots/poisson-acf_n1000.pdf> <./plots/poisson-acf_n10000.pd
 f>] [29 <./plots/magnolia-acf_n100.pdf> <./plots/magnolia-acf_n1000.pdf>] [30]
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no ¸ in font cmr10!
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1173.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1172.
  [31]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1173.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1172.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1173.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1173.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1172.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1172.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: ED1E384136F0F2CEBE216D838F1A4607;1465.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1173.
+(rerunfilecheck)             Checksum: 2DC15204A83B31A24CC857F22C8D8E1F;1474.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1172.
  ) 
 Here is how much of TeX's memory you used:
- 9907 strings out of 493089
- 145761 string characters out of 6134842
- 276337 words of memory out of 5000000
- 13106 multiletter control sequences out of 15000+600000
+ 9909 strings out of 493089
+ 145781 string characters out of 6134842
+ 276448 words of memory out of 5000000
+ 13107 multiletter control sequences out of 15000+600000
  16597 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  36i,17n,44p,1118b,475s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -686,10 +686,10 @@ mf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2015/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2015/texmf-
 dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (31 pages, 1199207 bytes).
+Output written on main.pdf (31 pages, 1198509 bytes).
 PDF statistics:
- 834 PDF objects out of 1000 (max. 8388607)
- 703 compressed objects within 8 object streams
- 151 named destinations out of 1000 (max. 500000)
+ 836 PDF objects out of 1000 (max. 8388607)
+ 705 compressed objects within 8 object streams
+ 152 named destinations out of 1000 (max. 500000)
  282 words of extra memory for PDF output out of 10000 (max. 10000000)
 
