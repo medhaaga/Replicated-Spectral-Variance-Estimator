@@ -272,20 +272,19 @@ Let $\E_F\|Y_{11}\|^{2+ \delta} < \infty$ for $\delta > 0$ and let $P$ be polyno
  Let the assumptions of Theorem~\ref{thm:kuelbs} hold with $q = 1$. If $\hat{\Sigma}_{s} \xrightarrow{a.s.} \Sigma$ for all $s$, and $n^{-1}{b_n \log \log n} \to 0 \textrm{ as } n \to \infty$, then $\hat{\Sigma}_{G} \overset{a.s.}{\to} \Sigma$ as $n \to \infty$.
 \end{theorem} 
 
-Conditions for strong consistency of $\hat{\Sigma}_s$ for polynomially ergodic Markov chains are in \cite{vats:fleg:jon:2018}. Typically, $b_n = \lfloor n^{\nu} \rfloor$ for some $0< \nu <1$ for which $n^{-1} b_n \log \log n \to 0$, thus Theorem~\ref{th:consistency} presents no added conditions for strong consistency.
-
-Our next two results establish large-sample bias and variance for G-SV and mimic those of $\hat{\Sigma}_s$ which can be found in \cite{hannan:1970}. However, \cite{hannan:1970} proved the results assuming $\mu_g$ was known. Here, we present the results under mild conditions for when $\mu_g$ is replaced by $\bar{\bar{Y}}$. Let $\Sigma^{ij}$ and $\hat{\Sigma}_G^{ij}$ denote the $ij$th element of the matrix $\Sigma$ and $\hat{\Sigma}_G$, respectively.
+Conditions for strong consistency of $\hat{\Sigma}_s$ for polynomially ergodic Markov chains are in \cite{vats:fleg:jon:2018}. Typically, $b_n = \lfloor n^{\nu} \rfloor$ for some $0< \nu <1$ for which $n^{-1} b_n \log \log n \to 0$, thus Theorem~\ref{th:consistency} presents no added conditions for strong consistency.Our next two results establish large-sample bias and variance for G-SV and mimic those of $\hat{\Sigma}_s$ which can be found in \cite{hannan:1970}. Let $\Sigma^{ij}$ and $\hat{\Sigma}_G^{ij}$ denote the $ij$th element of the matrix $\Sigma$ and $\hat{\Sigma}_G$, respectively.
 
 \begin{theorem}\label{th:G-SVE_bias}
 Let the assumptions of Theorem~\ref{thm:kuelbs} hold with $q$ such that 
 \[
-\lim _{x \to 0} \dfrac{1 - w(x)}{\abs{x}^q} = k_q < \infty
+\lim _{x \to 0} \dfrac{1 - w(x)}{\abs{x}^q} = k_q < \infty\,
 \] 
-and $b_n^q/n \to 0$ as $n \to \infty$. Then $ \lim_{n \to \infty}b_n^q\mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = -k_q\Phi^{(q)}\,.$
+and $b_n^{q+1}/n \to 0$ as $n \to \infty$. Then $ \lim_{n \to \infty}b_n^q\mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = -k_q\Phi^{(q)}\,.$
 % \[
 %  \lim_{n \to \infty}b_n^q\mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = -k_q\Phi^{(q)}\,.
 %  \]
 \end{theorem}
+\cite{hannan:1970} proved a similar bias result assuming $\mu_g$ was known with the rate $b_n^q/n \to 0$ as $n \to \infty$. Similar to \cite{ande:1971} for the univariate case, in Theorem~\ref{th:G-SVE_bias}, we require $b_n^{q+1}/n \to 0$ as $n\to \infty$ for the multivariate case for when $\mu_g$ is replaced by $\bar{\bar{Y}}$. 
 
 \begin{theorem} \label{th:G-SVE_variance}
  Let the assumptions of Theorem~\ref{thm:kuelbs} hold and let $\E[D^4] < \infty$  and  $\E \|Y_{11}\|^4 < \infty$, then $ \lim_{n \to \infty} b_n^{-1}{n}\Var \left(\hat{\Sigma}_{G}^{ij} \right) = [\Sigma_{ii}\Sigma_{jj} + \Sigma_{ij}^2]\int_{-\infty}^{\infty}w(x)^2dx $.
@@ -1007,13 +1006,13 @@ So,
 Finally, we will solve for $P_2$. Note that $O_1 = (\abs{k}/n)\mathcal{O}(1/n)$ and $O_2 = \mathcal{O}(1/n)$. So,
   \begin{align*}
     P_2  & \leq \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{k}{b_n}\right)O_1} + \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{k}{b_n}\right)O_2} \\
-      &= \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-n+1}^{n-1}\dfrac{\abs{k}}{n}\abs{w\left(\dfrac{k}{b_n}\right)} + \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{k}{b_n}\right)}\\
-      &= \mathcal{O}\left(\dfrac{1}{n}\right) \sum_{k=-n+1}^{n-1}\abs{w\left(\dfrac{k}{b_n}\right)}\\
-      &= \mathcal{O}\left(\dfrac{1}{n}\right) = o\left(\dfrac{1}{b_n^q}\right) \,.
+      &= \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-n+1}^{n-1}\dfrac{\abs{k}}{n}\abs{w\left(\dfrac{k}{b_n}\right)} + \mathcal{O}\left(\dfrac{1}{n}\right)\sum_{k=-b_n+1}^{b_n-1}\abs{w\left(\dfrac{k}{b_n}\right)}\\
+      &= \mathcal{O}\left(\dfrac{b_n}{n}\right)\dfrac{1}{b_n} \sum_{k=-b_n+1}^{b_n-1}\abs{w\left(\dfrac{k}{b_n}\right)}\\
+      &= \mathcal{O}\left(\dfrac{b_n}{n}\right) = o\left(\dfrac{b_n}{b_n^{q+1}}\right) = o\left(\dfrac{1}{b_n^{q}}\right) \,. \numberthis \label{eq:P_2}
  \end{align*}
  
 %
-Using \eqref{eq:P1_decomp},\eqref{eq:P1_first}, \eqref{eq:P1_second}, and \eqref{eq:P1_third} in \eqref{eq:bias_gsve},
+Using \eqref{eq:P1_decomp},\eqref{eq:P1_first}, \eqref{eq:P1_second}, \eqref{eq:P1_third}, and \eqref{eq:P_2} in \eqref{eq:bias_gsve},
 \[
 \mathbb{E} \left[\hat{\Sigma}_{G} - \Sigma \right] = -\dfrac{k_q \Phi^{(q)} }{b_n^q} + o\left( \dfrac{1}{b_n^q} \right)\,,
 \]
@@ -1026,18 +1025,19 @@ which completes the result.
 \label{appendix:variance}
  
 % \begin{proof}[Proof of Theorem~\ref{th:G-SVE_variance}]
- Due to the strong consistency proof from Theorem \ref{th:consistency}, as $n \to \infty$,
-\begin{equation}
-\label{eq:G-SVE_asv_consis}
- \left|\hat{\Sigma}_{G} -  \tilde{\Sigma}\right| \to 0 \text{ with probability 1}\,. 
-\end{equation}
-We have shown from the proof of strong consistency that,
+%  Due to the strong consistency proof from Theorem \ref{th:consistency}, as $n \to \infty$,
+% \begin{equation}
+% \label{eq:G-SVE_asv_consis}
+%  \left|\hat{\Sigma}_{G} -  \tilde{\Sigma}\right| \to 0 \text{ with probability 1}\,. 
+% \end{equation}
+% We have shown from the proof of strong consistency that,
+By Lemma~\ref{lemma:G-SVE_breakdown},
 \begin{align*}
  &\left| \hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right|\\
  & \leq \dfrac{1}{m} \sum_{s=1}^m \left| \sum_{k=-b_n+1}^{b_n-1} w \left(\dfrac{k}{b_n} \right) \sum_{t \in I_k}   \left[ \left( \dfrac{(Y_{st} - \mu_g)_i(\mu_g-\bar{\bar{Y}})_j}{n}\right)+ \left(\dfrac{(\mu_g-\bar{\bar{Y}})_i(Y_{s(t+k)}-\mu_g)_j}{n}\right) \right] \right.\\
 & \quad \quad  \left. + (\mu_g-\bar{\bar{Y}})(\mu_g-\bar{\bar{Y}})^T\sum_{k=-b_n+1}^{b_n-1}\left(\dfrac{n-|k|}{n}\right)w\left(\dfrac{k}{n}\right) \right|  < D^2g_1(n) + Dg_2(n) + g_3(n)\,,
 \end{align*}
-where it has been shown already that $g_1(n), g_2(n), g_3(n) \to 0$ as $n \to \infty$. By \eqref{eq:G-SVE_asv_consis}, there exists an $N_0$ such that
+where $g_1(n), g_2(n), g_3(n) \to 0$ as $n \to \infty$ as defined in Lemma~\ref{lemma:G-SVE_breakdown}. Then there exists an $N_0$ such that
 \begin{align*}
 \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 &= \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) + \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(n > N_0)\\
 & \leq \left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right)^2 \, I(0 \leq n \leq N_0) +  \left(D^2g_1(n) + Dg_2(n) + g_3(n) \right)^2 I(n > N_0)\\
@@ -1055,7 +1055,7 @@ Thus, $\E \left| g_n^* \right| < \infty$ and further as $n \to \infty$, $g_n \to
 %
 We will use \eqref{eq:squared_mean_diff} to show that the variances are equivalent. Define,
 \[
-\xi\left(\hat{\Sigma}_{G}^{ij}, \tilde{\Sigma}^{ij} \right) = \Var\left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right) + 2 \E\left[ \left(\hat{\Sigma}_{G}^{ij} -  \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right]
+\xi\left(\hat{\Sigma}_{G}^{ij}, \tilde{\Sigma}^{ij} \right) = \Var\left(\hat{\Sigma}_{G}^{ij} - \tilde{\Sigma}^{ij} \right) + 2 \E\left[ \left(\hat{\Sigma}_{G}^{ij} -  \tilde{\Sigma}^{ij} \right) \left(\tilde{\Sigma}^{ij}  - \E \left( \tilde{\Sigma}^{ij} \right) \right) \right]\,.
 \]
 We will show that the above is $o(1)$. Using Cauchy-Schwarz inequality followed by \eqref{eq:squared_mean_diff},
 \begin{align*}
@@ -1077,7 +1077,7 @@ Finally,
 
 \cite{hannan:1970} has given the calculations for variance of $\tilde{\Sigma}$ as 
 \begin{equation} \label{eq:hannan_var}
-\dfrac{n}{b_n}\Var(\tilde{\Sigma}^{ij}) = \left[\Sigma^{ii}\Sigma^{jj} + \left(\Sigma^{ij} \right) \right]\int_{-\infty}^{\infty}w^2(x)dx + o(1)    
+\dfrac{n}{b_n}\Var(\tilde{\Sigma}^{ij}) = \left[\Sigma^{ii}\Sigma^{jj} + \left(\Sigma^{ij} \right) \right]\int_{-\infty}^{\infty}w^2(x)dx + o(1)\,.
 \end{equation}
 Plugging (\ref{eq:hannan_var}) into variance of $\hat{\Sigma}_{G}$ gives the result of the theorem.
  
