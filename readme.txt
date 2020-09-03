@@ -4,9 +4,9 @@
 ########################### Agarwal and Vats (2020)  ###############################
 ####################################################################################
 
-All the figures and tables in the paper are produced serially using the script "one_run.R" and save in the folder "AllOut". This script uses 
-pre-calculate R objects to save simulation time. Each example folder contains the code for producing these objects, figures, and tables. 
-These R objects are copied to the "AllOut" folder. Following is the information regarding Figures (1-10), Tables (1-3), and their associated R objects.
+All the figures and tables in the paper are produced serially using the script "one_run.R" and saved in the folder "AllOut". This script uses 
+pre-obtained R objects to save simulation time. Each example folder contains the code for producing these objects, figures, and tables. 
+These R objects have been copied to the "AllOut" folder. Following is the information regarding Figures (1-10), Tables (1-3), and their associated R objects.
 
 ######### Figure-1 uses:
 
