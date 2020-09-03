@@ -59,7 +59,7 @@ Flegal, J.~M., Haran, M., and Jones, G.~L. (2008).
 \newblock {\em Statistical Science}, 23:250--260.
 
 \bibitem[Flegal et~al., 2020]{mcmcse}
-Flegal, J.~M., Hughes, J., Vats, D., and Dai, N. (2020).
+Flegal, J.~M., Hughes, J., Vats, D., Dai, N., and Maji, U. (2020).
 \newblock {\em mcmcse: Monte Carlo Standard Errors for MCMC}.
 \newblock Riverside, CA, Denver, CO, Coventry, UK, and Minneapolis, MN.
 \newblock R package version 1.4-1.
@@ -105,7 +105,7 @@ Hannan, E.~J. (1970).
 
 \bibitem[Heberle and Sattarhoff, 2017]{heberle2017fast}
 Heberle, J. and Sattarhoff, C. (2017).
-\newblock A fast algorithm for the computation of hac covariance matrix
+\newblock A fast algorithm for the computation of {HAC} covariance matrix
   estimators.
 \newblock {\em Econometrics}, 5(1):9.
 
@@ -121,11 +121,11 @@ Kass, R.~E., Carlin, B.~P., Gelman, A., and Neal, R.~M. (1998).
 \newblock {M}arkov chain {M}onte {C}arlo in practice: a roundtable discussion.
 \newblock {\em The American Statistician}, 52:93--100.
 
-\bibitem[Kuelbs, 1976]{kuel:1976}
-Kuelbs, J. (1976).
-\newblock A strong convergence theorem for {B}anach space valued random
-  variables.
-\newblock {\em The Annals of Probability}, 4:744--771.
+\bibitem[Kuelbs and Philipp, 1980]{kuel:phil:1980}
+Kuelbs, J. and Philipp, W. (1980).
+\newblock Almost sure invariance principles for partial sums of mixing
+  {B}-valued random variables.
+\newblock {\em The Annals of Probability}, 8:1003--1036.
 
 \bibitem[Liu and Flegal, 2018]{liu:fleg:2018}
 Liu, Y. and Flegal, J.~M. (2018).
@@ -148,8 +148,8 @@ Nilakanta, H., Almquist, Z.~W., and Jones, G.~L. (2019).
 
 \bibitem[Priestley, 1981]{priestley1981spectral}
 Priestley, M.~B. (1981).
-\newblock {\em Spectral analysis and time series: probability and mathematical
-  statistics}.
+\newblock {\em Spectral Analysis and Time Series: Probability and Mathematical
+  Statistics}.
 \newblock Number 04; QA280, P7.
 
 \bibitem[Resnick et~al., 1997]{resnick1997protecting}
@@ -177,7 +177,7 @@ Strassen, V. (1964).
 
 \bibitem[Tak et~al., 2018]{tak2018repelling}
 Tak, H., Meng, X.-L., and van Dyk, D.~A. (2018).
-\newblock A repelling--attracting metropolis algorithm for multimodality.
+\newblock A repelling--attracting {M}etropolis algorithm for multimodality.
 \newblock {\em Journal of Computational and Graphical Statistics},
   27(3):479--490.
 

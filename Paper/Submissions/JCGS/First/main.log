@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  3 SEP 2020 15:31
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  3 SEP 2020 22:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -453,7 +453,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: plots/gaussian-Targettrace.pdf Graphic file (type pdf)
 
 <use plots/gaussian-Targettrace.pdf>
-Package pdftex.def Info: plots/gaussian-Targettrace.pdf used on input line 166.
+Package pdftex.def Info: plots/gaussian-Targettrace.pdf used on input line 167.
 
 (pdftex.def)             Requested size: 291.2458pt x 145.62364pt.
 
@@ -461,208 +461,208 @@ Package pdftex.def Info: plots/gaussian-Targettrace.pdf used on input line 166.
 File: plots/gaussian-acf_hist.pdf Graphic file (type pdf)
 
 <use plots/gaussian-acf_hist.pdf>
-Package pdftex.def Info: plots/gaussian-acf_hist.pdf used on input line 168.
+Package pdftex.def Info: plots/gaussian-acf_hist.pdf used on input line 169.
 (pdftex.def)             Requested size: 291.2458pt x 145.62364pt.
  [4 <./plots/gaussian-Targettrace.pdf> <./plots/gaussian-acf_hist.pdf>] [5] [6]
  [7] [8] [9] [10] [11]
-<plots/var-acf_n1000.pdf, id=329, 578.16pt x 289.08pt>
+<plots/var-acf_n1000.pdf, id=328, 578.16pt x 289.08pt>
 File: plots/var-acf_n1000.pdf Graphic file (type pdf)
 
 <use plots/var-acf_n1000.pdf>
-Package pdftex.def Info: plots/var-acf_n1000.pdf used on input line 445.
+Package pdftex.def Info: plots/var-acf_n1000.pdf used on input line 446.
 (pdftex.def)             Requested size: 281.85587pt x 140.92703pt.
 
-<plots/var-acf_n10000.pdf, id=330, 578.16pt x 289.08pt>
+<plots/var-acf_n10000.pdf, id=329, 578.16pt x 289.08pt>
 File: plots/var-acf_n10000.pdf Graphic file (type pdf)
 
 <use plots/var-acf_n10000.pdf>
-Package pdftex.def Info: plots/var-acf_n10000.pdf used on input line 446.
+Package pdftex.def Info: plots/var-acf_n10000.pdf used on input line 447.
 (pdftex.def)             Requested size: 281.85587pt x 140.92703pt.
  [12 <./plots/var-acf_n1000.pdf> <./plots/var-acf_n10000.pdf>] <plots/var-frob.
-pdf, id=351, 361.35pt x 361.35pt>
+pdf, id=350, 361.35pt x 361.35pt>
 File: plots/var-frob.pdf Graphic file (type pdf)
 
 <use plots/var-frob.pdf>
-Package pdftex.def Info: plots/var-frob.pdf used on input line 474.
+Package pdftex.def Info: plots/var-frob.pdf used on input line 475.
 (pdftex.def)             Requested size: 166.2212pt x 166.223pt.
- <plots/var-ess.pdf, id=352, 361.35pt x 361.35pt>
+ <plots/var-ess.pdf, id=351, 361.35pt x 361.35pt>
 File: plots/var-ess.pdf Graphic file (type pdf)
 
 <use plots/var-ess.pdf>
-Package pdftex.def Info: plots/var-ess.pdf used on input line 475.
+Package pdftex.def Info: plots/var-ess.pdf used on input line 476.
 (pdftex.def)             Requested size: 166.2212pt x 166.223pt.
  [13 <./plots/var-frob.pdf> <./plots/var-ess.pdf>]
-<plots/boom-all_1_3_8.pdf, id=380, 867.24pt x 289.08pt>
+<plots/boom-all_1_3_8.pdf, id=379, 867.24pt x 289.08pt>
 File: plots/boom-all_1_3_8.pdf Graphic file (type pdf)
 
 <use plots/boom-all_1_3_8.pdf>
-Package pdftex.def Info: plots/boom-all_1_3_8.pdf used on input line 506.
+Package pdftex.def Info: plots/boom-all_1_3_8.pdf used on input line 507.
 (pdftex.def)             Requested size: 328.82707pt x 109.60893pt.
 
-<plots/boom-all_1_10_7.pdf, id=381, 867.24pt x 289.08pt>
+<plots/boom-all_1_10_7.pdf, id=380, 867.24pt x 289.08pt>
 File: plots/boom-all_1_10_7.pdf Graphic file (type pdf)
 
 <use plots/boom-all_1_10_7.pdf>
-Package pdftex.def Info: plots/boom-all_1_10_7.pdf used on input line 507.
+Package pdftex.def Info: plots/boom-all_1_10_7.pdf used on input line 508.
 (pdftex.def)             Requested size: 328.82707pt x 109.60893pt.
  [14] [15 <./plots/boom-all_1_3_8.pdf> <./plots/boom-all_1_10_7.pdf>]
-<plots/boom-ess_1_3_8_m5.pdf, id=408, 361.35pt x 361.35pt>
+<plots/boom-ess_1_3_8_m5.pdf, id=407, 361.35pt x 361.35pt>
 File: plots/boom-ess_1_3_8_m5.pdf Graphic file (type pdf)
 
 <use plots/boom-ess_1_3_8_m5.pdf>
-Package pdftex.def Info: plots/boom-ess_1_3_8_m5.pdf used on input line 560.
+Package pdftex.def Info: plots/boom-ess_1_3_8_m5.pdf used on input line 561.
 (pdftex.def)             Requested size: 140.92793pt x 140.92593pt.
 
-<plots/boom-ess_1_10_7_m5.pdf, id=409, 361.35pt x 361.35pt>
+<plots/boom-ess_1_10_7_m5.pdf, id=408, 361.35pt x 361.35pt>
 File: plots/boom-ess_1_10_7_m5.pdf Graphic file (type pdf)
 
 <use plots/boom-ess_1_10_7_m5.pdf>
-Package pdftex.def Info: plots/boom-ess_1_10_7_m5.pdf used on input line 561.
+Package pdftex.def Info: plots/boom-ess_1_10_7_m5.pdf used on input line 562.
 (pdftex.def)             Requested size: 140.92793pt x 140.92593pt.
  [16 <./plots/boom-ess_1_3_8_m5.pdf> <./plots/boom-ess_1_10_7_m5.pdf>]
-<plots/sensor-trace_loc1.pdf, id=445, 289.08pt x 289.08pt>
+<plots/sensor-trace_loc1.pdf, id=444, 289.08pt x 289.08pt>
 File: plots/sensor-trace_loc1.pdf Graphic file (type pdf)
 
 <use plots/sensor-trace_loc1.pdf>
-Package pdftex.def Info: plots/sensor-trace_loc1.pdf used on input line 584.
+Package pdftex.def Info: plots/sensor-trace_loc1.pdf used on input line 585.
 (pdftex.def)             Requested size: 150.32504pt x 150.32245pt.
 
-<plots/sensor-acf_n5e3.pdf, id=446, 289.08pt x 289.08pt>
+<plots/sensor-acf_n5e3.pdf, id=445, 289.08pt x 289.08pt>
 File: plots/sensor-acf_n5e3.pdf Graphic file (type pdf)
 
 <use plots/sensor-acf_n5e3.pdf>
-Package pdftex.def Info: plots/sensor-acf_n5e3.pdf used on input line 585.
+Package pdftex.def Info: plots/sensor-acf_n5e3.pdf used on input line 586.
 (pdftex.def)             Requested size: 150.32504pt x 150.32245pt.
 
-<plots/sensor-acf_n5e4.pdf, id=447, 289.08pt x 289.08pt>
+<plots/sensor-acf_n5e4.pdf, id=446, 289.08pt x 289.08pt>
 File: plots/sensor-acf_n5e4.pdf Graphic file (type pdf)
 
 <use plots/sensor-acf_n5e4.pdf>
-Package pdftex.def Info: plots/sensor-acf_n5e4.pdf used on input line 586.
+Package pdftex.def Info: plots/sensor-acf_n5e4.pdf used on input line 587.
 (pdftex.def)             Requested size: 150.32504pt x 150.32245pt.
 
-<plots/sensor-frob.pdf, id=448, 361.35pt x 361.35pt>
+<plots/sensor-frob.pdf, id=447, 361.35pt x 361.35pt>
 File: plots/sensor-frob.pdf Graphic file (type pdf)
 
 <use plots/sensor-frob.pdf>
-Package pdftex.def Info: plots/sensor-frob.pdf used on input line 593.
+Package pdftex.def Info: plots/sensor-frob.pdf used on input line 594.
 (pdftex.def)             Requested size: 140.92793pt x 140.92593pt.
 
-<plots/sensor-ess.pdf, id=449, 361.35pt x 361.35pt>
+<plots/sensor-ess.pdf, id=448, 361.35pt x 361.35pt>
 File: plots/sensor-ess.pdf Graphic file (type pdf)
  <use plots/sensor-ess.pdf>
-Package pdftex.def Info: plots/sensor-ess.pdf used on input line 594.
+Package pdftex.def Info: plots/sensor-ess.pdf used on input line 595.
 (pdftex.def)             Requested size: 140.92793pt x 140.92593pt.
 
 [17 <./plots/sensor-trace_loc1.pdf> <./plots/sensor-acf_n5e3.pdf> <./plots/sens
 or-acf_n5e4.pdf>] [18 <./plots/sensor-frob.pdf> <./plots/sensor-ess.pdf>]
 [19]
-Overfull \hbox (42.49445pt too wide) in paragraph at lines 674--674
+Overfull \hbox (42.49445pt too wide) in paragraph at lines 675--675
 [] 
  []
 
 [20]
-Overfull \hbox (53.54181pt too wide) in paragraph at lines 705--705
+Overfull \hbox (53.54181pt too wide) in paragraph at lines 706--706
 [] 
  []
 
 [21]
-Overfull \hbox (7.45726pt too wide) in paragraph at lines 775--775
+Overfull \hbox (7.45726pt too wide) in paragraph at lines 776--776
 [] 
  []
 
 
-Overfull \hbox (0.35165pt too wide) in paragraph at lines 801--801
+Overfull \hbox (0.35165pt too wide) in paragraph at lines 802--802
 [] 
  []
 
 [22]
-Overfull \hbox (38.2075pt too wide) in paragraph at lines 844--844
+Overfull \hbox (38.2075pt too wide) in paragraph at lines 845--845
 [] 
  []
 
 [23]
-Overfull \hbox (29.54704pt too wide) in paragraph at lines 853--853
+Overfull \hbox (29.54704pt too wide) in paragraph at lines 854--854
 [] 
  []
 
 [24]
-Overfull \hbox (3.10402pt too wide) in paragraph at lines 909--909
+Overfull \hbox (3.10402pt too wide) in paragraph at lines 910--910
 [] 
  []
 
 [25]
-Overfull \hbox (49.75536pt too wide) in paragraph at lines 945--945
+Overfull \hbox (49.75536pt too wide) in paragraph at lines 946--946
 [] 
  []
 
 [26]
-Overfull \hbox (4.73209pt too wide) in paragraph at lines 993--993
+Overfull \hbox (4.73209pt too wide) in paragraph at lines 994--994
 [] 
  []
 
 [27] [28] [29]
-Overfull \hbox (12.386pt too wide) in paragraph at lines 1119--1119
+Overfull \hbox (12.386pt too wide) in paragraph at lines 1120--1120
 [] 
  []
 
-[30] [31] <plots/poisson-trace_n50000.pdf, id=671, 722.7pt x 289.08pt>
+[30] [31] <plots/poisson-trace_n50000.pdf, id=670, 722.7pt x 289.08pt>
 File: plots/poisson-trace_n50000.pdf Graphic file (type pdf)
 
 <use plots/poisson-trace_n50000.pdf>
-Package pdftex.def Info: plots/poisson-trace_n50000.pdf used on input line 1149
+Package pdftex.def Info: plots/poisson-trace_n50000.pdf used on input line 1150
 .
 (pdftex.def)             Requested size: 328.82707pt x 131.5316pt.
 
-<plots/poisson-acf_n1000.pdf, id=672, 722.7pt x 289.08pt>
+<plots/poisson-acf_n1000.pdf, id=671, 722.7pt x 289.08pt>
 File: plots/poisson-acf_n1000.pdf Graphic file (type pdf)
 
 <use plots/poisson-acf_n1000.pdf>
-Package pdftex.def Info: plots/poisson-acf_n1000.pdf used on input line 1155.
+Package pdftex.def Info: plots/poisson-acf_n1000.pdf used on input line 1156.
 (pdftex.def)             Requested size: 281.85587pt x 112.74074pt.
 
-<plots/poisson-acf_n10000.pdf, id=673, 722.7pt x 289.08pt>
+<plots/poisson-acf_n10000.pdf, id=672, 722.7pt x 289.08pt>
 File: plots/poisson-acf_n10000.pdf Graphic file (type pdf)
 
 <use plots/poisson-acf_n10000.pdf>
-Package pdftex.def Info: plots/poisson-acf_n10000.pdf used on input line 1156.
+Package pdftex.def Info: plots/poisson-acf_n10000.pdf used on input line 1157.
 (pdftex.def)             Requested size: 281.85587pt x 112.74074pt.
  [32 <./plots/poisson-trace_n50000.pdf>]
-<plots/magnolia-acf_n100.pdf, id=698, 722.7pt x 289.08pt>
+<plots/magnolia-acf_n100.pdf, id=697, 722.7pt x 289.08pt>
 File: plots/magnolia-acf_n100.pdf Graphic file (type pdf)
 
 <use plots/magnolia-acf_n100.pdf>
-Package pdftex.def Info: plots/magnolia-acf_n100.pdf used on input line 1175.
+Package pdftex.def Info: plots/magnolia-acf_n100.pdf used on input line 1176.
 (pdftex.def)             Requested size: 281.85587pt x 112.74074pt.
 
-<plots/magnolia-acf_n1000.pdf, id=699, 722.7pt x 289.08pt>
+<plots/magnolia-acf_n1000.pdf, id=698, 722.7pt x 289.08pt>
 File: plots/magnolia-acf_n1000.pdf Graphic file (type pdf)
 
 <use plots/magnolia-acf_n1000.pdf>
-Package pdftex.def Info: plots/magnolia-acf_n1000.pdf used on input line 1176.
+Package pdftex.def Info: plots/magnolia-acf_n1000.pdf used on input line 1177.
 (pdftex.def)             Requested size: 281.85587pt x 112.74074pt.
  (./main.bbl [33 <./plots/poisson-acf_n1000.pdf> <./plots/poisson-acf_n10000.pd
 f>] [34 <./plots/magnolia-acf_n100.pdf> <./plots/magnolia-acf_n1000.pdf>] [35] 
 [36])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1212.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1213.
  [37]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1212.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1213.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1212.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1212.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1213.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1213.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 2D0A398BEE80FAAC3D1C900850836602;1546.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1212.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1213.
  ) 
 Here is how much of TeX's memory you used:
  9870 strings out of 493089
- 145114 string characters out of 6134842
- 276061 words of memory out of 5000000
+ 145134 string characters out of 6134842
+ 276084 words of memory out of 5000000
  13068 multiletter control sequences out of 15000+600000
  16905 words of font info for 65 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 42i,18n,44p,1071b,475s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,18n,44p,1072b,475s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
@@ -682,10 +682,10 @@ texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2015/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2015/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2015/tex
 mf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (37 pages, 1369917 bytes).
+Output written on main.pdf (37 pages, 1369940 bytes).
 PDF statistics:
- 855 PDF objects out of 1000 (max. 8388607)
- 721 compressed objects within 8 object streams
+ 854 PDF objects out of 1000 (max. 8388607)
+ 720 compressed objects within 8 object streams
  157 named destinations out of 1000 (max. 500000)
  285 words of extra memory for PDF output out of 10000 (max. 10000000)
 

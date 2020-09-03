@@ -322,34 +322,6 @@ segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("roy
 legend("topright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, cex=1, lwd = 2, bty = "n")
 dev.off()
 
-####################### Figure 9 ####################
-
-#### Figure 9a
-min <- 5e2
-max <- 1e5
-step <- 5e2
-conv.pts <- seq(min, max, step)
-m <- 5
-load(file = paste(paste("AllOut/boom1-conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
-
-a <- lapply(asv[1:10], function(x) log(apply(x, 3, norm, "F") ) )
-r <- lapply(rsv[1:10], function(x) log(apply(x, 3, norm, "F") ) )
-a <- Reduce("rbind", a)
-r <- Reduce("rbind", r)
-
-se.a <- apply(a, 2, sd)/sqrt(10)
-se.r <- apply(r, 2, sd)/sqrt(10)
-
-a <- colMeans(a)
-r <- colMeans(r)
-
-pdf(file = paste(paste("AllOut/boom-frob", A1, B1, C1, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
-lines(conv.pts, r, col="royalblue", lwd = 2)
-segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
-segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
-legend("bottomright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, lwd = 2, bty = "n")
-dev.off()
 
 
 ##################### Table 2 ########################
