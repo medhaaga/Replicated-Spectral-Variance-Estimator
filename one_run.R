@@ -23,7 +23,7 @@ chain2 <- mc.chain.list[[2]]
 
 ################### Figure 1 #######################
 
-## Figure 1a
+## Figure 1 (top) a
 
 x <- seq(-10, 10, length = 1e3)
 pdf(file = "AllOut/gaussian-TargetTrace.pdf", height = 5, width = 10)
@@ -35,7 +35,8 @@ lines(x = chain2[1:1e4], y = seq(-1, -1e4, -1), col = "plum3")
 mtext(side = 2, text = "Time", line = 1)
 legend("top", legend=c("Target", "Chain 1", "Chain 2"),col=c("black", "lightskyblue", "plum3"), lty=1, cex=1, lwd=2, bty = "n")
 
-#Figure 1b
+## Figure 1 (top) b
+
 plot(x, 200000*exp(log.density(x, p, mu1, mu2, sd1, sd2)), type = "l", lwd = 1.5, xlab = "x", ylab = "", ylim = c(-1e5,6e4), xlim = range(chain1,chain2), yaxt = 'n')
 par(new = TRUE)
 plot(x = chain1, y = seq(-1, -1e5, -1), col = "lightskyblue", xlab = "", ylab = "", type = "l", ylim = c(-1e5, 6e4), , xlim = range(chain1,chain2), yaxt = 'n')
@@ -44,7 +45,6 @@ mtext(side = 2, text = "Time", line = 1)
 legend("top", legend=c("Target", "Chain 1", "Chain 2"),col=c("black", "lightskyblue", "plum3"), lty=1, cex=1, lwd=2, bty = "n")
 dev.off()
 
-#################### Figure 1 (bottom) #######################
 
 lag.max <- 50
 nsim1 <- 1e4
@@ -65,6 +65,7 @@ global.acf1 <- globalACF(x, chains = c(1), component = 1, lag.max = lag.max, typ
 global.acf2 <- globalACF(y, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
 
 #### Figure 1 (bottom)
+
 pdf(file = "AllOut/gaussian-acf_hist.pdf", width = 10, height= 5)
 par(mfrow = c(1,2))
 plot(as.matrix(local.acf1$acf), type = 'h', ylab = "Autocorrelation", xlab = "Lag")
@@ -80,7 +81,7 @@ dev.off()
 ##########################################
 ##########################################
 
-##################Figure 3 ###############
+################## Figure 2 ###############
 
 load(file = "AllOut/var-five_chains.Rdata")
 
@@ -89,7 +90,7 @@ p <- 2
 component <- 1
 lag.max <- 40
 
-### Figure 3a
+### Figure 2 (top)
 ncrop <- 1e3
 x <- list()
 for (i in 1:m){
@@ -107,7 +108,7 @@ plot(global.acf, main = expression("Globally centered ACF"))
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
 dev.off()
 
-### Figure 3b
+### Figure 2 (bottom)
 
 ncrop <- 1e4
 x <- list()
@@ -126,7 +127,7 @@ plot(global.acf, main = expression("Globally centered ACF"))
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
 dev.off()
 
-##################### Figure 4 ######################
+##################### Figure 3 ######################
 
 min <- 5e2
 max <- 5e4
@@ -134,7 +135,7 @@ step <- 5e2
 conv.pts <- seq(min, max, step)
 load(file = "AllOut/var-truth.Rdata")
 
-### Figure 4a
+### Figure 3 (left)
 
 load(file = paste("AllOut/var-conv_data_min", min, "_max", max, ".Rdata", sep = ""))
 
@@ -158,7 +159,7 @@ abline(h = log(norm(truth, type = "F")), col = "green3", lwd = 2)
 legend("bottomright", legend=c("A-SV", "G-SV", "Truth"),col=c("darkorange", "royalblue", "green3"), lty=1, lwd = 2, bty = "n")
 dev.off()
 
-### Figure 3b
+### Figure 3 (right)
 
 load(file = paste("AllOut/var-conv_data_min", min, "_max", max, ".Rdata", sep = ""))
 
@@ -207,7 +208,7 @@ A2 <- 1
 B2 <- 10
 C2 <- 7
 
-################## Figure 5 #############################
+################## Figure 4 #############################
 
 
 load(file = paste(paste("AllOut/boom-two_chains_sp", A1, B1, C1, sep = "_"), ".Rdata", sep = ""))
@@ -231,7 +232,7 @@ global.acf2 <- globalACF(y, type = "correlation", lag.max = lag.max, component =
 local.acf1 <- globalACF(x, type = "correlation", lag.max = lag.max, mean = "local", component = 1, plot = FALSE)$"avgACF"
 local.acf2 <- globalACF(y, type = "correlation", lag.max = lag.max, mean = "local", component = 1, plot = FALSE)$"avgACF"
 
-
+##### Figure 4 (top)
 pdf(file = paste(paste("AllOut/boom-all", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 4, width = 12)
 par(mfrow = c(1,3))
 
@@ -258,6 +259,8 @@ for (i in 1:m)
 global.acf <- globalACF(x, type = "correlation", lag.max = lag.max, component = 1, plot = FALSE)$"avgACF"
 local.acf <- globalACF(x, type = "correlation", lag.max = lag.max, mean = "local", component = 1, plot = FALSE)$"avgACF"
 
+##### Figure 4 (bottom)
+
 pdf(file = paste(paste("AllOut/boom-all", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 4, width = 12)
 par(mfrow = c(1,3))
 contour2D(x=samples$x, y=samples$y, z=samples$z, col = 1, colkey = FALSE, xlim=c(0,10), ylim=c(0,10), cex.lab = 1.2)
@@ -269,7 +272,7 @@ dev.off()
 
 
 
-####################### Figure 6 ########################
+####################### Figure 5 ########################
 
 min <- 5e2
 max <- 1e5
@@ -278,7 +281,7 @@ conv.pts <- seq(min, max, step)
 
 m <- 5
 
-### Figure 8a
+### Figure 5 (left)
 load(file = paste(paste("AllOut/boom1-conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
 a <- lapply(ess.asv, log)
@@ -296,7 +299,7 @@ segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("roy
 legend("topright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, cex=1, lwd = 2, bty = "n")
 dev.off()
 
-### Figure 8b
+### Figure 5 (right)
 
 min <- 5e2
 max <- 5e4
@@ -348,33 +351,6 @@ segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("roy
 legend("bottomright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, lwd = 2, bty = "n")
 dev.off()
 
-#### Figure 9b
-
-min <- 5e2
-max <- 5e4
-step <- 5e2
-conv.pts <- seq(min, max, step)
-m <- 5
-load(file = paste(paste("AllOut/boom2-conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
-
-a <- lapply(asv[1:10], function(x) log(apply(x, 3, norm, "F") ) )
-r <- lapply(rsv[1:10], function(x) log(apply(x, 3, norm, "F") ) )
-a <- Reduce("rbind", a)
-r <- Reduce("rbind", r)
-
-se.a <- apply(a, 2, sd)/sqrt(10)
-se.r <- apply(r, 2, sd)/sqrt(10)
-
-a <- colMeans(a)
-r <- colMeans(r)
-
-pdf(file = paste(paste("AllOut/boom-frob", A2, B2, C2, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
-lines(conv.pts, r, col="royalblue", lwd = 2)
-segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
-segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
-legend("bottomright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, lwd = 2, bty = "n")
-dev.off()
 
 ##################### Table 2 ########################
 
@@ -443,12 +419,12 @@ for (j in 1:length(check.pts)){
 p <- 8
 m <- 5
 
-######################## Figure 10 ########################
+######################## Figure 6 ########################
 
 load(file = "AllOut/sensor-five_chains.Rdata")
 nsim1 <- 1e5
 
-### Trace plot - Location-1
+##### Figure-6 (left)
 
 pdf(file = "AllOut/sensor-trace_loc1.pdf", height = 4, width = 4)
 par(mfrow = c(1,1))
@@ -461,13 +437,11 @@ plot.ts(mc.chain.list[[5]][1:nsim1,1], ylim = range(mc.chain.list[[1]][,1], mc.c
 # plot.ts(mc.chain.list[[5]][1:nsim1,2], ylim = range(mc.chain.list[[1]][,2], mc.chain.list[[5]][,2]), yaxt='n', xaxt='n', ylab = "", col = rgb(107, 174, 214, maxColorValue = 255))
 dev.off()
 
-######################## Figure 11 ############################
-
 load(file = "AllOut/sensor-five_chains.Rdata")
 component <- 1
 lag.max <- 40
 
-### Figure 11a
+### Figure-6 (middle)
 ncrop <- 5e3
 
 x <- list()
@@ -481,7 +455,7 @@ par(new = TRUE)
 globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
-### Figure 11b
+### Figure-6 (right)
 
 ncrop <- 5e4
 
@@ -496,7 +470,7 @@ par(new = TRUE)
 globalACF(x, chains = 0, component = component, lag.max = lag.max, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
-######################## Figure 12 ###########################
+######################## Figure 7 ###########################
 
 min <- 500
 max <- 2e5
@@ -506,7 +480,7 @@ conv.pts <- seq(min, max, step)
 load(file = paste("AllOut/sensor-conv_data_m", m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
 
-### Figure 12a
+### Figure-7 (left)
 
 a <- lapply(asv, function(x) log(apply(x, 3, norm, "F") ) )
 r <- lapply(rsv, function(x) log(apply(x, 3, norm, "F") ) )
@@ -527,7 +501,7 @@ segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("roy
 legend("bottomright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, lwd = 2)
 dev.off()
 
-### Figure 12b
+### Figure-7 (right)
 
 a <- lapply(ess.asv, log)
 r <- lapply(ess.rsv, log)
@@ -551,7 +525,7 @@ dev.off()
 ###############################################
 ###############################################
 
-################### Figure 13 #################
+################### Figure 8 #################
 
 load(file = "AllOut/poisson-two_chains.Rdata")
 
@@ -565,13 +539,13 @@ plot(ind, mc.chain.list[[1]][ind,3], col = "steelblue1", xlab = "Time", ylab = "
 lines(ind, mc.chain.list[[2]][ind,3], col = "dodgerblue4", xlab = "Time", ylab = "Component-3", main = "")
 dev.off()
 
-################### Figure 14 ########################
+################### Figure-9 ########################
 
 load(file = "AllOut/poisson-two_chains.Rdata")
 m <- 2
 component <- 2
 
-### Figure 14a
+### Figure-9 (top)
 
 ncrop <- 1e3
 x <- list()
@@ -586,7 +560,7 @@ globalACF(x, chains=0, component = component, mean = "local", type = "correlatio
 globalACF(x, chains=0, component = component, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
-### Figure 14b
+### Figure-9 (bottom)
 
 ncrop <- 1e4
 x <- list()
@@ -606,13 +580,13 @@ dev.off()
 #############################################
 #############################################
 
-##################  Figure 15 #################
+##################  Figure 10 #################
 
 m <- 2
 component <- 3
 load(file = "AllOut/magnolia-two_chains.Rdata")
 
-### Figure 15a
+### Figure-10 (top)
 
 ncrop <- 1e2
 x <- list()
@@ -626,7 +600,7 @@ globalACF(x, chains=0, component = component, mean = "local", type = "correlatio
 globalACF(x, chains=0, component = component, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
 dev.off()
 
-### Figure 15b
+### Figure-10 (bottom)
 
 ncrop <- 1e3
 x <- list()
