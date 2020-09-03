@@ -26,17 +26,16 @@ chain2 <- mc.chain.list[[2]]
 ## Figure 1a
 
 x <- seq(-10, 10, length = 1e3)
-pdf(file = "AllOut/gaussian-TargetTrace_n1e4.pdf", height = 5, width = 6)
+pdf(file = "AllOut/gaussian-TargetTrace.pdf", height = 5, width = 10)
+par(mfrow = c(1,2))
 plot(x, 20000*exp(log.density(x, p, mu1, mu2, sd1, sd2)), type = "l", lwd = 1.5, xlab = "x", ylab = "", ylim = c(-10000,6000), xlim = range(chain1,chain2), yaxt = 'n')
 par(new = TRUE)
 plot(x = chain1[1:1e4], y = seq(-1, -1e4, -1), col = "lightskyblue", xlab = "", ylab = "", type = "l", ylim = c(-1e4, 6e3), , xlim = range(chain1,chain2), yaxt = 'n')
 lines(x = chain2[1:1e4], y = seq(-1, -1e4, -1), col = "plum3")
 mtext(side = 2, text = "Time", line = 1)
 legend("top", legend=c("Target", "Chain 1", "Chain 2"),col=c("black", "lightskyblue", "plum3"), lty=1, cex=1, lwd=2, bty = "n")
-dev.off()
 
 #Figure 1b
-pdf(file = "AllOut/gaussian-TargetTrace_n1e5.pdf", height = 5, width = 6)
 plot(x, 200000*exp(log.density(x, p, mu1, mu2, sd1, sd2)), type = "l", lwd = 1.5, xlab = "x", ylab = "", ylim = c(-1e5,6e4), xlim = range(chain1,chain2), yaxt = 'n')
 par(new = TRUE)
 plot(x = chain1, y = seq(-1, -1e5, -1), col = "lightskyblue", xlab = "", ylab = "", type = "l", ylim = c(-1e5, 6e4), , xlim = range(chain1,chain2), yaxt = 'n')
@@ -45,7 +44,7 @@ mtext(side = 2, text = "Time", line = 1)
 legend("top", legend=c("Target", "Chain 1", "Chain 2"),col=c("black", "lightskyblue", "plum3"), lty=1, cex=1, lwd=2, bty = "n")
 dev.off()
 
-#################### Figure 2 #######################
+#################### Figure 1 (bottom) #######################
 
 lag.max <- 50
 nsim1 <- 1e4
@@ -65,8 +64,8 @@ local.acf2 <- acf(as.matrix(y[[1]]), type = "correlation", lag.max = lag.max, pl
 global.acf1 <- globalACF(x, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
 global.acf2 <- globalACF(y, chains = c(1), component = 1, lag.max = lag.max, type = "correlation", avg = FALSE, plot = FALSE)[[1]]
 
-#### Figure 2
-pdf(file = "AllOut/gaussian-acf_hist.pdf", width = 8, height= 4)
+#### Figure 1 (bottom)
+pdf(file = "AllOut/gaussian-acf_hist.pdf", width = 10, height= 5)
 par(mfrow = c(1,2))
 plot(as.matrix(local.acf1$acf), type = 'h', ylab = "Autocorrelation", xlab = "Lag")
 lines(as.matrix(local.acf2$acf), type = 'l', col = "steelblue1", lwd = 2)

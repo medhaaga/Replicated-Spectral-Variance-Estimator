@@ -159,12 +159,9 @@ INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam1
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
-INPUT plots/gaussian-Targettrace_n1e4.pdf
-INPUT ./plots/gaussian-Targettrace_n1e4.pdf
-INPUT ./plots/gaussian-Targettrace_n1e4.pdf
-INPUT plots/gaussian-Targettrace_n1e5.pdf
-INPUT ./plots/gaussian-Targettrace_n1e5.pdf
-INPUT ./plots/gaussian-Targettrace_n1e5.pdf
+INPUT plots/gaussian-Targettrace.pdf
+INPUT ./plots/gaussian-Targettrace.pdf
+INPUT ./plots/gaussian-Targettrace.pdf
 INPUT plots/gaussian-acf_hist.pdf
 INPUT ./plots/gaussian-acf_hist.pdf
 INPUT ./plots/gaussian-acf_hist.pdf
