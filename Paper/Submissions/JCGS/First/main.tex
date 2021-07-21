@@ -103,8 +103,9 @@
 
 \bigskip
 \begin{abstract}
-Autocovariances are a fundamental quantity of interest in Markov chain Monte Carlo (MCMC) simulations with autocorrelation function (ACF) plots being an integral visualization tool for performance assessment. Unfortunately, for slow mixing Markov chains, the empirical autocovariance can highly underestimate the truth. For multiple-chain MCMC sampling,  we propose a globally-centered estimator of the autocovariance function (G-ACvF) that exhibits significant theoretical and empirical improvements. We show that the bias of the G-ACvF estimator is smaller than the bias of the current state-of-the-art.  The impact of this improved estimator is evident in three critical output analysis applications: (1) ACF plots, (2) estimates of the Monte Carlo asymptotic covariance matrix, and (3) estimates of the effective sample size. Under weak conditions, we establish strong consistency of an improved asymptotic covariance estimator, and obtain its large-sample bias and variance.  The performance of the new estimators is demonstrated through various examples.
+Autocovariances are a fundamental quantity of interest in Markov chain Monte Carlo (MCMC) simulations with autocorrelation function (ACF) plots being an integral visualization tool for performance assessment. Unfortunately, for slow mixing Markov chains, the empirical autocovariance can highly underestimate the truth. For multiple-chain MCMC sampling,  we propose a globally-centered estimator of the autocovariance function (G-ACvF) that exhibits significant theoretical and empirical improvements. We show that the bias of the G-ACvF estimator is smaller than the bias of the current state-of-the-art.  The impact of this improved estimator is evident in three critical output analysis applications: (1) ACF plots, (2) estimates of the Monte Carlo asymptotic covariance matrix, and (3) estimates of the effective sample size. Under weak conditions, we establish strong consistency of our improved asymptotic covariance estimator, and obtain its large-sample bias and variance.  The performance of the new estimators is demonstrated through various examples.
 \end{abstract}
+
 
 \noindent%
 {\it Keywords:}  Markov chain Monte Carlo, autocorrelation plots, spectral variance estimators, visualization
@@ -121,7 +122,7 @@ Advancements in modern personal computing have made it easy to run parallel Mark
 
 A key quantity that drives MCMC output analysis is the autocovariance function (ACvF).
  % From their use in autocorrelation (ACF) plots to assessing Monte Carlo variability of estimators, to determining when to stop MCMC simulation, autocovariances drive many visual and quantitative inferences from MCMC output. However, 
- Estimators of ACvF are only available for single-chain implementations, with a parallel-chain version obtained by naive averaging. As we will demonstrate, this defeats the purpose of running parallel Markov chains from dispersed starting values.
+ Estimators of ACvF are only available for single-chain implementations, with a parallel-chain version obtained by naive averaging. As we will demonstrate, this defeats the purpose of running parallel Markov chains from dispersed starting values. 
  
 
 Let $F$ be the target distribution with mean $\mu$ defined on a space $\X \subseteq \mathbb{R}^d$ equipped with a countably generated $\sigma$-field $\mathcal{B}(\X)$. For $s = 1, \dots, m$, let $\{X_{st}\}_{t\geq1}$ be the $s${th} Harris ergodic $F$-invariant Markov chain \citep[see][for definitions]{meyn:twee:2009} employed to learn characteristics about $F$. The process is covariance stationary so that
@@ -151,7 +152,7 @@ Estimators of ACvFs are used to estimate the long-run variance of Monte Carlo av
 % subsection demonstrative_example (end)
 % \begin{example}[Demonstrative example]
 
-We demonstrate the striking difference in estimation of $\Gamma(k)$ via ACF plots. Consider a random-walk Metropolis-Hastings sampler for a univariate mixture of Gaussians target density. Let
+We use ACF plots to demonstrate the striking difference in the estimation of $\Gamma(k)$. Consider a random-walk Metropolis-Hastings sampler for a univariate mixture of Gaussians target density. Let
 \[
 f(x) = 0.7\,f(x; -5, 1) + 0.3\,f(x; 5, 0.5)\,,
 \]
@@ -230,7 +231,7 @@ and is instrumental in visualizing the serial correlation in the components of t
 \end{equation}
 The globally-centered autocorrelation provides a far more realistic assessment of the correlation structure of the marginal components of the chain  as evidenced in Figure~\ref{fig:gaussian-trace}.
 
-We end this section by noting that we can obtain an average G-ACvF and G-ACF over all $m$ chains
+We end this section by noting that we can obtain an average G-ACvF and G-ACF over all $m$ chains as,
 \[
 \hat{\Gamma}_G(k) = \dfrac{1}{m}\sum_{s=1}^m \hat{\Gamma}_{G,s}(k) \quad \text{ and } \quad \hat{\rho}^{(i)}_G(k) = \dfrac{1}{m}\sum_{s=1}^m \hat{\rho}^{(i)}_{G,s}(k)\,.
 \]
@@ -260,7 +261,7 @@ Set $\{Y_{st}\}_{t \geq 1} = \{g(X_{st})\}_{t \geq 1}$ for $s = 1, \dots, m$. Le
 
 % \end{equation}
 %
-The goal in output analysis for MCMC is to estimate $\Sigma$ in order to assess variability in $\bar{\bar{Y}}$ \citep{fleg:hara:jone:2008,roy:2019,vats:rob:fle:jon:2020}. There is a rich literature on estimating $\Sigma$ for single-chain MCMC implementations. The most common are SV estimators \citep{andr:1991,vats:fleg:jon:2018} and batch means estimators \citep{chen:seila:1987,vats:fleg:jon:2019}. Recently, \cite{gupta:vats:2020} constructed a replicated batch means estimator for estimating $\Sigma$ from parallel chains. Batch means estimators are computationally more efficient than SV estimators, whereas SV estimators are more reliable \citep{damerdji:1995,fleg:jone:2010}. Here, we utilize G-ACvF estimators to construct globally-centered SV (G-SV) estimator of $\Sigma$. Using the method of \cite{heberle2017fast}, we also provide a computationally efficient implementation of the G-SV estimator. 
+The goal in output analysis for MCMC is to estimate $\Sigma$ in order to assess variability in $\bar{\bar{Y}}$ \citep{fleg:hara:jone:2008,roy:2019,vats:rob:fle:jon:2020}. There is a rich literature on estimating $\Sigma$ for single-chain MCMC implementations. The most common are SV estimators \citep{andr:1991,vats:fleg:jon:2018} and batch means estimators \citep{chen:seila:1987,vats:fleg:jon:2019}. Recently, \cite{gupta:vats:2020} constructed a replicated batch means estimator for estimating $\Sigma$ from parallel Markov chains. Batch means estimators are computationally more efficient than SV estimators, whereas SV estimators are more reliable \citep{damerdji:1995,fleg:jone:2010}. Here, we utilize G-ACvF estimators to construct globally-centered SV (G-SV) estimator of $\Sigma$. Using the method of \cite{heberle2017fast}, we also provide a computationally efficient implementation of the G-SV estimator. 
 
 For $k \geq 0$, the locally and globally-centered  estimators of $\Upsilon(k)$ are
 \[
@@ -314,7 +315,7 @@ Assumption~\ref{ass:lag_window} is standard \citep[see][]{ande:1971} and is sati
 First, we provide conditions for strong consistency. Strong consistency is particularly important to ensure sequential stopping rules in MCMC yield correct coverage at termination \citep{fleg:gong:2015,glyn:whit:1992}. A critical assumption is that of a strong invariance principle which the following theorem establishes. Let $B(n)$ denotes a standard $p$-dimensional Brownian motion.
 
 
-\begin{theorem}[\cite{kuel:1976,vats:fleg:jon:2018}]
+\begin{theorem}[\cite{kuel:phil:1980,vats:fleg:jon:2018}]
   \label{thm:kuelbs}
 Let $\E_F\|Y_{11}\|^{2+ \delta} < \infty$ for $\delta > 0$ and let $P$ be polynomially ergodic of order $\xi > (q + 1 + \epsilon)/(1 + 2/\delta)$ for $q \geq 1$. Then there exists a $p \times p$ lower triangular matrix $L$ with $LL^T = \Sigma$, a non-negative function $\psi(n) = n^{1/2 - \lambda}$ for some $\lambda > 0$, a finite random variable $D$, and a sufficiently rich probability space $\Omega$ such that for all $n > n_0$,
 \[
@@ -375,7 +376,7 @@ The SV estimator, despite having good statistical properties, poses limitations 
 \SetAlgoLined
 % Construct $C(w^*) \textrm{ and } B_s^*$ from $\{Y_{st};\, t = 1, ...,\, n\}$.\\ 
 Compute eigenvalues $\lambda_i$ of  $C(w^*)_{(1)}$ using a discrete Fourier transform, $i = 1, \dots, 2n$\;
-Construct $2n \times p$ matrix $A^*_s = (A_s^T  \quad 0_{n \times q})^T$\;
+Construct $2n \times p$ matrix $A^*_s = (A_s^T  \quad 0_{n \times p})^T$\;
 
 \For{$j = 1, 2, \dots, p$}    
     { 
@@ -421,7 +422,7 @@ We use the locally-centered $\hat{\Upsilon}(0)$ to estimate $\Upsilon(0)$ instea
 
 \section{Examples} \label{sec:examples}
 
-For three different target distributions we sample $m$ parallel Markov chains to assess the performance of our proposed estimators. We make the following three comparisons - (1) locally-centered ACF vs G-ACF estimator, (2) A-SV vs G-SV estimator, and (3) $\widehat{\textrm{ESS}}_A$ vs $\widehat{\textrm{ESS}}_G$. The quality of estimation of $\Sigma$ is studied by coverage probabilities of a $95 \%$ Wald  confidence region when the true mean $\mu_g$ is known. The convergence of local and global estimators of $\Sigma$ and $\widehat{\textrm{ESS}}$ as $n$ increases is studied through two types of running plots (1) logarithm of Frobenius norm of estimated $\Sigma$, and (2) logarithm of estimated ESS/$mn$. In all three examples, we estimate the mean of the stationary distribution, so $g$ is the identity function. The truncation point $b_n$ are the defaults available in the \texttt{R} package \texttt{mcmcse} \citep{mcmcse}.
+For three different target distributions we sample $m$ parallel Markov chains to assess the performance of our proposed estimators. We make the following three comparisons - (1) locally-centered ACF vs G-ACF estimator, (2) A-SV vs G-SV estimator, and (3) $\widehat{\textrm{ESS}}_A$ vs $\widehat{\textrm{ESS}}_G$. The quality of estimation of $\Sigma$ is studied by coverage probabilities of a $95 \%$ Wald  confidence region when the true mean $\mu_g$ is known. The convergence of local and global estimators of $\Sigma$ and $\textrm{ESS}$ as $n$ increases is studied through two types of running plots (1) logarithm of Frobenius norm of estimated $\Sigma$, and (2) logarithm of estimated ESS/$mn$. In all three examples, we estimate the mean of the stationary distribution, so $g$ is the identity function. The truncation point $b_n$ are the defaults available in the \texttt{R} package \texttt{mcmcse} \citep{mcmcse}.
 
 
 \subsection{Vector autoregressive process} \label{ex:var}
@@ -560,7 +561,7 @@ In Figure~\ref{fig:boom-ess} we present running plots of estimates of $\log(\tex
       \includegraphics[width = .30\textwidth]{plots/boom-ess_1_3_8_m5.pdf}
       \includegraphics[width = .30\textwidth]{plots/boom-ess_1_10_7_m5.pdf}          
 
-    \caption{Boom: Running plot of $\log (\widehat{\text{ESS}}_A )/mn$ and $\log (\widehat{\text{ESS}}_G )/mn$ with $m = 5$ for setting 1 (left) and setting 2 (right).}
+    \caption{Boomerang. Running plot of $\log (\widehat{\text{ESS}}_A )/mn$ and $\log (\widehat{\text{ESS}}_G )/mn$ with $m = 5$ for setting 1 (left) and setting 2 (right).}
     \label{fig:boom-ess}
 \end{figure}
 
@@ -605,7 +606,7 @@ For slow mixing Markov chains, a naive average of locally-centered ACvFs can dra
 
 %
 
-Another class of estimators for $\Sigma$ for reversible Markov chains are the multivariate initial sequence (mIS) estimators \citep{dai:jon:2017}. Similar to SV estimators, ACvFs are a critical part of mIS estimators and underestimation in ACvFs yields underestimates of $\Sigma$. It is easy to show that $\hat{\Upsilon}_{G,s}(k)$ is a strongly consistent estimators for $\Upsilon(k)$. Replacing $\hat{\Upsilon}_s(k)$ for $\hat{\Upsilon}_{G,s}(k)$ and following \cite[Theorem~2]{dai:jon:2017} will yield consistent overestimation of the generalized variance $\abs{\Sigma}$ estimated using a globally-centered version of the mIS estimator.  A valuable line of research would be to study the theoretical and experimental analysis of mIS estimators using G-ACvF. 
+Another class of estimators for $\Sigma$ for reversible Markov chains are the multivariate initial sequence (mIS) estimators \citep{dai:jon:2017}. Similar to SV estimators, ACvFs are a critical part of mIS estimators and underestimation in ACvFs yields underestimates of $\Sigma$. It is easy to show that $\hat{\Upsilon}_{G,s}(k)$ is a strongly consistent estimators for $\Upsilon(k)$. Replacing $\hat{\Upsilon}_s(k)$ for $\hat{\Upsilon}_{G,s}(k)$ and following \cite[Theorem~2]{dai:jon:2017} will yield consistent overestimation of the generalized variance $\abs{\Sigma}$ resulting in a globally-centered version of the mIS estimator.  A valuable line of research would be to study the theoretical and empirical properties of the globally-centered mIS estimators. 
 
 \section{Acknowledgements} % (fold)
 \label{sec:acknowledgements}
@@ -1147,7 +1148,7 @@ This yields a 7-dimensional posterior distribution in $\lambda = (\lambda_1, \do
 \begin{figure}[htbp]
     \centering
     \includegraphics[width = 0.7\textwidth]{plots/poisson-trace_n50000.pdf}
-    \caption{Trace plot for second (left) and third (right) component of two chains.}
+    \caption{Change point: Trace plots for second (left) and third (right) component.}
     \label{fig:poisson-trace}
 \end{figure}
 \begin{figure}[htbp]
@@ -1168,7 +1169,7 @@ Figure~\ref{fig:poisson-acf} demonstrates a striking advantage of G-ACF against 
 
 The \texttt{faux.magnolia.high} dataset available in the \texttt{ergm} \texttt{R} package represents a simulated friendship network based on Ad-Health data (\cite{resnick1997protecting}). The school communities represented by the network data are located in the southern United States. Each node represents a student and each edge represents a friendship between the nodes it connects.
 
-The goal is to draw nodes uniformly from the network by using a network crawler. \cite{nilakanta2019ensuring} modified the data by removing 1,022 out of 1,461 nodes to obtain a well-connected graph. This resulting social network has 439 nodes and 573 edges. We use a Metropolis-Hastings algorithm with a simple random-walk  proposal suggested by \cite{gjoka2011practical}. Each node is associated with five features namely - degree of connection, cluster coefficient, grade, binary sex indicator (1 for female, 0 for male), and binary race indicator (1 for white, 0 for others)
+The goal is to draw nodes uniformly from the network by using a network crawler. \cite{nilakanta2019ensuring} modified the data by removing 1,022 out of 1,461 nodes to obtain a well-connected graph. This resulting social network has 439 nodes and 573 edges. We use a Metropolis-Hastings algorithm with a simple random-walk  proposal suggested by \cite{gjoka2011practical}. Each node is associated with five features namely - degree of connection, cluster coefficient, grade, binary sex indicator (1 for female, 0 for male), and binary race indicator (1 for white, 0 for others). We sample two parallel Markov chains starting from two students belonging to different races.
 
 \begin{figure}[htbp]
     \centering
@@ -1201,7 +1202,7 @@ The goal is to draw nodes uniformly from the network by using a network crawler.
 % Table (blah) shows the population parameters we are interested in estimating using MCMC methods.  The race and sex parameters are estimated as proportion of whites and females in the sample respectively. 
 
 % We believe that the students from different races experience different socio-political conditions which causes them to engage in a "selective networking". This might cause formation of clusters in the social network. 
-We sample two parallel Markov chains starting from two students belonging to different races.
+
 
 % 
 Figure~\ref{fig:magnolia-acf} shows the ACF plots for the \textit{grade} feature at two different simulation sizes for $m=2$ parallel Markov chains. For a shorter chain length, both the chains have explored different clusters and as a consequence, the local and global mean do not agree. Regardless, G-ACF displays a clear advantage over locally-centered ACF for a chain length of $n=100$ samples whereas the latter takes $n=1000$ samples to reach the truth. 
