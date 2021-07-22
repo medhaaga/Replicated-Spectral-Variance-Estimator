@@ -21,6 +21,7 @@ phi <- diag(c(.999, .001))
 dummy <- matrix(1:p^2, nrow = p, ncol = p)
 dummy <- qr.Q(qr(dummy))
 phi <- dummy %*% phi %*% t(dummy)
+diag(phi) <- -diag(phi)
 
 target <- target.sigma(phi, omega)
 truth <- true.sigma(phi, var = target)
@@ -44,7 +45,7 @@ for(i in 1:floor(m/2)){
 mc.chain.list <- list()
 global.mean <- rep(0,p)
 for (i in 1:m){
-  chain <- markov.chain(phi, omega, 5e4, start[i,])
+  chain <- markov.chain(phi, omega, 1e4, start[i,])
   global.mean <- global.mean + colMeans(chain)
   mc.chain.list[[i]] = chain
   print(colMeans(chain))
@@ -76,10 +77,10 @@ local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", l
 
 pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"))
-lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
-plot(global.acf, main = expression("Globally centered ACF"))
-lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
+plot(local.acf, main = expression("Locally centered ACF"), ylim = c(-1,1))
+points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
+plot(global.acf, main = expression("Globally centered ACF"), ylim = c(-1,1))
+points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
 dev.off()
 
 ###############################
@@ -97,8 +98,8 @@ local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", l
 
 pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"))
-lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
-plot(global.acf, main = expression("Globally centered ACF"))
-lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
+plot(local.acf, main = expression("Locally centered ACF"), ylim = c(-1,1))
+points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
+plot(global.acf, main = expression("Globally centered ACF"), ylim = c(-1,1))
+points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
 dev.off()
