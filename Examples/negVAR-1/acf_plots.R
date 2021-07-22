@@ -51,10 +51,10 @@ for (i in 1:m){
   print(colMeans(chain))
 }
 global.mean <- global.mean/m
-save(mc.chain.list, true.acf, file = "Out/var-five_chains.Rdata")
+save(mc.chain.list, true.acf, file = "Out/var-neg_five_chains.Rdata")
 #################################################################################
 
-load(file = "Out/var-five_chains.Rdata")
+load(file = "Out/var-neg_five_chains.Rdata")
 #######################################################
 ############### ACF and G-ACF #########################
 #######################################################
@@ -75,7 +75,7 @@ for (i in 1:m){
 global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
 local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
 
-pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
+pdf(file = paste("Out/var-neg_acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
 par(mfrow = c(1,2))
 plot(local.acf, main = expression("Locally centered ACF"), ylim = c(-1,1))
 points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
@@ -96,7 +96,7 @@ for (i in 1:m){
 global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
 local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
 
-pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
+pdf(file = paste("Out/var-neg_acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
 par(mfrow = c(1,2))
 plot(local.acf, main = expression("Locally centered ACF"), ylim = c(-1,1))
 points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
