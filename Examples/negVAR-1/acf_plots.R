@@ -103,3 +103,40 @@ points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "
 plot(global.acf, main = expression("Globally centered ACF"), ylim = c(-1,1))
 points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
 dev.off()
+
+##########################################
+###### Scatter plots ######################
+############################################
+
+
+load(file = "Out/var-neg_five_chains.Rdata") 
+m <- 5
+nsim <- 1e3
+
+pdf(file = ("Out/var-sp_n1e3.pdf"), height = 5, width = 5)
+plot(mc.chain.list[[1]][1:nsim,], xlim = c(-(m/2)*sqrt(diag(target)[1]), (m/2)*sqrt(diag(target)[1])),
+     ylim = c(-(m/2)*sqrt(diag(target)[2]), (m/2)*sqrt(diag(target)[2])), xlab = "X component",
+     ylab = "Y component", main = "", col = "dodgerblue4")
+#points(mc.chain.list[[2]][1:nsim,], col = "pink")
+#points(mc.chain.list[[3]][1:nsim,], col = "orange")
+#points(mc.chain.list[[4]][1:nsim,], col = "green3")
+points(mc.chain.list[[5]][1:nsim,], col = "steelblue1")
+legend("topright", legend = c("Chain-1", "Chain-2", "Chain-3", "Chain-4", "Chain-5"), col = c("dodgerblue4", "pink", "orange", "green3", "steelblue1"), pch = 19)
+dev.off()
+
+
+nsim <- 1e4
+
+
+pdf(file = ("Out/var-sp_n1e4.pdf"), height = 5, width = 5)
+plot(mc.chain.list[[1]][1:nsim,], xlim = c(-(m/2)*sqrt(diag(target)[1]), (m/2)*sqrt(diag(target)[1])),
+     ylim = c(-(m/2)*sqrt(diag(target)[2]), (m/2)*sqrt(diag(target)[2])), xlab = "X component",
+     ylab = "Y component", main = "", col = "dodgerblue4")
+#points(mc.chain.list[[2]][1:nsim,], col = "pink")
+#points(mc.chain.list[[3]][1:nsim,], col = "orange")
+#points(mc.chain.list[[4]][1:nsim,], col = "green3")
+points(mc.chain.list[[5]][1:nsim,], col = "steelblue1")
+legend("topright", legend = c("Chain-1", "Chain-2", "Chain-3", "Chain-4", "Chain-5"), col = c("dodgerblue4", "pink", "orange", "green3", "steelblue1"), pch = 19)
+dev.off()
+
+
