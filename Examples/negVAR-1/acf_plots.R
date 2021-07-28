@@ -12,8 +12,8 @@ p <- 2
 omega <- diag(p)
 for (i in 1:(p-1)){
   for (j in 1:(p-i)){
-    omega[j, j+i] <- .9^i
-    omega[j+i, j] <- .9^i
+    omega[j, j+i] <- -.9^i
+    omega[j+i, j] <- -.9^i
   }
 }
 
@@ -38,8 +38,8 @@ for (i in 1:lag.max){
 start <- matrix(0, nrow = m, ncol = p)  #only depends on C
 
 for(i in 1:floor(m/2)){
-  start[i,] <- i*sqrt(diag(target))
-  start[m-i+1,] <- -i*sqrt(diag(target))
+  start[i,] <- i*c(1,-1)*sqrt(diag(target))
+  start[m-i+1,] <- -i*c(1,-1)*sqrt(diag(target))
 }
 
 mc.chain.list <- list()
@@ -111,16 +111,16 @@ dev.off()
 
 load(file = "Out/var-neg_five_chains.Rdata") 
 m <- 5
-nsim <- 1e3
+nsim <- 100
 
-pdf(file = ("Out/var-sp_n1e3.pdf"), height = 5, width = 5)
-plot(mc.chain.list[[1]][1:nsim,], xlim = c(-(m/2)*sqrt(diag(target)[1]), (m/2)*sqrt(diag(target)[1])),
-     ylim = c(-(m/2)*sqrt(diag(target)[2]), (m/2)*sqrt(diag(target)[2])), xlab = "X component",
+pdf(file = ("Out/var-neg_sp_n1e3.pdf"), height = 5, width = 5)
+plot(mc.chain.list[[2]][1:nsim,], xlim = c(-50, 50),
+     ylim = c(-100, 100), xlab = "X component",
      ylab = "Y component", main = "", col = "dodgerblue4")
 #points(mc.chain.list[[2]][1:nsim,], col = "pink")
 #points(mc.chain.list[[3]][1:nsim,], col = "orange")
 #points(mc.chain.list[[4]][1:nsim,], col = "green3")
-points(mc.chain.list[[5]][1:nsim,], col = "steelblue1")
+points(mc.chain.list[[4]][1:nsim,], col = "steelblue1")
 legend("topright", legend = c("Chain-1", "Chain-2", "Chain-3", "Chain-4", "Chain-5"), col = c("dodgerblue4", "pink", "orange", "green3", "steelblue1"), pch = 19)
 dev.off()
 
@@ -128,15 +128,15 @@ dev.off()
 nsim <- 1e4
 
 
-pdf(file = ("Out/var-sp_n1e4.pdf"), height = 5, width = 5)
-plot(mc.chain.list[[1]][1:nsim,], xlim = c(-(m/2)*sqrt(diag(target)[1]), (m/2)*sqrt(diag(target)[1])),
-     ylim = c(-(m/2)*sqrt(diag(target)[2]), (m/2)*sqrt(diag(target)[2])), xlab = "X component",
+pdf(file = ("Out/var-neg_sp_n1e4.pdf"), height = 5, width = 5)
+plot(mc.chain.list[[2]][1:nsim,], xlim = c(-50, 50),
+     ylim = c(-100, 100), xlab = "X component",
      ylab = "Y component", main = "", col = "dodgerblue4")
 #points(mc.chain.list[[2]][1:nsim,], col = "pink")
 #points(mc.chain.list[[3]][1:nsim,], col = "orange")
 #points(mc.chain.list[[4]][1:nsim,], col = "green3")
-points(mc.chain.list[[5]][1:nsim,], col = "steelblue1")
-legend("topright", legend = c("Chain-1", "Chain-2", "Chain-3", "Chain-4", "Chain-5"), col = c("dodgerblue4", "pink", "orange", "green3", "steelblue1"), pch = 19)
+points(mc.chain.list[[4]][1:nsim,], col = "steelblue1")
+legend("topright", legend = c("Chain-2","Chain-4"), col = c("dodgerblue4", "steelblue1"), pch = 19)
 dev.off()
 
 
