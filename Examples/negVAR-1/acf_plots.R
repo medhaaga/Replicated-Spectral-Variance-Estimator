@@ -1,3 +1,4 @@
+
 set.seed(10)
 source("functions.R")
 library(multichainACF)
@@ -12,12 +13,12 @@ p <- 2
 omega <- diag(p)
 for (i in 1:(p-1)){
   for (j in 1:(p-i)){
-    omega[j, j+i] <- -.9^i
-    omega[j+i, j] <- -.9^i
+    omega[j, j+i] <- -.7^i
+    omega[j+i, j] <- -.7^i
   }
 }
 
-phi <- diag(c(.999, .001))
+phi <- diag(c(.9, .1))
 dummy <- matrix(1:p^2, nrow = p, ncol = p)
 dummy <- qr.Q(qr(dummy))
 phi <- dummy %*% phi %*% t(dummy)
@@ -72,14 +73,14 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
-local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
+global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(1), plot = FALSE, avg = FALSE)[[1]]
+local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", lag.max = lag.max, chains = c(1), plot = FALSE, avg = FALSE)[[1]]
 
 pdf(file = paste("Out/var-neg_acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
 par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"), ylim = c(-1,1))
+plot(local.acf, main = expression("Locally centered ACF"), ylim = c(-1,1), col = "blue")
 points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
-plot(global.acf, main = expression("Globally centered ACF"), ylim = c(-1,1))
+plot(global.acf, main = expression("Globally centered ACF"), ylim = c(-1,1), col = "orange")
 points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
 dev.off()
 
@@ -93,14 +94,14 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
-local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", lag.max = lag.max, chains = c(2), plot = FALSE, avg = FALSE)[[1]]
+global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(1), plot = FALSE, avg = FALSE)[[1]]
+local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", lag.max = lag.max, chains = c(1), plot = FALSE, avg = FALSE)[[1]]
 
 pdf(file = paste("Out/var-neg_acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
 par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"), ylim = c(-1,1))
+plot(local.acf, main = expression("Locally centered ACF"), ylim = c(-1,1), col = "blue")
 points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
-plot(global.acf, main = expression("Globally centered ACF"), ylim = c(-1,1))
+plot(global.acf, main = expression("Globally centered ACF"), ylim = c(-1,1), col = "orange")
 points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
 dev.off()
 
@@ -111,7 +112,21 @@ dev.off()
 
 load(file = "Out/var-neg_five_chains.Rdata") 
 m <- 5
+
 nsim <- 100
+
+pdf(file = ("Out/var-neg_sp_n1e2.pdf"), height = 5, width = 5)
+plot(mc.chain.list[[2]][1:nsim,], xlim = c(-50, 50),
+     ylim = c(-100, 100), xlab = "X component",
+     ylab = "Y component", main = "", col = "dodgerblue4")
+#points(mc.chain.list[[2]][1:nsim,], col = "pink")
+#points(mc.chain.list[[3]][1:nsim,], col = "orange")
+#points(mc.chain.list[[4]][1:nsim,], col = "green3")
+points(mc.chain.list[[4]][1:nsim,], col = "steelblue1")
+legend("topright", legend = c("Chain-1", "Chain-2", "Chain-3", "Chain-4", "Chain-5"), col = c("dodgerblue4", "pink", "orange", "green3", "steelblue1"), pch = 19)
+dev.off()
+
+nsim <- 1000
 
 pdf(file = ("Out/var-neg_sp_n1e3.pdf"), height = 5, width = 5)
 plot(mc.chain.list[[2]][1:nsim,], xlim = c(-50, 50),
