@@ -11,7 +11,7 @@ markov.chain <- function(phi, omega, nsim, start){
   chain[1,] <- start
 
   for (t in 2:nsim){
-    chain[t,] <- as.vector(phi%*%chain[t-1,]) + as.vector(rmvnorm(1, mean = rep(0,p), sigma = omega))
+    chain[t,] <- as.vector(phi%*%chain[t-1,]) + t(chol(omega))%*%as.vector(rnorm(p))
   }
   return(chain)
 }

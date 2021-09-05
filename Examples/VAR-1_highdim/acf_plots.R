@@ -1,6 +1,6 @@
 set.seed(10)
 source("functions.R")
-sourceCpp("MCMC.cpp")
+#sourceCpp("MCMC.cpp")
 library(multichainACF)
 
 
@@ -18,7 +18,7 @@ for (i in 1:(p-1)){
   }
 }
 
-phi <- diag(0.01 + seq(0, (p-1))*((0.99 - 0.5)/(p-1)))
+phi <- diag(0.99 + seq(0, (p-1))*((0.999 - 0.99)/(p-1)))
 dummy <- matrix(1:p^2, nrow = p, ncol = p)
 dummy <- qr.Q(qr(dummy))
 phi <- dummy %*% phi %*% t(dummy)
@@ -38,8 +38,8 @@ for (i in 1:lag.max){
 start <- matrix(0, nrow = m, ncol = p)  #only depends on C
 
 for(i in 1:max(c(floor(m/2), 1))){
-  start[i,] <- i*sqrt(diag(target))
-  start[m-i+1,] <- -i*sqrt(diag(target))
+  start[i,] <- p*i*sqrt(diag(target))
+  start[m-i+1,] <- -p*i*sqrt(diag(target))
 }
 
 
@@ -47,7 +47,7 @@ mc.chain.list <- list()
 start.time = Sys.time()
 global.mean <- rep(0,p)
 for (i in 1:m){
-  #chain <- markov_chain(phi=phi, omega=omega, nsim=5e4, start=start[i,])   commented this because R session is aborted on using Cpp function in high dim
+  #chain <- markov_chain(phi=phi, omega=omega, nsim=5e4, start=start[i,])
   chain <- markov.chain(phi=phi, omega=omega, nsim=5e4, start=start[i,])
   global.mean <- global.mean + colMeans(chain)
   mc.chain.list[[i]] = chain
@@ -55,6 +55,14 @@ for (i in 1:m){
 }
 end.time <- Sys.time()
 print(end.time -start.time)
+
+
+plot(mc.chain.list[[1]][1:1e3,1], mc.chain.list[[1]][1:1e3,p], xlim = c(-1450, 1450), ylim = c(-1450,1450))
+points(mc.chain.list[[2]][1:1e3,1], mc.chain.list[[2]][1:1e3,p], col = "red")
+points(mc.chain.list[[3]][1:1e3,1], mc.chain.list[[3]][1:1e3,p], col = "green")
+points(mc.chain.list[[4]][1:1e3,1], mc.chain.list[[4]][1:1e3,p], col = "blue")
+points(mc.chain.list[[5]][1:1e3,1], mc.chain.list[[5]][1:1e3,p], col = "pink")
+
 
 global.mean <- global.mean/m
 save(mc.chain.list, true.acf, file = "Out/var-five_chains.Rdata")
@@ -74,7 +82,7 @@ lag.max <- 40
 ###############################
 ### ncrop = 1e3
 ##############################
-
+ 
 ncrop <- 1e3
 x <- list()
 for (i in 1:m){
@@ -132,3 +140,6 @@ lines(seq(-lag.max, lag.max), true.acf[cp2,cp2,]/true.acf[cp2,cp2,lag.max + 1], 
 legend("bottomleft", legend = c("G-ACF, Comp=1", "True ACF, Comp=1", "G-ACF, Comp=100", "True ACF, Comp=100"), cex=.7, col = c("blue", "blue", "green3", "green3"), lty=rep(c(1,2),2), lwd=2)
 
 dev.off()
+
+
+
