@@ -6,20 +6,29 @@ using namespace Rcpp;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::export]]
-NumericMatrix markov_chain(NumericMatrix phi, NumericMatrix omega, int nsim, NumericVector start)
+arma::mat markov_chain(arma::mat phi, arma::mat omega, int nsim, arma::vec start)
 {
   Function f1("rnorm");
   Function f2("chol");
   Function f3("t");
-  int p = phi.ncol();
-  NumericMatrix chain(nsim, p);
-  chain(0,_) = start;
-  for (int i=1; i <= (nsim-1); i++){
-    NumericVector a = (phi*chain(i-1,_));
-    NumericMatrix mat = f3(f2(Named("x") = omega));
-    NumericVector vec = f1(p);
-    NumericVector b = mat*vec;
-    chain(i,_) =  a+b;
+  int p = phi.n_cols;
+
+  arma::mat a(p,1);
+  arma::mat chain(nsim, p);
+
+  // arma::mat omegaSq = f3(f2(Named("x") = omega));
+  arma::mat omegaSq = sqrtmat_sympd(omega);
+  arma::mat vect(p,1);
+  arma::mat b(p,1);
+  chain.zeros();
+  chain.row(0) = trans(start);
+
+  for (int i=1; i <= (nsim-1); i++)
+  {
+    a = phi * trans(chain.row(i-1));
+    vect = rnorm(p);
+    b = omegaSq*vect;
+    chain.row(i) =  trans(a+b);
   }
   
 return(chain);  
