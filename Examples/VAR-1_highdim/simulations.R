@@ -10,91 +10,17 @@ library(fftwtools)
 library(mcmcse)
 source("functions.R")
 sourceCpp("lag.cpp")
+sourceCpp("MCMC.cpp")
 
-############################################################
-##creates freq=1000 replications of ASV and RSV for each value of nsim from check.pts
-############################################################
-
-create.output <- function(phi, omega, m, check.pts, freq, c.prob){
-
-  p <- ncol(phi)
-  target <- target.sigma(phi, omega)
-  start <- matrix(0, nrow = m, ncol = p)  #only depends on C
-
-  for(i in floor(m/2):1){
-    start[i,] <- p*i*sqrt(diag(target))
-    start[m-i+1,] <- -p*i*sqrt(diag(target))
-  }
-
-  asv.samples <- list()
-  gsv.samples <- list()
-  asv.coverage <- list()
-  gsv.coverage <- list()
-
-  for (i in 1:length(check.pts)){
-    asv.samples[[i]] <- array(0, dim = c(p,p,freq))
-    gsv.samples[[i]] <- array(0, dim = c(p,p,freq))
-    asv.coverage[[i]] <- rep(0, freq)
-    gsv.coverage[[i]] <- rep(0, freq)
-  }
-
-  for (j in 1:freq){
-    print(paste("Percentage completion: ", round(j/freq*100, 2)))
-
-    master.chain <- array(0, dim = c(max(check.pts), p, m))
-    for (k in 1:m)
-      master.chain[,,k] <- markov.chain(phi, omega, max(check.pts), start[k,])
-
-    for (i in 1:length(check.pts))
-    {
-      nsim <- check.pts[i]
-      critical <- ((nsim*m - 1)*p/(nsim*m  - p))*qf(.95, df1 = p, df2 = (nsim*m-p))
-      chains <- master.chain[1:nsim,,]
-
-      sve <- array(0, dim = c(p,p,m))
-      rsve <- array(0, dim = c(p,p,m))
-      b <- rep(0,m)
-
-      for (k in 1:m){
-        b[k] <- batchSize(chains[,,k], method = "bartlett")
-      }
-
-      b.avg <- ceiling(mean(b))
-      global.mean <- apply(chains, 2, mean)
-
-      for (k in 1:m){
-        chain.cen.loc <- scale(chains[,,k], scale = FALSE)  ## X_st - bar(X)_s
-        sve[,,k] <- mSVEfft(A = chain.cen.loc, b = b.avg)
-        chain.cen <- scale(chains[,,k], center = global.mean, scale =FALSE)
-        rsve[,,k] <- mSVEfft(A = chain.cen, b = b.avg)
-      }
-      asv.samples[[i]][,,j] <- apply(sve, c(1,2), mean)
-      gsv.samples[[i]][,,j] <- apply(rsve, c(1,2), mean)
-
-      chi.sq.asv <- t2.stat(global.mean, rep(0,p), asv.samples[[i]][,,j], nsim*m)
-      chi.sq.gsv <- t2.stat(global.mean, rep(0,p), gsv.samples[[i]][,,j], nsim*m)
-      if (chi.sq.asv <= critical) {asv.coverage[[i]][j]=1}
-      if (chi.sq.gsv <= critical) {gsv.coverage[[i]][j]=1}
-    }
-  }
-  save(asv.samples, gsv.samples, asv.coverage, gsv.coverage, file = paste("Out/out_check.pts_freq", freq, ".Rdata", sep = ""))
-
-}
 
 ##################################################
 #function for storing convergence plots data
 ##################################################
 
-convergence <- function(min, max, step, phi, omega, m, rep=100){
+convergence <- function(min, max, step, phi, omega, target, m, rep=100, set){
 
   p <- ncol(phi)
-  start <- matrix(0, nrow = m, ncol = p)
-  target <- target.sigma(phi, omega)
-
-  for(i in floor(m/2):1){
-    start[i,] <- p*i*sqrt(diag(target))
-    start[m-i+1,] <- -p*i*sqrt(diag(target))
-  }
+  start <- rmvnorm(m, mean = rep(0, p), sigma = target)
 
   conv.pts <- seq(min, max, step)
   l <- length(conv.pts)
@@ -116,7 +42,7 @@ convergence <- function(min, max, step, phi, omega, m, rep=100){
 
     for (k in 1:m){
       print(paste("Sampling chain - ", k))
-      master.chain[,,k] <- markov.chain(phi, omega, max, start[k,])
+      master.chain[,,k] <- markov_chain(phi, omega, max, start[k,])
     }
 
     for (j in 1:l){
@@ -148,8 +74,8 @@ convergence <- function(min, max, step, phi, omega, m, rep=100){
       asv.samp[,,j] <- apply(sve, c(1,2), mean)
       rsv.samp[,,j] <- apply(rsve, c(1,2), mean)
       lambda.rep <- apply(smpl.cov, c(1,2), mean)
-      ess.asv.samp[j] <- (det(lambda.rep)/det(asv.samp[,,j]))^(1/p)
-      ess.rsv.samp[j] <- (det(lambda.rep)/det(rsv.samp[,,j]))^(1/p)
+      ess.asv.samp[j] <- exp((1/p)*(sum(log(eigen(lambda.rep)$values)) - sum(log(eigen(asv.samp[,,j])$values))))
+      ess.rsv.samp[j] <- exp((1/p)*(sum(log(eigen(lambda.rep)$values)) - sum(log(eigen(rsv.samp[,,j])$values))))
 
     }
 
@@ -159,7 +85,7 @@ convergence <- function(min, max, step, phi, omega, m, rep=100){
     ess.rsv[[r]] <- ess.rsv.samp
 
     save(asv, rsv, ess.asv, ess.rsv,
-         file = paste("Out/conv_data_min", min, "_max", max, ".Rdata", sep = ""))
+         file = paste("Out/conv_data_min", min, "_max", max, "_set", set, ".Rdata", sep = ""))
   }
 
 }
@@ -169,8 +95,51 @@ convergence <- function(min, max, step, phi, omega, m, rep=100){
 m <- 5 #### number of chains
 p <- 100  #### dimension
 
+
+##################################################
+####### Setting 1: Good mixing ###################
+##################################################
+
 #### target distribution specifications######
 
+set <- 1
+omega <- diag(p)
+for (i in 1:(p-1)){
+  for (j in 1:(p-i)){
+    omega[j, j+i] <- .9^i
+    omega[j+i, j] <- .9^i
+  }
+}
+
+phi <- diag(0.1 + seq(0, (p-1))*((0.8 - 0.1)/(p-1)))
+dummy <- matrix(1:p^2, nrow = p, ncol = p)
+dummy <- qr.Q(qr(dummy))
+phi <- dummy %*% phi %*% t(dummy)
+
+target <- target.sigma(phi, omega)
+truth <- true.sigma(phi, var = target)
+save(target, truth, file = "Out/var-set1_truth.Rdata")
+
+rep <- 10
+min <- 5e2
+max <- 5e4
+step <- 500
+conv.pts <- seq(min, max, step)
+
+start.time <- Sys.time()
+print("Carrying out simulations for convergence plots of ASV and RSV in the range(5e2, 5e4) for good mixing")
+convergence(min, max, step, phi, omega, target, m, rep, set)
+end.time <- Sys.time()
+print(end.time - start.time)
+
+
+##################################################
+####### Setting 2: Bad mixing ###################
+##################################################
+
+#### target distribution specifications######
+
+set <- 2
 omega <- diag(p)
 for (i in 1:(p-1)){
   for (j in 1:(p-i)){
@@ -184,28 +153,19 @@ dummy <- matrix(1:p^2, nrow = p, ncol = p)
 dummy <- qr.Q(qr(dummy))
 phi <- dummy %*% phi %*% t(dummy)
 
-check.pts <- c(5e2, 1e3, 5e3, 1e4, 5e4)
-freq <- 100
+target <- target.sigma(phi, omega)
+truth <- true.sigma(phi, var = target)
+save(target, truth, file = "Out/var-set2_truth.Rdata")
+
 rep <- 10
-c.prob <- .95
 min <- 5e2
 max <- 5e4
 step <- 500
 conv.pts <- seq(min, max, step)
 
-
-################Starting simulations#############################
-
-## Takes 2.66 hours to run ##
-print("Carrying out 1000 repititions for each value of nsim in check.pts")
 start.time <- Sys.time()
-create.output(phi, omega, m, check.pts, freq, c.prob)
+print("Carrying out simulations for convergence plots of ASV and RSV in the range(5e2, 5e4) for bad mixing")
+convergence(min, max, step, phi, omega, target, m, rep, set)
 end.time <- Sys.time()
 print(end.time - start.time)
 
-## Takes 3.7 hours to run ##
-start.time <- Sys.time()
-print("Carrying out simulations for convergence plots of ASV and RSV in the range(1e3, 1e5")
-convergence(min, max, step, phi, omega, m, rep)
-end.time <- Sys.time()
-print(end.time - start.time)

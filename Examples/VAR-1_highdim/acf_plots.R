@@ -1,6 +1,6 @@
 set.seed(10)
 source("functions.R")
-#sourceCpp("MCMC.cpp")
+sourceCpp("MCMC.cpp")
 library(multichainACF)
 
 
@@ -23,8 +23,7 @@ dummy <- matrix(1:p^2, nrow = p, ncol = p)
 dummy <- qr.Q(qr(dummy))
 phi <- dummy %*% phi %*% t(dummy)
 
-target <- target.sigma(phi, omega)
-truth <- true.sigma(phi, var = target)
+load(file = "Out/var-set2_truth.Rdata")
 lag.max <- 40
 
 true.acf <- array(0, dim = c(p, p, 2*lag.max + 1))
@@ -35,20 +34,15 @@ for (i in 1:lag.max){
 }
 
 ################ Only for creating Markov chains. Don't run. ##################
-start <- matrix(0, nrow = m, ncol = p)  #only depends on C
-
-for(i in 1:max(c(floor(m/2), 1))){
-  start[i,] <- p*i*sqrt(diag(target))
-  start[m-i+1,] <- -p*i*sqrt(diag(target))
-}
+start <- rmvnorm(m, mean = rep(0,p), sigma = p*target)
 
 
 mc.chain.list <- list()
 start.time = Sys.time()
 global.mean <- rep(0,p)
 for (i in 1:m){
-  #chain <- markov_chain(phi=phi, omega=omega, nsim=5e4, start=start[i,])
-  chain <- markov.chain(phi=phi, omega=omega, nsim=5e4, start=start[i,])
+  chain <- markov_chain(phi=phi, omega=omega, nsim=5e4, start=start[i,])
+  #chain <- markov.chain(phi=phi, omega=omega, nsim=5e4, start=start[i,])
   global.mean <- global.mean + colMeans(chain)
   mc.chain.list[[i]] = chain
   print(colMeans(chain))
@@ -57,7 +51,7 @@ end.time <- Sys.time()
 print(end.time -start.time)
 
 
-plot(mc.chain.list[[1]][1:1e3,1], mc.chain.list[[1]][1:1e3,p], xlim = c(-1450, 1450), ylim = c(-1450,1450))
+plot(mc.chain.list[[1]][1:1e3,1], mc.chain.list[[1]][1:1e3,p], xlim = c(-500,500), ylim = c(-500,500))
 points(mc.chain.list[[2]][1:1e3,1], mc.chain.list[[2]][1:1e3,p], col = "red")
 points(mc.chain.list[[3]][1:1e3,1], mc.chain.list[[3]][1:1e3,p], col = "green")
 points(mc.chain.list[[4]][1:1e3,1], mc.chain.list[[4]][1:1e3,p], col = "blue")
@@ -89,10 +83,10 @@ for (i in 1:m){
   x[[i]] <- mc.chain.list[[i]][1:ncrop,]
 }
 
-global.acf1 <- globalACF(x, type = "correlation", component = cp1, lag.max = lag.max, chains = c(0), plot = FALSE, avg = FALSE)[[1]]
-local.acf1 <- globalACF(x, type = "correlation", component = cp1, mean = "local", lag.max = lag.max, chains = c(0), plot = FALSE, avg = FALSE)[[1]]
-global.acf2 <- globalACF(x, type = "correlation", component = cp2, lag.max = lag.max, chains = c(0), plot = FALSE, avg = FALSE)[[1]]
-local.acf2 <- globalACF(x, type = "correlation", component = cp2, mean = "local", lag.max = lag.max, chains = c(0), plot = FALSE, avg = FALSE)[[1]]
+global.acf1 <- globalACF(x, type = "correlation", component = cp1, lag.max = lag.max, chains = c(1), plot = FALSE, avg = FALSE)[[1]]
+local.acf1 <- globalACF(x, type = "correlation", component = cp1, mean = "local", lag.max = lag.max, chains = c(1), plot = FALSE, avg = FALSE)[[1]]
+global.acf2 <- globalACF(x, type = "correlation", component = cp2, lag.max = lag.max, chains = c(1), plot = FALSE, avg = FALSE)[[1]]
+local.acf2 <- globalACF(x, type = "correlation", component = cp2, mean = "local", lag.max = lag.max, chains = c(1), plot = FALSE, avg = FALSE)[[1]]
 
 pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
