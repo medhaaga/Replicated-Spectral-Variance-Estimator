@@ -8,15 +8,12 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 arma::mat markov_chain(arma::mat phi, arma::mat omega, int nsim, arma::vec start)
 {
-  Function f1("rnorm");
-  Function f2("chol");
-  Function f3("t");
+
   int p = phi.n_cols;
 
   arma::mat a(p,1);
   arma::mat chain(nsim, p);
 
-  // arma::mat omegaSq = f3(f2(Named("x") = omega));
   arma::mat omegaSq = sqrtmat_sympd(omega);
   arma::mat vect(p,1);
   arma::mat b(p,1);
@@ -27,7 +24,7 @@ arma::mat markov_chain(arma::mat phi, arma::mat omega, int nsim, arma::vec start
   {
     a = phi * trans(chain.row(i-1));
     vect = rnorm(p);
-    b = omegaSq*vect;
+    b = omegaSq * vect;
     chain.row(i) =  trans(a+b);
   }
   
