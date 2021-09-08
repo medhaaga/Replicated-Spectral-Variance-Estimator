@@ -30,8 +30,8 @@ set <- 1
 load( file = "Out/var-set1_truth.Rdata")
 load(file = paste("Out/conv_data_min", min, "_max", max, "_set", set, ".Rdata", sep = ""))
 
-a <- lapply(asv, function(x) (apply(x, 3, norm, "F") )/norm(truth, "F"))
-r <- lapply(rsv, function(x) (apply(x, 3, norm, "F") )/norm(truth, "F") )
+a <- lapply(asv, function(x) x/norm(truth, "F"))
+r <- lapply(rsv, function(x) x/norm(truth, "F") )
 a <- Reduce("rbind", a)
 r <- Reduce("rbind", r)
 
@@ -82,8 +82,8 @@ set <- 2
 load( file = "Out/var-set2_truth.Rdata")
 load(file = paste("Out/conv_data_min", min, "_max", max, "_set", set, ".Rdata", sep = ""))
 
-a <- lapply(asv, function(x) (apply(x, 3, norm, "F") )/norm(truth, "F"))
-r <- lapply(rsv, function(x) (apply(x, 3, norm, "F") )/norm(truth, "F") )
+a <- lapply(asv, function(x) x/norm(truth, "F"))
+r <- lapply(rsv, function(x) x/norm(truth, "F") )
 a <- Reduce("rbind", a)
 r <- Reduce("rbind", r)
 

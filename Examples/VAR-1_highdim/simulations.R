@@ -79,8 +79,8 @@ convergence <- function(min, max, step, phi, omega, target, m, rep=100, set){
 
     }
 
-    asv[[r]] <- asv.samp
-    rsv[[r]] <- rsv.samp
+    asv[[r]] <- apply(asv.samp, 3, norm, "F")
+    rsv[[r]] <- apply(rsv.samp, 3, norm, "F")
     ess.asv[[r]] <- ess.asv.samp
     ess.rsv[[r]] <- ess.rsv.samp
 
