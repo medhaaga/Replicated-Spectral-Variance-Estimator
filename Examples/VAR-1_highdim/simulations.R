@@ -116,9 +116,10 @@ dummy <- matrix(1:p^2, nrow = p, ncol = p)
 dummy <- qr.Q(qr(dummy))
 phi <- dummy %*% phi %*% t(dummy)
 
-target <- target.sigma(phi, omega)
-truth <- true.sigma(phi, var = target)
-save(target, truth, file = "Out/var-set1_truth.Rdata")
+# target <- target.sigma(phi, omega)
+# truth <- true.sigma(phi, var = target)
+# save(target, truth, file = "Out/var-set1_truth.Rdata")
+load("Out/var-set1_truth.Rdata")
 
 rep <- 10
 min <- 5e2
@@ -153,9 +154,10 @@ dummy <- matrix(1:p^2, nrow = p, ncol = p)
 dummy <- qr.Q(qr(dummy))
 phi <- dummy %*% phi %*% t(dummy)
 
-target <- target.sigma(phi, omega)
-truth <- true.sigma(phi, var = target)
-save(target, truth, file = "Out/var-set2_truth.Rdata")
+# target <- target.sigma(phi, omega)
+# truth <- true.sigma(phi, var = target)
+# save(target, truth, file = "Out/var-set2_truth.Rdata")
+load("Out/var-set2_truth.Rdata")
 
 rep <- 10
 min <- 5e2

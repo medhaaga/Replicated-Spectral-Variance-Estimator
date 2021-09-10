@@ -27,10 +27,19 @@ Type 'q()' to quit R.
 > library(RcppArmadillo)
 > library(fftwtools)
 > library(mcmcse)
+mcmcse: Monte Carlo Standard Errors for MCMC
+Version 1.4-1 created on 2020-01-29.
+copyright (c) 2012, James M. Flegal, University of California, Riverside
+                    John Hughes, University of Colorado, Denver
+                    Dootika Vats, University of Warwick
+                    Ning Dai, University of Minnesota
+ For citation information, type citation("mcmcse").
+ Type help("mcmcse-package") to get started.
+
 > source("functions.R")
 ld: warning: directory not found for option '-L/usr/local/gfortran/lib/gcc/x86_64-apple-darwin18/8.2.0'
-ld: warning: dylib (/usr/local/gfortran/lib/libgfortran.dylib) was built for newer macOS version (11.4) than being linked (10.13)
 ld: warning: dylib (/usr/local/gfortran/lib/libquadmath.dylib) was built for newer macOS version (11.4) than being linked (10.13)
+ld: warning: dylib (/usr/local/gfortran/lib/libgfortran.dylib) was built for newer macOS version (11.4) than being linked (10.13)
 > sourceCpp("lag.cpp")
 > sourceCpp("MCMC.cpp")
 ld: warning: directory not found for option '-L/usr/local/gfortran/lib/gcc/x86_64-apple-darwin18/8.2.0'
@@ -141,9 +150,10 @@ ld: warning: dylib (/usr/local/gfortran/lib/libquadmath.dylib) was built for new
 > dummy <- qr.Q(qr(dummy))
 > phi <- dummy %*% phi %*% t(dummy)
 > 
-> target <- target.sigma(phi, omega)
-> truth <- true.sigma(phi, var = target)
-> save(target, truth, file = "Out/var-set1_truth.Rdata")
+> # target <- target.sigma(phi, omega)
+> # truth <- true.sigma(phi, var = target)
+> # save(target, truth, file = "Out/var-set1_truth.Rdata")
+> load("Out/var-set1_truth.Rdata")
 > 
 > rep <- 10
 > min <- 5e2
@@ -217,7 +227,7 @@ ld: warning: dylib (/usr/local/gfortran/lib/libquadmath.dylib) was built for new
 [1] "Sampling chain -  5"
 > end.time <- Sys.time()
 > print(end.time - start.time)
-Time difference of 2.477207 hours
+Time difference of 3.363577 hours
 > 
 > 
 > ##################################################
@@ -240,9 +250,10 @@ Time difference of 2.477207 hours
 > dummy <- qr.Q(qr(dummy))
 > phi <- dummy %*% phi %*% t(dummy)
 > 
-> target <- target.sigma(phi, omega)
-> truth <- true.sigma(phi, var = target)
-> save(target, truth, file = "Out/var-set2_truth.Rdata")
+> # target <- target.sigma(phi, omega)
+> # truth <- true.sigma(phi, var = target)
+> # save(target, truth, file = "Out/var-set2_truth.Rdata")
+> load("Out/var-set2_truth.Rdata")
 > 
 > rep <- 10
 > min <- 5e2
@@ -316,9 +327,9 @@ Time difference of 2.477207 hours
 [1] "Sampling chain -  5"
 > end.time <- Sys.time()
 > print(end.time - start.time)
-Time difference of 2.600352 hours
+Time difference of 3.255316 hours
 > 
 > 
 > proc.time()
      user    system   elapsed 
-16201.220  3054.579 19596.608 
+19104.429  4536.158 23840.029 
