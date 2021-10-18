@@ -594,7 +594,7 @@ dev.off()
 
 ############ Supp: Figure 4 #############
 
-load(file = "Examples/negVAR-1/Out/var-neg_five_chains.Rdata")
+load(file = "AllOut/var-neg_five_chains.Rdata")
 m <- 5
 component <- 1
 lag.max <- 40
@@ -657,8 +657,8 @@ conv.pts <- seq(min, max, step)
 
 set <- 1
 
-load( file = "Examples/VAR-1_highdim/Out/var-set1_truth.Rdata")
-load(file = paste("Examples/VAR-1_highdim/Out/conv_data_min", min, "_max", max, "_set", set, ".Rdata", sep = ""))
+load( file = "AllOut/var-set1_truth.Rdata")
+load(file = paste("AllOut/conv_data_min", min, "_max", max, "_set", set, ".Rdata", sep = ""))
 
 a <- lapply(asv, function(x) x/norm(truth, "F"))
 r <- lapply(rsv, function(x) x/norm(truth, "F") )
@@ -715,7 +715,7 @@ dev.off()
 ######### Supp: Figure 6 ############
 
 
-load(file = "Examples/morechainsVAR/Out/var-100_chains.Rdata")
+load(file = "AllOut/var-100_chains.Rdata")
 
 component <- 1
 lag.max <- 40

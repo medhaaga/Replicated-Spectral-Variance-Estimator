@@ -50,11 +50,20 @@ These R objects have been copied to the "AllOut" folder. Following is the inform
 ##### Figure-7 uses:
 - "AllOut/sensor-conv_data_m5_min500_max2e+05.Rdata" produced by "Examples/SensorNetwork/simulations.R"
 
-##### Figure-8 uses:
+##### Supp: Figure-1 uses:
  - "AllOut/poisson-two_chains.Rdata" produced by "Examples/PoissonChange/acf_plots.R"
 
-##### Figure-9 uses:
+##### Supp: Figure-2 uses:
  - "AllOut/poisson-two_chains.Rdata" produced by "Examples/PoissonChange/acf_plots.R"
 
-##### Figure-10 uses:
+##### Supp: Figure-3 uses:
  - "AllOut/magnolia-two_chains.Rdata" produced by "Examples/MagnoliaNetwork/acf_plots.R"
+
+##### Supp: Figure-4 uses:
+ - "AllOut/var-neg_five_chains.Rdata" produced by "Examples/negVAR-1/acf_plots.R"
+
+##### Supp: Figure-5 uses:
+ - "AllOut/var-set1_truth.Rdata", "AllOut/conv_data_min500_max50000_set1.Rdata", and "AllOut/conv_data_min500_max50000_set2.Rdata" produced by "Examples/highdim_VAR-1/simulations.R"
+
+##### Supp: Figure-6 uses:
+ - "AllOut/var-100_chains.Rdata" produced by "Examples/morechainsVAR/acf_plots.R"
