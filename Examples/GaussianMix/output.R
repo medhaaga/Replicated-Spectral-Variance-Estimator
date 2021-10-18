@@ -45,12 +45,12 @@ load(file = "gaussian-two_chains.Rdata")
 
 x <- seq(-10, 10, length = 1e3)
 pdf(file = "TargetTrace_n1e4.pdf", height = 5, width = 6)
-plot(x, 20000*exp(log.density(x, p, mu1, mu2, sd1, sd2)), type = "l", lwd=2, xlab = "x", ylab = "", ylim = c(-10000,6000), xlim = range(chain1,chain2), yaxt = 'n')
+plot(x, 20000*exp(log.density(x, p, mu1, mu2, sd1, sd2)), type = "l", lwd=2, xlab = "x",cex.lab=1.2, ylab = "", ylim = c(-10000,6000), xlim = range(chain1,chain2), yaxt = 'n')
 par(new = TRUE)
 plot(x = chain1[1:1e4], y = seq(-1, -1e4, -1), col = "lightskyblue", xlab = "", ylab = "", type = "l", ylim = c(-1e4, 6e3), , xlim = range(chain1,chain2), yaxt = 'n')
 lines(x = chain2[1:1e4], y = seq(-1, -1e4, -1), col = "plum3")
-mtext(side = 2, text = "Time", line = 1)
-legend("topleft", legend=c("Target", "Chain-1", "Chain-2"),col=c("black", "lightskyblue", "plum3"), lty=1, cex=0.7, lwd=2)
+mtext(side = 2, text = "Time", line = 1, cex=1.2)
+legend("topleft", legend=c("Target", "Chain-1", "Chain-2"),col=c("black", "lightskyblue", "plum3"), lty=1, cex=.7, lwd=2)
 dev.off()
 
 ##################################
@@ -59,11 +59,11 @@ dev.off()
 
 
 pdf(file = "TargetTrace_n1e5.pdf", height = 5, width = 6)
-plot(x, 200000*exp(log.density(x, p, mu1, mu2, sd1, sd2)), type = "l", lwd=2, xlab = "x", ylab = "", ylim = c(-1e5,6e4), xlim = range(chain1,chain2), yaxt = 'n')
+plot(x, 200000*exp(log.density(x, p, mu1, mu2, sd1, sd2)), type = "l", lwd=2, xlab = "x", cex.lab=1.2, ylab = "", ylim = c(-1e5,6e4), xlim = range(chain1,chain2), yaxt = 'n')
 par(new = TRUE)
-plot(x = chain1, y = seq(-1, -1e5, -1), col = "lightskyblue", xlab = "", ylab = "", type = "l", ylim = c(-1e5, 6e4), , xlim = range(chain1,chain2), yaxt = 'n')
+plot(x = chain1, y = seq(-1, -1e5, -1), col = "lightskyblue", xlab = "", ylab = "", cex.lab=1.2, type = "l", ylim = c(-1e5, 6e4), , xlim = range(chain1,chain2), yaxt = 'n')
 lines(x = chain2, y = seq(-1, -1e5, -1), col = "plum3")
-mtext(side = 2, text = "Time", line = 1)
+mtext(side = 2, text = "Time", line = 1, cex=1.2)
 legend("topleft", legend=c("Target", "Chain-1", "Chain-2"),col=c("black", "lightskyblue", "plum3"), lty=1, cex=0.7, lwd=2)
 dev.off()
 
@@ -92,8 +92,8 @@ global.acf2 <- globalACF(y, chains = c(1), component = 1, lag.max = lag.max, typ
 
 pdf(file = "gaussian-acf_hist.pdf", width = 10, height= 4)
 par(mfrow = c(1,2))
-plot(as.matrix(local.acf1$acf), type = 'h', ylab = "Autocorrelation", xlab = "Lag")
+plot(as.matrix(local.acf1$acf), type = 'h', ylab = "Autocorrelation", xlab = "Lag", cex.lab=1.2)
 lines(as.matrix(local.acf2$acf), type = 'l', col = "steelblue1", lwd = 2)
-plot(as.matrix(global.acf1$acf), type = 'h', ylim = c(min(local.acf1$acf), 1), ylab = "Autocorrelation", xlab = "Lag")
+plot(as.matrix(global.acf1$acf), type = 'h', ylim = c(min(local.acf1$acf), 1), ylab = "Autocorrelation", xlab = "Lag", cex.lab=1.2)
 lines(as.matrix(global.acf2$acf), type = 'l', col = "steelblue1", lwd = 2)
 dev.off()
