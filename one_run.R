@@ -497,7 +497,7 @@ dev.off()
 ###############################################
 ###############################################
 
-################### Figure 8 #################
+################### Supp: Figure 1 #################
 
 load(file = "AllOut/poisson-two_chains.Rdata")
 
@@ -511,13 +511,13 @@ plot(ind, mc.chain.list[[1]][ind,3], col = "steelblue1", xlab = "Time", ylab = "
 lines(ind, mc.chain.list[[2]][ind,3], col = "dodgerblue4", xlab = "Time", ylab = "Component-3", main = "")
 dev.off()
 
-################### Figure-9 ########################
+################### Supp: Figure-2 ########################
 
 load(file = "AllOut/poisson-two_chains.Rdata")
 m <- 2
 component <- 2
 
-### Figure-9 (top)
+### Figure-2 (top)
 
 ncrop <- 1e3
 x <- list()
@@ -532,7 +532,7 @@ globalACF(x, chains=0, component = component, mean = "local", type = "correlatio
 globalACF(x, chains=0, component = component, mean = "global", type = "correlation", col = "royalblue")
 dev.off()
 
-### Figure-9 (bottom)
+### Figure-2 (bottom)
 
 ncrop <- 1e4
 x <- list()
@@ -552,13 +552,13 @@ dev.off()
 #############################################
 #############################################
 
-##################  Figure 10 #################
+##################  Supp: Figure 3 #################
 
 m <- 2
 component <- 3
 load(file = "AllOut/magnolia-two_chains.Rdata")
 
-### Figure-10 (top)
+### Figure-3 (top)
 
 ncrop <- 1e2
 x <- list()
@@ -572,7 +572,7 @@ globalACF(x, chains=0, component = component, mean = "local", type = "correlatio
 globalACF(x, chains=0, component = component, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
 dev.off()
 
-### Figure-10 (bottom)
+### Figure-3 (bottom)
 
 ncrop <- 1e3
 x <- list()
@@ -585,6 +585,183 @@ par(mfrow = c(1,2))
 globalACF(x, chains=0, component = component, mean = "local", type = "correlation", leg = FALSE, col = "darkorange")
 globalACF(x, chains=0, component = component, mean = "global", type = "correlation", leg = FALSE, col = "royalblue")
 dev.off()
+
+############################################
+##########################################
+### Ex6 VAR with negtive autocorrelation  ###
+#############################################
+#############################################
+
+############ Supp: Figure 4 #############
+
+load(file = "Examples/negVAR-1/Out/var-neg_five_chains.Rdata")
+m <- 5
+component <- 1
+lag.max <- 40
+
+#### Figure 4: Top
+
+ncrop <- 1e3
+x <- list()
+for (i in 1:m){
+  x[[i]] <- mc.chain.list[[i]][1:ncrop,]
+}
+
+global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(1), plot = FALSE, avg = FALSE)[[1]]
+local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", lag.max = lag.max, chains = c(1), plot = FALSE, avg = FALSE)[[1]]
+
+pdf(file = paste("AllOut/neg_var-acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
+par(mfrow = c(1,2))
+plot(local.acf, main = expression("Locally centered ACF"), ylim = c(-1,1), col = "blue", cex.lab=1.2, cex.axis=1.2)
+points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
+plot(global.acf, main = expression("Globally centered ACF"), ylim = c(-1,1), col = "orange")
+points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
+dev.off()
+
+#### Figure 4: Bottom
+
+ncrop <- 1e4
+x <- list()
+for (i in 1:m){
+  x[[i]] <- mc.chain.list[[i]][1:ncrop,]
+}
+
+global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = c(1), plot = FALSE, avg = FALSE)[[1]]
+local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", lag.max = lag.max, chains = c(1), plot = FALSE, avg = FALSE)[[1]]
+
+pdf(file = paste("AllOut/neg_var-acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
+par(mfrow = c(1,2))
+plot(local.acf, main = expression("Locally centered ACF"), ylim = c(-1,1), col = "blue", cex.lab=1.2, cex.axis=1.2)
+points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
+plot(global.acf, main = expression("Globally centered ACF"), ylim = c(-1,1), col = "orange")
+points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
+dev.off()
+
+
+############################################
+##########################################
+### Ex6 High dimensional VAR  ###
+#############################################
+#############################################
+
+######### Supp: Figure 5 ############
+
+#### Figure 5: Top
+
+set <- 1
+
+load( file = "Examples/VAR-1_highdim/Out/var-set1_truth.Rdata")
+load(file = paste("Examples/VAR-1_highdim/Out/conv_data_min", min, "_max", max, "_set", set, ".Rdata", sep = ""))
+
+a <- lapply(asv, function(x) x/norm(truth, "F"))
+r <- lapply(rsv, function(x) x/norm(truth, "F") )
+a <- Reduce("rbind", a)
+r <- Reduce("rbind", r)
+
+se.a <- apply(a, 2, sd)/sqrt(length(asv))
+se.r <- apply(r, 2, sd)/sqrt(length(rsv))
+
+a <- colMeans(a)
+r <- colMeans(r)
+
+pdf(file = "AllOut/varhighdim-set1_frob.pdf", height = 5, width = 5)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Relative Frobenium norm", cex.lab=1.2, cex.axis=1.2, ylim = range(c(0.2, a, r, r + se.r, a - se.a, 1)), lwd = 2)
+lines(conv.pts, r, col="royalblue", lwd = 2)
+segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
+segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
+abline(h = 1, col = "green3", lwd = 2)
+legend("bottomright", legend=c("A-SVE", "G-SVE", "Truth"),col=c("darkorange", "royalblue", "green3"), lty=1, lwd = 2)
+dev.off()
+
+#### Figure 5: Bottom
+set <- 2
+
+load( file = "Examples/VAR-1_highdim/Out/var-set2_truth.Rdata")
+load(file = paste("Examples/VAR-1_highdim/Out/conv_data_min", min, "_max", max, "_set", set, ".Rdata", sep = ""))
+
+a <- lapply(asv, function(x) x/norm(truth, "F"))
+r <- lapply(rsv, function(x) x/norm(truth, "F") )
+a <- Reduce("rbind", a)
+r <- Reduce("rbind", r)
+
+se.a <- apply(a, 2, sd)/sqrt(length(asv))
+se.r <- apply(r, 2, sd)/sqrt(length(rsv))
+
+a <- colMeans(a)
+r <- colMeans(r)
+
+pdf(file = "AllOut/varhighdim-set2_frob.pdf", height = 5, width = 5)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Relative Frobenium norm", cex.lab=1.2, cex.axis=1.2, ylim = range(c(0.2, a, r, r + se.r, a - se.a, 1)), lwd = 2)
+lines(conv.pts, r, col="royalblue", lwd = 2)
+segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
+segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
+abline(h = 1, col = "green3", lwd = 2)
+legend("bottomright", legend=c("A-SVE", "G-SVE", "Truth"),col=c("darkorange", "royalblue", "green3"), lty=1, lwd = 2)
+dev.off()
+
+############################################
+##########################################
+### Ex7 VAR with large 'm'  ###
+#############################################
+#############################################
+
+######### Supp: Figure 6 ############
+
+
+load(file = "Examples/morechainsVAR/Out/var-100_chains.Rdata")
+
+component <- 1
+lag.max <- 40
+m <- 101
+lag1 <- 1
+lag2 <- lag.max
+
+lacf_twolags <- matrix(0, nrow = 2, ncol = m)
+gacf_twolags <- matrix(0, nrow = 2, ncol = m)
+
+nsims <- c(1e3, 1e4)
+
+for (n in 1:2)
+{
+  ncrop <- nsims[n]
+  
+  for (t in 2:m)
+  {
+    print(t)
+    nchains <- t
+    
+    
+    x <- list()
+    for (i in 1:nchains){
+      x[[i]] <- mc.chain.list[[i]][1:ncrop,]
+    }
+    
+    global.acf <- globalACF(x, type = "correlation", component = 1, lag.max = lag.max, chains = 0, plot = FALSE, avg = TRUE)
+    local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", lag.max = lag.max, chains = 0, plot = FALSE, avg = TRUE)
+    
+    lacf_twolags[1,t] <- local.acf$avgACF[[1]][1+lag1]
+    lacf_twolags[2,t] <- local.acf$avgACF[[1]][1+lag2]
+    gacf_twolags[1,t] <- global.acf$avgACF[[1]][1+lag1]
+    gacf_twolags[2,t] <- global.acf$avgACF[[1]][1+lag2]
+    
+  }
+  
+  pdf(file = paste("AllOut/ACFvsm_lag1_", ncrop, ".pdf", sep = ""), height=5, width=5)
+  plot(2:m, lacf_twolags[1,-1], type = "l", ylim = c(.97,1), col = "blue", ylab = "ÄCF", xlab = "m", main = paste("n =", ncrop))
+  lines(2:m, gacf_twolags[1,-1], col = "orange")
+  abline(h = true.acf[1,1,lag1+lag.max+1]/true.acf[1,1,lag.max+1], col = "red", lwd=1)
+  legend("bottomright", legend = c("A-ACF", "G-ACF", "Truth"), col = rep(c("blue", "orange", "red"), 1), lty=c(1,1,1), cex=.7)
+  dev.off()
+  
+  
+  pdf(file = paste("AllOut/ACFvsm_lag40_", ncrop, ".pdf", sep = ""), height=5, width=5)
+  plot(2:m, lacf_twolags[2,-1], type = "l", ylim = c(.6,.99), col = "blue", ylab = "ÄCF", xlab = "m", main = paste("n =", ncrop))
+  lines(2:m, gacf_twolags[2,-1], col = "orange", lty=1)
+  abline(h = true.acf[1,1,lag2+lag.max+1]/true.acf[1,1,lag.max+1], col = "red", lwd=1, lty=1)
+  legend("bottomright", legend = c("A-ACF", "G-ACF", "Truth"), col = rep(c("blue", "orange", "red"), 1), lty=c(1,1,1), cex=.7)
+  dev.off() 
+}
+
 
 
 ################# The End ########################
