@@ -28,7 +28,7 @@ chain2 <- mc.chain.list[[2]]
 x <- seq(-10, 10, length = 1e3)
 pdf(file = "AllOut/gaussian-TargetTrace.pdf", height = 5, width = 10)
 par(mfrow = c(1,2))
-plot(x, 20000*exp(log.density(x, p, mu1, mu2, sd1, sd2)), type = "l", lwd = 1.5, xlab = "x", ylab = "", ylim = c(-10000,6000), xlim = range(chain1,chain2), yaxt = 'n')
+plot(x, 20000*exp(log.density(x, p, mu1, mu2, sd1, sd2)), type = "l", lwd = 1.5, xlab = "x", ylab = "", cex.lab = 1.2, cex.axis=1.2, ylim = c(-10000,6000), xlim = range(chain1,chain2), yaxt = 'n')
 par(new = TRUE)
 plot(x = chain1[1:1e4], y = seq(-1, -1e4, -1), col = "lightskyblue", xlab = "", ylab = "", type = "l", ylim = c(-1e4, 6e3), , xlim = range(chain1,chain2), yaxt = 'n')
 lines(x = chain2[1:1e4], y = seq(-1, -1e4, -1), col = "plum3")
@@ -37,7 +37,7 @@ legend("top", legend=c("Target", "Chain 1", "Chain 2"),col=c("black", "lightskyb
 
 ## Figure 1 (top) b
 
-plot(x, 200000*exp(log.density(x, p, mu1, mu2, sd1, sd2)), type = "l", lwd = 1.5, xlab = "x", ylab = "", ylim = c(-1e5,6e4), xlim = range(chain1,chain2), yaxt = 'n')
+plot(x, 200000*exp(log.density(x, p, mu1, mu2, sd1, sd2)), type = "l", lwd = 1.5, xlab = "x", ylab = "", cex.lab = 1.2, cex.axis=1.2, ylim = c(-1e5,6e4), xlim = range(chain1,chain2), yaxt = 'n')
 par(new = TRUE)
 plot(x = chain1, y = seq(-1, -1e5, -1), col = "lightskyblue", xlab = "", ylab = "", type = "l", ylim = c(-1e5, 6e4), , xlim = range(chain1,chain2), yaxt = 'n')
 lines(x = chain2, y = seq(-1, -1e5, -1), col = "plum3")
@@ -68,9 +68,9 @@ global.acf2 <- globalACF(y, chains = c(1), component = 1, lag.max = lag.max, typ
 
 pdf(file = "AllOut/gaussian-acf_hist.pdf", width = 10, height= 5)
 par(mfrow = c(1,2))
-plot(as.matrix(local.acf1$acf), type = 'h', ylab = "Autocorrelation", xlab = "Lag")
+plot(as.matrix(local.acf1$acf), type = 'h', ylab = "Autocorrelation", xlab = "Lag", cex.lab = 1.2, cex.axis=1.2)
 lines(as.matrix(local.acf2$acf), type = 'l', col = "steelblue1", lwd = 2)
-plot(as.matrix(global.acf1$acf), type = 'h', ylim = c(min(local.acf1$acf), 1), ylab = "Autocorrelation", xlab = "Lag")
+plot(as.matrix(global.acf1$acf), type = 'h', ylim = c(min(local.acf1$acf), 1), ylab = "Autocorrelation", xlab = "Lag", cex.lab = 1.2, cex.axis=1.2)
 lines(as.matrix(global.acf2$acf), type = 'l', col = "steelblue1", lwd = 2)
 dev.off()
 
@@ -102,9 +102,9 @@ local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", l
 
 pdf(file = paste("AllOut/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 8)
 par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"))
+plot(local.acf, main = expression("Locally centered ACF"), cex.lab = 1.2, cex.axis=1.2)
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
-plot(global.acf, main = expression("Globally centered ACF"))
+plot(global.acf, main = expression("Globally centered ACF"), cex.lab = 1.2, cex.axis=1.2)
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
 dev.off()
 
@@ -121,9 +121,9 @@ local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", l
 
 pdf(file = paste("AllOut/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 8)
 par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"))
+plot(local.acf, main = expression("Locally centered ACF"), cex.lab = 1.2, cex.axis=1.2)
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
-plot(global.acf, main = expression("Globally centered ACF"))
+plot(global.acf, main = expression("Globally centered ACF"), cex.lab = 1.2, cex.axis=1.2)
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
 dev.off()
 
@@ -151,7 +151,7 @@ a <- colMeans(a)
 r <- colMeans(r)
 
 pdf(file = "AllOut/var-frob.pdf", height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a, log(norm(truth, type = "F")))), lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", cex.lab = 1.2, cex.axis=1.2, ylim = range(c(a, r, r + se.r, a - se.a, log(norm(truth, type = "F")))), lwd = 2)
 lines(conv.pts, r, col="royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
@@ -171,7 +171,7 @@ a <- Reduce("+", a)/length(ess.asv)
 r <- Reduce("+", r)/length(ess.rsv)
 
 pdf(file = "AllOut/var-ess.pdf", height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of ESS/mn", ylim = range(a, r), lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of ESS/mn", cex.lab = 1.2, cex.axis=1.2, ylim = range(a, r), lwd = 2)
 lines(conv.pts, r, col = "royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
@@ -236,12 +236,12 @@ local.acf2 <- globalACF(y, type = "correlation", lag.max = lag.max, mean = "loca
 pdf(file = paste(paste("AllOut/boom-all", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 4, width = 12)
 par(mfrow = c(1,3))
 
-contour2D(x=samples$x, y=samples$y, z=samples$z, col = 1, colkey = FALSE, xlim=c(0,10), ylim=c(0,10), cex.lab = 1.2, resfac = .4)
+contour(x=samples$x, y=samples$y, z=samples$z, col = 1, colkey = FALSE, xlim=c(0,10), ylim=c(0,10), cex.lab = 1.2, resfac = .4)
 points(rbind(chain[,,1], chain[,,2]), cex=.2, col = c(rep("black",1e3), rep("darkorange",1e3)))
 
-plot(local.acf1, xlab = "Lag", ylab = "Autocorrelation", main = "", cex.lab = 1.2)
+plot(local.acf1, xlab = "Lag", ylab = "Autocorrelation", cex.lab = 1.2, cex.axis=1.2, main = "", cex.lab = 1.2)
 lines(local.acf2$acf, col = "steelblue1", lwd=2)
-plot(global.acf1, xlab = "Lag", ylab = "Autocorrelation", main = "", cex.lab = 1.2)
+plot(global.acf1, xlab = "Lag", ylab = "Autocorrelation", cex.lab = 1.2, cex.axis=1.2, main = "", cex.lab = 1.2)
 lines(global.acf2$acf, col = "steelblue1", lwd=2)
 dev.off()
 
@@ -263,11 +263,11 @@ local.acf <- globalACF(x, type = "correlation", lag.max = lag.max, mean = "local
 
 pdf(file = paste(paste("AllOut/boom-all", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 4, width = 12)
 par(mfrow = c(1,3))
-contour2D(x=samples$x, y=samples$y, z=samples$z, col = 1, colkey = FALSE, xlim=c(0,10), ylim=c(0,10), cex.lab = 1.2)
+contour(x=samples$x, y=samples$y, z=samples$z, col = 1, colkey = FALSE, xlim=c(0,10), ylim=c(0,10), cex.lab = 1.2)
 points(rbind(chain[,,1], chain[,,2]), cex=.2, col = c(rep("black",1e3), rep("darkorange",1e3)))
 
-plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = "", cex.lab = 1.2)
-plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = "", cex.lab = 1.2)
+plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = "", cex.lab = 1.2, cex.axis=1.2)
+plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = "", cex.lab = 1.2, cex.axis=1.2)
 dev.off()
 
 
@@ -292,7 +292,7 @@ a <- Reduce("+", a)/length(a)
 r <- Reduce("+", r)/length(r)
 
 pdf(file = paste(paste("AllOut/boom-ess", A1, B1, C1, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of ESS/mn", ylim = range(a, r), lwd=2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of ESS/mn", cex.lab = 1.2, cex.axis=1.2, ylim = range(a, r), lwd=2)
 lines(conv.pts, r, col = "royalblue", lwd=2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
@@ -315,7 +315,7 @@ a <- Reduce("+", a)/length(a)
 r <- Reduce("+", r)/length(r)
 
 pdf(file = paste(paste("AllOut/boom-ess", A2, B2, C2, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of ESS/mn", ylim = range(a, r), lwd=2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of ESS/mn", cex.lab = 1.2, cex.axis=1.2, ylim = range(a, r), lwd=2)
 lines(conv.pts, r, col = "royalblue", lwd=2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
@@ -400,7 +400,7 @@ nsim1 <- 1e5
 
 pdf(file = "AllOut/sensor-trace_loc1.pdf", height = 4, width = 4)
 par(mfrow = c(1,1))
-plot.ts(mc.chain.list[[1]][1:nsim1,1], ylim = range(mc.chain.list[[1]][,1], mc.chain.list[[5]][,1]), ylab = expression(x[11]), col = rgb(8, 69, 148, maxColorValue = 255))
+plot.ts(mc.chain.list[[1]][1:nsim1,1], ylim = range(mc.chain.list[[1]][,1], mc.chain.list[[5]][,1]), ylab = expression(x[11]), cex.lab = 1.2, cex.axis=1.2, col = rgb(8, 69, 148, maxColorValue = 255))
 par(new = TRUE)
 plot.ts(mc.chain.list[[5]][1:nsim1,1], ylim = range(mc.chain.list[[1]][,1], mc.chain.list[[5]][,1]), yaxt='n', xaxt='n', ylab = "", col = rgb(107, 174, 214, maxColorValue = 255))
 
@@ -466,7 +466,7 @@ a <- colMeans(a)
 r <- colMeans(r)
 
 pdf(file = paste("AllOut/sensor-frob.pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", cex.lab = 1.2, cex.axis=1.2, ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
 lines(conv.pts, r, col="royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
@@ -483,7 +483,7 @@ a <- Reduce("+", a)/length(ess.asv)
 r <- Reduce("+", r)/length(ess.rsv)
 
 pdf(file = paste("AllOut/sensor-ess.pdf", sep = "_"), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", cex.lab = 1.2, cex.axis=1.2, ylim = range(a, r), lwd = 2)
 lines(conv.pts, r, col = "royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
@@ -505,9 +505,9 @@ n <- 5e4
 ind <- seq(from = 1, to = n, by = 10)
 pdf(file = paste("AllOut/poisson-trace_n", n, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-plot(ind, mc.chain.list[[1]][ind,2], col = "steelblue1", xlab = "Time", ylab = "Component-2", main = "", type = "l")
+plot(ind, mc.chain.list[[1]][ind,2], col = "steelblue1", xlab = "Time", ylab = "Component-2", cex.lab = 1.2, cex.axis=1.2, main = "", type = "l")
 lines(ind, mc.chain.list[[2]][ind, 2], col = "dodgerblue4", xlab = "Time", ylab = "Component-2", main = "")
-plot(ind, mc.chain.list[[1]][ind,3], col = "steelblue1", xlab = "Time", ylab = "Component-3", main = "", type = "l")
+plot(ind, mc.chain.list[[1]][ind,3], col = "steelblue1", xlab = "Time", ylab = "Component-3", cex.lab = 1.2, cex.axis=1.2, main = "", type = "l")
 lines(ind, mc.chain.list[[2]][ind,3], col = "dodgerblue4", xlab = "Time", ylab = "Component-3", main = "")
 dev.off()
 
@@ -612,9 +612,9 @@ local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", l
 
 pdf(file = paste("AllOut/neg_var-acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
 par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"), ylim = c(-1,1), col = "blue", cex.lab=1.2, cex.axis=1.2)
+plot(local.acf, main = expression("Locally centered ACF"), cex.lab = 1.2, cex.axis=1.2, ylim = c(-1,1), col = "blue", cex.lab=1.2, cex.axis=1.2)
 points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
-plot(global.acf, main = expression("Globally centered ACF"), ylim = c(-1,1), col = "orange")
+plot(global.acf, main = expression("Globally centered ACF"), cex.lab = 1.2, cex.axis=1.2, ylim = c(-1,1), col = "orange")
 points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
 dev.off()
 
@@ -631,9 +631,9 @@ local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", l
 
 pdf(file = paste("AllOut/neg_var-acf_n", ncrop, ".pdf", sep = ""), height = 5, width = 10)
 par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"), ylim = c(-1,1), col = "blue", cex.lab=1.2, cex.axis=1.2)
+plot(local.acf, main = expression("Locally centered ACF"), cex.lab = 1.2, cex.axis=1.2, ylim = c(-1,1), col = "blue", cex.lab=1.2, cex.axis=1.2)
 points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
-plot(global.acf, main = expression("Globally centered ACF"), ylim = c(-1,1), col = "orange")
+plot(global.acf, main = expression("Globally centered ACF"), cex.lab = 1.2, cex.axis=1.2, ylim = c(-1,1), col = "orange")
 points(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red", pch = 19, cex=.7)
 dev.off()
 
@@ -647,6 +647,13 @@ dev.off()
 ######### Supp: Figure 5 ############
 
 #### Figure 5: Top
+m <- 5
+p <- 100
+rep <- 10
+min <- 5e2
+max <- 5e4
+step <- 500
+conv.pts <- seq(min, max, step)
 
 set <- 1
 
@@ -747,7 +754,7 @@ for (n in 1:2)
   }
   
   pdf(file = paste("AllOut/ACFvsm_lag1_", ncrop, ".pdf", sep = ""), height=5, width=5)
-  plot(2:m, lacf_twolags[1,-1], type = "l", ylim = c(.97,1), col = "blue", ylab = "ÄCF", xlab = "m", main = paste("n =", ncrop))
+  plot(2:m, lacf_twolags[1,-1], type = "l", ylim = c(.97,1), col = "blue", ylab = "ÄCF", xlab = "m", cex.lab = 1.2, cex.axis=1.2, main = paste("n =", ncrop))
   lines(2:m, gacf_twolags[1,-1], col = "orange")
   abline(h = true.acf[1,1,lag1+lag.max+1]/true.acf[1,1,lag.max+1], col = "red", lwd=1)
   legend("bottomright", legend = c("A-ACF", "G-ACF", "Truth"), col = rep(c("blue", "orange", "red"), 1), lty=c(1,1,1), cex=.7)
@@ -755,7 +762,7 @@ for (n in 1:2)
   
   
   pdf(file = paste("AllOut/ACFvsm_lag40_", ncrop, ".pdf", sep = ""), height=5, width=5)
-  plot(2:m, lacf_twolags[2,-1], type = "l", ylim = c(.6,.99), col = "blue", ylab = "ÄCF", xlab = "m", main = paste("n =", ncrop))
+  plot(2:m, lacf_twolags[2,-1], type = "l", ylim = c(.6,.99), col = "blue", ylab = "ÄCF", xlab = "m", cex.lab = 1.2, cex.axis=1.2, main = paste("n =", ncrop))
   lines(2:m, gacf_twolags[2,-1], col = "orange", lty=1)
   abline(h = true.acf[1,1,lag2+lag.max+1]/true.acf[1,1,lag.max+1], col = "red", lwd=1, lty=1)
   legend("bottomright", legend = c("A-ACF", "G-ACF", "Truth"), col = rep(c("blue", "orange", "red"), 1), lty=c(1,1,1), cex=.7)

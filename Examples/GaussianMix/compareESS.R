@@ -71,7 +71,7 @@ for(i in 1:length(ind))
 }
 
 pdf("estimated_ESS.pdf", height = 4, width = 5)
-plot(ind, ess1, ylim = range(c(ess1,ess2)),type = 'l', col = "red", ylab = "Estimated ESS/n", xlab = "Sample Size")
+plot(ind, ess1, ylim = range(c(ess1,ess2)),type = 'l', col = "red", ylab = "Estimated ESS/n", xlab = "Sample Size", cex.lab = 1.2, cex.axis = 1.2)
 lines(ind, ess2, type = 'l', col = "blue")
 dev.off()
 
