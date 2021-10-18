@@ -62,10 +62,10 @@ dev.off()
 n <- 5e4
 pdf(file = paste("Out/poisson-trace_n", n, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-plot.ts(mc.chain.list[[1]][1:n,2], col = "steelblue1", xlab = "Time", ylab = "Component-2", main = "")
+plot.ts(mc.chain.list[[1]][1:n,2], col = "steelblue1", xlab = "Time", ylab = "Component-2", cex.lab=1.2, cex.axis=1.2, main = "")
 lines(1:n, mc.chain.list[[2]][1:n, 2], col = "dodgerblue4", xlab = "Time", ylab = "Component-2", main = "")
 
-plot.ts(mc.chain.list[[1]][1:n,3], col = "steelblue1", xlab = "Time", ylab = "Component-3", main = "")
+plot.ts(mc.chain.list[[1]][1:n,3], col = "steelblue1", xlab = "Time", ylab = "Component-3", cex.lab=1.2, cex.axis=1.2, main = "")
 lines(1:n, mc.chain.list[[2]][1:n,3], col = "dodgerblue4", xlab = "Time", ylab = "Component-3", main = "")
 
 dev.off()

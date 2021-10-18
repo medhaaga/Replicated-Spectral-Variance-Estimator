@@ -45,6 +45,7 @@ save(target, truth, file = "Out/var-truth.Rdata")
 ############## log Frobenius norm running plots ###########
 ###########################################################
 
+load(file = "Out/var-truth.Rdata")
 load(file = paste("Out/conv_data_min", min, "_max", max, ".Rdata", sep = ""))
 
 a <- lapply(asv, function(x) log(apply(x, 3, norm, "F") ) )
@@ -59,7 +60,7 @@ a <- colMeans(a)
 r <- colMeans(r)
 
 pdf(file = "Out/var-frob.pdf", height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a, log(norm(truth, type = "F")))), lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", cex.lab = 1.2, ylim = range(c(a, r, r + se.r, a - se.a, log(norm(truth, type = "F")))), lwd = 2)
 lines(conv.pts, r, col="royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
@@ -81,7 +82,7 @@ a <- Reduce("+", a)/length(ess.asv)
 r <- Reduce("+", r)/length(ess.rsv)
 
 pdf(file = "Out/var-ess.pdf", height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", cex.lab=1.2, xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd = 2)
 lines(conv.pts, r, col = "royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
@@ -96,28 +97,28 @@ dev.off()
 #########################################
 #########################################
 
-load(file = "Out/five_chains.Rdata")
+load(file = "Out/var-five_chains.Rdata")
 
 nsim <- 1e3
 
 pdf(file = ("Out/var-sp_n1e3.pdf"), height = 5, width = 5)
-plot(mc.chain.list[[1]][1:nsim,], xlim = c(-(m/2)*sqrt(diag(target)[1]), (m/2)*sqrt(diag(target)[1])),
-     ylim = c(-(m/2)*sqrt(diag(target)[2]), (m/2)*sqrt(diag(target)[2])), xlab = "X component",
+plot(mc.chain.list[[2]][1:nsim,], xlim = c(-(m)*sqrt(diag(target)[1]), (m)*sqrt(diag(target)[1])),
+     ylim = c(-(m)*sqrt(diag(target)[2]), (m)*sqrt(diag(target)[2])), xlab = "X component",
      ylab = "Y component", main = "", col = "dodgerblue4")
-points(mc.chain.list[[5]][1:nsim,], col = "steelblue1")
-legend("bottomright", legend = c("Chain-1", "Chain-5"), col = c("dodgerblue4", "steelblue1"), pch = 19)
+points(mc.chain.list[[4]][1:nsim,], col = "steelblue1")
+legend("bottomright", legend = c("Chain-2", "Chain-4"), col = c("dodgerblue4", "steelblue1"), pch = 19)
 dev.off()
 
 
-nsim <- 1e5
+nsim <- 5e4
 
 
 pdf(file = ("Out/var-sp_n1e4.pdf"), height = 5, width = 5)
-plot(mc.chain.list[[1]][1:nsim,], xlim = c(-(m/2)*sqrt(diag(target)[1]), (m/2)*sqrt(diag(target)[1])),
-     ylim = c(-(m/2)*sqrt(diag(target)[2]), (m/2)*sqrt(diag(target)[2])), xlab = "X component",
+plot(mc.chain.list[[2]][1:nsim,], xlim = c(-(m)*sqrt(diag(target)[1]), (m)*sqrt(diag(target)[1])),
+     ylim = c(-(m)*sqrt(diag(target)[2]), (m)*sqrt(diag(target)[2])), xlab = "X component",
      ylab = "Y component", main = "", col = "dodgerblue4")
 points(mc.chain.list[[5]][1:nsim,], col = "steelblue1")
-legend("bottomright", legend = c("Chain-1", "Chain-5"), col = c("dodgerblue4", "steelblue1"), pch = 19)
+legend("bottomright", legend = c("Chain-2", "Chain-4"), col = c("dodgerblue4", "steelblue1"), pch = 19)
 dev.off()
 
 ######################################################

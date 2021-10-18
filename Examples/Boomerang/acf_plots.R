@@ -53,9 +53,9 @@ local.acf2 <- globalACF(y, type = "correlation", lag.max = lag.max, mean = "loca
 
 pdf(file = paste(paste("Out/", A, B, C, "/boom-acf", A, B, C, sep = "_"), ".pdf", sep = ""), width = 10, height = 4)
 par(mfrow = c(1,2))
-plot(local.acf1, xlab = "Lag", ylab = "Autocorrelation", main = "")
+plot(local.acf1, xlab = "Lag", ylab = "Autocorrelation", cex.lab=1.2, cex.axes=1.2, main = "")
 lines(local.acf2$acf, col = "steelblue1", lwd=2)
-plot(global.acf1, xlab = "Lag", ylab = "Autocorrelation", main = "")
+plot(global.acf1, xlab = "Lag", ylab = "Autocorrelation", cex.lab=1.2, cex.axes=1.2, main = "")
 lines(global.acf2$acf, col = "steelblue1", lwd=2)
 dev.off()
 
@@ -99,6 +99,6 @@ local.acf <- globalACF(x, type = "correlation", lag.max = lag.max, mean = "local
 
 pdf(file = paste(paste("Out/", A, B, C, "/boom-acf", A, B, C, "n", sep = "_"),  nsim, ".pdf", sep = ""), width = 10, height = 4)
 par(mfrow = c(1,2))
-plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", main = "")
-plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", main = "")
+plot(local.acf, xlab = "Lag", ylab = "Autocorrelation", cex.lab=1.2, cex.axes=1.2, main = "")
+plot(global.acf, xlab = "Lag", ylab = "Autocorrelation", cex.lab=1.2, cex.axes=1.2, main = "")
 dev.off()

@@ -34,6 +34,8 @@ C2 <- 7
 #####Visualization through perspective plots############
 ########################################################
 
+## Saving chains for both settings (no need to run!)
+
 #### Setting-1
 
 set.seed(1)  # use seed for reproducible results
@@ -51,12 +53,6 @@ chain[,,1] <- markov.chain(A1, B1, C1, 1e3, start[1,])
 chain[,,2] <- markov.chain(A1, B1, C1, 1e3, start[2,])
 samples <- perspective(A1, B1, C1, 100)
 save(chain, samples, file = paste(paste("Out/", A1, B1, C1, "/boom-two_chains_sp", A1, B1, C1, sep = "_"), ".Rdata", sep = ""))
-
-pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-2d_density_plot", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
-contour2D(x=samples$x, y=samples$y, z=samples$z, colkey = FALSE, xlim=c(0,10), ylim=c(0,10))
-points(rbind(chain[,,1], chain[,,2]), cex=.2, col = c(rep("black",1e3), rep("darkorange",1e3)))
-dev.off()
-
 
 #### Setting-2
 
@@ -76,12 +72,23 @@ chain[,,2] <- markov.chain(A2, B2, C2, 1e3, start[2,])
 samples <- perspective(A2, B2, C2, 100)
 save(chain, samples, file = paste(paste("Out/", A2, B2, C2, "/boom-two_chains_sp", A2, B2, C2, sep = "_"), ".Rdata", sep = ""))
 
-pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-2d_density_plot", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
-contour2D(x=samples$x, y=samples$y, z=samples$z, colkey = FALSE, xlim=c(0,10), ylim=c(0,10))
+###############################################################
+
+#### Contour and scatter plots for both settings
+
+#### Setting-1
+load(file = paste(paste("Out/", A1, B1, C1, "/boom-two_chains_sp", A1, B1, C1, sep = "_"), ".Rdata", sep = ""))
+pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-2d_density_plot", A1, B1, C1, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
+contour(x=samples$x, y=samples$y, z=samples$z, colkey = FALSE, xlim=c(0,10), ylim=c(0,10), xlab = "x", ylab = "y", cex.lab=1.2)
 points(rbind(chain[,,1], chain[,,2]), cex=.2, col = c(rep("black",1e3), rep("darkorange",1e3)))
 dev.off()
 
-
+#### Setting-2
+load(file = paste(paste("Out/", A2, B2, C2, "/boom-two_chains_sp", A2, B2, C2, sep = "_"), ".Rdata", sep = ""))
+pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-2d_density_plot", A2, B2, C2, sep = "_"), ".pdf", sep = ""), height = 5, width = 5)
+contour(x=samples$x, y=samples$y, z=samples$z, colkey = FALSE, xlim=c(0,10), ylim=c(0,10), xlab = "x", ylab = "y", cex.lab=1.2)
+points(rbind(chain[,,1], chain[,,2]), cex=.2, col = c(rep("black",1e3), rep("darkorange",1e3)))
+dev.off()
 
 
 ###################################################################
@@ -101,33 +108,6 @@ max <- 1e5
 step <- 5e2
 conv.pts <- seq(min, max, step)
 
-
-##### two chains ######
-
-m <- 2
-load(file = paste(paste("Out/", A1, B1, C1, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
-
-a <- lapply(asv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
-r <- lapply(rsv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
-a <- Reduce("rbind", a)
-r <- Reduce("rbind", r)
-
-se.a <- apply(a, 2, sd)/sqrt(10)
-se.r <- apply(r, 2, sd)/sqrt(10)
-
-a <- colMeans(a)
-r <- colMeans(r)
-
-pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-frob", A1, B1, C1, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
-lines(conv.pts, r, col="royalblue", lwd = 2)
-segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
-segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
-legend("bottomright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, lwd = 2)
-dev.off()
-
-##### five chains ######
-
 m <- 5
 load(file = paste(paste("Out/", A1, B1, C1, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
@@ -144,7 +124,7 @@ a <- colMeans(a)
 r <- colMeans(r)
 
 pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-frob", A1, B1, C1, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", cex.lab=1.2, cex.axes=1.2, ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
 lines(conv.pts, r, col="royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
@@ -159,32 +139,6 @@ min <- 5e2
 max <- 5e4
 step <- 5e2
 conv.pts <- seq(min, max, step)
-
-#### two chains ######
-
-m <- 2
-load(file = paste(paste("Out/", A2, B2, C2, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
-
-a <- lapply(asv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
-r <- lapply(rsv[(1:10)], function(x) log(apply(x, 3, norm, "F") ) )
-a <- Reduce("rbind", a)
-r <- Reduce("rbind", r)
-
-se.a <- apply(a, 2, sd)/sqrt(10)
-se.r <- apply(r, 2, sd)/sqrt(10)
-
-a <- colMeans(a)
-r <- colMeans(r)
-
-pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-frob", A2, B2, C2, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
-lines(conv.pts, r, col="royalblue", lwd = 2)
-segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
-segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
-legend("bottomright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, lwd = 2)
-dev.off()
-
-##### five chains ######
 
 m <- 5
 load(file = paste(paste("Out/", A2, B2, C2, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
@@ -201,7 +155,7 @@ a <- colMeans(a)
 r <- colMeans(r)
 
 pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-frob", A2, B2, C2, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "Log of Frobenium norm", cex.lab=1.2, cex.axes=1.2, ylim = range(c(a, r, r + se.r, a - se.a)), lwd = 2)
 lines(conv.pts, r, col="royalblue", lwd = 2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
@@ -225,28 +179,6 @@ max <- 1e5
 step <- 5e2
 conv.pts <- seq(min, max, step)
 
-#### two chains
-
-m <- 2
-load(file = paste(paste("Out/", A1, B1, C1, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
-
-a <- lapply(ess.asv[(1:10)], log)
-r <- lapply(ess.rsv[(1:10)], log)
-se.a <- 2*apply(Reduce("rbind", a), 2, sd)/sqrt(length(a))
-se.r <- 2*apply(Reduce("rbind", r), 2, sd)/sqrt(length(r))
-a <- Reduce("+", a)/length(a)
-r <- Reduce("+", r)/length(r)
-
-pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-ess", A1, B1, C1, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd=2)
-lines(conv.pts, r, col = "royalblue", lwd=2)
-segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
-segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
-legend("topright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, cex=1, lwd = 2)
-dev.off()
-
-#### five chains
-
 m <- 5
 load(file = paste(paste("Out/", A1, B1, C1, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
@@ -258,7 +190,7 @@ a <- Reduce("+", a)/length(a)
 r <- Reduce("+", r)/length(r)
 
 pdf(file = paste(paste("Out/", A1, B1, C1, "/boom-ess", A1, B1, C1, "m", sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd=2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", cex.lab=1.2, cex.axes=1.2, ylim = range(a, r), lwd=2)
 lines(conv.pts, r, col = "royalblue", lwd=2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
@@ -276,28 +208,6 @@ max <- 5e4
 step <- 5e2
 conv.pts <- seq(min, max, step)
 
-#### two chains
-
-m <- 2
-load(file = paste(paste("Out/", A2, B2, C2, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
-
-a <- lapply(ess.asv, log)
-r <- lapply(ess.rsv, log)
-se.a <- 2*apply(Reduce("rbind", a), 2, sd)/sqrt(length(a))
-se.r <- 2*apply(Reduce("rbind", r), 2, sd)/sqrt(length(r))
-a <- Reduce("+", a)/length(ess.asv)
-r <- Reduce("+", r)/length(ess.rsv)
-
-pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-ess", A2, B2, C2, "m" ,sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd=2)
-lines(conv.pts, r, col = "royalblue", lwd=2)
-segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
-segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))
-legend("topright", legend=c("A-SVE", "G-SVE"),col=c("darkorange", "royalblue"), lty=1, cex=1, lwd = 2)
-dev.off()
-
-#### five chains
-
 m <- 5
 load(file = paste(paste("Out/", A2, B2, C2, "/conv_data_m", sep = "_"), m, "_min", min, "_max", max, ".Rdata", sep = ""))
 
@@ -309,7 +219,7 @@ a <- Reduce("+", a)/length(ess.asv)
 r <- Reduce("+", r)/length(ess.rsv)
 
 pdf(file = paste(paste("Out/", A2, B2, C2, "/boom-ess", A2, B2, C2, "m" ,sep = "_"), m, ".pdf", sep = ""), height = 5, width = 5)
-plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", ylim = range(a, r), lwd=2)
+plot(conv.pts, a, type = "l", col = "darkorange", main = "", xlab = "Simulation size", ylab = "log(ESS/mn)", cex.lab=1.2, cex.axes=1.2, ylim = range(a, r), lwd=2)
 lines(conv.pts, r, col = "royalblue", lwd=2)
 segments(x0 = conv.pts, y0 = (a - se.a), y1 = (a + se.a), col = adjustcolor("darkorange", alpha.f = .50))
 segments(x0 = conv.pts, y0 = (r - se.r), y1 = (r + se.r), col = adjustcolor("royalblue", alpha.f = .50))

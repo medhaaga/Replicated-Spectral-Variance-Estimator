@@ -76,9 +76,9 @@ local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", l
 
 pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"))
+plot(local.acf, main = expression("Locally centered ACF"), cex.lab=1.2, cex.axes=1.2)
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
-plot(global.acf, main = expression("Globally centered ACF"))
+plot(global.acf, main = expression("Globally centered ACF"), cex.lab=1.2, cex.axes=1.2)
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
 dev.off()
 
@@ -97,8 +97,8 @@ local.acf <- globalACF(x, type = "correlation", component = 1, mean = "local", l
 
 pdf(file = paste("Out/var-acf_n", ncrop, ".pdf", sep = ""), height = 4, width = 10)
 par(mfrow = c(1,2))
-plot(local.acf, main = expression("Locally centered ACF"))
+plot(local.acf, main = expression("Locally centered ACF"), cex.lab=1.2, cex.axes=1.2)
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
-plot(global.acf, main = expression("Globally centered ACF"))
+plot(global.acf, main = expression("Globally centered ACF"), cex.lab=1.2, cex.axes=1.2)
 lines(seq(-lag.max, lag.max), true.acf[1,1,]/true.acf[1,1,lag.max + 1], col = "red")
 dev.off()
