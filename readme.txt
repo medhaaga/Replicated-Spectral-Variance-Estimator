@@ -1,7 +1,7 @@
 ####################################################################################
 ###################  Code for producing plots and tables in  #######################
 ##################  Globally-centered autocovariance in MCMC   #####################
-########################### Agarwal and Vats (2020)  ###############################
+########################### Agarwal and Vats (2021)  ###############################
 ####################################################################################
 
 All the figures and tables in the paper are produced serially using the script "one_run.R" and saved in the folder "AllOut". This script uses 
