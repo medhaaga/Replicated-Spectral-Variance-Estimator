@@ -1,6 +1,6 @@
 # Replicated-Spectral-Variance-Estimator
 
- This repository contains reproducible code for all simulations and examples in the Agarwal and Vats (2021) [paper](https://arxiv.org/abs/2009.01799). The examples include
+ This repository contains reproducible code for all simulations and examples in the [Agarwal and Vats (2021) paper](https://arxiv.org/abs/2009.01799). The examples include
  
  #### Gaussian mixture model
  #### Vector autoregressive model (VAR-1)
